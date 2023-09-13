@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Providers;
+
+use App\Channel\SmsChannel;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\ServiceProvider;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register(): void
+    {
+        Notification::resolved(function ($service) {
+            $service->extend('sms', function ($app) {
+                return new SmsChannel();
+            });
+        });
+    }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        //
+    }
+}

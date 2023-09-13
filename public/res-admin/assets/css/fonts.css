@@ -1,0 +1,36 @@
+@font-face {
+    font-family: 'Yekan_Bakh';
+    src: url('../fonts/Yekan Bakh Fa-En 04 Regular.eot');
+    src: url('../fonts/Yekan Bakh Fa-En 04 Regular.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/Yekan Bakh Fa-En 04 Regular.woff') format('woff'),
+    url('../fonts/Yekan Bakh Fa-En 04 Regular.ttf') format('truetype');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Yekan_Bakh';
+    src: url('../fonts/Yekan Bakh Fa-En 05 Medium.eot');
+    src: url('../fonts/Yekan Bakh Fa-En 05 Medium.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/Yekan Bakh Fa-En 05 Medium.woff') format('woff'),
+    url('../fonts/Yekan Bakh Fa-En 05 Medium.ttf') format('truetype');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'Yekan_Bakh';
+    src: url('../fonts/Yekan Bakh Fa-En 06 Bold.eot');
+    src: url('../fonts/Yekan Bakh Fa-En 06 Bold.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/Yekan Bakh Fa-En 06 Bold.woff') format('woff'),
+    url('../fonts/Yekan Bakh Fa-En 06 Bold.ttf') format('truetype');
+    font-weight: 600;
+}
+
+
+@font-face {
+    font-family: 'Yekan_Bakh';
+    src: url('../fonts/Yekan Bakh Fa-En 07 Heavy.eot');
+    src: url('../fonts/Yekan Bakh Fa-En 07 Heavy.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/Yekan Bakh Fa-En 07 Heavy.woff') format('woff'),
+    url('../fonts/Yekan Bakh Fa-En 07 Heavy.ttf') format('truetype');
+    font-weight: 700;
+}

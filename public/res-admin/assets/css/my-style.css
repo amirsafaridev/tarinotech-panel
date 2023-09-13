@@ -1,0 +1,57 @@
+.jq-toast-single{
+    font-family: "Yekan_Bakh",serif !important;
+    font-size: 14px !important;
+    line-height: 30px !important;
+}
+.jq-toast-single h2{
+    font-family: "Yekan_Bakh",serif !important;
+    font-size: 16px !important;
+}
+.admin-avatar{
+    width: 80px;
+    border-radius: 50%;
+}
+
+.multi-search-input{
+    margin-bottom: 10px;
+    border: 1px solid #40405c;
+    padding: 5px;
+    border-radius: 5px;
+    width: 166px;
+    background-color: #2a2a4a;
+    color: #dedefd;
+}
+.ms-container{
+    width: 100%;
+}
+.ms-container .ms-selectable li.ms-elem-selectable, .ms-container .ms-selection li.ms-elem-selection{
+    border-bottom: 1px #3f3f5c solid;
+    padding: 8px 10px;
+    color: #dedefd;
+    font-size: 12px;
+}
+.ms-container .ms-selectable li.ms-hover,
+.ms-container .ms-selection li.ms-hover{
+    cursor: pointer;
+    color: #fff;
+    text-decoration: none;
+    background-color: #0b7347;
+}
+.ms-container .ms-selectable, .ms-container .ms-selection{
+    background: #2a2a4a;
+}
+.ms-container .ms-list{
+    border: 1px solid #3f3f5c;
+}
+
+.meet-photo,.meet-cover{
+    width: 50%;
+    border-radius: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+    .meet-photo,.meet-cover{
+        width: 100%;
+        border-radius: 10px;
+    }
+}
