@@ -4,7 +4,7 @@
 <script type="text/javascript">
     let baseConfig = {
         position:'bottom-left',
-        hideAfter:5000,
+        hideAfter:4400,
         textAlign : 'right',
     }
     let hasSpinner = $('.has-spinner');
