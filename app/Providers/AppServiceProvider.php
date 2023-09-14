@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App;
 use App\Channel\SmsChannel;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
@@ -27,5 +28,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         URL::forceRootUrl(config('app.url'));
+        if (App::isProduction()) {
+            URL::forceScheme('https');
+        }
     }
 }
