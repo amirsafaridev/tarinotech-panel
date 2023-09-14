@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helper\Helper;
-
 class HomeController extends Controller
 {
     public function __construct()
@@ -13,8 +11,6 @@ class HomeController extends Controller
 
     public function index()
     {
-        echo Helper::toGregorian('1402-06-25').'<br>';
-        echo route('admin.admin.index').'<br>';
-        echo config('app.url');
+        echo 'Portal';
     }
 }
