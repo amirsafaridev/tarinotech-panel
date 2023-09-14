@@ -14,6 +14,6 @@ class HomeController extends Controller
     public function index()
     {
         echo Helper::toGregorian('1402-06-25');
-        echo config('app.url');
+        echo asset('');
     }
 }

@@ -19,3 +19,5 @@ yarn-error.log
 /.vscode
 /public/uploads/admin/*
 /public/uploads/acf/*
+/public/uploads/avatar/*
+/public/uploads/user/*
