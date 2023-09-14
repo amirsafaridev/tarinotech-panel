@@ -16,6 +16,7 @@
 
     <div class="row">
         <div class="col-12 mb-2">
+            <h1>Deploy :|</h1>
             @include('admin.partial.message')
         </div>
         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3">
