@@ -13,7 +13,8 @@ class HomeController extends Controller
 
     public function index()
     {
-        echo Helper::toGregorian('1402-06-25');
-        echo asset('');
+        echo Helper::toGregorian('1402-06-25').'<br>';
+        echo route('admin.admin.index').'<br>';
+        echo config('app.url');
     }
 }

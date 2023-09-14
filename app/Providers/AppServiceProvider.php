@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Channel\SmsChannel;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,6 +26,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        URL::forceRootUrl(config('app.url'));
     }
 }
