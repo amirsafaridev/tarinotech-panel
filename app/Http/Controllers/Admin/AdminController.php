@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Enums\General\BtnType;
-use App\Helper\Helper;
-use App\Helper\Uploader\Uploader;
+use App\Helpers\Helper;
+use App\Helpers\Uploader\Uploader;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Admin\StoreRequest;
 use App\Http\Requests\Admin\Admin\UpdateRequest;

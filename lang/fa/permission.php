@@ -7,6 +7,7 @@ return [
     'admin_show' => 'Admin Show',
     'admin_destroy' => 'Admin Destroy',
     'admin_password_index' => 'Admin Password Index',
+    'admin_sale_gold_index' => 'Admin Sale Gold Index',
     'home_index' => 'Home Index',
     'home_redirect' => 'Home Redirect',
     'permission_sync' => 'Permission Sync',

@@ -2,7 +2,7 @@
     <div class="app-sidebar__overlay" data-bs-toggle="sidebar"></div>
     <div class="app-sidebar">
         <div class="side-header">
-            <a class="header-brand1" href="{{ route('admin.dashboard') }}">
+            <a class="header-brand1 d-none" href="{{ route('admin.dashboard') }}">
                 <img src="{{ asset('res-admin/assets/images/brand/logo.png') }}" class="header-brand-img desktop-logo" alt="Worder">
                 <img src="{{ asset('res-admin/assets/images/brand/logo-toggle.png') }}" class="header-brand-img toggle-logo" alt="Worder">
                 <img src="{{ asset('res-admin/assets/images/brand/logo-dark.png') }}" class="header-brand-img light-logo1" alt="Worder">
@@ -33,6 +33,9 @@
                     <ul class="slide-menu">
                         <li><a href="{{ route('admin.admin.index') }}" class="slide-item">{{ trans('panel.admin.index') }}</a></li>
                         <li><a href="{{ route('admin.admin.create') }}" class="slide-item">{{ trans('panel.create') }}</a></li>
+                        <li><a href="{{ route('admin.admin.group-goal') }}" class="slide-item">{{ trans('panel.goal-group.index') }}</a></li>
+                        <li><a href="{{ route('admin.goal.report') }}" class="slide-item">گزارش هدف های فردی</a></li>
+                        <li><a href="{{ route('admin.goal.report.group') }}" class="slide-item">گزارش هدف های گروهی</a></li>
                     </ul>
                 </li>
 
@@ -49,7 +52,7 @@
                     </ul>
                 </li>
 
-                <li class="slide">
+                {{--<li class="slide">
                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navUser">
                         <i class="side-menu__icon fal fa-user"></i>
                         <span class="side-menu__label">{{ trans('panel.user.index') }}</span><i class="angle fal fa-angle-left"></i>
@@ -58,9 +61,9 @@
                     <ul class="slide-menu">
                         <li><a href="" class="slide-item">{{ trans('panel.list') }}</a></li>
                     </ul>
-                </li>
+                </li>--}}
 
-                <li class="slide">
+                {{--<li class="slide">
                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navCategory">
                         <i class="side-menu__icon fal fa-list"></i>
                         <span class="side-menu__label">{{ trans('panel.category.index') }}</span><i class="angle fal fa-angle-left"></i>
@@ -70,7 +73,7 @@
                         <li><a href="" class="slide-item">{{ trans('panel.list') }}</a></li>
                         <li><a href="" class="slide-item">{{ trans('panel.create') }}</a></li>
                     </ul>
-                </li>
+                </li>--}}
 
 
 

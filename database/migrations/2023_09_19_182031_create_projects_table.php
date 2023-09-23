@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('admin_sale_goals', function (Blueprint $table) {
+        Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
             $table->unsignedBigInteger('admin_id');
-            $table->date('start_at');
-            $table->date('end_at');
-            $table->unsignedDecimal('profitability')->default(0);
-            $table->foreign('admin_id')
-                ->references('id')
-                ->on('admins');
+            $table->unsignedInteger('price');
+            $table->enum('status', ['pending', 'done', 'pay'])->default('done');
+            $table->foreign('admin_id')->references('id')->on('admins');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('admin_sale_goals');
+        Schema::dropIfExists('projects');
     }
 };

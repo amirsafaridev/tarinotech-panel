@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helper\Uploader;
+namespace App\Helpers\Uploader;
 
 interface IUploadBuilder
 {

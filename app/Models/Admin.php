@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Notifications\Admin\Auth\ResetPassword;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -69,6 +71,13 @@ class Admin extends Authenticatable
         return $this->mobile;
     }
 
+    public function fullName(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->first_name.' '.$this->last_name
+        );
+    }
+
     /**
      * Send the password reset notification.
      *
@@ -93,6 +102,16 @@ class Admin extends Authenticatable
     public function otpCodes(): MorphMany
     {
         return $this->morphMany(OtpCode::class, 'user');
+    }
+
+    public function goals(): MorphMany
+    {
+        return $this->morphMany(SaleGoal::class, 'type');
+    }
+
+    public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class, 'admin_id');
     }
 
     public function getActivitylogOptions(): LogOptions

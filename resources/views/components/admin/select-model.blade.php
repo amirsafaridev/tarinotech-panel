@@ -1,6 +1,8 @@
 <div class="form-group">
-    <label for="{{ $id ?? $identify }}" class="form-label">{{ $title }}</label>
-    <select class="form-control" name="{{ $identify }}" id="{{ $id ?? $identify }}" {{ $attributes }}>
+    @if(isset($title))
+        <label for="{{ $identify }}" class="form-label">{{ $title }}</label>
+    @endif
+    <select class="form-control" name="{{ $identify }}" id="{{ $identify }}">
         @if ($items->isNotEmpty())
             @foreach ($items as $item)
                 @if(isset($item['key']))

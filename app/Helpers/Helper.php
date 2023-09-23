@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Helper;
+namespace App\Helpers;
 
 use App\Enums\General\BtnType;
 use Carbon\Carbon;
+use Exception;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-use Verta;
 
 class Helper
 {
@@ -110,5 +111,90 @@ class Helper
         );
 
         return Carbon::createFromDate($gregorian[0], $gregorian[1], $gregorian[2])->format('Y-m-d');
+    }
+
+    public static function vertaRangeDateByMonth(int $nextMonth = 3): Collection
+    {
+        $dateItems = [];
+        $date = verta()->startMonth();
+        $fromAt = $date->copy();
+        for ($i = 1; $i <= $nextMonth; $i++) {
+            $dateInMonth = $date->daysInMonth;
+            $dateItems[] = [
+                'start' => $date->copy(),
+                'end' => $date->copy()->addDays($dateInMonth - 1),
+            ];
+            $date->addDays($dateInMonth);
+        }
+        $toAt = $date;
+
+        return collect([
+            'items' => $dateItems,
+            'from_at' => $fromAt,
+            'to_at' => $toAt,
+        ]);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public static function vertaInstanceToGregorian($instance, string $format = 'Y-m-d'): string
+    {
+        try {
+            return $instance->toCarbon()->format($format);
+        } catch (Exception $e) {
+            report($e);
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public static function vertaMonthGenerator(): Collection
+    {
+        try {
+            $verta = verta()->startYear();
+            $months = [];
+            for ($i = 1; $i <= 12; $i++) {
+
+                $months[] = [
+                    'start' => $verta->startMonth()->format('Y-m-d'),
+                    'end' => $verta->endMonth()->format('Y-m-d'),
+                    'month_name' => $verta->endMonth()->format('F'),
+                    'gregorian_start' => $verta->startMonth()->toCarbon()->format('Y-m-d'),
+                    'gregorian_end' => $verta->endMonth()->toCarbon()->format('Y-m-d'),
+                    'gregorian_month_name' => $verta->endMonth()->toCarbon()->format('F'),
+                ];
+                $verta = $verta->addMonth();
+            }
+
+            return collect($months);
+        } catch (Exception $e) {
+            report($e);
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public static function checkDateInGeneratedDatesByVerta(Collection $vertaRangeDateCollection, Collection $olds): Collection
+    {
+        return collect($vertaRangeDateCollection->get('items', []))->map(function ($item) use ($olds) {
+            $data = $item;
+
+            $adminGoal = $olds
+                ->where('start_at', Helper::vertaInstanceToGregorian($item['start']))
+                ->where('end_at', Helper::vertaInstanceToGregorian($item['end']))
+                ->first();
+
+            if ($adminGoal) {
+                $data['profitability'] = $adminGoal->profitability;
+                $data['profitability_dollar'] = $adminGoal->profitability_dollar;
+            } else {
+                $data['profitability'] = 0;
+                $data['profitability_dollar'] = 0;
+            }
+
+            return $data;
+        });
     }
 }

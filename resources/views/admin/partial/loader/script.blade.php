@@ -32,3 +32,7 @@
 @if (in_array(\App\Enums\Assets\ScriptLoader::CKEditor(),$load))
     <script type="text/javascript" src="{{asset('res-admin/assets/plugins/ckeditor/ckeditor.js')}}"></script>
 @endif
+
+@if (in_array(\App\Enums\Assets\ScriptLoader::Toast(),$load))
+    <script type="text/javascript" src="{{asset('res-admin/assets/plugins/toast/jquery.toast.min.js')}}"></script>
+@endif

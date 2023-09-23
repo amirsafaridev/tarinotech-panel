@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Helper\Helper;
+use App\Helpers\Helper;
 use Closure;
 use Illuminate\Http\Request;
 

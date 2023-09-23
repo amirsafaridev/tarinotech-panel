@@ -14,6 +14,7 @@ use BenSampo\Enum\Enum;
  * @method static ChartJs()
  * @method static Datepicker()
  * @method static InputMask()
+ * @method static Toast()
  */
 final class ScriptLoader extends Enum
 {
@@ -34,4 +35,6 @@ final class ScriptLoader extends Enum
     const Datepicker = 8;
 
     const InputMask = 9;
+
+    const Toast = 10;
 }

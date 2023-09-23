@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helper\Uploader;
+namespace App\Helpers\Uploader;
 
 use Exception;
 use Illuminate\Support\Str;

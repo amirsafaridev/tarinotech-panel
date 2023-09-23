@@ -2,10 +2,15 @@
 
 // Login
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminGoalController;
 use App\Http\Controllers\Admin\AdminPasswordController;
+use App\Http\Controllers\Admin\GroupGoalController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\Report\GoalController as GoalControllerReport;
+use App\Http\Controllers\Admin\Report\GoalGroupController as GoalGroupControllerReport;
 use App\Http\Controllers\Admin\RoleController;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +49,24 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::patch('/admin/{admin}/password', 'update')->name('admin.password.update');
     });
 
+    Route::controller(AdminGoalController::class)->group(function () {
+        Route::get('/admin/{admin}/goal', 'index')->name('admin.goal');
+        Route::post('/admin/{admin}/goal', 'save')->name('admin.goal.save');
+    });
+
+    Route::controller(GroupGoalController::class)->group(function () {
+        Route::get('/group-goal', 'index')->name('admin.group-goal');
+        Route::post('/group-goal', 'save')->name('admin.group-goal.save');
+    });
+
+    Route::controller(GoalControllerReport::class)->group(function () {
+        Route::get('/goal/report', 'index')->name('goal.report');
+    });
+
+    Route::controller(GoalGroupControllerReport::class)->group(function () {
+        Route::get('/goal/report/group', 'index')->name('goal.report.group');
+    });
+
     Route::controller(RoleController::class)->group(function () {
         Route::get('/role', 'index')->name('role.index');
         Route::get('/role/data', 'data')->name('role.data');
@@ -52,6 +75,16 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::get('/role/edit/{role}', 'edit')->name('role.edit');
         Route::patch('/role/update/{role}', 'update')->name('role.update');
         Route::delete('/role/destroy/{role}', 'destroy')->name('role.destroy');
+    });
+
+    Route::controller(ProjectController::class)->group(function () {
+        Route::get('/project', 'index')->name('project.index');
+        Route::get('/project/data', 'data')->name('project.data');
+        Route::get('/project/create', 'create')->name('project.create');
+        Route::post('/project/store', 'store')->name('project.store');
+        Route::get('/project/edit/{project}', 'edit')->name('project.edit');
+        Route::patch('/project/update/{project}', 'update')->name('project.update');
+        Route::delete('/project/destroy/{project}', 'destroy')->name('project.destroy');
     });
 
     Route::controller(ProfileController::class)->group(function () {

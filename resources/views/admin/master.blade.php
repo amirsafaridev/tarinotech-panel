@@ -62,7 +62,7 @@
                     <a aria-label="Hide Sidebar" class="app-sidebar__toggle" data-bs-toggle="sidebar" href="javascript:void(0)">
                         <i class="fal fa-navicon"></i>
                     </a>
-                    <a class="logo-horizontal " href="{{ route('admin.dashboard') }}">
+                    <a class="logo-horizontal d-none" href="{{ route('admin.dashboard') }}">
                         <img src="{{ asset('res-admin/assets/images/brand/logo.png') }}" class="header-brand-img desktop-logo" alt="logo">
                         <img src="{{ asset('res-admin/assets/images/brand/logo-dark.png') }}" class="header-brand-img light-logo1" alt="logo">
                     </a>
@@ -167,7 +167,7 @@
     $(document).ready(function () {
         @if(!Route::is(['admin.word.index','admin.word.create','admin.word.edit']))
         setTimeout(function (){
-            let currentLink = $('div.main-sidemenu a[href*="{{ \App\Helper\Helper::getRouteSmall() }}"]');
+            let currentLink = $('div.main-sidemenu a[href*="{{ \App\Helpers\Helper::getRouteSmall() }}"]');
             $('a[href="{{ url()->current() }}"]').addClass('active');
             let rootLi = currentLink.parents('li.slide');
             if (!rootLi.hasClass('is-expanded')){

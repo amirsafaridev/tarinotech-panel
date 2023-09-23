@@ -176,6 +176,8 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         \App\Providers\RepositoryServiceProvider::class,
         \App\Providers\MacroServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+
     ])->toArray(),
 
     /*
@@ -193,6 +195,8 @@ return [
         // 'Example' => App\Facades\Example::class,
         'Captcha' => Mews\Captcha\Facades\Captcha::class,
         'ResponseService' => ResponseServiceFacadeAlias::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
     ])->toArray(),
 
 ];

@@ -64,6 +64,7 @@ return [
     'in' => ':attribute انتخاب شده، معتبر نیست.',
     'in_array' => 'فیلد :attribute در لیست :other وجود ندارد.',
     'integer' => ':attribute باید عدد صحیح باشد.',
+    'decimal' => ':attribute باید عدد صحیح یا اعشاری باشد.',
     'ip' => ':attribute باید آدرس IP معتبر باشد.',
     'ipv4' => ':attribute باید یک آدرس معتبر از نوع IPv4 باشد.',
     'ipv6' => ':attribute باید یک آدرس معتبر از نوع IPv6 باشد.',
@@ -191,5 +192,8 @@ return [
         'resume' => 'رزومه',
         'end_last_contract' => 'تاریج پایان آخرین قرارداد',
         'description' => 'توضیحات',
+        'profitability' => 'مبلغ ریالی',
+        'profitability_dollar' => 'مبلغ دلاری',
+
     ],
 ];

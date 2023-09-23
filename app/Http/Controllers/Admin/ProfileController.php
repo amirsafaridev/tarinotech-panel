@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Helper\Uploader\Uploader;
+use App\Helpers\Uploader\Uploader;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Profile\PasswordUpdateRequest;
 use App\Http\Requests\Admin\Profile\UpdateRequest;
