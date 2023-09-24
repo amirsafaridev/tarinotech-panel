@@ -3,6 +3,7 @@
 @section('head')
     @include('admin.partial.loader.style',['load'=>[
        \App\Enums\Assets\StyleLoader::Datepicker(),
+       \App\Enums\Assets\StyleLoader::Select2(),
    ]])
 @endsection
 @section('content')
@@ -27,8 +28,8 @@
 
                             <div class="col-12 col-md-3">
                                 <div>
-                                    <label for="user-type" class="form-label">نوع کاربر</label>
-                                    <select  class="form-control" name="user-type" id="user-type">
+                                    <label for="user_type" class="form-label">نوع کاربر</label>
+                                    <select  class="form-control" name="user_type" id="user_type">
                                         <option value="admin">پرسنل</option>
                                         <option value="user">کاربر</option>
                                     </select>
@@ -37,8 +38,8 @@
 
                             <div class="col-12 col-md-3">
                                 <div>
-                                    <label for="user-id" class="form-label">انتخاب کاربر</label>
-                                    <select  class="form-control" name="user-id" id="user-id">
+                                    <label for="user_id" class="form-label">انتخاب کاربر</label>
+                                    <select  class="form-control" name="user_id" id="user_id">
                                         <option value="">همه کاربران</option>
                                     </select>
                                 </div>
@@ -48,8 +49,8 @@
                                 <div>
                                     <label for="sort" class="form-label">مرتب سازی</label>
                                     <select  class="form-control" name="sort" id="sort">
-                                        <option value="date|desc">تاریخ - صعودی</option>
-                                        <option value="date|asc">تاریخ - نزولی</option>
+                                        <option value="date-desc">تاریخ - صعودی</option>
+                                        <option value="date-asc">تاریخ - نزولی</option>
                                     </select>
                                 </div>
                             </div>
@@ -86,7 +87,7 @@
                             <thead>
                             <tr>
                                 <th>نوع کاربر</th>
-                                <th>شناسه ورود</th>
+                                <th>نام و نام حانوادگی</th>
                                 <th>تاریخ ورود</th>
                                 <th>IP</th>
                                 <th>عملیات</th>
@@ -95,8 +96,10 @@
                             <tbody>
                                 @foreach($logins as $login)
                                     <tr>
-                                        <td>{{ $login->user_type }}</td>
-                                        <td>{{ $login->user_id }}</td>
+                                        <td>
+                                            @include('admin.partial.detect_user_type',['type'=>$login->user_type ])
+                                        </td>
+                                        <td>{{ $login->user->first_name }} {{ $login->user->last_name }}</td>
                                         <td>{{ $login->login_at->toJalali()->format('d F Y - H:i') }}</td>
                                         <td>{{ $login->ip }}</td>
                                         <td>
@@ -106,6 +109,11 @@
                                 @endforeach
                             </tbody>
                         </table>
+
+                        <div class="mt-3">
+                            {{ $logins->appends(request()->query())->links() }}
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -115,18 +123,74 @@
 @section('script')
     @include('admin.partial.loader.script',['load'=>[
        \App\Enums\Assets\ScriptLoader::Datepicker(),
+       \App\Enums\Assets\ScriptLoader::Select2(),
    ]])
     <script>
+
+        // Define route
+        const adminSelect2Url = '{{ route('admin.admin.ajax.select2.admin') }}';
+        const userSelect2Url = '{{ route('admin.admin.ajax.select2.user') }}';
+        let select2Remote = adminSelect2Url; // Default to admin URL
+
         $(document).ready(function (){
+            makePersianDatePicker();
+            makeSelect2Init();
+
+            $('#user_type').change(function () {
+                select2Remote = ($(this).val() === 'admin') ? adminSelect2Url : userSelect2Url;
+            });
+
+        })
+
+        function makeSelect2Init() {
+            $('#user_id').select2({
+                ajax: {
+                    url: select2Remote,
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            term: params.term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data
+                        };
+                    },
+                    cache: true
+                },
+                dir: 'rtl',
+                language: 'fa',
+                minimumInputLength: 3,
+                templateResult: formatResult,
+                templateSelection: formatSelection
+            });
+        }
+
+        function formatResult(result) {
+            if (!result.id) {
+                return result.text;
+            }
+            return result.first_name + ' ' + result.last_name + ' (' + result.email + ')';
+        }
+
+        function formatSelection(result) {
+            if (!result.id) {
+                return result.text;
+            }
+            return result.first_name + ' ' + result.last_name + ' (' + result.email + ')';
+        }
+
+        function makePersianDatePicker() {
             const dataPickerConfig = {
                 format: 'YYYY-MM-DD',
                 initialValueType: 'persian',
                 initialValue: false,
                 autoClose: true
             };
-
             $('#start_at').persianDatepicker(dataPickerConfig);
             $('#end_at').persianDatepicker(dataPickerConfig);
-        })
+        }
     </script>
 @endsection

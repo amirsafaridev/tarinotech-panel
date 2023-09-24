@@ -15,7 +15,7 @@
 @endif
 
 @if (in_array(\App\Enums\Assets\StyleLoader::Select2(),$load))
-    <link rel="stylesheet" href="{{ asset('res-admin/assets/scss/plugins/_select2.min.scss') }}">
+    <link rel="stylesheet" href="{{ asset('res-admin/assets/plugins/select2/css/select2.min.css') }}">
 @endif
 
 @if (in_array(\App\Enums\Assets\StyleLoader::Quill(),$load))

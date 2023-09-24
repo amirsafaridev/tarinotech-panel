@@ -4,6 +4,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminGoalController;
 use App\Http\Controllers\Admin\AdminPasswordController;
+use App\Http\Controllers\Admin\Ajax\Select2Controller;
 use App\Http\Controllers\Admin\GroupGoalController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\PermissionController;
@@ -48,6 +49,11 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
     Route::controller(AdminPasswordController::class)->group(function () {
         Route::get('/admin/{admin}/password', 'index')->name('admin.password');
         Route::patch('/admin/{admin}/password', 'update')->name('admin.password.update');
+    });
+
+    Route::controller(Select2Controller::class)->group(function () {
+        Route::get('/admin/ajax/select2/admin', 'selectAdmin')->name('admin.ajax.select2.admin');
+        Route::get('/admin/ajax/select2/user', 'selectUser')->name('admin.ajax.select2.user');
     });
 
     Route::controller(AdminGoalController::class)->group(function () {

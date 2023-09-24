@@ -12,7 +12,7 @@
 
     @include('favicon')
 
-    <title>@yield('title','Worder')</title>
+    <title>@yield('title','تارینوتک - پرتال')</title>
 
     @if(app()->isLocal())
         <link id="style" href="{{ asset('res-admin/assets/plugins/bootstrap/css/bootstrap.rtl.min.css') }}" rel="stylesheet" />
@@ -39,6 +39,7 @@
         <link href="{{ asset('res-admin/assets/css/style.css') }}" rel="stylesheet" />
     @endif
 
+    <link href="{{ asset('res-admin/assets/css/custom.css') }}" rel="stylesheet" />
 
     @yield('head')
 

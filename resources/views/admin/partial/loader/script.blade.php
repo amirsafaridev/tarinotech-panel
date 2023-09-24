@@ -13,7 +13,8 @@
 
 
 @if (in_array(\App\Enums\Assets\ScriptLoader::Select2(),$load))
-    <script src="{{ asset('res-admin/assets/plugins/select2/select2.full.min.js') }}"></script>
+    <script src="{{ asset('res-admin/assets/plugins/select2/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('res-admin/assets/plugins/select2/js/i18n/fa.js') }}"></script>
 @endif
 
 @if (in_array(\App\Enums\Assets\ScriptLoader::ChartJs(),$load))

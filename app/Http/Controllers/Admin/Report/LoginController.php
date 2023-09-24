@@ -13,7 +13,7 @@ class LoginController extends Controller
         $title = 'گزارش ورود';
 
         $logins = Login::query()
-            ->get();
+            ->paginate();
 
         return view('admin.report.login.index', compact('title', 'logins'));
     }

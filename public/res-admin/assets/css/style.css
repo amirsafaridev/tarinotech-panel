@@ -70027,5 +70027,7 @@ textarea.form-control {
         width: 50% !important;
     }
 }
-
+.select2-container--default .select2-search--dropdown .select2-search__field{
+    color:white;
+}
 /*# sourceMappingURL=style.css.map */

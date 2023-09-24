@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App;
 use App\Channel\SmsChannel;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
@@ -31,5 +32,7 @@ class AppServiceProvider extends ServiceProvider
         if (App::isProduction()) {
             URL::forceScheme('https');
         }
+
+        Paginator::useBootstrapFour();
     }
 }
