@@ -14,8 +14,8 @@
 
     <title>@yield('title','Worder')</title>
 
-    @if(!app()->isLocal())
-        <link id="style" href="{{ asset('res-admin/assets/plugins/bootstrap/css/bootstrap.rtl.purged.css') }}" rel="stylesheet" />
+    @if(app()->isLocal())
+        <link id="style" href="{{ asset('res-admin/assets/plugins/bootstrap/css/bootstrap.rtl.min.css') }}" rel="stylesheet" />
     @else
         <link id="style" href="{{ asset('res-admin/assets/plugins/bootstrap/css/bootstrap.rtl.min.css') }}" rel="stylesheet" />
     @endif
@@ -25,7 +25,7 @@
     @if(app()->isLocal())
         <link href="{{ asset('res-admin/assets/font-awesome/css/fontawesome.min.css') }}" rel="stylesheet" />
     @else
-        <link href="{{ asset('res-admin/assets/font-awesome/css/fontawesome.purged.css') }}" rel="stylesheet" />
+        <link href="{{ asset('res-admin/assets/font-awesome/css/fontawesome.min.css') }}" rel="stylesheet" />
     @endif
 
     <link href="{{ asset('res-admin/assets/font-awesome/css/light.css') }}" rel="stylesheet" />
@@ -36,7 +36,7 @@
     @if(app()->isLocal())
         <link href="{{ asset('res-admin/assets/css/style.css') }}" rel="stylesheet" />
     @else
-        <link href="{{ asset('res-admin/assets/css/style.purged.css') }}" rel="stylesheet" />
+        <link href="{{ asset('res-admin/assets/css/style.css') }}" rel="stylesheet" />
     @endif
 
 
