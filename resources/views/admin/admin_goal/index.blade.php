@@ -24,10 +24,7 @@
             <div class="card">
                 <div class="card-body pb-2">
                     <div class="card-title">
-                        <div class="d-flex justify-content-between">
-                            <h4>{{ $admin->first_name }} {{ $admin->last_name }}</h4>
-                            <a class="btn btn-sm btn-success" href="#">خروجی اکسل</a>
-                        </div>
+                        <h4>{{ $admin->first_name }} {{ $admin->last_name }}</h4>
                     </div>
                     @include('admin.partial.message')
                     <div class="table-responsive">

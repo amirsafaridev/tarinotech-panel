@@ -34,8 +34,8 @@
                         <li><a href="{{ route('admin.admin.index') }}" class="slide-item">{{ trans('panel.admin.index') }}</a></li>
                         <li><a href="{{ route('admin.admin.create') }}" class="slide-item">{{ trans('panel.create') }}</a></li>
                         <li><a href="{{ route('admin.admin.group-goal') }}" class="slide-item">{{ trans('panel.goal-group.index') }}</a></li>
-                        <li><a href="{{ route('admin.goal.report') }}" class="slide-item">گزارش هدف های فردی</a></li>
-                        <li><a href="{{ route('admin.goal.report.group') }}" class="slide-item">گزارش هدف های گروهی</a></li>
+                        <li><a href="{{ route('admin.report.goal') }}" class="slide-item">گزارش هدف های فردی</a></li>
+                        <li><a href="{{ route('admin.report.goal-group') }}" class="slide-item">گزارش هدف های گروهی</a></li>
                     </ul>
                 </li>
 

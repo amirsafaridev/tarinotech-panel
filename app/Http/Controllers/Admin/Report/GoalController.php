@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Report;
 
+use App\Exports\Admin\Report\Goal\GoalPerson;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Project;
 use App\Models\SaleGoal;
 use Exception;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Facades\Excel;
 
 class GoalController extends Controller
 {
@@ -15,18 +17,22 @@ class GoalController extends Controller
     {
 
         try {
-            $title = trans('panel.goal-group.index');
+            $title = 'گزارش اهداف فردی';
             $admins = Admin::query()->orderBy('first_name')->get();
 
             $adminId = request('admin_id');
             $startDate = request('start_at');
             $endDate = request('end_at');
+            $action = request('action');
 
             $goals = [];
 
             if (is_numeric($adminId) && isValidDateFormat($startDate) && isValidDateFormat($endDate)) {
                 $projects = $this->getPaidProjectsByAdminAndDateRange($adminId, $startDate, $endDate);
                 $goals = $this->getAdminGoalsWithTotalSales($adminId, $startDate, $endDate, $projects);
+                if ($action === 'excel' && $goals->isNotEmpty()) {
+                    return $this->exportToExcel($goals, sprintf('personal_goals_%s_%s.xlsx', $startDate, $endDate));
+                }
             }
 
             return view('admin.report.goal.index', compact('title', 'admins', 'goals'));
@@ -35,6 +41,11 @@ class GoalController extends Controller
 
             return abort(500);
         }
+    }
+
+    private function exportToExcel(Collection $goals, string $excelFileName)
+    {
+        return Excel::download(new GoalPerson($goals), $excelFileName);
     }
 
     /**

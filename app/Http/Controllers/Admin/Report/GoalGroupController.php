@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin\Report;
 
+use App\Exports\Admin\Report\Goal\GoalGroup;
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
 use App\Models\Project;
 use App\Models\SaleGoal;
 use Exception;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Facades\Excel;
 
 class GoalGroupController extends Controller
 {
@@ -20,12 +20,17 @@ class GoalGroupController extends Controller
 
             $startDate = request('start_at', '');
             $endDate = request('end_at', '');
+            $action = request('action');
 
             $goals = [];
 
             if (isValidDateFormat($startDate) && isValidDateFormat($endDate)) {
                 $projects = $this->getPaidProjectsRange($startDate, $endDate);
                 $goals = $this->getGroupGoalsWithTotalSales($startDate, $endDate, $projects);
+
+                if ($action === 'excel' && $goals->isNotEmpty()) {
+                    return $this->exportToExcel($goals, sprintf('group_goals_%s_%s.xlsx', $startDate, $endDate));
+                }
             }
 
             return view('admin.report.goal-group.index', compact('title', 'goals'));
@@ -36,9 +41,9 @@ class GoalGroupController extends Controller
         }
     }
 
-    public function exportExcel()
+    private function exportToExcel(Collection $goals, string $excelFileName)
     {
-        return Excel::download(new InvoicesExport, 'invoices.xlsx');
+        return Excel::download(new GoalGroup($goals), $excelFileName);
     }
 
     /**

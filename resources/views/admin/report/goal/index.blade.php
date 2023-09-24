@@ -6,11 +6,11 @@
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">{{ trans('panel.report-goal.title') }}</h1>
+        <h1 class="page-title">گزارش اهداف فردی</h1>
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item active">{{ trans('panel.report-goal.index') }}</li>
+                <li class="breadcrumb-item active">گزارش اهداف فردی</li>
             </ol>
         </div>
     </div>
@@ -20,7 +20,7 @@
             <div class="card">
                 <div class="card-body">
                     @include('admin.partial.message')
-                    <form method="get" action="{{ route('admin.goal.report') }}">
+                    <form method="get" action="{{ route('admin.report.goal') }}">
                         <div class="row mb-3">
 
                             <div class="col-12 col-md-3">
@@ -39,7 +39,8 @@
 
                         <div class="row">
                             <div class="col-12 col-md-3">
-                                <x-admin.button-submit type="text" identify="s" title="اعمال فیلتر"/>
+                                <button class="btn btn-md btn-success" name="action" value="filter">اعمال فیلتر</button>
+                                <button class="btn btn-md btn-primary" name="action" value="excel">خروجی اکسل</button>
                             </div>
                         </div>
                     </form>
@@ -49,9 +50,8 @@
 
         <div class="col-12">
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header">
                     <h3 class="card-title">نتایج جستجو</h3>
-                    <button type="button" class="btn btn-success btn-sm">خروجی اکسل</button>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">

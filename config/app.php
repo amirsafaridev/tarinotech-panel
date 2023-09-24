@@ -177,6 +177,7 @@ return [
         \App\Providers\RepositoryServiceProvider::class,
         \App\Providers\MacroServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        \App\Providers\ExcelServiceProvider::class,
 
     ])->toArray(),
 

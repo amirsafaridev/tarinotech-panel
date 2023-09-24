@@ -22,13 +22,7 @@
             <div class="card">
                 <div class="card-body pb-2">
                     <div class="card-title">
-                        <div class="d-flex justify-content-between">
-                            <h4>{{ trans('panel.goal-group.title') }}</h4>
-                            <a class="btn btn-sm btn-success d-flex gap-2 justify-content-center" href="#">
-                                <span>خروجی اکسل</span>
-                                <span class="fal fa-file-excel"></span>
-                            </a>
-                        </div>
+                        <h4>{{ trans('panel.goal-group.title') }}</h4>
                     </div>
                     @include('admin.partial.message')
                     <div class="table-responsive">

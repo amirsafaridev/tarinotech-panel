@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\Report\GoalController as GoalControllerReport;
 use App\Http\Controllers\Admin\Report\GoalGroupController as GoalGroupControllerReport;
+use App\Http\Controllers\Admin\Report\LoginController;
 use App\Http\Controllers\Admin\RoleController;
 use Illuminate\Support\Facades\Route;
 
@@ -60,11 +61,17 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
     });
 
     Route::controller(GoalControllerReport::class)->group(function () {
-        Route::get('/goal/report', 'index')->name('goal.report');
+        Route::get('/report/goal', 'index')->name('report.goal');
     });
 
     Route::controller(GoalGroupControllerReport::class)->group(function () {
-        Route::get('/goal/report/group', 'index')->name('goal.report.group');
+        Route::get('/report/goal-group', 'index')->name('report.goal-group');
+    });
+
+    Route::controller(LoginController::class)->group(function () {
+        Route::get('/report/login', 'index')->name('report.login');
+        Route::get('/report/{login}/login', 'show')->name('report.login-show')
+            ->whereUlid('login');
     });
 
     Route::controller(RoleController::class)->group(function () {
