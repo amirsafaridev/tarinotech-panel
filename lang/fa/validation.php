@@ -195,5 +195,26 @@ return [
         'profitability' => 'مبلغ ریالی',
         'profitability_dollar' => 'مبلغ دلاری',
 
+        'company_name' => 'نام شرکت',
+        'company_identify' => 'شناسه ملی شرکت',
+        'company_register_id' => 'شماره ثبت شرکت',
+        'company_type' => 'نوع شرکت',
+
+        'irnic_identify' => 'شناسه ایرنیک',
+        'irnic_password' => 'رمزعبور ایرنیک',
+
+        'tel' => 'تلفن (ثابت)',
+
+        'en_first_name' => 'نام لاتین',
+        'en_last_name' => 'نام خانوادگی لاتین',
+        'father_name' => 'نام پدر',
+        'national_id' => 'کد ملی',
+        'document_id' => 'شماره شناسنامه',
+
+        'person_type' => 'نوع شخص',
+
+        'address' => 'ادرس',
+        'postal_code' => 'کد پستی',
+        'irnic_status' => 'شناسه ایرنیک',
     ],
 ];

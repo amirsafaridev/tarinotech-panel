@@ -1,17 +1,24 @@
 <?php
 
-use App\Enums\Database\Exam\ExamType;
-use App\Enums\Database\WordReport\EWordReportReason;
+use App\Enums\Database\Company\CompanyType;
+use App\Enums\Database\User\IrnicStatus;
+use App\Enums\Database\User\PersonType;
 
 return [
-    ExamType::class => [
-        ExamType::Normal => 'عادی',
-        ExamType::Timer => 'تایمر',
+    IrnicStatus::class => [
+        IrnicStatus::HasIt => 'دارد',
+        IrnicStatus::DoesntHaveMade => 'ندارد - ساخته شود',
+        IrnicStatus::DoesNotNeed => 'نیاز ندارد',
     ],
-    EWordReportReason::class => [
-        EWordReportReason::WrongWord => 'لغت اشتباه است',
-        EWordReportReason::WrongTranslate => 'ترجمه صحیح نیست',
-        EWordReportReason::Useless => 'بدون استفاده',
-        EWordReportReason::WrongPronunciation => 'تلفظ صحیح نیست',
+    PersonType::class => [
+        PersonType::Legal => 'حقوقی',
+        PersonType::Person => 'حقیقی',
+    ],
+
+    CompanyType::class => [
+        CompanyType::Other => 'سایر',
+        CompanyType::LimitedResponsibility => 'مسئولیت محدود',
+        CompanyType::PrivateEquity => 'سهامی خاص',
+        CompanyType::PublicStock => 'سهامی عام',
     ],
 ];

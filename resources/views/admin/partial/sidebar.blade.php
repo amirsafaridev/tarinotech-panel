@@ -52,36 +52,19 @@
                     </ul>
                 </li>
 
-                {{--<li class="slide">
+
+                <li class="slide">
                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navUser">
                         <i class="side-menu__icon fal fa-user"></i>
-                        <span class="side-menu__label">{{ trans('panel.user.index') }}</span><i class="angle fal fa-angle-left"></i>
+                        <span class="side-menu__label">مشتری ها</span><i class="angle fal fa-angle-left"></i>
                     </a>
 
                     <ul class="slide-menu">
-                        <li><a href="" class="slide-item">{{ trans('panel.list') }}</a></li>
+                        <li><a href="{{ route('admin.user.index') }}" class="slide-item">لیست</a></li>
+                        <li><a href="{{ route('admin.user.create') }}" class="slide-item">ایجاد</a></li>
+                        <li><a href="{{ route('admin.presenter.index') }}" class="slide-item">نمایندگان</a></li>
                     </ul>
-                </li>--}}
-
-                {{--<li class="slide">
-                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navCategory">
-                        <i class="side-menu__icon fal fa-list"></i>
-                        <span class="side-menu__label">{{ trans('panel.category.index') }}</span><i class="angle fal fa-angle-left"></i>
-                    </a>
-
-                    <ul class="slide-menu">
-                        <li><a href="" class="slide-item">{{ trans('panel.list') }}</a></li>
-                        <li><a href="" class="slide-item">{{ trans('panel.create') }}</a></li>
-                    </ul>
-                </li>--}}
-
-
-
-
-
-
-
-
+                </li>
 
 
                 <li class="slide">

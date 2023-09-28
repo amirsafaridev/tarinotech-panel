@@ -8,12 +8,14 @@ use App\Http\Controllers\Admin\Ajax\Select2Controller;
 use App\Http\Controllers\Admin\GroupGoalController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\PresenterController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\Report\GoalController as GoalControllerReport;
 use App\Http\Controllers\Admin\Report\GoalGroupController as GoalGroupControllerReport;
 use App\Http\Controllers\Admin\Report\LoginController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
@@ -78,6 +80,27 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::get('/report/login', 'index')->name('report.login');
         Route::get('/report/{login}/login', 'show')->name('report.login-show')
             ->whereUlid('login');
+    });
+
+    Route::controller(UserController::class)->group(function () {
+        Route::get('/user', 'index')->name('user.index');
+        Route::get('/user/data', 'data')->name('user.data');
+        Route::get('/user/create', 'create')->name('user.create');
+        Route::post('/user/store', 'store')->name('user.store');
+        Route::get('/user/{user}/edit', 'edit')->name('user.edit');
+        Route::get('/user/{user}/show', 'edit')->name('user.show');
+        Route::patch('/user/{user}/update', 'update')->name('user.update');
+        Route::delete('/user/{user}/destroy', 'destroy')->name('user.destroy');
+    });
+
+    Route::controller(PresenterController::class)->group(function () {
+        Route::get('/presenter', 'index')->name('presenter.index');
+        Route::get('/presenter/data', 'data')->name('presenter.data');
+        Route::get('/presenter/create', 'create')->name('presenter.create');
+        Route::post('/presenter/store', 'store')->name('presenter.store');
+        Route::get('/presenter/{presenter}/edit', 'edit')->name('presenter.edit');
+        Route::patch('/presenter/{presenter}/update', 'update')->name('presenter.update');
+        Route::delete('/presenter/{presenter}/destroy', 'destroy')->name('presenter.destroy');
     });
 
     Route::controller(RoleController::class)->group(function () {

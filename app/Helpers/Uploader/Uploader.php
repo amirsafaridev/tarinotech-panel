@@ -9,7 +9,7 @@ use stdClass;
 
 class Uploader implements IUploadBuilder
 {
-    protected $config;
+    protected stdClass $config;
 
     public function __construct()
     {
@@ -70,10 +70,7 @@ class Uploader implements IUploadBuilder
         return $this;
     }
 
-    /**
-     * @return array|string
-     */
-    public function upload()
+    public function upload(): array|string
     {
         try {
             $result = [];
@@ -101,10 +98,11 @@ class Uploader implements IUploadBuilder
                 $this->config->path = 'uploads/';
             }
 
-            $uniqid = uniqid(md5(Str::random(20)));
+            $uniqueName = uniqid(md5(Str::random(20)));
 
             $file = request()->file($this->config->field);
-            $path = $this->config->path.$uniqid.'.'.$file->extension();
+            $extension = $file->extension();
+            $path = $this->config->path.$uniqueName.'.'.$extension;
             $image = Image::make($file);
 
             if (isset($this->config->fit)) {
@@ -114,18 +112,19 @@ class Uploader implements IUploadBuilder
             if (isset($this->config->resize)) {
                 $image->resize($this->config->resize_width, $this->config->resize_height);
             }
-            $image->save($path, 100);
+            $image->save($path);
             $result['photo'] = $path;
 
             if (isset($this->config->thumb)) {
-                $path = $this->config->path.'thumb/'.$uniqid.'.'.$file->extension();
+                $path = $this->config->path.'thumb/'.$uniqueName.'.'.$extension;
                 $image = Image::make($file);
                 $image->fit($this->config->thumb_width, $this->config->thumb_height);
                 $image->save($path);
                 $result['photo_thumb'] = $path;
             }
 
-            $result['file_extension'] = $file->extension();
+            $result['file_name_hash'] = $uniqueName.'.'.$extension;
+            $result['file_extension'] = $extension;
             $result['file_size'] = $file->getSize();
             $result['file_name'] = $file->getClientOriginalName();
             $result['file_type'] = $file->getType();

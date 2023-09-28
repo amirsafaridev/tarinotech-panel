@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -19,12 +20,24 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'firstname',
-        'lastname',
-        'avatar',
+        'first_name',
+        'last_name',
+        'en_first_name',
+        'en_last_name',
+        'father_name',
+        'national_id',
+        'document_id',
+        'tel',
         'email',
-        'email_verified_at',
-        'password',
+        'avatar',
+        'national_photo',
+        'dob',
+        'person_type',
+        'official_bill',
+        'mobile',
+        'verify_at',
+        'is_block',
+        'user_type',
         'remember_token',
     ];
 
@@ -48,35 +61,18 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function words()
+    public function address(): HasOne
     {
-        return $this->belongsToMany(Word::class, 'user_word', 'user_id')
-            ->withPivot(['is_knew', 'correct_answer', 'wrong_answer', 'repeat']);
+        return $this->hasOne(Address::class);
     }
 
-    public function sentence()
+    public function irnic(): HasOne
     {
-        return $this->belongsToMany(Sentence::class, 'user_sentence', 'user_id');
+        return $this->hasOne(Irnic::class);
     }
 
-    public function block()
+    public function company(): HasOne
     {
-        return $this->hasOne(UserBlock::class);
-    }
-
-    public function avatar()
-    {
-        return $this->belongsTo(Avatar::class);
-    }
-
-    public function logins()
-    {
-        return $this->morphMany(Login::class, 'user')
-            ->latest();
-    }
-
-    public function exams()
-    {
-        return $this->hasMany(Exam::class);
+        return $this->hasOne(Company::class);
     }
 }

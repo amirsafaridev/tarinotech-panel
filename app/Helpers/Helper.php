@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Verta;
 
 class Helper
 {

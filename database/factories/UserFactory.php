@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\Database\User\PersonType;
+use App\Enums\Database\User\UserType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -18,11 +20,26 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'firstname' => fake()->firstName,
-            'lastname' => fake()->lastName,
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => bcrypt('12345678'),
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+
+            'en_first_name' => $this->faker->randomElement(['Alice', 'Bob', 'Charlie', 'David', 'Ella', 'Frank', 'Grace', 'Hannah', 'Isaac', 'Jack', 'Katherine', 'Liam', 'Mia', 'Nathan', 'Olivia', 'Peter', 'Quinn', 'Rachel', 'Samuel', 'Taylor', 'Uma', 'Victor', 'Wendy', 'Xander', 'Yasmine', 'Zachary']),
+            'en_last_name' => $this->faker->randomElement(['Smith', 'Johnson', 'Brown', 'Taylor', 'Anderson', 'Martinez', 'Wilson', 'Clark', 'Lee', 'Walker']),
+
+            'father_name' => $this->faker->firstName.' '.$this->faker->lastName,
+            'national_id' => $this->faker->numerify('########'),
+            'document_id' => $this->faker->numerify('########'),
+
+            'tel' => $this->faker->numerify('021#####'),
+            'email' => $this->faker->email,
+
+            'dob' => $this->faker->date,
+            'person_type' => PersonType::getRandomValue(),
+            'official_bill' => $this->faker->boolean,
+            'mobile' => $this->faker->unique()->numerify('935#######'),
+            'verify_at' => $this->faker->randomElement([null, $this->faker->date]),
+            'is_block' => $this->faker->boolean,
+            'user_type' => UserType::getRandomValue(),
             'remember_token' => Str::random(10),
         ];
     }

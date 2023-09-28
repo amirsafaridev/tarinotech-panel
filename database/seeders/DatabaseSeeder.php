@@ -16,6 +16,10 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             LoginSeeder::class,
             ProjectSeeder::class,
+            UserSeeder::class,
+            AddressSeeder::class,
+            CompanySeeder::class,
+            IrnicSeeder::class,
         ]);
 
         resolve(PermissionService::class)->sync();

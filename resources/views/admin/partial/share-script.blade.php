@@ -56,6 +56,20 @@
             $(this).val(inputValue);
         });
     }
+
+    function makeInputOnlyAlpha(inputSelect) {
+        inputSelect.on("input", function () {
+            // Get the current input value
+            let inputValue = $(this).val();
+
+            // Use a regular expression to remove any characters that are not alphabetic or spaces
+            let sanitizedValue = inputValue.replace(/[^a-zA-Z\s]/g, '');
+
+            // Update the input field with the sanitized value
+            $(this).val(sanitizedValue);
+        });
+    }
+
     // Helper function to add thousands separator (comma)
     function numberWithCommas(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
