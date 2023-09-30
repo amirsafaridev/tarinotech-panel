@@ -3,6 +3,7 @@
 use App\Enums\Database\Company\CompanyType;
 use App\Enums\Database\User\IrnicStatus;
 use App\Enums\Database\User\PersonType;
+use App\Enums\Database\User\UserType;
 
 return [
     IrnicStatus::class => [
@@ -20,5 +21,10 @@ return [
         CompanyType::LimitedResponsibility => 'مسئولیت محدود',
         CompanyType::PrivateEquity => 'سهامی خاص',
         CompanyType::PublicStock => 'سهامی عام',
+    ],
+
+    UserType::class => [
+        UserType::Presenter => 'نماینده',
+        UserType::Primary => 'مشتری',
     ],
 ];

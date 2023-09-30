@@ -110,7 +110,7 @@
                         <div id="irnic_container">
                             <div class="row">
                                 <div class="col-12 col-md-6">
-                                    <x-admin.input identify="irnic_identify" title=" شناسه ایرنیک" />
+                                    <x-admin.input identify="irnic_identify" title="شناسه ایرنیک" />
                                 </div>
                                 <div class="col-12 col-md-6">
                                     <x-admin.input identify="irnic_password" title="رمزعبور ایرنیک" />

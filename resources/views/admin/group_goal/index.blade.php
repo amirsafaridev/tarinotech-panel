@@ -20,7 +20,7 @@
     <div class="row">
         <div class="col-xl-12 col-lg-12">
             <div class="card">
-                <div class="card-body pb-2">
+                <div class="card-body">
                     <div class="card-title">
                         <h4>{{ trans('panel.goal-group.title') }}</h4>
                     </div>

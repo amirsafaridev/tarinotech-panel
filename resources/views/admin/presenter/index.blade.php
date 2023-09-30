@@ -22,7 +22,7 @@
                     <h3 class="card-title">نمایندگان</h3>
                     <a class="btn btn-success btn-sm" href="{{ route('admin.presenter.create') }}">ایجاد نماینده</a>
                 </div>
-                <div class="card-body pb-2">
+                <div class="card-body">
                     @include('admin.partial.message')
                     <div class="table-responsive">
                         <table id="data-table" class="table">

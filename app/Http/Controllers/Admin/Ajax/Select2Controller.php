@@ -38,7 +38,7 @@ class Select2Controller extends Controller
     {
         $searchTerm = $request->input('term');
         $results = Project::query()
-            //->where('title', 'like', '%'.$searchTerm.'%')
+            ->where('title', 'like', '%'.$searchTerm.'%')
             ->get();
 
         return response()->json($results);

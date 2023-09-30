@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col-xl-12 col-lg-12">
             <div class="card">
-                <div class="card-body pb-2">
+                <div class="card-body">
                     @include('admin.partial.message')
                     <div class="table-responsive">
                         <table id="data-table" class="table">

@@ -122,6 +122,15 @@ class PresenterController extends Controller
         }
     }
 
+    public function show(User $user)
+    {
+        $user->load(['accessProjects', 'latestLogin']);
+
+        $title = 'نمایش نماینده';
+
+        return view('admin.presenter.show', compact('title', 'user'));
+    }
+
     public function destroy(Project $role)
     {
         try {

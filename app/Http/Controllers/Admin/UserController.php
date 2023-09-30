@@ -144,7 +144,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        $user->load(['address', 'company', 'irnic', 'projects']);
+        $user->load(['address', 'company', 'irnic', 'projects', 'latestLogin']);
         $title = 'نمایش مشتری';
 
         return view('admin.user.show', compact('title', 'user'));

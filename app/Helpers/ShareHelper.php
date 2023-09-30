@@ -33,3 +33,17 @@ if (! function_exists('arabicToPersianNumeric')) {
         return str_replace($arabicNumerals, $persianNumerals, $input);
     }
 }
+
+if (! function_exists('formatJalaliDate')) {
+    function formatJalaliDate(): string
+    {
+        return 'd/F/Y';
+    }
+}
+
+if (! function_exists('formatJalaliDateTime')) {
+    function formatJalaliDateTime(): string
+    {
+        return 'd/F/Y H:i';
+    }
+}
