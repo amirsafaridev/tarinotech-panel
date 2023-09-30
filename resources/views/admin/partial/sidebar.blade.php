@@ -79,6 +79,24 @@
                         <li><a href="{{ route('admin.profile.logout') }}" class="slide-item">{{ trans('panel.profile.sign-out') }}</a></li>
                     </ul>
                 </li>
+
+                <li class="slide">
+                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navProfile">
+                        <i class="side-menu__icon fal fa-cog"></i>
+                        <span class="side-menu__label">تنظیمات</span><i class="angle fal fa-angle-left"></i>
+                    </a>
+
+                    <ul class="slide-menu">
+                        <li><a href="{{ route('admin.setting.index') }}" class="slide-item">تنظیمات پایه</a></li>
+                        <li><a href="{{ route('admin.project-type.index') }}" class="slide-item">انواع پروژه ها</a></li>
+                        <li><a href="{{ route('admin.project-status.index') }}" class="slide-item">وضعیت پروژه ها</a></li>
+                        <li><a href="" class="slide-item">پکیج ها</a></li>
+                        <li><a href="" class="slide-item">انواع واریزی</a></li>
+                        <li><a href="" class="slide-item">تقویم تعطیلات</a></li>
+                        <li><a href="" class="slide-item">پیام های آماده</a></li>
+                        <li><a href="" class="slide-item">پیام های خودکار</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>

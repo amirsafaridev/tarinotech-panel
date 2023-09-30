@@ -11,10 +11,13 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PresenterController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\ProjectStatusController;
+use App\Http\Controllers\Admin\ProjectTypeController;
 use App\Http\Controllers\Admin\Report\GoalController as GoalControllerReport;
 use App\Http\Controllers\Admin\Report\GoalGroupController as GoalGroupControllerReport;
 use App\Http\Controllers\Admin\Report\LoginController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -123,6 +126,28 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::get('/project/edit/{project}', 'edit')->name('project.edit');
         Route::patch('/project/update/{project}', 'update')->name('project.update');
         Route::delete('/project/destroy/{project}', 'destroy')->name('project.destroy');
+    });
+
+    Route::controller(SettingController::class)->group(function () {
+        Route::get('/setting', 'index')->name('setting.index');
+        Route::patch('/setting', 'update')->name('setting.update');
+    });
+
+    Route::controller(ProjectTypeController::class)->group(function () {
+        Route::get('/project-type', 'index')->name('project-type.index');
+        Route::get('/project-type/data', 'data')->name('project-type.data');
+        Route::get('/project-type/{projectType}/show', 'show')->name('project-type.show');
+
+    });
+
+    Route::controller(ProjectStatusController::class)->group(function () {
+        Route::get('/project-status', 'index')->name('project-status.index');
+        Route::get('/project-status/data', 'data')->name('project-status.data');
+        Route::get('/project-status/create', 'create')->name('project-status.create');
+        Route::post('/project-status/store', 'store')->name('project-status.store');
+        Route::get('/project-status/{projectStatus}/edit', 'edit')->name('project-status.edit');
+        Route::patch('/project-status/{projectStatus}/update', 'update')->name('project-status.update');
+        Route::delete('/project-status/{projectStatus}/destroy', 'destroy')->name('project-status.destroy');
     });
 
     Route::controller(ProfileController::class)->group(function () {

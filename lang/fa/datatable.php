@@ -3,6 +3,9 @@
 return [
     'id' => 'شناسه',
     'email' => 'پست الکترونیکی',
+    'projects_count' => 'تعداد پروژه',
+    'type.title' => 'نوع پروژه',
+    'title' => 'عنوان',
     'first_name' => 'نام',
     'last_name' => 'نام خانوادگی',
     'mobile' => 'شناسه',

@@ -43,6 +43,8 @@ class ProjectFactory extends Factory
             'title' => $this->faker->randomElement(['طراحی سایت', 'سئو']).' '.$this->faker->randomElement($companyNames),
             'admin_id' => rand(1, 10),
             'user_id' => rand(1, 50),
+            'project_type_id' => rand(1, 3),
+            'project_status_id' => rand(1, 6),
             'price' => $this->faker->randomElement([10000, 50000, 600000, 80000, 10000000, 200000000]),
             'status' => $this->faker->randomElement(['pending', 'done', 'pay']),
             'created_at' => now()->addMonths(rand(1, 5))->startOfMonth(),

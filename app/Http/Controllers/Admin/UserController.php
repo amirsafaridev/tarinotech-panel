@@ -34,7 +34,6 @@ class UserController extends Controller
 
     public function data()
     {
-
         try {
             $users = User::query();
 
