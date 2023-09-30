@@ -8,6 +8,7 @@ use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CheckPermission;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\GlobalRequestTransform;
+use App\Http\Middleware\IsPresenterUser;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\TrimStrings;
@@ -72,6 +73,16 @@ class Kernel extends HttpKernel
             ThrottleRequests::class.':api',
             SubstituteBindings::class,
         ],
+    ];
+
+    /**
+     * The application's route middleware.
+     * This middleware may be assigned to group or used individually.
+     *
+     * @var array
+     */
+    protected $routeMiddleware = [
+        'ensure.presenter' => IsPresenterUser::class,
     ];
 
     /**

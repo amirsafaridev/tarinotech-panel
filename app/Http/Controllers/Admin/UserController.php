@@ -27,7 +27,7 @@ class UserController extends Controller
     {
         $title = 'مشتری ها';
         $routeData = route('admin.user.data');
-        $selects = ['id', 'mobile', 'first_name', 'last_name', 'created_at'];
+        $selects = ['id', 'mobile', 'first_name', 'last_name', 'person_type', 'is_block', 'created_at'];
 
         return view('admin.user.index', compact('title', 'routeData', 'selects'));
     }
@@ -39,15 +39,19 @@ class UserController extends Controller
             $users = User::query();
 
             return DataTables::of($users)
-                ->editColumn('created_at', function ($role) {
-                    return $role->created_at->toJalali()->format('h:i Y-m-d');
+                ->editColumn('created_at', function (User $user) {
+                    return $user->created_at->toJalali()->format('h:i Y-m-d');
                 })
-                ->addColumn('action', function ($role) {
-                    $actions = Helper::btnMaker(BtnType::Warning, route('admin.user.edit', $role->id), trans('panel.action.edit'));
-                    $actions .= Helper::btnMaker(BtnType::Info, route('admin.user.show', $role->id), trans('panel.action.show'));
+                ->editColumn('person_type', function (User $user) {
+                    return Helper::renderPersonType($user->person_type);
+                })
+                ->addColumn('action', function (User $user) {
+                    $actions = Helper::btnMaker(BtnType::Warning, route('admin.user.edit', $user->id), trans('panel.action.edit'));
+                    $actions .= Helper::btnMaker(BtnType::Info, route('admin.user.show', $user->id), trans('panel.action.show'));
 
                     return $actions;
                 })
+                ->rawColumns(['action', 'person_type'])
                 ->make();
         } catch (Exception $e) {
             return $e->getMessage();
@@ -106,13 +110,21 @@ class UserController extends Controller
         return view('admin.user.edit', compact('title', 'user', 'routeUpdate', 'routeDestroy'));
     }
 
-    public function update(UpdateRequest $request, User $role)
+    public function update(UpdateRequest $req, User $user)
     {
         try {
             DB::beginTransaction();
-            $item = $this->itemProvider($request);
-            $role->update($item);
-            $role->syncPermissions($request->get('permissions'));
+
+            $item = $this->itemProvider($req);
+            $user->update($item);
+
+            if ($req->input('person_type') === PersonType::Legal) {
+                $this->updateCompany($req, $user->id);
+            }
+
+            $this->updateIrnic($req, $user->id);
+            $this->updateAddress($req, $user->id);
+
             DB::commit();
 
             return response()->json([
@@ -125,15 +137,26 @@ class UserController extends Controller
 
             return response()->json([
                 'result' => 'exception',
-                'message' => trans('panel.error_update'),
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
 
-    public function destroy(User $role)
+    public function show(User $user)
+    {
+        $user->load(['address', 'company', 'irnic', 'projects']);
+        $title = 'نمایش مشتری';
+
+        return view('admin.user.show', compact('title', 'user'));
+    }
+
+    public function destroy(User $user)
     {
         try {
-            $role->delete();
+            $user->update([
+                'mobile' => uniqid($user->mobile.'_'),
+            ]);
+            $user->delete();
 
             return redirect(route('admin.user.index'))->with('success', trans('panel.success_delete'));
         } catch (Exception $e) {
@@ -156,7 +179,10 @@ class UserController extends Controller
         $item['email'] = $req->input('email');
         $item['person_type'] = $req->input('person_type');
 
-        $item['mobile'] = $req->input('mobile');
+        /** Not required in edit mode */
+        if ($req->input('mobile')) {
+            $item['mobile'] = $req->input('mobile');
+        }
 
         $dob = $req->input('dob');
         $item['dob'] = empty($dob) ? null : Helper::toGregorian($dob);

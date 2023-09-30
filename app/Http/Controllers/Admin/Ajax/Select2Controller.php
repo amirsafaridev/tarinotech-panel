@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Ajax;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -28,6 +29,16 @@ class Select2Controller extends Controller
             ->where('first_name', 'like', '%'.$searchTerm.'%')
             ->orWhere('last_name', 'like', '%'.$searchTerm.'%')
             ->orWhere('email', 'like', '%'.$searchTerm.'%')
+            ->get();
+
+        return response()->json($results);
+    }
+
+    public function selectProject(Request $request)
+    {
+        $searchTerm = $request->input('term');
+        $results = Project::query()
+            //->where('title', 'like', '%'.$searchTerm.'%')
             ->get();
 
         return response()->json($results);

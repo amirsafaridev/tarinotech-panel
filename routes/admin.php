@@ -54,8 +54,9 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
     });
 
     Route::controller(Select2Controller::class)->group(function () {
-        Route::get('/admin/ajax/select2/admin', 'selectAdmin')->name('admin.ajax.select2.admin');
-        Route::get('/admin/ajax/select2/user', 'selectUser')->name('admin.ajax.select2.user');
+        Route::get('/admin/ajax/select2/admin', 'selectAdmin')->name('ajax.select2.admin');
+        Route::get('/admin/ajax/select2/user', 'selectUser')->name('ajax.select2.user');
+        Route::get('/admin/ajax/select2/project', 'selectProject')->name('ajax.select2.project');
     });
 
     Route::controller(AdminGoalController::class)->group(function () {
@@ -88,7 +89,7 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::get('/user/create', 'create')->name('user.create');
         Route::post('/user/store', 'store')->name('user.store');
         Route::get('/user/{user}/edit', 'edit')->name('user.edit');
-        Route::get('/user/{user}/show', 'edit')->name('user.show');
+        Route::get('/user/{user}/show', 'show')->name('user.show');
         Route::patch('/user/{user}/update', 'update')->name('user.update');
         Route::delete('/user/{user}/destroy', 'destroy')->name('user.destroy');
     });
@@ -98,10 +99,11 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::get('/presenter/data', 'data')->name('presenter.data');
         Route::get('/presenter/create', 'create')->name('presenter.create');
         Route::post('/presenter/store', 'store')->name('presenter.store');
-        Route::get('/presenter/{presenter}/edit', 'edit')->name('presenter.edit');
-        Route::patch('/presenter/{presenter}/update', 'update')->name('presenter.update');
-        Route::delete('/presenter/{presenter}/destroy', 'destroy')->name('presenter.destroy');
-    });
+        Route::get('/presenter/{user}/edit', 'edit')->name('presenter.edit');
+        Route::get('/presenter/{user}/show', 'edit')->name('presenter.show');
+        Route::patch('/presenter/{user}/update', 'update')->name('presenter.update');
+        Route::delete('/presenter/{user}/destroy', 'destroy')->name('presenter.destroy');
+    })->middleware('ensure.presenter');
 
     Route::controller(RoleController::class)->group(function () {
         Route::get('/role', 'index')->name('role.index');

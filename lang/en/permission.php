@@ -33,5 +33,6 @@ return [
     'user_index' => 'User Index',
     'user_create' => 'User Create',
     'user_edit' => 'User Edit',
+    'user_show' => 'User Show',
     'user_destroy' => 'User Destroy',
 ];

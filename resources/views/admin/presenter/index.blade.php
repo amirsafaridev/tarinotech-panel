@@ -6,11 +6,11 @@
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">{{ trans('panel.admin.title') }}</h1>
+        <h1 class="page-title">مدیریت نمایندگان</h1>
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item active">{{ trans('panel.admin.title') }}</li>
+                <li class="breadcrumb-item active">لیست نمایند گان</li>
             </ol>
         </div>
     </div>
@@ -18,6 +18,10 @@
     <div class="row">
         <div class="col-xl-12 col-lg-12">
             <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title">نمایندگان</h3>
+                    <a class="btn btn-success btn-sm" href="{{ route('admin.presenter.create') }}">ایجاد نماینده</a>
+                </div>
                 <div class="card-body pb-2">
                     @include('admin.partial.message')
                     <div class="table-responsive">

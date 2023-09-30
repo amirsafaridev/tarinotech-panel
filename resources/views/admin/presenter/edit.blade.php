@@ -2,21 +2,20 @@
 @section('title') {{ $title }} @endsection
 @section('head')
     @include('admin.partial.loader.style',['load'=>[
-        \App\Enums\Assets\StyleLoader::Toast(),
-        \App\Enums\Assets\StyleLoader::Datepicker(),
-        \App\Enums\Assets\StyleLoader::Select2(),
-        \App\Enums\Assets\StyleLoader::Alert(),
-    ]])
+       \App\Enums\Assets\StyleLoader::Toast(),
+       \App\Enums\Assets\StyleLoader::Datepicker(),
+       \App\Enums\Assets\StyleLoader::Select2(),
+   ]])
 @endsection
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">{{ trans('panel.admin.title') }}</h1>
+        <h1 class="page-title">مدیریت نمایندگان</h1>
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.admin.index') }}">{{ trans('panel.admin.title') }}</a></li>
-                <li class="breadcrumb-item active">{{ trans('panel.admin.edit') }}</li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.presenter.index') }}">نمایندگان</a></li>
+                <li class="breadcrumb-item active">ویرایش نماینده</li>
             </ol>
         </div>
     </div>
@@ -24,52 +23,57 @@
     <div class="row">
         <div class="col-xl-6 col-lg-6 col-md-6 col-12">
             <div class="card">
-                <div class="card-body pb-3">
+                <div class="card-body pb-4">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" enctype="multipart/form-data" method="post" action="{{ $routeUpdate }}">
+                    <form class="request-form forms-sample" method="post" action="{{ $routeUpdate }}">
                         @csrf
                         @method('PATCH')
 
-                        @if($admin->avatar)
-                            <img class="admin-avatar" src="{{ asset($admin->avatar) }}" alt="{{ $admin->first_name }} {{ $admin->last_name }}">
-                        @endif
+                        <x-admin.input identify="mobile" title="شماره موبایل" :old="$user->mobile" :disabled="true"/>
 
-                        <x-admin.input identify="avatar" :title="trans('fields.admin.avatar')" type="file" />
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <x-admin.input identify="first_name" title="نام" :old="$user->first_name" />
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <x-admin.input identify="last_name" title="نام خانوادگی" :old="$user->last_name" />
+                            </div>
+                        </div>
 
-                        <x-admin.input identify="email" :title="trans('fields.admin.email')" type="text" readonly disabled :old="$admin->email" />
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <x-admin.input identify="email" title="پست الکترونیکی" type="email" :old="$user->email"/>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <x-admin.input identify="tel" title="تلفن ثابت" :old="$user->tel"/>
+                            </div>
+                        </div>
 
-                        <x-admin.input identify="mobile" :title="trans('fields.admin.mobile')" type="text" :old="$admin->mobile"  />
 
-                        <x-admin.input identify="first_name" :title="trans('fields.admin.first_name')" type="text" :old="$admin->first_name"/>
+                        <div class="mb-3">
+                            <label for="project_id" class="form-label">انتخاب پروژه</label>
+                            <select  class="form-control" name="project_ids[]" id="project_id" multiple>
+                                @if($user->accessProjects->isNotEmpty())
+                                    @foreach($user->accessProjects as $project)
+                                        <option selected value="{{$project->id}}" title="{{$project->title}}">{{$project->title}}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
 
-                        <x-admin.input identify="last_name" :title="trans('fields.admin.last_name')" type="text" :old="$admin->last_name"/>
 
-                        <x-admin.select-model multiple="multiple" identify="role[]" id="role" :title="trans('fields.admin.role')" :items="$roles" key="id" value="name" />
-
-                        <x-admin.input identify="dob" :title="trans('fields.admin.dob')" type="text" :old="$admin->dob ? $admin->dob->toJalali()->format('Y/m/d') : ''"/>
-
-                        <x-admin.input identify="start_cooperation" :title="trans('fields.admin.start_cooperation')" type="text" :old="$admin->start_cooperation ? $admin->start_cooperation->toJalali()->format('Y/m/d') : ''"/>
-
-                        <x-admin.input identify="start_last_contract" :title="trans('fields.admin.start_last_contract')" type="text" :old="$admin->start_last_contract ? $admin->start_last_contract->toJalali()->format('Y/m/d') : ''"/>
-
-                        <x-admin.input identify="end_last_contract" :title="trans('fields.admin.end_last_contract')" type="text" :old="$admin->end_last_contract ? $admin->end_last_contract->toJalali()->format('Y/m/d') : ''" />
-
-                        <x-admin.textarea identify="resume" :title="trans('fields.admin.resume')" :old="$admin->resume"/>
-
-                        <x-admin.textarea identify="description" :title="trans('fields.admin.description')" :old="$admin->description"/>
-
-                        <x-admin.checkbox identify="has_access" :description="trans('fields.admin.has_access')" :old="$admin->has_access" />
+                        <x-admin.checkbox identify="is_block" description="دسترسی داشته باشد" :old="$user->is_block" />
 
                         <x-admin.button-submit title="{{ trans('panel.update') }}"/>
 
                         <x-admin.button-delete/>
-
                     </form>
 
                     <form id="deleteItem" action="{{ $routeDestroy }}" method="post" class="form-inline">
                         @csrf
                         @method('DELETE')
                     </form>
+
                 </div>
             </div>
         </div>
@@ -77,38 +81,57 @@
 @endsection
 @section('script')
     @include('admin.partial.request')
+    @include('admin.partial.share-script')
     @include('admin.partial.loader.script',['load'=>[
         \App\Enums\Assets\ScriptLoader::Alert(),
-        \App\Enums\Assets\ScriptLoader::CKEditor(),
         \App\Enums\Assets\ScriptLoader::Datepicker(),
         \App\Enums\Assets\ScriptLoader::Select2(),
     ]])
-    @include('admin.partial.ckeditor')
     <script>
         $(document).ready(function () {
-            CKEDITOR.replace( 'description');
-            CKEDITOR.replace( 'resume');
 
             const dataPickerConfig = {
-                    format: 'YYYY/MM/DD',
-                    initialValueType: 'persian',
-                    initialValue: false,
-                    autoClose: true
+                format: 'YYYY-MM-DD',
+                initialValueType: 'persian',
+                initialValue: false,
+                autoClose: true
             };
 
             $('#dob').persianDatepicker(dataPickerConfig);
-            $('#start_cooperation').persianDatepicker(dataPickerConfig);
-            $('#start_last_contract').persianDatepicker(dataPickerConfig);
-            $('#end_last_contract').persianDatepicker(dataPickerConfig);
 
-            @if($oldRoles->isNotEmpty())
-                const roles ="{{ $oldRoles->pluck('id')->implode(',') }}";
-                $.each(roles.split(","), function(i,e){
-                    $("#role option[value='" + e + "']").prop("selected", true);
-                })
-            @endif
+            stateCompanyContainer('');
+            $('#person_type').change(function (){
+                stateCompanyContainer($(this).val());
+            });
 
-            $('#role').select2();
+            stateIrnicContainer('');
+            $('#irnic').change(function (){
+                stateIrnicContainer($(this).val());
+            });
+
+            makeInputOnlyAlpha($('#en_first_name'));
+            makeInputOnlyAlpha($('#en_last_name'));
+            makeSelect2Remote($('#project_id'),'{{ route('admin.ajax.select2.project') }}',['title']);
         })
+
+        const companyContainer = $('#company_container');
+        function stateCompanyContainer(status){
+            if(status === '{{ \App\Enums\Database\User\PersonType::Legal }}'){
+                companyContainer.removeClass('d-none');
+            }
+            else{
+                companyContainer.addClass('d-none');
+            }
+        }
+
+        const irnicContainer = $('#irnic_container');
+        function stateIrnicContainer(status){
+            if(status === '{{ \App\Enums\Database\User\IrnicStatus::HasIt }}'){
+                irnicContainer.removeClass('d-none');
+            }
+            else{
+                irnicContainer.addClass('d-none');
+            }
+        }
     </script>
 @endsection

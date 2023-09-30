@@ -5,6 +5,7 @@
        \App\Enums\Assets\StyleLoader::Toast(),
        \App\Enums\Assets\StyleLoader::Datepicker(),
        \App\Enums\Assets\StyleLoader::Select2(),
+       \App\Enums\Assets\StyleLoader::Alert(),
    ]])
 @endsection
 @section('content')
@@ -107,7 +108,7 @@
 
                         <x-admin.select-enum identify="irnic_status" title="شناسه ایرنیک" :enum-class="\App\Enums\Database\User\IrnicStatus::class" :old="$user->irnic->status"/>
 
-                        <div id="irnic_container">
+                        <div id="irnic_container" class="d-none">
                             <div class="row">
                                 <div class="col-12 col-md-6">
                                     <x-admin.input identify="irnic_identify" title=" شناسه ایرنیک" :old="$user->irnic->identify" />
@@ -120,13 +121,28 @@
 
                         <x-admin.input identify="avatar" :title="trans('fields.admin.avatar')" type="file" />
 
-                        <x-admin.input identify="national_photo" title="تصویر کارت ملی" type="file" />
+                        <div class="d-flex justify-content-between align-items-end">
+                            <x-admin.input identify="national_photo" title="تصویر کارت ملی" type="file" />
+                            @if($user->national_photo)
+                               <div class="mb-3">
+                                   <a class="btn btn-success" target="_blank" href="{{ asset($user->national_photo) }}">دانلود</a>
+                               </div>
+                            @endif
+                        </div>
 
                         <x-admin.checkbox identify="official_bill" description="درخواست فاکتور رسمی"  :old="$user->official_bill"/>
 
                         <x-admin.checkbox identify="is_block" description="دسترسی داشته باشد" :old="$user->is_block" />
 
-                        <x-admin.button-submit/>
+                        <x-admin.button-submit title="{{ trans('panel.update') }}"/>
+
+                        <x-admin.button-delete/>
+
+                    </form>
+
+                    <form id="deleteItem" action="{{ $routeDestroy }}" method="post" class="form-inline">
+                        @csrf
+                        @method('DELETE')
                     </form>
                 </div>
             </div>
@@ -160,7 +176,7 @@
             });
 
             stateIrnicContainer('{{ $user->irnic->status }}');
-            $('#irnic').change(function (){
+            $('#irnic_status').change(function (){
                 stateIrnicContainer($(this).val());
             });
 

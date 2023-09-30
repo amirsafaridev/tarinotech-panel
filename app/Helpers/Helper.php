@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Enums\Database\User\PersonType;
 use App\Enums\General\BtnType;
 use Carbon\Carbon;
 use Exception;
@@ -22,6 +23,15 @@ class Helper
             default => '',
         };
 
+    }
+
+    public static function renderPersonType(int $type): string
+    {
+        return match ($type) {
+            PersonType::Person => '<span class="badge bg-success">حقیقی</span>',
+            PersonType::Legal => '<span class="badge bg-primary">حقوقی</span>',
+            default => '<span class="badge bg-info">ندارد</span>',
+        };
     }
 
     public static function abbreviateNumber($number)

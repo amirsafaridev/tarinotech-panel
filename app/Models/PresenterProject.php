@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class PresenterProject extends Model
 {
     use HasFactory;
+
+    public $timestamps = false;
+
+    protected $table = 'presenter_project';
 }

@@ -36,7 +36,7 @@ class UserFactory extends Factory
             'dob' => $this->faker->date,
             'person_type' => PersonType::getRandomValue(),
             'official_bill' => $this->faker->boolean,
-            'mobile' => $this->faker->unique()->numerify('935#######'),
+            'mobile' => $this->faker->unique()->numerify('0935#######'),
             'verify_at' => $this->faker->randomElement([null, $this->faker->date]),
             'is_block' => $this->faker->boolean,
             'user_type' => UserType::getRandomValue(),

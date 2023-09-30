@@ -1,22 +1,23 @@
 <script>
     function showToast(text, icon = 'warning') {
         const iconConfig = {
-            warning: { bgColor: '#ff8100', heading: 'اخطار' },
-            success: { bgColor: '#00a65a', heading: 'موفق' },
-            error: { bgColor: '#ff0000', heading: 'خطا' },
+            warning: {bgColor: '#ff8100', heading: 'اخطار'},
+            success: {bgColor: '#00a65a', heading: 'موفق'},
+            error: {bgColor: '#ff0000', heading: 'خطا'},
         };
-        const config = iconConfig[icon] || { bgColor: '#ff8100', heading: 'Warning' };
+        const config = iconConfig[icon] || {bgColor: '#ff8100', heading: 'Warning'};
         $.toast({
             heading: config.heading,
             bgColor: config.bgColor,
             text: text,
-            position:'bottom-left',
-            hideAfter:4400,
-            textAlign : 'right',
+            position: 'bottom-left',
+            hideAfter: 4400,
+            textAlign: 'right',
             icon: icon,
             loaderBg: '#ffffff'
         });
     }
+
     function postAjax(url, postData) {
         return new Promise((resolve, reject) => {
             $.ajax({
@@ -39,6 +40,7 @@
             });
         });
     }
+
     function makeInputPrice(inputSelect, haveDot = false) {
         inputSelect.on("input", function () {
             let inputValue = $(this).val();
@@ -73,5 +75,50 @@
     // Helper function to add thousands separator (comma)
     function numberWithCommas(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function makeSelect2Remote(inputSelect, url,keys) {
+
+        $(inputSelect).select2({
+            ajax: {
+                url: url,
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        term: params.term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            },
+            dir: 'rtl',
+            language: 'fa',
+            minimumInputLength: 2,
+            templateResult: function (result) {
+                if (!result.id) {
+                    return result.text;
+                }
+                let finalResult = [];
+                keys.forEach(function (element) {
+                    finalResult.push(result[element])
+                })
+                return finalResult.join(' ');
+            },
+            templateSelection: function (result) {
+                if (!result.id) {
+                    return result.text;
+                }
+                let finalResult = [];
+                keys.forEach(function (element) {
+                    finalResult.push(result[element])
+                })
+                return finalResult.join(' ');
+            }
+        });
     }
 </script>

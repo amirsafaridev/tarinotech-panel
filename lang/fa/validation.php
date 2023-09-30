@@ -216,5 +216,6 @@ return [
         'address' => 'ادرس',
         'postal_code' => 'کد پستی',
         'irnic_status' => 'شناسه ایرنیک',
+        'project_ids' => 'پروژه',
     ],
 ];

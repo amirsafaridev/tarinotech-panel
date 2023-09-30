@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('en_first_name');
-            $table->string('en_last_name');
+            $table->string('en_first_name')->nullable();
+            $table->string('en_last_name')->nullable();
             $table->string('father_name')->nullable();
             $table->string('national_photo')->nullable();
             $table->string('national_id')->nullable();

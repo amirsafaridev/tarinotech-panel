@@ -2,41 +2,52 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\Database\User\UserType;
 use App\Enums\General\BtnType;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Project\StoreRequest;
-use App\Http\Requests\Admin\Project\UpdateRequest;
+use App\Http\Requests\Admin\Presenter\StoreRequest;
+use App\Http\Requests\Admin\Presenter\UpdateRequest;
 use App\Models\Project;
+use App\Models\User;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
 use Yajra\DataTables\Facades\DataTables;
 
 class PresenterController extends Controller
 {
     public function index()
     {
-        $title = trans('panel.project.index');
-        $routeData = route('admin.role.data');
-        $selects = ['id', 'name', 'permissions_count', 'created_at'];
+        $title = 'مدیریت نمایندگان';
+        $routeData = route('admin.presenter.data');
+        $selects = ['id', 'mobile', 'first_name', 'last_name', 'access_projects', 'is_block', 'created_at'];
 
-        return view('admin.project.index', compact('title', 'routeData', 'selects'));
+        $skipSearch = ['access_projects'];
+        $skipSort = ['access_projects'];
+
+        return view('admin.presenter.index', compact('title', 'routeData', 'selects', 'skipSearch', 'skipSort'));
     }
 
     public function data()
     {
-
         try {
-            $roles = Project::query()->select('roles.*')->withCount('permissions');
+            $users = User::query()
+                ->with('accessProjects')
+                ->where('user_type', UserType::Presenter);
 
-            return DataTables::of($roles)
-                ->editColumn('created_at', function ($role) {
-                    return $role->created_at->toJalali()->format('h:i Y-m-d');
+            return DataTables::of($users)
+                ->editColumn('created_at', function ($user) {
+                    return $user->created_at->toJalali()->format('h:i Y-m-d');
                 })
-                ->addColumn('action', function ($role) {
-                    return Helper::btnMaker(BtnType::Warning, route('admin.role.edit', $role->id), trans('panel.action.edit'));
+                ->editColumn('access_projects', function ($user) {
+                    return $user->accessProjects ? $user->accessProjects->pluck('title')->implode(', ') : 'پروژه ای ندارد';
+                })
+                ->addColumn('action', function ($user) {
+                    $actions = Helper::btnMaker(BtnType::Warning, route('admin.presenter.edit', $user->id), trans('panel.action.edit'));
+                    $actions .= Helper::btnMaker(BtnType::Info, route('admin.presenter.show', $user->id), trans('panel.action.show'));
+
+                    return $actions;
                 })
                 ->make();
         } catch (Exception $e) {
@@ -46,11 +57,10 @@ class PresenterController extends Controller
 
     public function create()
     {
-        $title = trans('panel.project.create');
-        $routeStore = route('admin.role.store');
-        $permissions = Permission::all();
+        $title = 'ایجاد نماینده';
+        $routeStore = route('admin.presenter.store');
 
-        return view('admin.project.create', compact('title', 'routeStore', 'permissions'));
+        return view('admin.presenter.create', compact('title', 'routeStore'));
     }
 
     public function store(StoreRequest $request)
@@ -58,8 +68,8 @@ class PresenterController extends Controller
         try {
             DB::beginTransaction();
             $item = $this->itemProvider($request);
-            $role = Project::create($item);
-            $role->givePermissionTo($request->get('permissions'));
+            $user = User::create($item);
+            $user->accessProjects()->sync($request->get('project_ids'));
             DB::commit();
 
             return response()->json([
@@ -77,24 +87,24 @@ class PresenterController extends Controller
         }
     }
 
-    public function edit(Project $role)
+    public function edit(User $user)
     {
-        $title = trans('panel.project.edit');
-        $routeUpdate = route('admin.role.update', $role->id);
-        $routeDestroy = route('admin.role.destroy', $role->id);
-        $permissions = Permission::all();
-        $permissionSelected = $role->permissions()->pluck('id')->toArray();
+        $user->load('accessProjects');
 
-        return view('admin.project.edit', compact('title', 'routeUpdate', 'routeDestroy', 'role', 'permissions', 'permissionSelected'));
+        $title = 'ویرایش نماینده';
+        $routeUpdate = route('admin.presenter.update', $user->id);
+        $routeDestroy = route('admin.presenter.destroy', $user->id);
+
+        return view('admin.presenter.edit', compact('title', 'user', 'routeUpdate', 'routeDestroy'));
     }
 
-    public function update(UpdateRequest $request, Project $role)
+    public function update(UpdateRequest $request, User $user)
     {
         try {
             DB::beginTransaction();
             $item = $this->itemProvider($request);
-            $role->update($item);
-            $role->syncPermissions($request->get('permissions'));
+            $user->update($item);
+            $user->accessProjects()->sync($request->get('project_ids'));
             DB::commit();
 
             return response()->json([
@@ -117,17 +127,28 @@ class PresenterController extends Controller
         try {
             $role->delete();
 
-            return redirect(route('admin.role.index'))->with('success', trans('panel.success_delete'));
+            return redirect(route('admin.presenter.index'))->with('success', trans('panel.success_delete'));
         } catch (Exception $e) {
             report($e);
 
-            return redirect(route('admin.role.index'))->with('danger', trans('panel.error_delete'));
+            return redirect(route('admin.presenter.index'))->with('danger', trans('panel.error_delete'));
         }
     }
 
-    protected function itemProvider(Request $request): array
+    protected function itemProvider(Request $req): array
     {
-        $item['name'] = $request->get('name');
+        $item['first_name'] = $req->input('first_name');
+        $item['last_name'] = $req->input('last_name');
+        $item['tel'] = $req->input('tel');
+        $item['email'] = $req->input('email');
+
+        /** Not required in edit mode */
+        if ($req->input('mobile')) {
+            $item['mobile'] = $req->input('mobile');
+        }
+
+        $item['user_type'] = UserType::Presenter;
+        $item['is_block'] = $req->has('is_block');
 
         return $item;
     }

@@ -28,44 +28,44 @@
                     <form class="request-form forms-sample" method="post" action="{{ $routeStore }}">
                         @csrf
 
-                        <x-admin.input identify="mobile" :title="trans('fields.admin.mobile')" type="text" />
+                        <x-admin.input identify="mobile" :title="trans('fields.admin.mobile')" />
 
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <x-admin.input identify="first_name" title="نام" type="text" />
+                                <x-admin.input identify="first_name" title="نام" />
                             </div>
                             <div class="col-12 col-md-6">
-                                <x-admin.input identify="en_first_name" title="به لاتین" type="text" />
+                                <x-admin.input identify="en_first_name" title="به لاتین" />
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <x-admin.input identify="last_name" title="نام خانوادگی" type="text" />
+                                <x-admin.input identify="last_name" title="نام خانوادگی" />
 
                             </div>
                             <div class="col-12 col-md-6">
-                                <x-admin.input identify="en_last_name" title="به لاتین" type="text" />
+                                <x-admin.input identify="en_last_name" title="به لاتین" />
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <x-admin.input identify="father_name" title="نام پدر" type="text" />
+                                <x-admin.input identify="father_name" title="نام پدر" />
 
                             </div>
                             <div class="col-12 col-md-6">
-                                <x-admin.input identify="national_id" title="کد ملی" type="text" />
+                                <x-admin.input identify="national_id" title="کد ملی" />
                             </div>
                         </div>
 
 
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <x-admin.input identify="document_id" title="شماره شناسنامه" type="text" />
+                                <x-admin.input identify="document_id" title="شماره شناسنامه" />
                             </div>
                             <div class="col-12 col-md-6">
-                                <x-admin.input identify="dob" title="تاریخ تولد" type="text" />
+                                <x-admin.input identify="dob" title="تاریخ تولد" />
                             </div>
                         </div>
 
@@ -74,7 +74,7 @@
                         <div id="company_container" class="d-none">
                             <div class="row">
                                 <div class="col-12 col-md-6">
-                                    <x-admin.input identify="company_name" title="نام شرکت" type="text" />
+                                    <x-admin.input identify="company_name" title="نام شرکت" />
                                 </div>
                                 <div class="col-12 col-md-6">
                                     <x-admin.select-enum identify="company_type" title="نوع شرکت" :enum-class="\App\Enums\Database\Company\CompanyType::class"/>
@@ -83,17 +83,17 @@
 
                             <div class="row">
                                 <div class="col-12 col-md-6">
-                                    <x-admin.input identify="company_identify" title="شناسه ملی شرکت" type="text" />
+                                    <x-admin.input identify="company_identify" title="شناسه ملی شرکت" />
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <x-admin.input identify="company_register_id" title="شماره ثبت شرکت" type="text" />
+                                    <x-admin.input identify="company_register_id" title="شماره ثبت شرکت" />
                                 </div>
                             </div>
                         </div>
 
                         <x-admin.textarea identify="address" rows="5" title="آدرس" />
 
-                        <x-admin.input identify="postal_code" title="کدپستی" type="text" />
+                        <x-admin.input identify="postal_code" title="کدپستی" />
 
 
                         <div class="row">
@@ -101,7 +101,7 @@
                                 <x-admin.input identify="email" title="پست الکترونیکی" type="email" />
                             </div>
                             <div class="col-12 col-md-6">
-                                <x-admin.input identify="tel" title="تلفن ثابت" type="text" />
+                                <x-admin.input identify="tel" title="تلفن ثابت" />
                             </div>
                         </div>
 
@@ -110,10 +110,10 @@
                         <div id="irnic_container">
                             <div class="row">
                                 <div class="col-12 col-md-6">
-                                    <x-admin.input identify="irnic_identify" title=" شناسه ایرنیک" type="text" />
+                                    <x-admin.input identify="irnic_identify" title=" شناسه ایرنیک" />
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <x-admin.input identify="irnic_password" title="رمزعبور ایرنیک" type="text" />
+                                    <x-admin.input identify="irnic_password" title="رمزعبور ایرنیک" />
                                 </div>
                             </div>
                         </div>

@@ -15,11 +15,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminSeeder::class,
             LoginSeeder::class,
-            ProjectSeeder::class,
             UserSeeder::class,
-            AddressSeeder::class,
-            CompanySeeder::class,
-            IrnicSeeder::class,
+            ProjectSeeder::class,
         ]);
 
         resolve(PermissionService::class)->sync();
