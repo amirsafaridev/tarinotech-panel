@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             ProjectStatusSeeder::class,
             ProjectSeeder::class,
             SettingSeeder::class,
+            PackageSeeder::class,
         ]);
 
         resolve(PermissionService::class)->sync();

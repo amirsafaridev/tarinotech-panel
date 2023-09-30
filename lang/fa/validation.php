@@ -217,5 +217,6 @@ return [
         'postal_code' => 'کد پستی',
         'irnic_status' => 'شناسه ایرنیک',
         'project_ids' => 'پروژه',
+        'price' => 'قیمت',
     ],
 ];

@@ -129,6 +129,7 @@ class ProjectStatusController extends Controller
     {
         $item['title'] = $request->get('title');
         $item['project_type_id'] = $request->get('project_type_id');
+        $item['note'] = $request->get('note');
 
         return $item;
     }

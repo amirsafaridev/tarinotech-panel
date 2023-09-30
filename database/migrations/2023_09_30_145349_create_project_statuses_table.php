@@ -15,6 +15,7 @@ return new class extends Migration
             $table->tinyIncrements('id');
             $table->string('title');
             $table->unsignedTinyInteger('project_type_id');
+            $table->text('note')->nullable();
             $table->timestamps();
 
             $table->foreign('project_type_id')

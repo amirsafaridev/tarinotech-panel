@@ -8,12 +8,12 @@
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">وضعیت پروژه ها</h1>
+        <h1 class="page-title">پکیج ها</h1>
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.project-status.index') }}">وضعیت پروژه ها</a></li>
-                <li class="breadcrumb-item active">ایجاد وضعیت</li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.package.index') }}">لیست پکیج ها</a></li>
+                <li class="breadcrumb-item active">ایجاد پکیج</li>
             </ol>
         </div>
     </div>
@@ -26,11 +26,9 @@
                     <form class="request-form forms-sample" method="post" action="{{ $routeStore }}">
                         @csrf
 
-                        <x-admin.select-model class="multiple" identify="project_type_id" title="انتخاب نوع پروژه" :items="$projectTypes" key="id" value="title"/>
-
                         <x-admin.input identify="title" title="عنوان"/>
 
-                        <x-admin.textarea identify="note" title="توضیحات"/>
+                        <x-admin.input identify="price" title="قیمت"/>
 
                         <x-admin.button-submit/>
                     </form>
@@ -41,4 +39,10 @@
 @endsection
 @section('script')
     @include('admin.partial.request')
+    @include('admin.partial.share-script')
+    <script>
+        $(document).ready(function (){
+          makeInputPrice($('#price'));
+        })
+    </script>
 @endsection

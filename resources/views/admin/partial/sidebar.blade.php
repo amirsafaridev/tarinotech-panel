@@ -90,7 +90,7 @@
                         <li><a href="{{ route('admin.setting.index') }}" class="slide-item">تنظیمات پایه</a></li>
                         <li><a href="{{ route('admin.project-type.index') }}" class="slide-item">انواع پروژه ها</a></li>
                         <li><a href="{{ route('admin.project-status.index') }}" class="slide-item">وضعیت پروژه ها</a></li>
-                        <li><a href="" class="slide-item">پکیج ها</a></li>
+                        <li><a href="{{ route('admin.package.index') }}" class="slide-item">پکیج ها</a></li>
                         <li><a href="" class="slide-item">انواع واریزی</a></li>
                         <li><a href="" class="slide-item">تقویم تعطیلات</a></li>
                         <li><a href="" class="slide-item">پیام های آماده</a></li>
