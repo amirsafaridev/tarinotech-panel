@@ -42,6 +42,17 @@
     }
 
     function makeInputPrice(inputSelect, haveDot = false) {
+        // Function to add thousands separators
+        function formatNumberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        inputSelect.click(function () {
+            let inputValue = $(this).val();
+            inputValue = numberWithCommas(inputValue);
+            $(this).val(inputValue);
+        });
+
         inputSelect.on("input", function () {
             let inputValue = $(this).val();
 
@@ -51,10 +62,7 @@
 
             // Remove multiple dots
             inputValue = inputValue.replace(/(\..*?)\./g, '$1');
-
-            // Add thousands separator (comma) to the number
             inputValue = numberWithCommas(inputValue);
-
             $(this).val(inputValue);
         });
     }

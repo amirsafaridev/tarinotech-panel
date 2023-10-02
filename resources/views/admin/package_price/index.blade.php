@@ -42,27 +42,12 @@
                                     <tr>
                                         <td>{{ $package->id }}</td>
                                         <td>{{ $package->title }}</td>
-
-                                        @if($package->finalPrice)
-                                            <td>{{  number_format($package->finalPrice->price) }}</td>
-                                            <td>
-                                                {{ verta($package->finalPrice->start_at)->format(formatJalaliDate()) }}
-                                            </td>
-                                            <td>
-                                                @if(is_null($package->finalPrice->end_at))
-                                                    <span>تا هم اکنون</span>
-                                                @else
-                                                    {{ verta($package->finalPrice->end_at)->format(formatJalaliDate()) }}
-                                                @endif
-                                            </td>
-                                        @else
-                                            <td>0</td>
-                                            <td>ثبت نشده</td>
-                                            <td>ثبت نشده</td>
-                                        @endif
-
+                                        <td>{{  number_format($package->finalPrice->price ?? 0) }}</td>
+                                        <td>{{ $package->finalPrice->start_at ?? 'ثبت نشده' }}</td>
+                                        <td>{{ $package->finalPrice->end_at ?? 'ثبت نشده' }}</td>
                                         <td>
-                                            <a href="{{ route('admin.package.edit',$package->id) }}" class="btn btn-warning btn-sm">ویرایش</a>
+                                            <a href="" class="btn btn-warning btn-sm">ویرایش</a>
+                                            <a href="" class="btn btn-success btn-sm">ثبت قیمت</a>
                                         </td>
                                     </tr>
                                 @endforeach

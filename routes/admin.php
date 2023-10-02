@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\Ajax\Select2Controller;
 use App\Http\Controllers\Admin\GroupGoalController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\PackageController;
+use App\Http\Controllers\Admin\PackagePriceController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PresenterController;
 use App\Http\Controllers\Admin\ProfileController;
@@ -149,6 +150,12 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::get('/project-status/{projectStatus}/edit', 'edit')->name('project-status.edit');
         Route::patch('/project-status/{projectStatus}/update', 'update')->name('project-status.update');
         Route::delete('/project-status/{projectStatus}/destroy', 'destroy')->name('project-status.destroy');
+    });
+
+    Route::controller(PackagePriceController::class)->group(function () {
+        Route::get('/package/{package}/price/{packagePrice}/edit', 'edit')->name('package-price.edit');
+        Route::patch('/package/{package}/price/{packagePrice}/update', 'update')->name('package-price.update');
+        Route::delete('/package/{package}/price/{packagePrice}/destroy', 'destroy')->name('package-price.destroy');
     });
 
     Route::controller(PackageController::class)->group(function () {

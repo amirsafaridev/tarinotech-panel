@@ -15,8 +15,9 @@
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.package.index') }}">لیست پکیج ها</a></li>
-                <li class="breadcrumb-item active">ویرایش پکیج</li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.package.index') }}">پکیج ها</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.package.edit',$package->id) }}">{{ $package->title }}</a></li>
+                <li class="breadcrumb-item active">ویرایش مبلغ</li>
             </ol>
         </div>
     </div>
@@ -30,9 +31,11 @@
                         @csrf
                         @method('PATCH')
 
-                        <x-admin.input identify="title" title="عنوان" :old="$package->title"/>
+                        <x-admin.input identify="title" title="تاریخ شروع" :disabled="true" :old="verta($packagePrice->start_at)->format(formatJalaliDate())"/>
 
-                        <x-admin.input identify="price" title="قیمت" :old="$package->finalPrice?->price"/>
+                        <x-admin.input identify="title" title="تاریخ پایان" :disabled="true" :old="!$packagePrice->end_at ? 'تا هم اکنون' : verta($packagePrice->end_at)->format(formatJalaliDate())"/>
+
+                        <x-admin.input identify="price" title="قیمت" :old="$packagePrice->price"/>
 
                         <x-admin.button-submit title="{{ trans('panel.update') }}"/>
                         <x-admin.button-delete/>
@@ -45,10 +48,6 @@
                     </form>
                 </div>
             </div>
-        </div>
-
-        <div class="col-xl-6 col-lg-6 col-md-6 col-12">
-            @include('admin.package_price.card.list',['prices'=>$package->prices])
         </div>
     </div>
 @endsection
@@ -65,4 +64,5 @@
             makeInputPrice($('#price'));
         })
     </script>
+
 @endsection
