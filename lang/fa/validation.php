@@ -218,5 +218,6 @@ return [
         'irnic_status' => 'شناسه ایرنیک',
         'project_ids' => 'پروژه',
         'price' => 'قیمت',
+        'message' => 'پیام',
     ],
 ];

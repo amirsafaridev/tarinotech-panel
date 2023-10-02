@@ -14,4 +14,9 @@ class ProjectType extends Model
     {
         return $this->hasMany(Project::class);
     }
+
+    public function additionalFeatures(): HasMany
+    {
+        return $this->hasMany(AdditionalFeature::class);
+    }
 }

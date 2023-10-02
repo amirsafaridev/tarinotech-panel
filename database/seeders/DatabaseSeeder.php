@@ -21,6 +21,10 @@ class DatabaseSeeder extends Seeder
             ProjectSeeder::class,
             SettingSeeder::class,
             PackageSeeder::class,
+            AdditionalFeatureSeeder::class,
+            TransactionCategorySeeder::class,
+            SampleMessageSeeder::class,
+            AutoMessageSeeder::class,
         ]);
 
         resolve(PermissionService::class)->sync();

@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class SampleMessage extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'title',
+        'message',
+        'type',
+    ];
 }

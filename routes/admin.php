@@ -1,10 +1,12 @@
 <?php
 
 // Login
+use App\Http\Controllers\Admin\AdditionalFeatureController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminGoalController;
 use App\Http\Controllers\Admin\AdminPasswordController;
 use App\Http\Controllers\Admin\Ajax\Select2Controller;
+use App\Http\Controllers\Admin\AutoMessageController;
 use App\Http\Controllers\Admin\GroupGoalController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\PackageController;
@@ -19,7 +21,9 @@ use App\Http\Controllers\Admin\Report\GoalController as GoalControllerReport;
 use App\Http\Controllers\Admin\Report\GoalGroupController as GoalGroupControllerReport;
 use App\Http\Controllers\Admin\Report\LoginController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\SampleMessageController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\TransactionCategoryController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -166,6 +170,43 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::get('/package/{package}/edit', 'edit')->name('package.edit');
         Route::patch('/package/{package}/update', 'update')->name('package.update');
         Route::delete('/package/{package}/destroy', 'destroy')->name('package.destroy');
+    });
+
+    Route::controller(AdditionalFeatureController::class)->group(function () {
+        Route::get('/additional-features', 'index')->name('additional-features.index');
+        Route::get('/additional-features/data', 'data')->name('additional-features.data');
+        Route::get('/additional-features/create', 'create')->name('additional-features.create');
+        Route::post('/additional-features/store', 'store')->name('additional-features.store');
+        Route::get('/additional-features/{additionalFeature}/edit', 'edit')->name('additional-features.edit');
+        Route::patch('/additional-features/{additionalFeature}/update', 'update')->name('additional-features.update');
+        Route::delete('/additional-features/{additionalFeature}/destroy', 'destroy')->name('additional-features.destroy');
+    });
+
+    Route::controller(TransactionCategoryController::class)->group(function () {
+        Route::get('/transaction-category', 'index')->name('transaction-category.index');
+        Route::get('/transaction-category/data', 'data')->name('transaction-category.data');
+        Route::get('/transaction-category/create', 'create')->name('transaction-category.create');
+        Route::post('/transaction-category/store', 'store')->name('transaction-category.store');
+        Route::get('/transaction-category/{transactionCategory}/edit', 'edit')->name('transaction-category.edit');
+        Route::patch('/transaction-category/{transactionCategory}/update', 'update')->name('transaction-category.update');
+        Route::delete('/transaction-category/{transactionCategory}/destroy', 'destroy')->name('transaction-category.destroy');
+    });
+
+    Route::controller(SampleMessageController::class)->group(function () {
+        Route::get('/sample-message', 'index')->name('sample-message.index');
+        Route::get('/sample-message/data', 'data')->name('sample-message.data');
+        Route::get('/sample-message/create', 'create')->name('sample-message.create');
+        Route::post('/sample-message/store', 'store')->name('sample-message.store');
+        Route::get('/sample-message/{sampleMessage}/edit', 'edit')->name('sample-message.edit');
+        Route::patch('/sample-message/{sampleMessage}/update', 'update')->name('sample-message.update');
+        Route::delete('/sample-message/{sampleMessage}/destroy', 'destroy')->name('sample-message.destroy');
+    });
+
+    Route::controller(AutoMessageController::class)->group(function () {
+        Route::get('/auto-message', 'index')->name('auto-message.index');
+        Route::get('/auto-message/data', 'data')->name('auto-message.data');
+        Route::get('/auto-message/{sampleMessage}/edit', 'edit')->name('auto-message.edit');
+        Route::patch('/auto-message/{sampleMessage}/update', 'update')->name('auto-message.update');
     });
 
     Route::controller(ProfileController::class)->group(function () {

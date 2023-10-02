@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\AdditionalFeature>
+ * @extends Factory
  */
 class AdditionalFeatureFactory extends Factory
 {
@@ -16,8 +16,20 @@ class AdditionalFeatureFactory extends Factory
      */
     public function definition(): array
     {
+        $additionalFeatures = [
+            'طراحی گرافیکی ویژه',
+            'هاست سی پنل 1 گیگ',
+            'دامنه ir',
+            'دامنه com',
+            'هاست دانلودی 10 گیگ',
+            'افزونه دیجیتز',
+            'نماد اعتماد الکترونیک',
+            'برنامه نویسی اختصاصی',
+        ];
+
         return [
-            //
+            'title' => $this->faker->randomElement($additionalFeatures),
+            'project_type_id' => rand(1, 3),
         ];
     }
 }

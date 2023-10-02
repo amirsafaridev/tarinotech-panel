@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\TransactionCategory;
 use Illuminate\Database\Seeder;
 
 class TransactionCategorySeeder extends Seeder
@@ -11,6 +12,6 @@ class TransactionCategorySeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        TransactionCategory::factory(20)->create();
     }
 }

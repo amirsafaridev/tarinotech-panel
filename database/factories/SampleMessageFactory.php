@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Enums\Database\SampleMessage\MessageType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\SampleMessage>
+ * @extends Factory
  */
 class SampleMessageFactory extends Factory
 {
@@ -17,7 +18,9 @@ class SampleMessageFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => $this->faker->sentence,
+            'message' => $this->faker->paragraph,
+            'type' => MessageType::getRandomValue(),
         ];
     }
 }
