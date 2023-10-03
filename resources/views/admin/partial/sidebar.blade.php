@@ -95,7 +95,7 @@
                         <li><a href="{{ route('admin.transaction-category.index') }}" class="slide-item">انواع واریزی</a></li>
                         <li><a href="{{ route('admin.sample-message.index') }}" class="slide-item">پیام های آماده</a></li>
                         <li><a href="{{ route('admin.auto-message.index') }}" class="slide-item">پیام های خودکار</a></li>
-                        <li><a href="" class="slide-item">تقویم تعطیلات</a></li>
+                        <li><a href="{{ route('admin.free-day.index') }}" class="slide-item">تقویم تعطیلات</a></li>
                     </ul>
                 </li>
             </ul>

@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\FreeDay>
+ * @extends Factory
  */
 class FreeDayFactory extends Factory
 {
@@ -16,8 +16,10 @@ class FreeDayFactory extends Factory
      */
     public function definition(): array
     {
+
         return [
-            //
+            'title' => 'Day',
+            'free_at' => $this->faker->date,
         ];
     }
 }

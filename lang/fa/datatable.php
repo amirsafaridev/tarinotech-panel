@@ -17,4 +17,5 @@ return [
     'is_block' => 'دسترسی',
     'person_type' => 'نوع کاربر',
     'access_projects' => 'دسترسی پروژه ها',
+    'free_at' => 'روز تعطیل',
 ];

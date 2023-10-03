@@ -219,5 +219,6 @@ return [
         'project_ids' => 'پروژه',
         'price' => 'قیمت',
         'message' => 'پیام',
+        'free_at' => 'تاریخ',
     ],
 ];

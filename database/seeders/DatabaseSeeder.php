@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             TransactionCategorySeeder::class,
             SampleMessageSeeder::class,
             AutoMessageSeeder::class,
+            FreeDaySeeder::class,
         ]);
 
         resolve(PermissionService::class)->sync();

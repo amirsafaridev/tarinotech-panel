@@ -47,3 +47,10 @@ if (! function_exists('formatJalaliDateTime')) {
         return 'd/F/Y H:i';
     }
 }
+
+if (! function_exists('formatJalaliMonth')) {
+    function formatJalaliMonth(): string
+    {
+        return 'd/F';
+    }
+}
