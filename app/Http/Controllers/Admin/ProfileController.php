@@ -54,14 +54,14 @@ class ProfileController extends Controller
     {
         try {
             $admin = Admin::find(auth()->id());
-            if (! Hash::check($request->get('current_password'), $admin->password)) {
+            if (! Hash::check($request->input('current_password'), $admin->password)) {
                 return response()->json([
                     'result' => 'warning',
                     'message' => 'گذرواژه وارد شده صحیح نیست!',
                 ]);
             }
 
-            $admin->password = bcrypt($request->get('new_password'));
+            $admin->password = bcrypt($request->input('new_password'));
             $admin->update();
 
             return response()->json([
@@ -79,8 +79,8 @@ class ProfileController extends Controller
 
     protected function setProfileData(Request $request, Admin $admin): void
     {
-        $admin->first_name = $request->get('first_name');
-        $admin->last_name = $request->get('last_name');
+        $admin->first_name = $request->input('first_name');
+        $admin->last_name = $request->input('last_name');
         if ($request->hasFile('avatar')) {
             $provider = (new Uploader())
                 ->fit(150, 150)

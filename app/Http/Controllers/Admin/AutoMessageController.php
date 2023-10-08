@@ -76,7 +76,7 @@ class AutoMessageController extends Controller
 
     protected function itemProvider(Request $request): array
     {
-        $item['message'] = $request->get('message');
+        $item['message'] = $request->input('message');
         $item['type'] = MessageType::AutoSend;
 
         return $item;

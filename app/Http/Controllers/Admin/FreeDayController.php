@@ -124,7 +124,7 @@ class FreeDayController extends Controller
 
     protected function itemProvider(Request $request): array
     {
-        $item['title'] = $request->get('title');
+        $item['title'] = $request->input('title');
         $item['free_at'] = Helper::toGregorian($request->input('free_at'));
 
         return $item;

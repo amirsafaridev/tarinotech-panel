@@ -77,7 +77,7 @@ class AdminController extends Controller
             DB::beginTransaction();
             $item = $this->itemProvider($request);
             $admin = Admin::create($item);
-            $admin->syncRoles($request->get('role'));
+            $admin->syncRoles($request->input('role'));
             DB::commit();
 
             return response()->json([
@@ -113,7 +113,7 @@ class AdminController extends Controller
             DB::beginTransaction();
             $item = $this->itemProvider($request, true);
             $admin->update($item);
-            $admin->syncRoles($request->get('role'));
+            $admin->syncRoles($request->input('role'));
             DB::commit();
 
             return response()->json([

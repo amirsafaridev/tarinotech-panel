@@ -60,7 +60,7 @@ class PackagePriceController extends Controller
 
     protected function itemProvider(Request $request): array
     {
-        $item['price'] = $request->get('price');
+        $item['price'] = $request->input('price');
 
         return $item;
     }

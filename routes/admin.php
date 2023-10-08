@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\AdminGoalController;
 use App\Http\Controllers\Admin\AdminPasswordController;
 use App\Http\Controllers\Admin\Ajax\Select2Controller;
 use App\Http\Controllers\Admin\AutoMessageController;
+use App\Http\Controllers\Admin\Blog\BlogCategoryController;
+use App\Http\Controllers\Admin\Blog\BlogController;
 use App\Http\Controllers\Admin\FreeDayController;
 use App\Http\Controllers\Admin\GroupGoalController;
 use App\Http\Controllers\Admin\HomeController;
@@ -211,6 +213,26 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::get('/free-day/{freeDay}/edit', 'edit')->name('free-day.edit');
         Route::patch('/free-day/{freeDay}/update', 'update')->name('free-day.update');
         Route::delete('/free-day/{freeDay}/destroy', 'destroy')->name('free-day.destroy');
+    });
+
+    Route::controller(BlogCategoryController::class)->group(function () {
+        Route::get('/blog/category', 'index')->name('blog-category.index');
+        Route::get('/blog/category/data', 'data')->name('blog-category.data');
+        Route::get('/blog/category/create', 'create')->name('blog-category.create');
+        Route::post('/blog/category/store', 'store')->name('blog-category.store');
+        Route::get('/blog/category/{blogCategory}/edit', 'edit')->name('blog-category.edit');
+        Route::patch('/blog/category/{blogCategory}/update', 'update')->name('blog-category.update');
+        Route::delete('/blog/category/{blogCategory}/destroy', 'destroy')->name('blog-category.destroy');
+    });
+
+    Route::controller(BlogController::class)->group(function () {
+        Route::get('/blog', 'index')->name('blog.index');
+        Route::get('/blog/data', 'data')->name('blog.data');
+        Route::get('/blog/create', 'create')->name('blog.create');
+        Route::post('/blog/store', 'store')->name('blog.store');
+        Route::get('/blog/{blog}/edit', 'edit')->name('blog.edit');
+        Route::patch('/blog/{blog}/update', 'update')->name('blog.update');
+        Route::delete('/blog/{blog}/destroy', 'destroy')->name('blog.destroy');
     });
 
     Route::controller(AutoMessageController::class)->group(function () {

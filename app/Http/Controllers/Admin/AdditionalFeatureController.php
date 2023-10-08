@@ -125,8 +125,8 @@ class AdditionalFeatureController extends Controller
 
     protected function itemProvider(Request $request): array
     {
-        $item['title'] = $request->get('title');
-        $item['project_type_id'] = $request->get('project_type_id');
+        $item['title'] = $request->input('title');
+        $item['project_type_id'] = $request->input('project_type_id');
 
         return $item;
     }

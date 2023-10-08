@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
-class SeoProjectController extends Controller
+class AdsProjectController extends Controller
 {
     public function index()
     {

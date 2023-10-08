@@ -69,7 +69,7 @@ class PresenterController extends Controller
             DB::beginTransaction();
             $item = $this->itemProvider($request);
             $user = User::create($item);
-            $user->accessProjects()->sync($request->get('project_ids'));
+            $user->accessProjects()->sync($request->input('project_ids'));
             DB::commit();
 
             return response()->json([
@@ -104,7 +104,7 @@ class PresenterController extends Controller
             DB::beginTransaction();
             $item = $this->itemProvider($request);
             $user->update($item);
-            $user->accessProjects()->sync($request->get('project_ids'));
+            $user->accessProjects()->sync($request->input('project_ids'));
             DB::commit();
 
             return response()->json([

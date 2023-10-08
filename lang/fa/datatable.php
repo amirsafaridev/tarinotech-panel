@@ -18,4 +18,6 @@ return [
     'person_type' => 'نوع کاربر',
     'access_projects' => 'دسترسی پروژه ها',
     'free_at' => 'روز تعطیل',
+    'blogs_count' => 'بلاگ ها',
+    'category.title' => 'دسته بندی',
 ];

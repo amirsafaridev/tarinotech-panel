@@ -26,6 +26,8 @@ class DatabaseSeeder extends Seeder
             SampleMessageSeeder::class,
             AutoMessageSeeder::class,
             FreeDaySeeder::class,
+            BlogCategorySeeder::class,
+            BlogSeeder::class,
         ]);
 
         resolve(PermissionService::class)->sync();

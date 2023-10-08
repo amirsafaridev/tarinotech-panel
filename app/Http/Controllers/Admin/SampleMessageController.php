@@ -122,8 +122,8 @@ class SampleMessageController extends Controller
 
     protected function itemProvider(Request $request): array
     {
-        $item['title'] = $request->get('title');
-        $item['message'] = $request->get('message');
+        $item['title'] = $request->input('title');
+        $item['message'] = $request->input('message');
         $item['type'] = MessageType::ReadyMessage;
 
         return $item;

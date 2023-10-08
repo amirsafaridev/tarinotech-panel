@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
-class ProjectController extends Controller
+class WebProjectController extends Controller
 {
     public function index()
     {
@@ -77,7 +77,7 @@ class ProjectController extends Controller
             DB::beginTransaction();
             $item = $this->itemProvider($request);
             $admin = Admin::create($item);
-            $admin->syncRoles($request->get('role'));
+            $admin->syncRoles($request->input('role'));
             DB::commit();
 
             return response()->json([
@@ -113,7 +113,7 @@ class ProjectController extends Controller
             DB::beginTransaction();
             $item = $this->itemProvider($request, true);
             $admin->update($item);
-            $admin->syncRoles($request->get('role'));
+            $admin->syncRoles($request->input('role'));
             DB::commit();
 
             return response()->json([

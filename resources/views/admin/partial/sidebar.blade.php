@@ -82,6 +82,19 @@
 
                 <li class="slide">
                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navProfile">
+                        <i class="side-menu__icon fal fa-page"></i>
+                        <span class="side-menu__label">بلاگ</span><i class="angle fal fa-angle-left"></i>
+                    </a>
+
+                    <ul class="slide-menu">
+                        <li><a href="{{ route('admin.blog.index') }}" class="slide-item">لیست</a></li>
+                        <li><a href="{{ route('admin.blog.create') }}" class="slide-item">ایجاد</a></li>
+                        <li><a href="{{ route('admin.blog-category.index') }}" class="slide-item">دسته بندی ها</a></li>
+                    </ul>
+                </li>
+
+                <li class="slide">
+                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navProfile">
                         <i class="side-menu__icon fal fa-cog"></i>
                         <span class="side-menu__label">تنظیمات</span><i class="angle fal fa-angle-left"></i>
                     </a>

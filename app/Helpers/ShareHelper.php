@@ -54,3 +54,13 @@ if (! function_exists('formatJalaliMonth')) {
         return 'd/F';
     }
 }
+
+if (! function_exists('generatePersianSlug')) {
+    function generatePersianSlug($input): string
+    {
+        $input = strtolower($input);
+        $input = preg_replace('/[^a-z0-9آ-ی]+/u', '-', $input);
+
+        return trim($input, '-');
+    }
+}

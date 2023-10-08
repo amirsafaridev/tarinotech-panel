@@ -127,9 +127,9 @@ class ProjectStatusController extends Controller
 
     protected function itemProvider(Request $request): array
     {
-        $item['title'] = $request->get('title');
-        $item['project_type_id'] = $request->get('project_type_id');
-        $item['note'] = $request->get('note');
+        $item['title'] = $request->input('title');
+        $item['project_type_id'] = $request->input('project_type_id');
+        $item['note'] = $request->input('note');
 
         return $item;
     }

@@ -59,7 +59,7 @@ class ProjectController extends Controller
             DB::beginTransaction();
             $item = $this->itemProvider($request);
             $role = Project::create($item);
-            $role->givePermissionTo($request->get('permissions'));
+            $role->givePermissionTo($request->input('permissions'));
             DB::commit();
 
             return response()->json([
@@ -94,7 +94,7 @@ class ProjectController extends Controller
             DB::beginTransaction();
             $item = $this->itemProvider($request);
             $role->update($item);
-            $role->syncPermissions($request->get('permissions'));
+            $role->syncPermissions($request->input('permissions'));
             DB::commit();
 
             return response()->json([
@@ -127,7 +127,7 @@ class ProjectController extends Controller
 
     protected function itemProvider(Request $request): array
     {
-        $item['name'] = $request->get('name');
+        $item['name'] = $request->input('name');
 
         return $item;
     }
