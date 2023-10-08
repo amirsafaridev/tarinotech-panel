@@ -12,7 +12,7 @@
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.project-status.index') }}">وضعیت پروژه ها</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.project.status.index') }}">وضعیت پروژه ها</a></li>
                 <li class="breadcrumb-item active">ایجاد وضعیت</li>
             </ol>
         </div>
@@ -26,7 +26,12 @@
                     <form class="request-form forms-sample" method="post" action="{{ $routeStore }}">
                         @csrf
 
-                        <x-admin.select-model class="multiple" identify="project_type_id" title="انتخاب نوع پروژه" :items="$projectTypes" key="id" value="title"/>
+                        <x-admin.select-model class="multiple"
+                                              identify="project_base_id"
+                                              title="انتخاب نوع پروژه"
+                                              key="id"
+                                              value="title"
+                                              :items="$projectBases"/>
 
                         <x-admin.input identify="title" title="عنوان"/>
 

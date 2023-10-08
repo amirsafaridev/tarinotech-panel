@@ -15,7 +15,7 @@
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.project-status.index') }}">وضعیت پروژه ها</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.project.status.index') }}">وضعیت پروژه ها</a></li>
                 <li class="breadcrumb-item active">ویرایش وضعیت</li>
             </ol>
         </div>
@@ -30,12 +30,12 @@
                         @csrf
                         @method('PATCH')
 
-                        <x-admin.select-model class="multiple" identify="project_type_id"
+                        <x-admin.select-model class="multiple" identify="project_base_id"
                                               title="انتخاب نوع پروژه"
-                                              :items="$projectTypes"
+                                              :items="$projectBases"
                                               key="id"
                                               value="title"
-                                              :old="$projectStatus->project_type_id"/>
+                                              :old="$projectStatus->project_base_id"/>
 
                         <x-admin.input identify="title" title="عنوان" :old="$projectStatus->title"/>
 

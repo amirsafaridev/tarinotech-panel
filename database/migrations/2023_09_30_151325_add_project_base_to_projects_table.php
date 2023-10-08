@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->after('title', function ($table) {
-                $table->unsignedTinyInteger('project_type_id');
+            $table->after('price', function ($table) {
+                $table->unsignedTinyInteger('project_base_id');
             });
 
-            $table->foreign('project_type_id')
-                ->on('project_types')
+            $table->foreign('project_base_id')
+                ->on('project_bases')
                 ->references('id');
         });
     }
@@ -28,8 +28,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->dropForeign('project_type_id');
-            $table->dropColumn('project_type_id');
+            $table->dropForeign('project_base_id');
+            $table->dropColumn('project_base_id');
         });
     }
 };

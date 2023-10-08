@@ -8,8 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdditionalFeature\StoreRequest;
 use App\Http\Requests\Admin\AdditionalFeature\UpdateRequest;
 use App\Models\AdditionalFeature;
-use App\Models\ProjectType;
-use DB;
+use App\Models\ProjectBase;
 use Exception;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -20,7 +19,7 @@ class AdditionalFeatureController extends Controller
     {
         $title = 'امکانات جانبی';
         $routeData = route('admin.additional-features.data');
-        $selects = ['id', 'title', 'type.title', 'created_at'];
+        $selects = ['id', 'title', 'base.title', 'created_at'];
 
         return view('admin.additional_feature.index', compact('title', 'routeData', 'selects'));
     }
@@ -30,7 +29,7 @@ class AdditionalFeatureController extends Controller
         try {
             $additionalFeatures = AdditionalFeature::query()
                 ->select('additional_features.*')
-                ->with('type');
+                ->with('base');
 
             return DataTables::of($additionalFeatures)
                 ->editColumn('created_at', function (AdditionalFeature $additionalFeature) {
@@ -49,25 +48,22 @@ class AdditionalFeatureController extends Controller
     {
         $title = 'امکانات جانبی - جدید';
         $routeStore = route('admin.additional-features.store');
-        $projectTypes = ProjectType::query()->get();
+        $projectBases = ProjectBase::query()->get();
 
-        return view('admin.additional_feature.create', compact('title', 'routeStore', 'projectTypes'));
+        return view('admin.additional_feature.create', compact('title', 'routeStore', 'projectBases'));
     }
 
     public function store(StoreRequest $request)
     {
         try {
-            DB::beginTransaction();
             $item = $this->itemProvider($request);
             AdditionalFeature::create($item);
-            DB::commit();
 
             return response()->json([
                 'result' => 'success',
                 'message' => trans('panel.success_store'),
             ]);
         } catch (Exception $e) {
-            DB::rollBack();
             report($e);
 
             return response()->json([
@@ -82,25 +78,24 @@ class AdditionalFeatureController extends Controller
         $title = 'امکانات جانبی - ویرایش';
         $routeUpdate = route('admin.additional-features.update', $additionalFeature->id);
         $routeDestroy = route('admin.additional-features.destroy', $additionalFeature->id);
-        $projectTypes = ProjectType::query()->get();
+        $projectBases = ProjectBase::query()->get();
 
-        return view('admin.additional_feature.edit', compact('title', 'routeUpdate', 'routeDestroy', 'additionalFeature', 'projectTypes'));
+        return view('admin.additional_feature.edit', compact('title', 'routeUpdate', 'routeDestroy', 'additionalFeature', 'projectBases'));
     }
 
     public function update(UpdateRequest $request, AdditionalFeature $additionalFeature)
     {
         try {
-            DB::beginTransaction();
+
             $item = $this->itemProvider($request);
             $additionalFeature->update($item);
-            DB::commit();
 
             return response()->json([
                 'result' => 'success',
                 'message' => trans('panel.success_update'),
             ]);
         } catch (Exception $e) {
-            DB::rollBack();
+
             report($e);
 
             return response()->json([
@@ -126,7 +121,7 @@ class AdditionalFeatureController extends Controller
     protected function itemProvider(Request $request): array
     {
         $item['title'] = $request->input('title');
-        $item['project_type_id'] = $request->input('project_type_id');
+        $item['project_base_id'] = $request->input('project_base_id');
 
         return $item;
     }

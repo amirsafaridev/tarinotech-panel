@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->after('project_type_id', function ($table) {
+            $table->after('price', function ($table) {
                 $table->unsignedTinyInteger('project_status_id');
             });
 

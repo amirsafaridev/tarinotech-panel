@@ -12,13 +12,22 @@ class ProjectTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        $types = ['طراحی سایت', 'سئو', 'تبلیغات ادورز'];
+        $types = [
+            'شرکتی',
+            'فروشگاهی',
+            'خبری',
+            'شخصی',
+            'آموزشی',
+            'درج آگهی',
+            'سایر',
+        ];
 
         $dataToInsert = [];
 
         foreach ($types as $type) {
             $dataToInsert[] = [
                 'title' => $type,
+                'project_base_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ];

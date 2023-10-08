@@ -29,7 +29,7 @@ class AdditionalFeatureFactory extends Factory
 
         return [
             'title' => $this->faker->randomElement($additionalFeatures),
-            'project_type_id' => rand(1, 3),
+            'project_base_id' => rand(1, 3),
         ];
     }
 }

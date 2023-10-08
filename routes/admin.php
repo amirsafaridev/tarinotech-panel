@@ -1,6 +1,5 @@
 <?php
 
-// Login
 use App\Http\Controllers\Admin\AdditionalFeatureController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminGoalController;
@@ -17,6 +16,9 @@ use App\Http\Controllers\Admin\PackagePriceController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PresenterController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\Project\AdsProjectController;
+use App\Http\Controllers\Admin\Project\SeoProjectController;
+use App\Http\Controllers\Admin\Project\WebProjectController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\ProjectStatusController;
 use App\Http\Controllers\Admin\ProjectTypeController;
@@ -30,6 +32,11 @@ use App\Http\Controllers\Admin\TransactionCategoryController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
+/**
+ * TODO
+ * Update Route Name
+ * Update Controls And Homogenization
+ */
 Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
     Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
     Route::post('login', 'Auth\LoginController@login');
@@ -127,36 +134,63 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::delete('/role/destroy/{role}', 'destroy')->name('role.destroy');
     });
 
+    Route::controller(ProjectTypeController::class)->group(function () {
+        Route::get('/project/type', 'index')->name('project.type.index');
+        Route::get('/project/type/data', 'data')->name('project.type.data');
+        Route::get('/project/type/create', 'create')->name('project.type.create');
+        Route::post('/project/type/store', 'store')->name('project.type.store');
+        Route::get('/project/type/{projectType}/edit', 'edit')->name('project.type.edit');
+        Route::patch('/project/type/{projectType}/update', 'update')->name('project.type.update');
+        Route::delete('/project/type/{projectType}/destroy', 'destroy')->name('project.type.destroy');
+
+    });
+
+    Route::controller(ProjectStatusController::class)->group(function () {
+        Route::get('/project/status', 'index')->name('project.status.index');
+        Route::get('/project/status/data', 'data')->name('project.status.data');
+        Route::get('/project/status/create', 'create')->name('project.status.create');
+        Route::post('/project/status/store', 'store')->name('project.status.store');
+        Route::get('/project/status/{projectStatus}/edit', 'edit')->name('project.status.edit');
+        Route::patch('/project/status/{projectStatus}/update', 'update')->name('project.status.update');
+        Route::delete('/project/status/{projectStatus}/destroy', 'destroy')->name('project.status.destroy');
+    });
+
+    Route::controller(WebProjectController::class)->group(function () {
+        Route::get('/project/web', 'index')->name('project.web.index');
+        Route::get('/project/web/data', 'data')->name('project.web.data');
+        Route::get('/project/web/create', 'create')->name('project.web.create');
+        Route::post('/project/web/store', 'store')->name('project.web.store');
+        Route::get('/project/web/{project}/edit', 'edit')->name('project.web.edit');
+        Route::patch('/project/web/{project}/update', 'update')->name('project.web.update');
+    });
+
+    Route::controller(SeoProjectController::class)->group(function () {
+        Route::get('/project/seo', 'index')->name('project.seo.index');
+        Route::get('/project/seo/data', 'data')->name('project.seo.data');
+        Route::get('/project/seo/create', 'create')->name('project.seo.create');
+        Route::post('/project/seo/store', 'store')->name('project.seo.store');
+        Route::get('/project/seo/{project}/edit', 'edit')->name('project.seo.edit');
+        Route::patch('/project/seo/{project}/update', 'update')->name('project.seo.update');
+    });
+
+    Route::controller(AdsProjectController::class)->group(function () {
+        Route::get('/project/ads', 'index')->name('project.ads.index');
+        Route::get('/project/ads/data', 'data')->name('project.ads.data');
+        Route::get('/project/ads/create', 'create')->name('project.ads.create');
+        Route::post('/project/ads/store', 'store')->name('project.ads.store');
+        Route::get('/project/ads/{project}/edit', 'edit')->name('project.ads.edit');
+        Route::patch('/project/ads/{project}/update', 'update')->name('project.ads.update');
+    });
+
     Route::controller(ProjectController::class)->group(function () {
         Route::get('/project', 'index')->name('project.index');
         Route::get('/project/data', 'data')->name('project.data');
-        Route::get('/project/create', 'create')->name('project.create');
-        Route::post('/project/store', 'store')->name('project.store');
-        Route::get('/project/edit/{project}', 'edit')->name('project.edit');
-        Route::patch('/project/update/{project}', 'update')->name('project.update');
         Route::delete('/project/destroy/{project}', 'destroy')->name('project.destroy');
     });
 
     Route::controller(SettingController::class)->group(function () {
         Route::get('/setting', 'index')->name('setting.index');
         Route::patch('/setting', 'update')->name('setting.update');
-    });
-
-    Route::controller(ProjectTypeController::class)->group(function () {
-        Route::get('/project-type', 'index')->name('project-type.index');
-        Route::get('/project-type/data', 'data')->name('project-type.data');
-        Route::get('/project-type/{projectType}/show', 'show')->name('project-type.show');
-
-    });
-
-    Route::controller(ProjectStatusController::class)->group(function () {
-        Route::get('/project-status', 'index')->name('project-status.index');
-        Route::get('/project-status/data', 'data')->name('project-status.data');
-        Route::get('/project-status/create', 'create')->name('project-status.create');
-        Route::post('/project-status/store', 'store')->name('project-status.store');
-        Route::get('/project-status/{projectStatus}/edit', 'edit')->name('project-status.edit');
-        Route::patch('/project-status/{projectStatus}/update', 'update')->name('project-status.update');
-        Route::delete('/project-status/{projectStatus}/destroy', 'destroy')->name('project-status.destroy');
     });
 
     Route::controller(PackagePriceController::class)->group(function () {

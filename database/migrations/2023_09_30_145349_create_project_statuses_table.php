@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('project_statuses', function (Blueprint $table) {
             $table->tinyIncrements('id');
             $table->string('title');
-            $table->unsignedTinyInteger('project_type_id');
+            $table->unsignedTinyInteger('project_base_id');
             $table->text('note')->nullable();
             $table->timestamps();
 
-            $table->foreign('project_type_id')
+            $table->foreign('project_base_id')
                 ->references('id')
                 ->on('project_types');
         });

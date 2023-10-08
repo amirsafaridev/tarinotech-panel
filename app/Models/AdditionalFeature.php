@@ -17,8 +17,8 @@ class AdditionalFeature extends Model
         'updated_at',
     ];
 
-    public function type(): BelongsTo
+    public function base(): BelongsTo
     {
-        return $this->belongsTo(ProjectType::class, 'project_type_id');
+        return $this->belongsTo(ProjectBase::class, 'project_base_id');
     }
 }

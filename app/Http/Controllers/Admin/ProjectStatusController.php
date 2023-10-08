@@ -7,8 +7,8 @@ use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProjectStatus\StoreRequest;
 use App\Http\Requests\Admin\ProjectStatus\UpdateRequest;
+use App\Models\ProjectBase;
 use App\Models\ProjectStatus;
-use App\Models\ProjectType;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -19,8 +19,8 @@ class ProjectStatusController extends Controller
     public function index()
     {
         $title = 'وضعیت پروژه ها';
-        $routeData = route('admin.project-status.data');
-        $selects = ['id', 'title', 'type.title', 'projects_count', 'created_at'];
+        $routeData = route('admin.project.status.data');
+        $selects = ['id', 'title', 'base.title', 'projects_count', 'created_at'];
 
         return view('admin.project_status.index', compact('title', 'routeData', 'selects'));
     }
@@ -32,14 +32,14 @@ class ProjectStatusController extends Controller
             $projectStatuses = ProjectStatus::query()
                 ->select('project_statuses.*')
                 ->withCount('projects')
-                ->with('type');
+                ->with('base');
 
             return DataTables::of($projectStatuses)
                 ->editColumn('created_at', function (ProjectStatus $projectStatus) {
                     return $projectStatus->created_at->toJalali()->format(formatJalaliDateTime());
                 })
                 ->addColumn('action', function (ProjectStatus $projectStatus) {
-                    return Helper::btnMaker(BtnType::Warning, route('admin.project-status.edit', $projectStatus->id), trans('panel.action.edit'));
+                    return Helper::btnMaker(BtnType::Warning, route('admin.project.status.edit', $projectStatus->id), trans('panel.action.edit'));
                 })
                 ->make();
         } catch (Exception $e) {
@@ -50,10 +50,10 @@ class ProjectStatusController extends Controller
     public function create()
     {
         $title = 'وضعیت جدید';
-        $routeStore = route('admin.project-status.store');
-        $projectTypes = ProjectType::query()->get();
+        $routeStore = route('admin.project.status.store');
+        $projectBases = ProjectBase::query()->get();
 
-        return view('admin.project_status.create', compact('title', 'routeStore', 'projectTypes'));
+        return view('admin.project_status.create', compact('title', 'routeStore', 'projectBases'));
     }
 
     public function store(StoreRequest $request)
@@ -82,11 +82,11 @@ class ProjectStatusController extends Controller
     public function edit(ProjectStatus $projectStatus)
     {
         $title = 'ویرایش وضعیت';
-        $routeUpdate = route('admin.project-status.update', $projectStatus->id);
-        $routeDestroy = route('admin.project-status.destroy', $projectStatus->id);
-        $projectTypes = ProjectType::query()->get();
+        $routeUpdate = route('admin.project.status.update', $projectStatus->id);
+        $routeDestroy = route('admin.project.status.destroy', $projectStatus->id);
+        $projectBases = ProjectBase::query()->get();
 
-        return view('admin.project_status.edit', compact('title', 'routeUpdate', 'routeDestroy', 'projectStatus', 'projectTypes'));
+        return view('admin.project_status.edit', compact('title', 'routeUpdate', 'routeDestroy', 'projectStatus', 'projectBases'));
     }
 
     public function update(UpdateRequest $request, ProjectStatus $projectStatus)
@@ -117,18 +117,18 @@ class ProjectStatusController extends Controller
         try {
             $projectStatus->delete();
 
-            return redirect(route('admin.project-status.index'))->with('success', trans('panel.success_delete'));
+            return redirect(route('admin.project.status.index'))->with('success', trans('panel.success_delete'));
         } catch (Exception $e) {
             report($e);
 
-            return redirect(route('admin.project-status.index'))->with('danger', trans('panel.error_delete'));
+            return redirect(route('admin.project.status.index'))->with('danger', trans('panel.error_delete'));
         }
     }
 
     protected function itemProvider(Request $request): array
     {
         $item['title'] = $request->input('title');
-        $item['project_type_id'] = $request->input('project_type_id');
+        $item['project_base_id'] = $request->input('project_base_id');
         $item['note'] = $request->input('note');
 
         return $item;

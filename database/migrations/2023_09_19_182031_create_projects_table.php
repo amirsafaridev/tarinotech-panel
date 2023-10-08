@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('admin_id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedInteger('price');
-            $table->enum('status', ['pending', 'done', 'pay'])->default('done');
+            $table->morphs('project');
             $table->foreign('admin_id')->references('id')->on('admins');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

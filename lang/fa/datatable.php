@@ -20,4 +20,5 @@ return [
     'free_at' => 'روز تعطیل',
     'blogs_count' => 'بلاگ ها',
     'category.title' => 'دسته بندی',
+    'base.title' => 'نوع پروژه',
 ];

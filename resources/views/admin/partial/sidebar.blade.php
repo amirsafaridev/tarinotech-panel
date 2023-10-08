@@ -52,7 +52,6 @@
                     </ul>
                 </li>
 
-
                 <li class="slide">
                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navUser">
                         <i class="side-menu__icon fal fa-user"></i>
@@ -66,6 +65,19 @@
                     </ul>
                 </li>
 
+                <li class="slide">
+                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navProject">
+                        <i class="side-menu__icon fal fa-box"></i>
+                        <span class="side-menu__label">پروژه ها</span><i class="angle fal fa-angle-left"></i>
+                    </a>
+
+                    <ul class="slide-menu">
+                        <li><a href="{{ route('admin.project.index') }}" class="slide-item">لیست پروژه ها</a></li>
+                        <li><a href="{{ route('admin.project.web.index') }}" class="slide-item">وب سایت</a></li>
+                        <li><a href="{{ route('admin.project.seo.index') }}" class="slide-item">سئو</a></li>
+                        <li><a href="{{ route('admin.project.ads.index') }}" class="slide-item">ادوردز</a></li>
+                    </ul>
+                </li>
 
                 <li class="slide">
                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navProfile">
@@ -81,7 +93,7 @@
                 </li>
 
                 <li class="slide">
-                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navProfile">
+                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navBlog">
                         <i class="side-menu__icon fal fa-page"></i>
                         <span class="side-menu__label">بلاگ</span><i class="angle fal fa-angle-left"></i>
                     </a>
@@ -101,8 +113,8 @@
 
                     <ul class="slide-menu">
                         <li><a href="{{ route('admin.setting.index') }}" class="slide-item">تنظیمات پایه</a></li>
-                        <li><a href="{{ route('admin.project-type.index') }}" class="slide-item">انواع پروژه ها</a></li>
-                        <li><a href="{{ route('admin.project-status.index') }}" class="slide-item">وضعیت پروژه ها</a></li>
+                        <li><a href="{{ route('admin.project.type.index') }}" class="slide-item">انواع پروژه ها</a></li>
+                        <li><a href="{{ route('admin.project.status.index') }}" class="slide-item">وضعیت پروژه ها</a></li>
                         <li><a href="{{ route('admin.package.index') }}" class="slide-item">پکیج ها</a></li>
                         <li><a href="{{ route('admin.additional-features.index') }}" class="slide-item">امکانات جانبی</a></li>
                         <li><a href="{{ route('admin.transaction-category.index') }}" class="slide-item">انواع واریزی</a></li>

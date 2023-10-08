@@ -9,7 +9,7 @@
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.project-type.index') }}">انواع پروژه</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.project.type.index') }}">انواع پروژه</a></li>
                 <li class="breadcrumb-item active">نمایش نوع</li>
             </ol>
         </div>

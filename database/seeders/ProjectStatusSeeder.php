@@ -19,7 +19,7 @@ class ProjectStatusSeeder extends Seeder
         foreach ($statuses as $status) {
             $dataToInsert[] = [
                 'title' => $status,
-                'project_type_id' => rand(1, 3),
+                'project_base_id' => rand(1, 3),
                 'created_at' => now(),
                 'updated_at' => now(),
             ];

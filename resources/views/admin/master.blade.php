@@ -172,7 +172,7 @@
             $('a[href="{{ url()->current() }}"]').addClass('active');
             let rootLi = currentLink.parents('li.slide');
             if (!rootLi.hasClass('is-expanded')){
-                rootLi.find('.side-menu__item').trigger('click');
+                // rootLi.find('.side-menu__item').trigger('click');
             }
         },200)
         @endif

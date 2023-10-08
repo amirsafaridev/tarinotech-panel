@@ -14,8 +14,8 @@ class ProjectTypeController extends Controller
     public function index()
     {
         $title = 'انواع پزوژه ها';
-        $routeData = route('admin.project-type.data');
-        $selects = ['id', 'title', 'projects_count', 'created_at'];
+        $routeData = route('admin.project.type.data');
+        $selects = ['id', 'title', 'base.title', 'created_at'];
 
         return view('admin.project_type.index', compact('title', 'routeData', 'selects'));
     }
@@ -25,14 +25,15 @@ class ProjectTypeController extends Controller
 
         try {
             $roles = ProjectType::query()
-                ->withCount('projects');
+                ->select('project_types.*')
+                ->with('base');
 
             return DataTables::of($roles)
                 ->editColumn('created_at', function ($role) {
                     return $role->created_at->toJalali()->format(formatJalaliDateTime());
                 })
                 ->addColumn('action', function ($role) {
-                    return Helper::btnMaker(BtnType::Info, route('admin.project-type.show', $role->id), trans('panel.action.show'));
+                    return Helper::btnMaker(BtnType::Warning, route('admin.project.type.edit', $role->id), trans('panel.action.edit'));
                 })
                 ->make();
         } catch (Exception $e) {
