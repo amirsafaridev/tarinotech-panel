@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Project;
 
+use App\Enums\Database\Project\ProjectBase;
 use App\Enums\General\BtnType;
 use App\Helpers\Helper;
 use App\Helpers\Uploader\Uploader;
@@ -9,6 +10,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Admin\StoreRequest;
 use App\Http\Requests\Admin\Admin\UpdateRequest;
 use App\Models\Admin;
+use App\Models\Package;
+use App\Models\ProjectType;
+use App\Models\ProjectWeb;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -19,42 +23,27 @@ class WebProjectController extends Controller
 {
     public function index()
     {
-        $title = trans('panel.admin.index');
-        $routeData = route('admin.admin.data');
-        $selects = ['id', 'email', 'first_name', 'last_name', 'roles', 'latest_login', 'created_at'];
+        $title = 'پروژه ها - وب سایت ها';
+        $routeData = route('admin.project.web.data');
+        $selects = ['id', 'project.title', 'created_at'];
         $skipSearch = [''];
         $skipSort = [''];
 
-        return view('admin.admin.index', compact('title', 'routeData', 'selects', 'skipSearch', 'skipSort'));
+        return view('admin.project.web.index', compact('title', 'routeData', 'selects', 'skipSearch', 'skipSort'));
     }
 
     public function data()
     {
         try {
-            $admins = Admin::query()
-                ->with(['roles', 'latestLogin'])
-                ->withCount('logins')
-                ->get();
+            $admins = ProjectWeb::query()
+                ->with('project');
 
             return DataTables::of($admins)
                 ->editColumn('created_at', function ($admin) {
                     return $admin->created_at->toJalali()->format('h:i Y-m-d');
                 })
-                ->editColumn('latest_login', function ($admin) {
-                    return $admin->latestLogin ?
-                        $admin->latestLogin->login_at->toJalali()->format('h:i Y-m-d') :
-                        trans('panel.admin.not_login');
-                })
-                ->editColumn('roles', function ($admin) {
-                    return $admin->roles ? $admin->roles->pluck('name')->implode(', ') :
-                        trans('panel.admin.not_role');
-                })
                 ->addColumn('action', function ($admin) {
-                    $actions = Helper::btnMaker(BtnType::Warning, route('admin.admin.edit', $admin->id), trans('panel.action.edit'));
-                    $actions .= Helper::btnMaker(BtnType::Info, route('admin.admin.password', $admin->id), trans('panel.action.change_password'));
-                    $actions .= Helper::btnMaker(BtnType::Success, route('admin.admin.show', $admin->id), trans('panel.action.info'));
-
-                    return $actions;
+                    return Helper::btnMaker(BtnType::Warning, route('admin.project.web.edit', $admin->id), trans('panel.action.edit'));
                 })
                 ->make();
         } catch (Exception $e) {
@@ -64,11 +53,16 @@ class WebProjectController extends Controller
 
     public function create()
     {
-        $title = trans('panel.admin.create');
-        $routeStore = route('admin.admin.store');
-        $roles = Role::all();
+        $title = 'پروژه سایت - ایجاد';
+        $routeStore = route('admin.project.web.store');
+        $projectTypes = ProjectType::query()
+            ->where('project_base_id', ProjectBase::Web)
+            ->get();
 
-        return view('admin.admin.create', compact('title', 'routeStore', 'roles'));
+        $packages = Package::query()
+            ->get();
+
+        return view('admin.project.web.create', compact('title', 'routeStore', 'projectTypes', 'packages'));
     }
 
     public function store(StoreRequest $request)
@@ -98,8 +92,8 @@ class WebProjectController extends Controller
     public function edit(Admin $admin)
     {
         $title = trans('panel.admin.edit');
-        $routeUpdate = route('admin.admin.update', $admin->id);
-        $routeDestroy = route('admin.admin.destroy', $admin->id);
+        $routeUpdate = route('admin.project.web.update', $admin->id);
+        $routeDestroy = route('admin.project.web.destroy', $admin->id);
         $roles = Role::all();
 
         $oldRoles = $admin->roles;
@@ -146,12 +140,12 @@ class WebProjectController extends Controller
             $admin->delete();
             DB::commit();
 
-            return redirect(route('admin.admin.index'))->with('success', trans('panel.success_delete'));
+            return redirect(route('admin.project.web.index'))->with('success', trans('panel.success_delete'));
         } catch (Exception $e) {
             DB::rollBack();
             report($e);
 
-            return redirect(route('admin.admin.index'))->with('danger', trans('panel.error_delete'));
+            return redirect(route('admin.project.web.index'))->with('danger', trans('panel.error_delete'));
         }
     }
 

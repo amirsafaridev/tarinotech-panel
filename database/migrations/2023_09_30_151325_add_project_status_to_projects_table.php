@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->after('price', function ($table) {
-                $table->unsignedTinyInteger('project_status_id');
+            $table->after('price', function (Blueprint $table) {
+                $table->unsignedTinyInteger('project_status_id')
+                    ->nullable();
             });
 
             $table->foreign('project_status_id')

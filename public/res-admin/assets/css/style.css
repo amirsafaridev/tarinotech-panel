@@ -5213,7 +5213,7 @@ input[type="button"].btn-block {
 }
 
 .card-collapsed .card-options-collapse i:before {
-    content: "\e92d";
+    content: "\f107";
 }
 
 .card-fullscreen .card-options-fullscreen i:before {

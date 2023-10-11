@@ -1,6 +1,9 @@
 <?php
 
 use App\Enums\Database\Company\CompanyType;
+use App\Enums\Database\Project\WebFacility;
+use App\Enums\Database\Project\WebHostLocation;
+use App\Enums\Database\Project\WebLanguage;
 use App\Enums\Database\Setting\SettingItems;
 use App\Enums\Database\User\IrnicStatus;
 use App\Enums\Database\User\PersonType;
@@ -40,5 +43,25 @@ return [
         SettingItems::META_KEYWORDS => 'متا کلمات کلیدی',
         SettingItems::ADDRESS => 'آدرس',
         SettingItems::TARGET_YEAR => 'اهداف سالانه',
+    ],
+
+    WebHostLocation::class => [
+        WebHostLocation::IR => 'ایران',
+        WebHostLocation::OUTSIDE => 'خارج ایران',
+    ],
+
+    WebLanguage::class => [
+        WebLanguage::FA => 'فارسی',
+        WebLanguage::EN => 'انگلیسی',
+        WebLanguage::AR => 'عربی',
+    ],
+
+    WebFacility::class => [
+        WebFacility::ReceiveSMS => 'دریافت پنل پیامکی',
+        WebFacility::ReceivePaymentGateway => 'دریافت درگاه پرداخت',
+        WebFacility::ReceiveEnamad => 'دریافت اینماد',
+        WebFacility::LoginMobile => 'لاگین با موبایل',
+        WebFacility::OnlineChat => 'چت آنلاین',
+        WebFacility::TicketSystem => 'سامانه تیکت',
     ],
 ];

@@ -24,6 +24,37 @@ if (! function_exists('calculatePercentageProgress')) {
     }
 }
 
+if (! function_exists('isFormatDate')) {
+    function isFormatDate($date): bool
+    {
+        $pattern = '/^\d{4}\/\d{2}\/\d{2}$/';
+
+        return preg_match($pattern, persianNumberToEnglish($date));
+    }
+}
+
+if (! function_exists('isJalaliDate')) {
+    function isJalaliDate($date): bool
+    {
+        $verat = verta(persianNumberToEnglish($date));
+        if ($verat->year > 1300 && $verat->year < 2000) {
+            return true;
+        }
+
+        return false;
+    }
+}
+
+if (! function_exists('persianNumberToEnglish')) {
+    function persianNumberToEnglish($string): array|string
+    {
+        $persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        $english = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+        return str_replace($persian, $english, $string);
+    }
+}
+
 if (! function_exists('arabicToPersianNumeric')) {
     function arabicToPersianNumeric($input): string
     {

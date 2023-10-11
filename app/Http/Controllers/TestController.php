@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BlogCategory;
-
 class TestController extends Controller
 {
     public function index()
     {
-        BlogCategory::query()->create([
-            'title' => 'بلاگ تست',
-        ]);
+        $startDate = '2023-10-01';
+
+        return date('m-d', strtotime($startDate));
     }
 }

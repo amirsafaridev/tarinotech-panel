@@ -17,7 +17,7 @@ class BlogCategoryController extends Controller
     public function index()
     {
         $title = 'بلاگ ها - دسته بندی ها';
-        $routeData = route('admin.blog-category.data');
+        $routeData = route('admin.blog.category.data');
         $selects = ['id', 'title', 'blogs_count', 'created_at'];
 
         return view('admin.blog_category.index', compact('title', 'routeData', 'selects'));
@@ -34,7 +34,7 @@ class BlogCategoryController extends Controller
                     return $blogCategory->created_at->toJalali()->format(formatJalaliDateTime());
                 })
                 ->addColumn('action', function (BlogCategory $blogCategory) {
-                    return Helper::btnMaker(BtnType::Warning, route('admin.blog-category.edit', $blogCategory->id), trans('panel.action.edit'));
+                    return Helper::btnMaker(BtnType::Warning, route('admin.blog.category.edit', $blogCategory->id), trans('panel.action.edit'));
                 })
                 ->make();
         } catch (Exception $e) {
@@ -45,7 +45,7 @@ class BlogCategoryController extends Controller
     public function create()
     {
         $title = 'بلاگ ها - دسته بندی جدید';
-        $routeStore = route('admin.blog-category.store');
+        $routeStore = route('admin.blog.category.store');
 
         return view('admin.blog_category.create', compact('title', 'routeStore'));
     }
@@ -73,8 +73,8 @@ class BlogCategoryController extends Controller
     public function edit(BlogCategory $blogCategory)
     {
         $title = 'بلاگ ها - ویرایش دسته بندی';
-        $routeUpdate = route('admin.blog-category.update', $blogCategory->id);
-        $routeDestroy = route('admin.blog-category.destroy', $blogCategory->id);
+        $routeUpdate = route('admin.blog.category.update', $blogCategory->id);
+        $routeDestroy = route('admin.blog.category.destroy', $blogCategory->id);
 
         return view('admin.blog_category.edit', compact('title', 'routeUpdate', 'routeDestroy', 'blogCategory'));
     }
@@ -107,11 +107,11 @@ class BlogCategoryController extends Controller
         try {
             $blogCategory->delete();
 
-            return redirect(route('admin.blog-category.index'))->with('success', trans('panel.success_delete'));
+            return redirect(route('admin.blog.category.index'))->with('success', trans('panel.success_delete'));
         } catch (Exception $e) {
             report($e);
 
-            return redirect(route('admin.blog-category.index'))->with('danger', trans('panel.error_delete'));
+            return redirect(route('admin.blog.category.index'))->with('danger', trans('panel.error_delete'));
         }
     }
 

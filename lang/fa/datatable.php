@@ -21,4 +21,5 @@ return [
     'blogs_count' => 'بلاگ ها',
     'category.title' => 'دسته بندی',
     'base.title' => 'نوع پروژه',
+    'project.title' => 'نام پروژه',
 ];

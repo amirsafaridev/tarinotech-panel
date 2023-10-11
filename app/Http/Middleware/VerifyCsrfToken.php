@@ -15,5 +15,6 @@ class VerifyCsrfToken extends Middleware
         'api/*',
         'admin/*/goal',
         'admin/group-goal',
+        'admin/ajax/*',
     ];
 }

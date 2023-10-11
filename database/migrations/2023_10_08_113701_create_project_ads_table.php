@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('project_ads', function (Blueprint $table) {
             $table->id();
+            $table->string('field_activity')->nullable();
+            $table->json('host');
             $table->timestamps();
         });
     }

@@ -20,7 +20,7 @@ return new class extends Migration
 
             $table->foreign('project_base_id')
                 ->references('id')
-                ->on('project_types');
+                ->on('project_bases');
         });
     }
 

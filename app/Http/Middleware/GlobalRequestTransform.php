@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Helpers\Helper;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -18,7 +17,7 @@ class GlobalRequestTransform
             if (is_array($value)) {
                 continue;
             }
-            $input[$key] = Helper::persianNumberToEnglish($value);
+            $input[$key] = persianNumberToEnglish($value);
         }
 
         // Replace the request input with the transformed data

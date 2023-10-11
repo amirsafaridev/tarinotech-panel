@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('domain')->index();
             $table->unsignedBigInteger('admin_id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedInteger('price');
-            $table->morphs('project');
+            $table->morphs('type');
+            $table->date('deadline_at')->nullable();
             $table->foreign('admin_id')->references('id')->on('admins');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

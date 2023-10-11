@@ -13,20 +13,19 @@ return new class extends Migration
     {
         Schema::create('project_webs', function (Blueprint $table) {
             $table->id();
-            $table->string('domain');
             $table->string('field_activity')->nullable();
             $table->unsignedInteger('package_id');
             $table->unsignedTinyInteger('project_type_id');
             $table->unsignedTinyInteger('pages')->default(0);
 
-            $table->json('domain_extra');
+            $table->json('domains');
             $table->json('host');
             $table->json('language');
             $table->json('sample');
             $table->json('facilities');
 
             $table->date('agreement_at');
-            $table->date('deadline_at')->nullable();
+            $table->unsignedInteger('working_days');
 
             $table->timestamps();
 

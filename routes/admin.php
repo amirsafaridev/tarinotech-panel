@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdditionalFeatureController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminGoalController;
 use App\Http\Controllers\Admin\AdminPasswordController;
+use App\Http\Controllers\Admin\Ajax\AjaxController;
 use App\Http\Controllers\Admin\Ajax\Select2Controller;
 use App\Http\Controllers\Admin\AutoMessageController;
 use App\Http\Controllers\Admin\Blog\BlogCategoryController;
@@ -73,9 +74,19 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
     });
 
     Route::controller(Select2Controller::class)->group(function () {
-        Route::get('/admin/ajax/select2/admin', 'selectAdmin')->name('ajax.select2.admin');
-        Route::get('/admin/ajax/select2/user', 'selectUser')->name('ajax.select2.user');
-        Route::get('/admin/ajax/select2/project', 'selectProject')->name('ajax.select2.project');
+        Route::get('/ajax/select2/admin', 'selectAdmin')->name('ajax.select2.admin');
+        Route::get('/ajax/select2/user', 'selectUser')->name('ajax.select2.user');
+        Route::get('/ajax/select2/project', 'selectProject')->name('ajax.select2.project');
+    });
+
+    Route::controller(Select2Controller::class)->group(function () {
+        Route::get('/ajax/select2/admin', 'selectAdmin')->name('ajax.select2.admin');
+        Route::get('/ajax/select2/user', 'selectUser')->name('ajax.select2.user');
+        Route::get('/ajax/select2/project', 'selectProject')->name('ajax.select2.project');
+    });
+
+    Route::controller(AjaxController::class)->group(function () {
+        Route::post('/ajax/calc-day-work', 'calculateWorkDaysWithFreeDays')->name('ajax.calc-day-work');
     });
 
     Route::controller(AdminGoalController::class)->group(function () {
@@ -250,13 +261,13 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
     });
 
     Route::controller(BlogCategoryController::class)->group(function () {
-        Route::get('/blog/category', 'index')->name('blog-category.index');
-        Route::get('/blog/category/data', 'data')->name('blog-category.data');
-        Route::get('/blog/category/create', 'create')->name('blog-category.create');
-        Route::post('/blog/category/store', 'store')->name('blog-category.store');
-        Route::get('/blog/category/{blogCategory}/edit', 'edit')->name('blog-category.edit');
-        Route::patch('/blog/category/{blogCategory}/update', 'update')->name('blog-category.update');
-        Route::delete('/blog/category/{blogCategory}/destroy', 'destroy')->name('blog-category.destroy');
+        Route::get('/blog/category', 'index')->name('blog.category.index');
+        Route::get('/blog/category/data', 'data')->name('blog.category.data');
+        Route::get('/blog/category/create', 'create')->name('blog.category.create');
+        Route::post('/blog/category/store', 'store')->name('blog.category.store');
+        Route::get('/blog/category/{blogCategory}/edit', 'edit')->name('blog.category.edit');
+        Route::patch('/blog/category/{blogCategory}/update', 'update')->name('blog.category.update');
+        Route::delete('/blog/category/{blogCategory}/destroy', 'destroy')->name('blog.category.destroy');
     });
 
     Route::controller(BlogController::class)->group(function () {

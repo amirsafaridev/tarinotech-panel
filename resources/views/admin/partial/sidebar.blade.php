@@ -101,7 +101,7 @@
                     <ul class="slide-menu">
                         <li><a href="{{ route('admin.blog.index') }}" class="slide-item">لیست</a></li>
                         <li><a href="{{ route('admin.blog.create') }}" class="slide-item">ایجاد</a></li>
-                        <li><a href="{{ route('admin.blog-category.index') }}" class="slide-item">دسته بندی ها</a></li>
+                        <li><a href="{{ route('admin.blog.category.index') }}" class="slide-item">دسته بندی ها</a></li>
                     </ul>
                 </li>
 

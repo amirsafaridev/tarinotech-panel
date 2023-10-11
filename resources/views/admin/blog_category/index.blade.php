@@ -20,7 +20,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title">دسته بندی بلاگ ها</h3>
-                    <a class="btn btn-success btn-sm" href="{{ route('admin.blog-category.create') }}">ایجاد</a>
+                    <a class="btn btn-success btn-sm" href="{{ route('admin.blog.category.create') }}">ایجاد</a>
                 </div>
                 <div class="card-body">
                     @include('admin.partial.message')

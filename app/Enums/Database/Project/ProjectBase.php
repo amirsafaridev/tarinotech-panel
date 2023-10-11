@@ -5,7 +5,7 @@ namespace App\Enums\Database\Project;
 use BenSampo\Enum\Contracts\LocalizedEnum;
 use BenSampo\Enum\Enum;
 
-final class ProjectType extends Enum implements LocalizedEnum
+final class ProjectBase extends Enum implements LocalizedEnum
 {
     const Web = 1;
 

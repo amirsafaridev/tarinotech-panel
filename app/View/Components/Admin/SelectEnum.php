@@ -7,17 +7,19 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use function view;
 
-class Textarea extends Component
+class SelectEnum extends Component
 {
     /**
      * Create a new component instance.
      */
     public function __construct(
+        public string $enumClass,
         public string $title = '',
         public string $identify = '',
         public ?string $old = '',
-        public ?string $description = '',
-        public string $rows = '8',
+        public ?string $description = null,
+        public bool $multiple = false,
+        public bool $withOption = true,
     ) {
         //
     }
@@ -27,6 +29,6 @@ class Textarea extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.admin.textarea');
+        return view('components.admin.select-enum');
     }
 }

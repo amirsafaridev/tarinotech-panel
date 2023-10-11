@@ -12,7 +12,7 @@
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.blog-category.index') }}">دسته بندی ها</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.blog.category.index') }}">دسته بندی ها</a></li>
                 <li class="breadcrumb-item active">دسته بندی جدید</li>
             </ol>
         </div>

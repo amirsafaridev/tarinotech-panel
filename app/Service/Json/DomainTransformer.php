@@ -64,8 +64,8 @@ class DomainTransformer
         $config->setHaveDomain($data['have_domain']);
         $config->setDomainProviderWebsite($data['domain_provider_website']);
         $config->setDomainUsername($data['domain_username']);
-        $config->setDomainPassword($data['domain_password']);
-        $config->setOtherDomain(Crypt::decryptString($data['other_domain']));
+        $config->setDomainPassword(Crypt::decryptString($data['domain_password']));
+        $config->setOtherDomain($data['other_domain']);
         $config->setDomainPrimary($data['domain_primary']);
         $config->setDomainsRequired($data['domains_required']);
 
