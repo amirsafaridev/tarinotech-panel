@@ -2,7 +2,7 @@
     <div class="app-sidebar__overlay" data-bs-toggle="sidebar"></div>
     <div class="app-sidebar">
         <div class="side-header">
-            <a class="header-brand1 d-none" href="{{ route('admin.dashboard') }}">
+            <a class="header-brand1" href="{{ route('admin.dashboard') }}">
                 <img src="{{ asset('res-admin/assets/images/brand/logo.png') }}" class="header-brand-img desktop-logo" alt="Worder">
                 <img src="{{ asset('res-admin/assets/images/brand/logo-toggle.png') }}" class="header-brand-img toggle-logo" alt="Worder">
                 <img src="{{ asset('res-admin/assets/images/brand/logo-dark.png') }}" class="header-brand-img light-logo1" alt="Worder">

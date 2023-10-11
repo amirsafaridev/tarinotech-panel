@@ -28,6 +28,28 @@
 
             <div class="card">
                 <div class="card-header">
+                    <h3 class="card-title">کارفرما و پروژه</h3>
+                    <div class="card-options">
+                        <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i class="fal fa-chevron-up"></i></a>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <x-admin.input identify="title" title="نام پروژه"/>
+
+                    <x-admin.select-user/>
+
+                    <x-admin.select-model identify="status_id"
+                                          title="وضعیت پروژه"
+                                          key="id"
+                                          value="title"
+                                          :items="$statuses"
+                    />
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
                     <h3 class="card-title">اطلاعات دامنه</h3>
                     <div class="card-options">
                         <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i class="fal fa-chevron-up"></i></a>
@@ -200,6 +222,7 @@
     @include('admin.partial.share-script')
     <script>
         $(document).ready(function () {
+            $('#user_id').select2();
             $('#domains_required').select2();
             $('#languages').select2();
             $('#facilities').select2();

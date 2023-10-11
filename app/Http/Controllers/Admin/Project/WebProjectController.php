@@ -7,10 +7,10 @@ use App\Enums\General\BtnType;
 use App\Helpers\Helper;
 use App\Helpers\Uploader\Uploader;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Admin\StoreRequest;
-use App\Http\Requests\Admin\Admin\UpdateRequest;
+use App\Http\Requests\Admin\Project\Web\StoreRequest;
 use App\Models\Admin;
 use App\Models\Package;
+use App\Models\ProjectStatus;
 use App\Models\ProjectType;
 use App\Models\ProjectWeb;
 use DB;
@@ -62,16 +62,43 @@ class WebProjectController extends Controller
         $packages = Package::query()
             ->get();
 
-        return view('admin.project.web.create', compact('title', 'routeStore', 'projectTypes', 'packages'));
+        $statuses = ProjectStatus::query()
+            ->where('project_base_id', ProjectBase::Web)
+            ->get();
+
+        return view('admin.project.web.create', compact('title', 'routeStore', 'projectTypes', 'packages', 'statuses'));
     }
 
     public function store(StoreRequest $request)
     {
         try {
             DB::beginTransaction();
-            $item = $this->itemProvider($request);
-            $admin = Admin::create($item);
-            $admin->syncRoles($request->input('role'));
+
+            $projectWeb = ProjectWeb::query()->create([
+                'field_activity' => $request->input('field_activity'),
+                'package_id' => $request->input('package_id'),
+                'project_type_id' => $request->input('project_type_id'),
+                'pages' => $request->input('pages'),
+                'agreement_at' => $request->input('agreement_at'),
+                'working_days' => $request->input('working_days'),
+                'domains' => [],
+                'host' => [],
+                'language' => [],
+                'sample' => [],
+                'facilities' => [],
+            ]);
+
+            $projectWeb->project->create([
+                'title' => $request->input('title'),
+                'domain' => $request->input('domain_primary'),
+                'admin_id' => auth()->id(),
+                'user_id' => $request->input('user_id'),
+                'price' => $request->input('price'),
+                'project_status_id' => $request->input('status_id'),
+                'deadline_at' => $request->input('deadline_at'),
+                'project_base_id' => ProjectBase::Web,
+            ]);
+
             DB::commit();
 
             return response()->json([

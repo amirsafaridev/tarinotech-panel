@@ -10,6 +10,13 @@ class ProjectWeb extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'domains' => 'json',
+        'host' => 'json',
+        'language' => 'json',
+        'sample' => 'json',
+    ];
+
     public function project(): MorphOne
     {
         return $this->morphOne(Project::class, 'project');

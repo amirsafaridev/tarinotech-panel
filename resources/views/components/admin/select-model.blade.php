@@ -3,6 +3,7 @@
         <label for="{{ $identify }}" class="form-label">{{ $title }}</label>
     @endif
     <select class="form-control" name="{{ $identify }}" id="{{ $identify }}">
+        <option value="">انتخاب گزینه</option>
         @if ($items->isNotEmpty())
             @foreach ($items as $item)
                 @if(isset($item['key']))
