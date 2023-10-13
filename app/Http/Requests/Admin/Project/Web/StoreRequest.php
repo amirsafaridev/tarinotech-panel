@@ -33,6 +33,20 @@ class StoreRequest extends FormRequest
             'pages' => 'required|integer',
             'agreement_at' => 'required|jdate',
             'working_days' => 'required|integer',
+            'facilities' => 'array',
+
+            /* Domain */
+            'domain_provider_website' => 'required_if:have_domain,on',
+            'domain_username' => 'required_if:have_domain,on',
+            'domain_password' => 'required_if:have_domain,on',
+
+            /* Host */
+            'host_provider' => 'required_if:have_host,on',
+            'host_username' => 'required_if:have_host,on',
+            'host_password' => 'required_if:have_host,on',
+
+            /* Language */
+            'languages' => 'array',
         ];
     }
 

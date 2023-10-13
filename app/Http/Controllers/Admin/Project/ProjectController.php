@@ -33,7 +33,7 @@ class ProjectController extends Controller
 
             return DataTables::of($admins)
                 ->editColumn('created_at', function ($admin) {
-                    return $admin->created_at->toJalali()->format('h:i Y-m-d');
+                    return $admin->created_at->toJalali()->format(formatJalaliDateTime());
                 })
                 ->editColumn('latest_login', function ($admin) {
                     return $admin->latestLogin ?

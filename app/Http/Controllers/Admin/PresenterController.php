@@ -38,7 +38,7 @@ class PresenterController extends Controller
 
             return DataTables::of($users)
                 ->editColumn('created_at', function ($user) {
-                    return $user->created_at->toJalali()->format('h:i Y-m-d');
+                    return $user->created_at->toJalali()->format(formatJalaliDateTime());
                 })
                 ->editColumn('access_projects', function ($user) {
                     return $user->accessProjects ? $user->accessProjects->pluck('title')->implode(', ') : 'پروژه ای ندارد';

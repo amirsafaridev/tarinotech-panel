@@ -19,10 +19,13 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedInteger('price');
             $table->morphs('type');
+            $table->date('agreement_at')->nullable();
             $table->date('deadline_at')->nullable();
+            $table->text('note')->nullable();
             $table->foreign('admin_id')->references('id')->on('admins');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

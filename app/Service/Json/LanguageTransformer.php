@@ -8,24 +8,14 @@ class LanguageTransformer
 
     private ?array $languages = [];
 
-    public function setPrimaryLanguage($primaryLanguage)
+    public function setPrimaryLanguage(string $primaryLanguage)
     {
         $this->primaryLanguage = $primaryLanguage;
     }
 
-    public function setLanguages($languages)
+    public function setLanguages(array $languages)
     {
         $this->languages = $languages;
-    }
-
-    public function toJson(): string
-    {
-        $data = [
-            'primary_language' => $this->primaryLanguage,
-            'languages' => $this->languages,
-        ];
-
-        return json_encode($data);
     }
 
     public static function fromJson($json): LanguageTransformer
@@ -38,5 +28,14 @@ class LanguageTransformer
         $config->setLanguages($data['languages']);
 
         return $config;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'primary_language' => $this->primaryLanguage,
+            'languages' => $this->languages,
+        ];
+
     }
 }

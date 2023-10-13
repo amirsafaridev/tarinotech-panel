@@ -24,7 +24,6 @@ return new class extends Migration
             $table->json('sample');
             $table->json('facilities');
 
-            $table->date('agreement_at');
             $table->unsignedInteger('working_days');
 
             $table->timestamps();

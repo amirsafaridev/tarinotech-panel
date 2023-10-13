@@ -3,52 +3,39 @@
 namespace App\Http\Controllers\Admin\Project;
 
 use App\Enums\Database\Project\ProjectBase;
-use App\Enums\General\BtnType;
 use App\Helpers\Helper;
 use App\Helpers\Uploader\Uploader;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Project\Web\StoreRequest;
 use App\Models\Admin;
 use App\Models\Package;
+use App\Models\Project;
 use App\Models\ProjectStatus;
 use App\Models\ProjectType;
 use App\Models\ProjectWeb;
+use App\Service\Json\DomainTransformer;
+use App\Service\Json\HostTransformer;
+use App\Service\Json\LanguageTransformer;
+use App\Service\Json\SampleTransformer;
+use Crypt;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
-use Yajra\DataTables\Facades\DataTables;
 
 class WebProjectController extends Controller
 {
     public function index()
     {
         $title = 'پروژه ها - وب سایت ها';
-        $routeData = route('admin.project.web.data');
-        $selects = ['id', 'project.title', 'created_at'];
-        $skipSearch = [''];
-        $skipSort = [''];
 
-        return view('admin.project.web.index', compact('title', 'routeData', 'selects', 'skipSearch', 'skipSort'));
-    }
+        $projects = Project::query()
+            ->with(['status', 'type.package'])
+            ->whereHasMorph('type', [ProjectWeb::class])
+            ->where('project_base_id', ProjectBase::Web)
+            ->paginate(3);
 
-    public function data()
-    {
-        try {
-            $admins = ProjectWeb::query()
-                ->with('project');
-
-            return DataTables::of($admins)
-                ->editColumn('created_at', function ($admin) {
-                    return $admin->created_at->toJalali()->format('h:i Y-m-d');
-                })
-                ->addColumn('action', function ($admin) {
-                    return Helper::btnMaker(BtnType::Warning, route('admin.project.web.edit', $admin->id), trans('panel.action.edit'));
-                })
-                ->make();
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
+        return view('admin.project.web.index', compact('title', 'projects'));
     }
 
     public function create()
@@ -74,21 +61,25 @@ class WebProjectController extends Controller
         try {
             DB::beginTransaction();
 
+            $domain = $this->getDomain($request);
+            $host = $this->getHost($request);
+            $language = $this->getLanguage($request);
+            $sample = $this->getSample($request);
+
             $projectWeb = ProjectWeb::query()->create([
                 'field_activity' => $request->input('field_activity'),
                 'package_id' => $request->input('package_id'),
                 'project_type_id' => $request->input('project_type_id'),
                 'pages' => $request->input('pages'),
-                'agreement_at' => $request->input('agreement_at'),
                 'working_days' => $request->input('working_days'),
-                'domains' => [],
-                'host' => [],
-                'language' => [],
-                'sample' => [],
-                'facilities' => [],
+                'domains' => $domain->toArray(),
+                'host' => $host->toArray(),
+                'language' => $language->toArray(),
+                'sample' => $sample->toArray(),
+                'facilities' => $request->input('facilities', []),
             ]);
 
-            $projectWeb->project->create([
+            $projectWeb->project()->create([
                 'title' => $request->input('title'),
                 'domain' => $request->input('domain_primary'),
                 'admin_id' => auth()->id(),
@@ -96,7 +87,9 @@ class WebProjectController extends Controller
                 'price' => $request->input('price'),
                 'project_status_id' => $request->input('status_id'),
                 'deadline_at' => $request->input('deadline_at'),
+                'note' => $request->input('note'),
                 'project_base_id' => ProjectBase::Web,
+                'agreement_at' => $request->input('agreement_at'),
             ]);
 
             DB::commit();
@@ -215,5 +208,68 @@ class WebProjectController extends Controller
         }
 
         return $item;
+    }
+
+    private function getDomain(Request $req): DomainTransformer
+    {
+
+        $domainPassword = $req->input('domain_password') ?
+            Crypt::encrypt($req->input('domain_password')) :
+            '';
+        $domains = resolve(DomainTransformer::class);
+        $domains->setHaveDomain($req->has('have_domain'));
+        $domains->setDomainProviderWebsite($req->input('domain_provider_website'));
+        $domains->setDomainUsername($req->input('domain_username'));
+        $domains->setDomainPassword($domainPassword);
+        $domains->setDomainPrimary($req->input('domain_primary'));
+        $domains->setDomainsRequired($req->input('domains_required'));
+        $domains->setOtherDomain($req->input('other_domain'));
+
+        return $domains;
+    }
+
+    private function getHost(Request $req): HostTransformer
+    {
+        $hostPassword = $req->input('host_password') ?
+            Crypt::encrypt($req->input('host_password')) :
+            '';
+
+        $host = resolve(HostTransformer::class);
+        $host->setHaveHost($req->has('have_host'));
+        $host->setHostProvider($req->input('host_provider'));
+        $host->setHostUsername($req->input('host_username'));
+        $host->setHostPassword($hostPassword);
+        $host->setHostLocation($req->input('host_location'));
+        $host->setHostMostVisit($req->has('host_most_visit'));
+
+        return $host;
+    }
+
+    private function getLanguage(Request $req): LanguageTransformer
+    {
+
+        $language = resolve(LanguageTransformer::class);
+        $language->setPrimaryLanguage($req->input('primary_language'));
+        $language->setLanguages($req->input('languages', []));
+
+        return $language;
+    }
+
+    private function getSample(Request $req): SampleTransformer
+    {
+        $favoriteSites = [];
+        if ($req->input('favorite_sites')) {
+            $favoriteSites = explode(PHP_EOL, $req->input('favorite_sites'));
+        }
+
+        $similarSites = [];
+        if ($req->input('similar_sites')) {
+            $similarSites = explode(PHP_EOL, $req->input('similar_sites'));
+        }
+        $language = resolve(SampleTransformer::class);
+        $language->setFavoriteSites($favoriteSites);
+        $language->setSimilarSites($similarSites);
+
+        return $language;
     }
 }

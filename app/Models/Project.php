@@ -6,29 +6,40 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Project extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'title',
-        'project_type_id',
+        'domain',
         'admin_id',
         'user_id',
         'price',
-        'status',
-        'created_at',
-        'updated_at',
+        'project_status_id',
+        'project_base_id',
+        'type_type',
+        'type_id',
+        'agreement_at',
+        'deadline_at',
+        'note',
     ];
 
-    public function type(): BelongsTo
+    public function base(): BelongsTo
     {
-        return $this->belongsTo(ProjectType::class);
+        return $this->belongsTo(ProjectBase::class, 'project_base_id');
     }
 
-    public function project(): MorphTo
+    public function type(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(ProjectStatus::class, 'project_status_id');
     }
 }

@@ -8,24 +8,23 @@ class SampleTransformer
 
     private ?array $favoriteSites = [];
 
-    public function setSimilarSites($similarSites)
+    public function setSimilarSites(array $similarSites)
     {
         $this->similarSites = $similarSites;
     }
 
-    public function setFavoriteSites($favoriteSites)
+    public function setFavoriteSites(array $favoriteSites)
     {
         $this->favoriteSites = $favoriteSites;
     }
 
-    public function toJson(): string
+    public function toArray(): array
     {
-        $data = [
+        return [
             'similar_sites' => $this->similarSites,
             'favorite_sites' => $this->favoriteSites,
         ];
 
-        return json_encode($data);
     }
 
     public static function fromJson($json): SampleTransformer

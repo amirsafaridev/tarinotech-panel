@@ -168,7 +168,6 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
 
     Route::controller(WebProjectController::class)->group(function () {
         Route::get('/project/web', 'index')->name('project.web.index');
-        Route::get('/project/web/data', 'data')->name('project.web.data');
         Route::get('/project/web/create', 'create')->name('project.web.create');
         Route::post('/project/web/store', 'store')->name('project.web.store');
         Route::get('/project/web/{project}/edit', 'edit')->name('project.web.edit');

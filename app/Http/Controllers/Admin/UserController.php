@@ -39,7 +39,7 @@ class UserController extends Controller
 
             return DataTables::of($users)
                 ->editColumn('created_at', function (User $user) {
-                    return $user->created_at->toJalali()->format('h:i Y-m-d');
+                    return $user->created_at->toJalali()->format(formatJalaliDateTime());
                 })
                 ->editColumn('person_type', function (User $user) {
                     return Helper::renderPersonType($user->person_type);

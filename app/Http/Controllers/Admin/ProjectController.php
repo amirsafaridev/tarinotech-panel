@@ -33,7 +33,7 @@ class ProjectController extends Controller
 
             return DataTables::of($roles)
                 ->editColumn('created_at', function ($role) {
-                    return $role->created_at->toJalali()->format('h:i Y-m-d');
+                    return $role->created_at->toJalali()->format(formatJalaliDateTime());
                 })
                 ->addColumn('action', function ($role) {
                     return Helper::btnMaker(BtnType::Warning, route('admin.role.edit', $role->id), trans('panel.action.edit'));

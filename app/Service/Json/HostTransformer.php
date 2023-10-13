@@ -2,7 +2,6 @@
 
 namespace App\Service\Json;
 
-use Crypt;
 use InvalidArgumentException;
 
 class HostTransformer
@@ -19,31 +18,31 @@ class HostTransformer
 
     private bool $hostMostVisit = false;
 
-    const HOST_LOCATION_IN_IRAN = 'in_iran';
+    const HOST_LOCATION_IN_IRAN = 'IN_IRAN';
 
-    const HOST_LOCATION_OUT_IRAN = 'out_iran';
+    const HOST_LOCATION_OUT_IRAN = 'OUT_IRAN';
 
-    public function setHaveHost($haveHost)
+    public function setHaveHost(bool $haveHost)
     {
         $this->haveHost = $haveHost;
     }
 
-    public function setHostProvider($hostProvider)
+    public function setHostProvider(?string $hostProvider)
     {
         $this->hostProvider = $hostProvider;
     }
 
-    public function setHostUsername($hostUsername)
+    public function setHostUsername(?string $hostUsername)
     {
         $this->hostUsername = $hostUsername;
     }
 
-    public function setHostPassword($hostPassword)
+    public function setHostPassword(?string $hostPassword)
     {
-        $this->hostPassword = Crypt::encrypt($hostPassword);
+        $this->hostPassword = $hostPassword;
     }
 
-    public function setHostLocation($hostLocation)
+    public function setHostLocation(?string $hostLocation)
     {
         // Validate the host_location value
         if ($hostLocation === self::HOST_LOCATION_IN_IRAN || $hostLocation === self::HOST_LOCATION_OUT_IRAN) {
@@ -53,7 +52,7 @@ class HostTransformer
         }
     }
 
-    public function setHostMostVisit($hostMostVisit)
+    public function setHostMostVisit(bool $hostMostVisit)
     {
         $this->hostMostVisit = $hostMostVisit;
     }
@@ -67,7 +66,7 @@ class HostTransformer
         $config->setHaveHost($data['have_host']);
         $config->setHostProvider($data['host_provider']);
         $config->setHostUsername($data['host_username']);
-        $config->setHostPassword(Crypt::decryptString($data['host_password']));
+        $config->setHostPassword($data['host_password']);
 
         // Use enum-like constants for host_location
         $config->setHostLocation($data['host_location']);
@@ -76,17 +75,16 @@ class HostTransformer
         return $config;
     }
 
-    public function toJson(): string
+    public function toArray(): array
     {
-        $data = [
+        return [
             'have_host' => $this->haveHost,
             'host_provider' => $this->hostProvider,
             'host_username' => $this->hostUsername,
-            'host_password' => Crypt::decryptString($this->hostPassword),
+            'host_password' => $this->hostPassword,
             'host_location' => $this->hostLocation,
             'host_most_visit' => $this->hostMostVisit,
         ];
 
-        return json_encode($data);
     }
 }

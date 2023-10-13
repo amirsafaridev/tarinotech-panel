@@ -234,5 +234,15 @@ return [
         'agreement_at' => 'تاریخ قرارداد',
         'working_days' => 'روز کاری',
         'status_id' => 'وضعیت',
+
+        'have_domain' => 'دامنه',
+        'domain_provider_website' => 'پرووایدر دامنه',
+        'domain_username' => 'نام کاربری دامنه',
+        'domain_password' => 'رمز دامنه',
+
+        'have_host' => 'هاست',
+        'host_provider' => 'پرووایدر هاست',
+        'host_username' => 'نام کاربری هاست',
+        'host_password' => 'رمز هاست',
     ],
 ];

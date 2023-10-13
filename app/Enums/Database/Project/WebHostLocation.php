@@ -7,7 +7,7 @@ use BenSampo\Enum\Enum;
 
 final class WebHostLocation extends Enum implements LocalizedEnum
 {
-    const IR = 'IR';
+    const IR = 'IN_IRAN';
 
-    const OUTSIDE = 'OUTSIDE';
+    const OUTSIDE = 'OUT_IRAN';
 }

@@ -2,8 +2,6 @@
 
 namespace App\Service\Json;
 
-use Crypt;
-
 class DomainTransformer
 {
     private bool $haveDomain = false;
@@ -37,7 +35,7 @@ class DomainTransformer
 
     public function setDomainPassword(?string $domainPassword): void
     {
-        $this->domainPassword = Crypt::encrypt($domainPassword);
+        $this->domainPassword = $domainPassword;
     }
 
     public function setOtherDomain(?string $otherDomain): void
@@ -64,7 +62,7 @@ class DomainTransformer
         $config->setHaveDomain($data['have_domain']);
         $config->setDomainProviderWebsite($data['domain_provider_website']);
         $config->setDomainUsername($data['domain_username']);
-        $config->setDomainPassword(Crypt::decryptString($data['domain_password']));
+        $config->setDomainPassword($data['domain_password']);
         $config->setOtherDomain($data['other_domain']);
         $config->setDomainPrimary($data['domain_primary']);
         $config->setDomainsRequired($data['domains_required']);
@@ -72,18 +70,16 @@ class DomainTransformer
         return $config;
     }
 
-    public function toJson(): string
+    public function toArray(): array
     {
-        $data = [
+        return [
             'have_domain' => $this->haveDomain,
             'domain_provider_website' => $this->domainProviderWebsite,
             'domain_username' => $this->domainUsername,
-            'domain_password' => Crypt::decryptString($this->domainPassword),
+            'domain_password' => $this->domainPassword,
             'other_domain' => $this->otherDomain,
             'domain_primary' => $this->domainPrimary,
             'domains_required' => $this->domainsRequired,
         ];
-
-        return json_encode($data);
     }
 }

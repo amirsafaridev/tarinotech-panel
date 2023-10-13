@@ -7,15 +7,15 @@ use BenSampo\Enum\Enum;
 
 final class WebFacility extends Enum implements LocalizedEnum
 {
-    const ReceiveSMS = 'Receive SMS';
+    const ReceiveSMS = 'ReceiveSMS';
 
-    const ReceivePaymentGateway = 'Receive Payment Gateway';
+    const ReceivePaymentGateway = 'ReceivePaymentGateway';
 
-    const ReceiveEnamad = 'Receive Enamad';
+    const ReceiveEnamad = 'ReceiveEnamad';
 
-    const LoginMobile = 'Login Mobile';
+    const LoginMobile = 'LoginMobile';
 
-    const OnlineChat = 'Online Chat';
+    const OnlineChat = 'OnlineChat';
 
-    const TicketSystem = 'Ticket System';
+    const TicketSystem = 'TicketSystem';
 }
