@@ -3,10 +3,15 @@
 namespace App\Http\Controllers\Admin\Project;
 
 use App\Enums\Database\Project\ProjectBase;
+use App\Filters\Admin\Project\DomainFilter;
+use App\Filters\Admin\Project\IDFilter;
+use App\Filters\Admin\Project\SortFilter;
+use App\Filters\Admin\Project\StatusFilter;
+use App\Filters\Admin\Project\Web\PackageFilter;
 use App\Helpers\Helper;
-use App\Helpers\Uploader\Uploader;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Project\Web\StoreRequest;
+use App\Http\Requests\Admin\Project\Web\UpdateRequest;
 use App\Models\Admin;
 use App\Models\Project;
 use App\Models\ProjectWeb;
@@ -17,6 +22,7 @@ use App\Service\Json\SampleTransformer;
 use Crypt;
 use DB;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class WebProjectController extends Controller
@@ -27,11 +33,28 @@ class WebProjectController extends Controller
 
         $projects = Project::query()
             ->with(['status', 'type.package'])
-            ->whereHasMorph('type', [ProjectWeb::class])
+            ->whereHasMorph('type', [ProjectWeb::class], function (Builder $q) {
+                $q->filter([
+                    PackageFilter::class,
+                ]);
+            })
             ->where('project_base_id', ProjectBase::Web)
-            ->paginate(3);
+            ->filter([
+                IDFilter::class,
+                DomainFilter::class,
+                StatusFilter::class,
+                SortFilter::class,
+            ])
+            ->paginate(12);
 
-        return view('admin.project.web.index', compact('title', 'projects'));
+        $sortItems = [
+            'id-desc' => 'شناسه (نزولی)',
+            'id-asc' => 'شناسه (صعودی)',
+            'price-desc' => 'قیمت (نزولی)',
+            'price-asc' => 'قیمت (صعودی)',
+        ];
+
+        return view('admin.project.web.index', compact('title', 'projects', 'sortItems'));
     }
 
     public function create()
@@ -47,36 +70,8 @@ class WebProjectController extends Controller
         try {
             DB::beginTransaction();
 
-            $domain = $this->getDomain($request);
-            $host = $this->getHost($request);
-            $language = $this->getLanguage($request);
-            $sample = $this->getSample($request);
-
-            $projectWeb = ProjectWeb::query()->create([
-                'field_activity' => $request->input('field_activity'),
-                'package_id' => $request->input('package_id'),
-                'project_type_id' => $request->input('project_type_id'),
-                'pages' => $request->input('pages'),
-                'working_days' => $request->input('working_days'),
-                'domains' => $domain->toArray(),
-                'host' => $host->toArray(),
-                'language' => $language->toArray(),
-                'sample' => $sample->toArray(),
-                'facilities' => $request->input('facilities', []),
-            ]);
-
-            $projectWeb->project()->create([
-                'title' => $request->input('title'),
-                'domain' => $request->input('domain_primary'),
-                'admin_id' => auth()->id(),
-                'user_id' => $request->input('user_id'),
-                'price' => $request->input('price'),
-                'project_status_id' => $request->input('status_id'),
-                'deadline_at' => $request->input('deadline_at'),
-                'note' => $request->input('note'),
-                'project_base_id' => ProjectBase::Web,
-                'agreement_at' => $request->input('agreement_at'),
-            ]);
+            $projectWeb = ProjectWeb::query()->create($this->initialProjectData($request));
+            $projectWeb->project()->create($this->initialWebProjectData($request));
 
             DB::commit();
 
@@ -103,19 +98,24 @@ class WebProjectController extends Controller
             ->findOrFail($projectId);
 
         $title = 'پروژه سایت - ویرایش';
-        $routeUpdate = route('admin.project.web.update', $project->type->id);
+        $routeUpdate = route('admin.project.web.update', $project->id);
         // $routeDestroy = route('admin.project.web.destroy', $project->type->id);
 
         return view('admin.project.web.edit', compact('title', 'routeUpdate', 'project'));
     }
 
-    public function update(UpdateRequest $request, Admin $admin)
+    public function update(UpdateRequest $request, $projectId)
     {
         try {
+
+            $project = Project::query()
+                ->whereHasMorph('type', [ProjectWeb::class])
+                ->with('type')
+                ->findOrFail($projectId);
+
             DB::beginTransaction();
-            $item = $this->itemProvider($request, true);
-            $admin->update($item);
-            $admin->syncRoles($request->input('role'));
+            $project->update($this->initialProjectData($request));
+            $project->type->update($this->initialWebProjectData($request));
             DB::commit();
 
             return response()->json([
@@ -128,7 +128,7 @@ class WebProjectController extends Controller
 
             return response()->json([
                 'result' => 'exception',
-                'message' => trans('panel.error_update'),
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -155,47 +155,6 @@ class WebProjectController extends Controller
 
             return redirect(route('admin.project.web.index'))->with('danger', trans('panel.error_delete'));
         }
-    }
-
-    protected function itemProvider(Request $request, bool $editMode = false): array
-    {
-        $item['first_name'] = $request->input('first_name');
-        $item['last_name'] = $request->input('last_name');
-        $item['password'] = bcrypt($request->input('password'));
-        $item['has_access'] = $request->has('has_access');
-
-        $dob = $request->input('dob');
-        $item['dob'] = empty($dob) ? null : Helper::toGregorian($dob);
-
-        $startCooperation = $request->input('start_cooperation');
-        $item['start_cooperation'] = empty($startCooperation) ? null : Helper::toGregorian($startCooperation);
-
-        $startLastContract = $request->input('start_last_contract');
-        $item['start_last_contract'] = empty($startLastContract) ? null : Helper::toGregorian($startLastContract);
-
-        $endLastContract = $request->input('end_last_contract');
-        $item['end_last_contract'] = empty($endLastContract) ? null : Helper::toGregorian($endLastContract);
-
-        $item['resume'] = $request->input('resume');
-        $item['description'] = $request->input('description');
-        $item['mobile'] = $request->input('mobile');
-
-        if (! $editMode) {
-            $item['email'] = $request->input('email');
-            $item['password'] = bcrypt($request->input('password'));
-        }
-
-        if ($request->hasFile('avatar')) {
-            $provider = (new Uploader())
-                ->fit(150, 150)
-                ->path('admin')
-                ->field('avatar')
-                ->upload();
-
-            $item['avatar'] = $provider['photo'];
-        }
-
-        return $item;
     }
 
     private function getDomain(Request $req): DomainTransformer
@@ -259,5 +218,57 @@ class WebProjectController extends Controller
         $language->setSimilarSites($similarSites);
 
         return $language;
+    }
+
+    private function initialWebProjectData(Request $request): array
+    {
+        $domain = $this->getDomain($request);
+        $host = $this->getHost($request);
+        $language = $this->getLanguage($request);
+        $sample = $this->getSample($request);
+
+        return [
+            'field_activity' => $request->input('field_activity'),
+            'package_id' => $request->input('package_id'),
+            'project_type_id' => $request->input('project_type_id'),
+            'pages' => $request->input('pages'),
+            'working_days' => $request->input('working_days'),
+            'domains' => $domain->toArray(),
+            'host' => $host->toArray(),
+            'language' => $language->toArray(),
+            'sample' => $sample->toArray(),
+            'facilities' => $request->input('facilities', []),
+        ];
+    }
+
+    private function initialProjectData(Request $request): array
+    {
+        $agreementAt = $request->input('agreement_at');
+        $deadlineAt = $request->input('deadline_at');
+
+        $data = [
+            'title' => $request->input('title'),
+            'domain' => $request->input('domain_primary'),
+            'admin_id' => auth()->id(),
+            'user_id' => $request->input('user_id'),
+            'price' => $request->input('price'),
+            'project_status_id' => $request->input('status_id'),
+            'note' => $request->input('note'),
+            'project_base_id' => ProjectBase::Web,
+        ];
+
+        if (! empty($agreementAt)) {
+            $data['agreement_at'] = Helper::toGregorian($agreementAt);
+        } else {
+            $data['agreement_at'] = null;
+        }
+
+        if (! empty($deadlineAt)) {
+            $data['deadline_at'] = Helper::toGregorian($deadlineAt);
+        } else {
+            $data['deadline_at'] = null;
+        }
+
+        return $data;
     }
 }

@@ -4,21 +4,25 @@ namespace App\View\Components\Admin;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
 use Illuminate\View\Component;
 use function view;
 
-class Input extends Component
+class SelectModel extends Component
 {
     /**
      * Create a new component instance.
      */
     public function __construct(
-        public string $type = 'text',
+        public Collection $items,
+        public string $key = 'title',
+        public string $value = 'id',
         public string $title = '',
         public string $identify = '',
-        public ?string $old = null,
+        public array|string|null $old = null,
         public bool $disabled = false,
         public bool $isSmall = false,
+        public bool $multiple = false,
     ) {
         //
     }
@@ -28,6 +32,6 @@ class Input extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.admin.input');
+        return view('components.admin.select-model');
     }
 }

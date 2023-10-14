@@ -24,6 +24,6 @@ class ViewComposerProvider extends ServiceProvider
      */
     public function boot()
     {
-        view()->composer(['admin.project.web.create', 'admin.project.web.edit'], WebProjectComposer::class);
+        view()->composer(['admin.project.web.*'], WebProjectComposer::class);
     }
 }

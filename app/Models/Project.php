@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,6 +13,7 @@ class Project extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use Filterable;
 
     protected $fillable = [
         'title',
@@ -26,6 +28,10 @@ class Project extends Model
         'agreement_at',
         'deadline_at',
         'note',
+    ];
+
+    protected $casts = [
+        'deadline_at' => 'date',
     ];
 
     public function base(): BelongsTo

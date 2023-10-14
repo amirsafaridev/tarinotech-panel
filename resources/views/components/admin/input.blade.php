@@ -1,12 +1,12 @@
 <div class="mb-3">
-    @if($type != 'hidden')
+    @if ($type !== 'hidden')
         <label for="{{ $identify }}" class="form-label">{{ $title }}</label>
     @endif
     <input type="{{ $type }}"
-           class="form-control"
+           class="form-control @if ($isSmall) form-control-sm @endif"
            name="{{ $identify }}"
            id="{{ $identify }}"
            value="{{ $old ?? '' }}"
-           @if($disabled) disabled @endif
-           />
+           @if ($disabled) disabled @endif
+    />
 </div>

@@ -201,7 +201,7 @@
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="agreement_at"
                                            title="تاریخ قرارداد"
-                                           :old="$project->type->agreement_at"/>
+                                           :old="$project->type->agreement_at->format('Y/m/d')"/>
                         </div>
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="field_activity"
@@ -224,7 +224,7 @@
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="deadline_at"
                                            title="تاریخ تحویل"
-                                           :old="$project->deadline_at"/>
+                                           :old="verta($project->deadline_at)->format('Y/m/d')"/>
                         </div>
                         <div class="col-12">
                             <div class="alert alert-success d-flex justify-content-center align-items-center" id="alert_working_days" role="alert">
@@ -292,6 +292,7 @@
             };
 
             $('#agreement_at').persianDatepicker(dataPickerConfig);
+            $('#deadline_at').persianDatepicker(dataPickerConfig);
 
             const deadlineAt = $('#deadline_at');
             const workingDays = $('#working_days');

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 class ProjectWeb extends Model
 {
     use HasFactory;
+    use Filterable;
 
     protected $fillable = [
         'field_activity',
@@ -30,6 +32,7 @@ class ProjectWeb extends Model
         'language' => 'json',
         'sample' => 'json',
         'facilities' => 'json',
+        'agreement_at' => 'date',
     ];
 
     public function project(): MorphOne

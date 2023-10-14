@@ -3,11 +3,12 @@
     <select class="form-control" name="{{ $identify }}" id="{{ $id ?? $identify }}">
         @if ($items->isNotEmpty())
             @foreach ($items as $item)
-                @if(isset($item['key']))
-                    <option @if(!empty($old) && $item[$key] == $old) selected="selected" @endif value="{{ $item[$key] }}">{{ $item[$value] }}</option>
-                @else
-                    <option @if(!empty($old) && $item->{$key} == $old) selected="selected" @endif value="{{ $item->{$key} }}">{{ $item->{$value} }}</option>
-                @endif
+                @php
+                    $itemKey = isset($item['key']) ? $item[$key] : $item->{$key};
+                @endphp
+                <option @if (!empty($old) && $itemKey == $old) selected="selected" @endif value="{{ $itemKey }}">
+                    {{ isset($item['key']) ? $item[$value] : $item->{$value} }}
+                </option>
             @endforeach
         @endif
     </select>

@@ -182,8 +182,13 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="working_days" title="مدت زمان (روز کاری)"/>
-                            <x-admin.input identify="deadline_at" type="hidden"/>
                         </div>
+
+                        <div class="col-12 col-md-6">
+                            <x-admin.input identify="deadline_at"
+                                           title="تاریخ تحویل"/>
+                        </div>
+
                         <div class="col-12">
                             <div class="alert alert-success d-flex justify-content-center align-items-center" id="alert_working_days" role="alert">
                                 <span class="message">برای محاسبه تاریخ تحویل لطفا عدد روز کاری را وارد کنید.</span>
@@ -216,7 +221,7 @@
 @section('script')
     @include('admin.partial.loader.script',['load'=>[
         \App\Enums\Assets\ScriptLoader::Select2(),
-         \App\Enums\Assets\ScriptLoader::Datepicker(),
+        \App\Enums\Assets\ScriptLoader::Datepicker(),
     ]])
     @include('admin.partial.request')
     @include('admin.partial.share-script')
@@ -244,7 +249,10 @@
 
             $('#agreement_at').persianDatepicker(dataPickerConfig);
 
+
             const deadlineAt = $('#deadline_at');
+            $(deadlineAt).persianDatepicker(dataPickerConfig);
+
             const workingDays = $('#working_days');
             const alertWorkingDays = $('#alert_working_days');
             const alertDaysCalcMessage = $('#alert_working_days .message');
@@ -265,7 +273,7 @@
                         let totalWorkDays = response.total_work_days;
                         let totalFreeDays = response.total_free_days;
                         let finalDateJalali = response.final_date_jalali;
-                        let finalDate = response.final_date;
+                        let finalDate = response.final_date_jalali;
                         let updatedMessage = `تعداد روز های محاسبه شده ${totalWorkDays} می باشد و تعداد روز های تعطیل محاسبه شده ${totalFreeDays} می باشد. تاریخ تحویل ${finalDateJalali} می باشد`;
                         alertDaysCalcMessage.html(updatedMessage);
                         deadlineAt.val(finalDate);

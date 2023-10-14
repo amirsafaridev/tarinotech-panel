@@ -24,8 +24,40 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255',
-            'permissions' => 'required|array',
+            'title' => 'required|max:255',
+            'domain_primary' => 'required|max:255',
+            'user_id' => 'required|exists:users,id',
+            'status_id' => 'required|exists:project_statuses,id',
+            'price' => 'required|integer',
+            'deadline_at' => 'required|date_format:Y/m/d',
+
+            'field_activity' => 'required|max:255',
+            'package_id' => 'required|exists:packages,id',
+            'project_type_id' => 'required|exists:project_types,id',
+            'pages' => 'required|integer',
+            'agreement_at' => 'required|jdate',
+            'working_days' => 'required|integer',
+            'facilities' => 'array',
+
+            /* Domain */
+            'domain_provider_website' => 'required_if:have_domain,on',
+            'domain_username' => 'required_if:have_domain,on',
+            'domain_password' => 'required_if:have_domain,on',
+
+            /* Host */
+            'host_provider' => 'required_if:have_host,on',
+            'host_username' => 'required_if:have_host,on',
+            'host_password' => 'required_if:have_host,on',
+
+            /* Language */
+            'languages' => 'array',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'price' => str_replace(',', '', $this->input('price')),
+        ]);
     }
 }

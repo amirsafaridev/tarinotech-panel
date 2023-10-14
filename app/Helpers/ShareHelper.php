@@ -95,3 +95,17 @@ if (! function_exists('generatePersianSlug')) {
         return trim($input, '-');
     }
 }
+
+if (! function_exists('cleanAlphaNumeric')) {
+    function cleanAlphaNumeric($inputString): string
+    {
+        return preg_replace('/[^a-zA-Z0-9]/', '', $inputString);
+    }
+}
+
+if (! function_exists('sanitizedIdentify')) {
+    function sanitizedIdentify($identify): string
+    {
+        return str_replace('[]', '', $identify);
+    }
+}

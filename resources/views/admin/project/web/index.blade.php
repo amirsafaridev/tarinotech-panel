@@ -1,7 +1,9 @@
 @extends('admin.master')
 @section('title') {{ $title }} @endsection
 @section('head')
-    @include('admin.partial.loader.style',['load'=>['']])
+    @include('admin.partial.loader.style',['load'=>[
+        \App\Enums\Assets\StyleLoader::Select2(),
+    ]])
 @endsection
 @section('content')
 
@@ -29,58 +31,10 @@
 
                 <div class="card-body">
                     @include('admin.partial.message')
+
+                    @include('admin.project.web.part.filter')
+
                     @if($projects->isNotEmpty())
-
-                        <form class="row mb-4" action="{{ route('admin.project.web.index') }}">
-                            <div class="col-12 col-md-3 col-xl-2">
-                                <div class="form-group">
-                                    <label class="form-label" for="id">شناسه</label>
-                                    <input class="form-control form-control-sm " name="id" id="id" placeholder="شناسه">
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-md-3 col-xl-2">
-                                <div class="form-group">
-                                    <label class="form-label" for="domain">دامنه</label>
-                                    <input class="form-control form-control-sm " name="domain" id="domain" placeholder="دامنه">
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-md-3 col-xl-2">
-                                <div class="form-group">
-                                    <label class="form-label" for="package_id">پکیج</label>
-                                    <select name="package_id" id="package_id" class="form-control form-select form-select-sm">
-                                        <option value="">طلایی</option>
-                                        <option value="">پیشرفته</option>
-                                        <option value="">اقتصادی</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-md-3 col-xl-2">
-                                <div class="form-group">
-                                    <label class="form-label" for="status_id">وضعیت</label>
-                                    <select name="status_id" id="status_id" class="form-control form-select form-select-sm">
-                                        <option value="">در حال انجام</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-md-3 col-xl-2">
-                                <div class="form-group">
-                                    <label class="form-label" for="sort">مرتب سازی</label>
-                                    <select name="sort" id="sort" class="form-control form-select form-select-sm">
-                                        <option value="id-desc">شناسه (صعودی)</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-md-3 col-xl-2 d-flex align-items-end justify-content-end">
-                                <button class="btn btn-sm btn-block btn-primary mb-4">اعمال</button>
-                            </div>
-
-                        </form>
-
                         <div class="table-responsive">
                             <table id="data-table" class="table">
                                 <thead>
@@ -128,5 +82,13 @@
     </div>
 @endsection
 @section('script')
-    @include('admin.partial.loader.script',['load'=>['']])
+    @include('admin.partial.loader.script',['load'=>[
+        \App\Enums\Assets\ScriptLoader::Select2(),
+    ]])
+    <script>
+        $(document).ready(function (){
+           $('#package_id').select2();
+           $('#status_id').select2();
+        });
+    </script>
 @endsection

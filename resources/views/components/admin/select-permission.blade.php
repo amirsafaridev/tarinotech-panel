@@ -1,10 +1,13 @@
 <div class="form-group">
-    <label for="{{ str_replace('[]','',$identify) }}" class="form-label">{{ $title }}</label>
-    <select class="form-control" name="{{ $identify }}" id="{{ str_replace('[]','',$identify) }}" {{ $attributes }}>
+    <label for="{{ sanitizedIdentify($identify) }}" class="form-label">{{ $title }}</label>
+    <select class="form-control" name="{{ $identify }}" id="{{ sanitizedIdentify($identify) }}" {{ $attributes }}>
         @if ($items->isNotEmpty())
             @foreach ($items as $item)
-                <option @if(!empty($old) && $item->{$key} == $old) selected="selected"
-                        @endif value="{{ $item->{$key} }}">{{ trans('permission.'.$item->{$value}) }}</option>
+                @php
+                    $itemKey = $item->{$key};
+                    $isSelected = !empty($old) && $itemKey == $old;
+                @endphp
+                <option {{ $isSelected ? 'selected' : '' }} value="{{ $itemKey }}">{{ trans('permission.'.$item->{$value}) }}</option>
             @endforeach
         @endif
     </select>
