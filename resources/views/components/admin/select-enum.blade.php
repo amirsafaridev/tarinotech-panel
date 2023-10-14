@@ -5,10 +5,18 @@
             <option value="">انتخاب گزینه</option>
         @endif
         @foreach ($enumClass::asSelectArray() as $key=>$value)
-            <option @if(!empty($old) && $key == $old) selected="selected" @endif value="{{ $key }}">{{ $value }}</option>
+            <option @if(!empty($old))
+                        @if(is_array($old) && in_array($key,$old))
+                            selected="selected"
+                        @elseif(is_string($old) && $old === $key)
+                            selected="selected"
+                        @endif
+                    @endif
+                    value="{{ $key }}">{{ $value }}</option>
         @endforeach
     </select>
     @if($description)
         <p class="form-help">{{ $description }}</p>
+
     @endif
 </div>

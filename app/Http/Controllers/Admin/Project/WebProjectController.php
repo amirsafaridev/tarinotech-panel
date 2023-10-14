@@ -8,10 +8,7 @@ use App\Helpers\Uploader\Uploader;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Project\Web\StoreRequest;
 use App\Models\Admin;
-use App\Models\Package;
 use App\Models\Project;
-use App\Models\ProjectStatus;
-use App\Models\ProjectType;
 use App\Models\ProjectWeb;
 use App\Service\Json\DomainTransformer;
 use App\Service\Json\HostTransformer;
@@ -21,7 +18,6 @@ use Crypt;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
 
 class WebProjectController extends Controller
 {
@@ -42,18 +38,8 @@ class WebProjectController extends Controller
     {
         $title = 'پروژه سایت - ایجاد';
         $routeStore = route('admin.project.web.store');
-        $projectTypes = ProjectType::query()
-            ->where('project_base_id', ProjectBase::Web)
-            ->get();
 
-        $packages = Package::query()
-            ->get();
-
-        $statuses = ProjectStatus::query()
-            ->where('project_base_id', ProjectBase::Web)
-            ->get();
-
-        return view('admin.project.web.create', compact('title', 'routeStore', 'projectTypes', 'packages', 'statuses'));
+        return view('admin.project.web.create', compact('title', 'routeStore'));
     }
 
     public function store(StoreRequest $request)
@@ -109,16 +95,18 @@ class WebProjectController extends Controller
         }
     }
 
-    public function edit(Admin $admin)
+    public function edit($projectId)
     {
-        $title = trans('panel.admin.edit');
-        $routeUpdate = route('admin.project.web.update', $admin->id);
-        $routeDestroy = route('admin.project.web.destroy', $admin->id);
-        $roles = Role::all();
+        $project = Project::query()
+            ->whereHasMorph('type', [ProjectWeb::class])
+            ->with('type')
+            ->findOrFail($projectId);
 
-        $oldRoles = $admin->roles;
+        $title = 'پروژه سایت - ویرایش';
+        $routeUpdate = route('admin.project.web.update', $project->type->id);
+        // $routeDestroy = route('admin.project.web.destroy', $project->type->id);
 
-        return view('admin.admin.edit', compact('title', 'routeUpdate', 'routeDestroy', 'admin', 'roles', 'oldRoles'));
+        return view('admin.project.web.edit', compact('title', 'routeUpdate', 'project'));
     }
 
     public function update(UpdateRequest $request, Admin $admin)

@@ -170,8 +170,10 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::get('/project/web', 'index')->name('project.web.index');
         Route::get('/project/web/create', 'create')->name('project.web.create');
         Route::post('/project/web/store', 'store')->name('project.web.store');
-        Route::get('/project/web/{project}/edit', 'edit')->name('project.web.edit');
-        Route::patch('/project/web/{project}/update', 'update')->name('project.web.update');
+        Route::get('/project/web/{projectId}/edit', 'edit')->name('project.web.edit')
+            ->whereNumber('projectId');
+        Route::patch('/project/web/{projectId}/update', 'update')->name('project.web.update')
+            ->whereNumber('projectId');
     });
 
     Route::controller(SeoProjectController::class)->group(function () {

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\ViewComposers\Admin\Project\WebProjectComposer;
 use Illuminate\Support\ServiceProvider;
 
 class ViewComposerProvider extends ServiceProvider
@@ -23,6 +24,6 @@ class ViewComposerProvider extends ServiceProvider
      */
     public function boot()
     {
-        //view()->composer(['admin.user.create','admin.user.edit'],UserComposer::class);
+        view()->composer(['admin.project.web.create', 'admin.project.web.edit'], WebProjectComposer::class);
     }
 }

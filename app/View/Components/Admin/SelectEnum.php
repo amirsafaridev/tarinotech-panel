@@ -16,12 +16,12 @@ class SelectEnum extends Component
         public string $enumClass,
         public string $title = '',
         public string $identify = '',
-        public ?string $old = '',
+        public string|array|null $old = null,
         public ?string $description = null,
         public bool $multiple = false,
         public bool $withOption = true,
     ) {
-        //
+
     }
 
     /**
