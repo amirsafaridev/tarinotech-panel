@@ -244,5 +244,12 @@ return [
         'host_provider' => 'پرووایدر هاست',
         'host_username' => 'نام کاربری هاست',
         'host_password' => 'رمز هاست',
+        'due_date_payments' => 'تاریخ سررسید پرداخت ها',
+        'agreement_duration' => 'مدت قرارداد',
+        'designed_by' => 'طراحی شده توسط',
+        'price_monthly' => 'پرداختی ماهیانه',
+        'amount_content' => 'میزان تولید محتوا',
+        'keywords_count' => 'تعداد کلمات سئو شدنی',
+        'keywords' => 'کلمات کلیدی',
     ],
 ];

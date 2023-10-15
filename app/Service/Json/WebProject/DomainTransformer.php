@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Json;
+namespace App\Service\Json\WebProject;
 
 class DomainTransformer
 {

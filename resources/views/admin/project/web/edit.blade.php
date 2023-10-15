@@ -40,7 +40,8 @@
                                    title="نام پروژه"
                                    :old="$project->title"/>
 
-                    <x-admin.select-user :old="$project->user_id"/>
+                    <x-admin.select-user title="کارفرما":old="$project->user_id"/>
+
 
                     <x-admin.select-model identify="status_id"
                                           title="وضعیت پروژه"
@@ -201,7 +202,7 @@
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="agreement_at"
                                            title="تاریخ قرارداد"
-                                           :old="$project->type->agreement_at->format('Y/m/d')"/>
+                                           :old="verta($project->agreement_at)->format('Y/m/d')"/>
                         </div>
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="field_activity"
@@ -233,7 +234,9 @@
                         </div>
                     </div>
 
-                    <x-admin.input identify="price" title="قیمت (ریال)" :old="number_format($project->price)"/>
+                    <x-admin.input identify="price"
+                                   title="قیمت (ریال)"
+                                   :old="number_format($project->price)"/>
 
                     <x-admin.textarea identify="similar_sites"
                                       title="سایت های مشابه"

@@ -3,7 +3,7 @@
         <label for="{{ $identify }}" class="form-label">{{ $title }}</label>
     @endif
     <select class="form-control" name="{{ $identify }}" id="{{ $identify }}">
-        <option value="">انتخاب کاربر</option>
+        <option value="">انتخاب گزینه</option>
         @if ($users->isNotEmpty())
             @foreach ($users as $user)
                 @php

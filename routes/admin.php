@@ -178,11 +178,12 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
 
     Route::controller(SeoProjectController::class)->group(function () {
         Route::get('/project/seo', 'index')->name('project.seo.index');
-        Route::get('/project/seo/data', 'data')->name('project.seo.data');
         Route::get('/project/seo/create', 'create')->name('project.seo.create');
         Route::post('/project/seo/store', 'store')->name('project.seo.store');
-        Route::get('/project/seo/{project}/edit', 'edit')->name('project.seo.edit');
-        Route::patch('/project/seo/{project}/update', 'update')->name('project.seo.update');
+        Route::get('/project/seo/{projectId}/edit', 'edit')->name('project.seo.edit')
+            ->whereNumber('projectId');
+        Route::patch('/project/seo/{projectId}/update', 'update')->name('project.seo.update')
+            ->whereNumber('projectId');
     });
 
     Route::controller(AdsProjectController::class)->group(function () {

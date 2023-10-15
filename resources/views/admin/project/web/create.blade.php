@@ -37,7 +37,7 @@
 
                     <x-admin.input identify="title" title="نام پروژه"/>
 
-                    <x-admin.select-user/>
+                    <x-admin.select-user title="کارفرما"/>
 
                     <x-admin.select-model identify="status_id"
                                           title="وضعیت پروژه"

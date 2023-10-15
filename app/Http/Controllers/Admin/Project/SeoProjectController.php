@@ -2,82 +2,73 @@
 
 namespace App\Http\Controllers\Admin\Project;
 
-use App\Enums\General\BtnType;
+use App\Enums\Database\Project\ProjectBase;
+use App\Filters\Admin\Project\DomainFilter;
+use App\Filters\Admin\Project\IDFilter;
+use App\Filters\Admin\Project\SortFilter;
+use App\Filters\Admin\Project\StatusFilter;
+use App\Filters\Admin\User\UserSearchFilter;
 use App\Helpers\Helper;
-use App\Helpers\Uploader\Uploader;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Admin\StoreRequest;
-use App\Http\Requests\Admin\Admin\UpdateRequest;
+use App\Http\Requests\Admin\Project\Seo\StoreRequest;
+use App\Http\Requests\Admin\Project\Seo\UpdateRequest;
 use App\Models\Admin;
+use App\Models\Project;
+use App\Models\ProjectSeo;
+use App\Service\Json\SeoProject\HostTransformer;
 use DB;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
-use Yajra\DataTables\Facades\DataTables;
 
 class SeoProjectController extends Controller
 {
     public function index()
     {
-        $title = trans('panel.admin.index');
-        $routeData = route('admin.admin.data');
-        $selects = ['id', 'email', 'first_name', 'last_name', 'roles', 'latest_login', 'created_at'];
-        $skipSearch = [''];
-        $skipSort = [''];
+        $title = 'پروژه ها - سئو';
 
-        return view('admin.admin.index', compact('title', 'routeData', 'selects', 'skipSearch', 'skipSort'));
-    }
+        $projects = Project::query()
+            ->with(['status', 'type', 'user', 'admin'])
+            ->whereHasMorph('type', [ProjectSeo::class])
+            ->whereHas('user', function (Builder $q) {
+                $q->filter([
+                    UserSearchFilter::class,
+                ]);
+            })
+            ->filter([
+                IDFilter::class,
+                DomainFilter::class,
+                StatusFilter::class,
+                SortFilter::class,
+            ])
+            ->paginate(12);
 
-    public function data()
-    {
-        try {
-            $admins = Admin::query()
-                ->with(['roles', 'latestLogin'])
-                ->withCount('logins')
-                ->get();
+        $sortItems = [
+            'id-desc' => 'شناسه (نزولی)',
+            'id-asc' => 'شناسه (صعودی)',
+            'price-desc' => 'قیمت (نزولی)',
+            'price-asc' => 'قیمت (صعودی)',
+        ];
 
-            return DataTables::of($admins)
-                ->editColumn('created_at', function ($admin) {
-                    return $admin->created_at->toJalali()->format(formatJalaliDateTime());
-                })
-                ->editColumn('latest_login', function ($admin) {
-                    return $admin->latestLogin ?
-                        $admin->latestLogin->login_at->toJalali()->format('h:i Y-m-d') :
-                        trans('panel.admin.not_login');
-                })
-                ->editColumn('roles', function ($admin) {
-                    return $admin->roles ? $admin->roles->pluck('name')->implode(', ') :
-                        trans('panel.admin.not_role');
-                })
-                ->addColumn('action', function ($admin) {
-                    $actions = Helper::btnMaker(BtnType::Warning, route('admin.admin.edit', $admin->id), trans('panel.action.edit'));
-                    $actions .= Helper::btnMaker(BtnType::Info, route('admin.admin.password', $admin->id), trans('panel.action.change_password'));
-                    $actions .= Helper::btnMaker(BtnType::Success, route('admin.admin.show', $admin->id), trans('panel.action.info'));
-
-                    return $actions;
-                })
-                ->make();
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
+        return view('admin.project.seo.index', compact('title', 'projects', 'sortItems'));
     }
 
     public function create()
     {
-        $title = trans('panel.admin.create');
-        $routeStore = route('admin.admin.store');
-        $roles = Role::all();
+        $title = 'پروژه سئو - ایجاد';
+        $routeStore = route('admin.project.seo.store');
 
-        return view('admin.admin.create', compact('title', 'routeStore', 'roles'));
+        return view('admin.project.seo.create', compact('title', 'routeStore'));
     }
 
     public function store(StoreRequest $request)
     {
         try {
             DB::beginTransaction();
-            $item = $this->itemProvider($request);
-            $admin = Admin::create($item);
-            $admin->syncRoles($request->input('role'));
+
+            $projectSeo = ProjectSeo::query()->create($this->initialSeoProjectData($request));
+            $projectSeo->project()->create($this->initialProjectData($request));
+
             DB::commit();
 
             return response()->json([
@@ -95,25 +86,30 @@ class SeoProjectController extends Controller
         }
     }
 
-    public function edit(Admin $admin)
+    public function edit($projectId)
     {
-        $title = trans('panel.admin.edit');
-        $routeUpdate = route('admin.admin.update', $admin->id);
-        $routeDestroy = route('admin.admin.destroy', $admin->id);
-        $roles = Role::all();
+        $project = Project::query()
+            ->whereHasMorph('type', [ProjectSeo::class])
+            ->with('type')
+            ->findOrFail($projectId);
 
-        $oldRoles = $admin->roles;
+        $title = 'پروژه سئو - ویرایش';
+        $routeUpdate = route('admin.project.seo.update', $project->id);
 
-        return view('admin.admin.edit', compact('title', 'routeUpdate', 'routeDestroy', 'admin', 'roles', 'oldRoles'));
+        return view('admin.project.seo.edit', compact('title', 'routeUpdate', 'project'));
     }
 
-    public function update(UpdateRequest $request, Admin $admin)
+    public function update(UpdateRequest $request, $projectId)
     {
         try {
+            $project = Project::query()
+                ->whereHasMorph('type', [ProjectSeo::class])
+                ->with('type')
+                ->findOrFail($projectId);
+
             DB::beginTransaction();
-            $item = $this->itemProvider($request, true);
-            $admin->update($item);
-            $admin->syncRoles($request->input('role'));
+            $project->update($this->initialProjectData($request));
+            $project->type->update($this->initialSeoProjectData($request));
             DB::commit();
 
             return response()->json([
@@ -155,44 +151,49 @@ class SeoProjectController extends Controller
         }
     }
 
-    protected function itemProvider(Request $request, bool $editMode = false): array
+    private function initialProjectData(Request $request): array
     {
-        $item['first_name'] = $request->input('first_name');
-        $item['last_name'] = $request->input('last_name');
-        $item['password'] = bcrypt($request->input('password'));
-        $item['has_access'] = $request->has('has_access');
+        $agreementAt = $request->input('agreement_at');
 
-        $dob = $request->input('dob');
-        $item['dob'] = empty($dob) ? null : Helper::toGregorian($dob);
+        return [
+            'title' => $request->input('title'),
+            'domain' => $request->input('domain_primary'),
+            'admin_id' => auth()->id(),
+            'user_id' => $request->input('user_id'),
+            'price' => $request->input('price'),
+            'project_status_id' => $request->input('status_id'),
+            'note' => $request->input('note'),
+            'project_base_id' => ProjectBase::Seo,
+            'agreement_at' => Helper::toGregorian($agreementAt),
+        ];
+    }
 
-        $startCooperation = $request->input('start_cooperation');
-        $item['start_cooperation'] = empty($startCooperation) ? null : Helper::toGregorian($startCooperation);
+    private function initialSeoProjectData(Request $req): array
+    {
 
-        $startLastContract = $request->input('start_last_contract');
-        $item['start_last_contract'] = empty($startLastContract) ? null : Helper::toGregorian($startLastContract);
+        $host = $this->getHost($req);
 
-        $endLastContract = $request->input('end_last_contract');
-        $item['end_last_contract'] = empty($endLastContract) ? null : Helper::toGregorian($endLastContract);
+        $agreementAt = $req->input('agreement_at');
 
-        $item['resume'] = $request->input('resume');
-        $item['description'] = $request->input('description');
-        $item['mobile'] = $request->input('mobile');
+        return [
+            'field_activity' => $req->input('field_activity'),
+            'host' => $host->toArray(),
+            'agreement_duration' => $req->input('agreement_duration'),
+            'amount_content' => $req->input('amount_content'),
+            'keywords_count' => $req->input('keywords_count'),
+            'keywords' => $req->input('keywords'),
+            'price_monthly' => $req->input('price_monthly'),
+            'due_date_payments' => $req->input('due_date_payments'),
+            'designed_by' => $req->input('designed_by'),
+        ];
+    }
 
-        if (! $editMode) {
-            $item['email'] = $request->input('email');
-            $item['password'] = bcrypt($request->input('password'));
-        }
+    private function getHost(Request $req): HostTransformer
+    {
+        $host = resolve(HostTransformer::class);
+        $host->setHostLocation($req->input('host_location'));
+        $host->setHostProvider($req->input('host_provider'));
 
-        if ($request->hasFile('avatar')) {
-            $provider = (new Uploader())
-                ->fit(150, 150)
-                ->path('admin')
-                ->field('avatar')
-                ->upload();
-
-            $item['avatar'] = $provider['photo'];
-        }
-
-        return $item;
+        return $host;
     }
 }

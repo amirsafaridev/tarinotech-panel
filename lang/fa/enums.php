@@ -1,6 +1,9 @@
 <?php
 
 use App\Enums\Database\Company\CompanyType;
+use App\Enums\Database\Project\SeoAgreementDuration;
+use App\Enums\Database\Project\SeoHostLocation;
+use App\Enums\Database\Project\SeoProjectDesignBy;
 use App\Enums\Database\Project\WebFacility;
 use App\Enums\Database\Project\WebHostLocation;
 use App\Enums\Database\Project\WebLanguage;
@@ -63,5 +66,20 @@ return [
         WebFacility::LoginMobile => 'لاگین با موبایل',
         WebFacility::OnlineChat => 'چت آنلاین',
         WebFacility::TicketSystem => 'سامانه تیکت',
+    ],
+
+    SeoHostLocation::class => [
+        SeoHostLocation::IN_COMPANY => 'داخل شرکت',
+        SeoHostLocation::OUT_COMPANY => 'خارج شرکت',
+    ],
+
+    SeoProjectDesignBy::class => [
+        SeoProjectDesignBy::ByCompany => 'داخل شرکت',
+        SeoProjectDesignBy::ByOutsideCompany => 'خارج شرکت',
+    ],
+
+    SeoAgreementDuration::class => [
+        SeoAgreementDuration::OnYear => 'یک ساله',
+        SeoAgreementDuration::SixMonth => 'شش ماهه',
     ],
 ];

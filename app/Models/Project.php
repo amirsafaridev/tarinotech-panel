@@ -32,6 +32,7 @@ class Project extends Model
 
     protected $casts = [
         'deadline_at' => 'date',
+        'agreement_at' => 'date',
     ];
 
     public function base(): BelongsTo
@@ -47,5 +48,15 @@ class Project extends Model
     public function status(): BelongsTo
     {
         return $this->belongsTo(ProjectStatus::class, 'project_status_id');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function admin(): BelongsTo
+    {
+        return $this->belongsTo(Admin::class, 'admin_id');
     }
 }

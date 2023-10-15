@@ -9,4 +9,7 @@
            value="{{ $old ?? '' }}"
            @if ($disabled) disabled @endif
     />
+    @if ($description)
+        <p class="form-help">{{ $description }}</p>
+    @endif
 </div>

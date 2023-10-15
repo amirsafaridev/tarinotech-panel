@@ -16,6 +16,7 @@ class Input extends Component
         public string $type = 'text',
         public string $title = '',
         public string $identify = '',
+        public ?string $description = '',
         public ?string $old = null,
         public bool $disabled = false,
         public bool $isSmall = false,

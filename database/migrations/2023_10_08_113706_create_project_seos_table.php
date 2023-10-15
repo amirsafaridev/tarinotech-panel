@@ -18,7 +18,6 @@ return new class extends Migration
 
             $table->json('host');
 
-            $table->date('agreement_at');
             $table->unsignedInteger('agreement_duration')
                 ->default(0)
                 ->comment('per days');
@@ -37,8 +36,6 @@ return new class extends Migration
 
             $table->unsignedTinyInteger('designed_by')
                 ->default(SeoProjectDesignBy::ByCompany);
-
-            $table->text('note')->nullable();
 
             $table->timestamps();
         });

@@ -15,10 +15,10 @@ use App\Http\Requests\Admin\Project\Web\UpdateRequest;
 use App\Models\Admin;
 use App\Models\Project;
 use App\Models\ProjectWeb;
-use App\Service\Json\DomainTransformer;
-use App\Service\Json\HostTransformer;
-use App\Service\Json\LanguageTransformer;
-use App\Service\Json\SampleTransformer;
+use App\Service\Json\WebProject\DomainTransformer;
+use App\Service\Json\WebProject\HostTransformer;
+use App\Service\Json\WebProject\LanguageTransformer;
+use App\Service\Json\WebProject\SampleTransformer;
 use Crypt;
 use DB;
 use Exception;
@@ -38,7 +38,6 @@ class WebProjectController extends Controller
                     PackageFilter::class,
                 ]);
             })
-            ->where('project_base_id', ProjectBase::Web)
             ->filter([
                 IDFilter::class,
                 DomainFilter::class,
@@ -99,7 +98,6 @@ class WebProjectController extends Controller
 
         $title = 'پروژه سایت - ویرایش';
         $routeUpdate = route('admin.project.web.update', $project->id);
-        // $routeDestroy = route('admin.project.web.destroy', $project->type->id);
 
         return view('admin.project.web.edit', compact('title', 'routeUpdate', 'project'));
     }
@@ -220,27 +218,6 @@ class WebProjectController extends Controller
         return $language;
     }
 
-    private function initialWebProjectData(Request $request): array
-    {
-        $domain = $this->getDomain($request);
-        $host = $this->getHost($request);
-        $language = $this->getLanguage($request);
-        $sample = $this->getSample($request);
-
-        return [
-            'field_activity' => $request->input('field_activity'),
-            'package_id' => $request->input('package_id'),
-            'project_type_id' => $request->input('project_type_id'),
-            'pages' => $request->input('pages'),
-            'working_days' => $request->input('working_days'),
-            'domains' => $domain->toArray(),
-            'host' => $host->toArray(),
-            'language' => $language->toArray(),
-            'sample' => $sample->toArray(),
-            'facilities' => $request->input('facilities', []),
-        ];
-    }
-
     private function initialProjectData(Request $request): array
     {
         $agreementAt = $request->input('agreement_at');
@@ -270,5 +247,26 @@ class WebProjectController extends Controller
         }
 
         return $data;
+    }
+
+    private function initialWebProjectData(Request $request): array
+    {
+        $domain = $this->getDomain($request);
+        $host = $this->getHost($request);
+        $language = $this->getLanguage($request);
+        $sample = $this->getSample($request);
+
+        return [
+            'field_activity' => $request->input('field_activity'),
+            'package_id' => $request->input('package_id'),
+            'project_type_id' => $request->input('project_type_id'),
+            'pages' => $request->input('pages'),
+            'working_days' => $request->input('working_days'),
+            'domains' => $domain->toArray(),
+            'host' => $host->toArray(),
+            'language' => $language->toArray(),
+            'sample' => $sample->toArray(),
+            'facilities' => $request->input('facilities', []),
+        ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\ViewComposers\Admin\Project\SeoProjectComposer;
 use App\Http\ViewComposers\Admin\Project\WebProjectComposer;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,5 +26,6 @@ class ViewComposerProvider extends ServiceProvider
     public function boot()
     {
         view()->composer(['admin.project.web.*'], WebProjectComposer::class);
+        view()->composer(['admin.project.seo.*'], SeoProjectComposer::class);
     }
 }
