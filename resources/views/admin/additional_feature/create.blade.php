@@ -42,4 +42,9 @@
 @endsection
 @section('script')
     @include('admin.partial.request')
+    <script>
+        $(document).ready(function (){
+            activeParentUl('{{ route('admin.additional-features.index') }}');
+        })
+    </script>
 @endsection

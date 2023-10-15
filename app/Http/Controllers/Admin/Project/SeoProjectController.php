@@ -173,8 +173,6 @@ class SeoProjectController extends Controller
 
         $host = $this->getHost($req);
 
-        $agreementAt = $req->input('agreement_at');
-
         return [
             'field_activity' => $req->input('field_activity'),
             'host' => $host->toArray(),

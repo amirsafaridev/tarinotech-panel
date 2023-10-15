@@ -188,11 +188,12 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
 
     Route::controller(AdsProjectController::class)->group(function () {
         Route::get('/project/ads', 'index')->name('project.ads.index');
-        Route::get('/project/ads/data', 'data')->name('project.ads.data');
         Route::get('/project/ads/create', 'create')->name('project.ads.create');
         Route::post('/project/ads/store', 'store')->name('project.ads.store');
-        Route::get('/project/ads/{project}/edit', 'edit')->name('project.ads.edit');
-        Route::patch('/project/ads/{project}/update', 'update')->name('project.ads.update');
+        Route::get('/project/ads/{projectId}/edit', 'edit')->name('project.ads.edit')
+            ->whereNumber('projectId');
+        Route::patch('/project/ads/{projectId}/update', 'update')->name('project.ads.update')
+            ->whereNumber('projectId');
     });
 
     Route::controller(ProjectController::class)->group(function () {

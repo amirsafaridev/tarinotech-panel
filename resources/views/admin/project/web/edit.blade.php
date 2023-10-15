@@ -274,6 +274,8 @@
     @include('admin.partial.share-script')
     <script>
         $(document).ready(function () {
+            activeParentUl('{{ route('admin.project.web.index') }}');
+
             $('#user_id').select2();
             $('#domains_required').select2();
             $('#languages').select2();
@@ -295,9 +297,10 @@
             };
 
             $('#agreement_at').persianDatepicker(dataPickerConfig);
-            $('#deadline_at').persianDatepicker(dataPickerConfig);
 
             const deadlineAt = $('#deadline_at');
+            deadlineAt.persianDatepicker(dataPickerConfig);
+
             const workingDays = $('#working_days');
             const alertWorkingDays = $('#alert_working_days');
             const alertDaysCalcMessage = $('#alert_working_days .message');

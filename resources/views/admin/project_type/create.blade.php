@@ -8,12 +8,12 @@
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">پکیج ها</h1>
+        <h1 class="page-title">انواع پروژه ها - ایجاد</h1>
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.package.index') }}">لیست پکیج ها</a></li>
-                <li class="breadcrumb-item active">ایجاد پکیج</li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.project.type.index') }}">انواع پروژه ها</a></li>
+                <li class="breadcrumb-item active">ایجاد نوع</li>
             </ol>
         </div>
     </div>
@@ -26,9 +26,13 @@
                     <form class="request-form forms-sample" method="post" action="{{ $routeStore }}">
                         @csrf
 
-                        <x-admin.input identify="title" title="عنوان"/>
+                        <x-admin.select-model identify="project_base_id"
+                                              title="پروژه"
+                                              key="id"
+                                              value="title"
+                                              :items="$projectBases"/>
 
-                        <x-admin.input identify="price" title="قیمت"/>
+                        <x-admin.input identify="title" title="عنوان"/>
 
                         <x-admin.button-submit/>
                     </form>
@@ -39,11 +43,9 @@
 @endsection
 @section('script')
     @include('admin.partial.request')
-    @include('admin.partial.share-script')
     <script>
         $(document).ready(function (){
-            activeParentUl('{{ route('admin.package.index') }}');
-            makeInputPrice($('#price'));
-        })
+            activeParentUl('{{ route('admin.project.type.index') }}');
+        });
     </script>
 @endsection

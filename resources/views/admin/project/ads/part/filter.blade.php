@@ -1,4 +1,4 @@
-<form class="row mb-4" action="{{ route('admin.project.seo.index') }}">
+<form class="row mb-4" action="{{ route('admin.project.ads.index') }}">
     <div class="col-12 col-md-3 col-xl-2">
         <x-admin.input
                 identify="id"

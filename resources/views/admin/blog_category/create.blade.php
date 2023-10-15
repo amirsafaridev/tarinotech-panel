@@ -37,7 +37,7 @@
     @include('admin.partial.request')
     <script>
         $(document).ready(function () {
-
+            activeParentUl('{{ route('admin.blog.category.index') }}');
         })
     </script>
 @endsection

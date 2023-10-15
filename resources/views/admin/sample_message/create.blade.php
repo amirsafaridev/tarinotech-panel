@@ -43,6 +43,7 @@
     <script>
         $(document).ready(function () {
             CKEDITOR.replace( 'message');
+            activeParentUl('{{ route('admin.sample-message.index') }}');
         })
     </script>
 @endsection

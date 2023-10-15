@@ -35,4 +35,9 @@
 @endsection
 @section('script')
     @include('admin.partial.request')
+    <script>
+        $(document).ready(function (){
+            activeParentUl('{{ route('admin.transaction-category.index') }}');
+        })
+    </script>
 @endsection

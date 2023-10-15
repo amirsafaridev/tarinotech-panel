@@ -10,8 +10,13 @@ class ProjectAds extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'field_activity',
+        'designed_by',
+    ];
+
     public function project(): MorphOne
     {
-        return $this->morphOne(Project::class, 'project');
+        return $this->morphOne(Project::class, 'type');
     }
 }

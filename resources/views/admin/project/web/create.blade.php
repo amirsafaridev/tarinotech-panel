@@ -227,6 +227,8 @@
     @include('admin.partial.share-script')
     <script>
         $(document).ready(function () {
+            activeParentUl('{{ route('admin.project.web.index') }}');
+
             $('#user_id').select2();
             $('#domains_required').select2();
             $('#languages').select2();

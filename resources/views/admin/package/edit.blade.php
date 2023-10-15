@@ -63,6 +63,7 @@
     <script>
         $(document).ready(function (){
             makeInputPrice($('#price'));
+            activeParentUl('{{ route('admin.package.index') }}');
         })
     </script>
 @endsection

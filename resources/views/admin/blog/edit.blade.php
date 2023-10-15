@@ -75,6 +75,7 @@
 
     <script>
         $(document).ready(function () {
+            activeParentUl('{{ route('admin.blog.index') }}');
             CKEDITOR.replace( 'body');
         })
     </script>

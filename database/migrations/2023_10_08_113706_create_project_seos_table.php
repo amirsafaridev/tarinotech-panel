@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\Database\Project\SeoProjectDesignBy;
+use App\Enums\Database\Project\ProjectDesignBy;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -35,7 +35,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('due_date_payments');
 
             $table->unsignedTinyInteger('designed_by')
-                ->default(SeoProjectDesignBy::ByCompany);
+                ->default(ProjectDesignBy::ByCompany);
 
             $table->timestamps();
         });

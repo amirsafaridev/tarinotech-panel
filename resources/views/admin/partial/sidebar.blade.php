@@ -24,7 +24,7 @@
                         <span class="side-menu__label">{{ trans('panel.dashboard.title') }}</span>
                     </a>
                 </li>
-                <li class="slide">
+                <li class="slide can-expand">
                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navAdmin">
                         <i class="side-menu__icon fal fa-user"></i>
                         <span class="side-menu__label">{{ trans('panel.admin.index') }}</span><i class="angle fal fa-angle-left"></i>
@@ -39,7 +39,7 @@
                     </ul>
                 </li>
 
-                <li class="slide">
+                <li class="slide can-expand">
                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navRole">
                         <i class="side-menu__icon fal fa-lock"></i>
                         <span class="side-menu__label">{{ trans('panel.role.index') }}</span><i class="angle fal fa-angle-left"></i>
@@ -52,7 +52,7 @@
                     </ul>
                 </li>
 
-                <li class="slide">
+                <li class="slide can-expand">
                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navUser">
                         <i class="side-menu__icon fal fa-user"></i>
                         <span class="side-menu__label">مشتری ها</span><i class="angle fal fa-angle-left"></i>
@@ -65,7 +65,7 @@
                     </ul>
                 </li>
 
-                <li class="slide">
+                <li class="slide can-expand">
                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navProject">
                         <i class="side-menu__icon fal fa-box"></i>
                         <span class="side-menu__label">پروژه ها</span><i class="angle fal fa-angle-left"></i>
@@ -79,7 +79,7 @@
                     </ul>
                 </li>
 
-                <li class="slide">
+                <li class="slide can-expand">
                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navProfile">
                         <i class="side-menu__icon fal fa-user-edit"></i>
                         <span class="side-menu__label">{{ trans('panel.profile.index') }}</span><i class="angle fal fa-angle-left"></i>
@@ -92,7 +92,7 @@
                     </ul>
                 </li>
 
-                <li class="slide">
+                <li class="slide can-expand">
                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navBlog">
                         <i class="side-menu__icon fal fa-page"></i>
                         <span class="side-menu__label">بلاگ</span><i class="angle fal fa-angle-left"></i>
@@ -105,7 +105,7 @@
                     </ul>
                 </li>
 
-                <li class="slide">
+                <li class="slide can-expand">
                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navProfile">
                         <i class="side-menu__icon fal fa-cog"></i>
                         <span class="side-menu__label">تنظیمات</span><i class="angle fal fa-angle-left"></i>

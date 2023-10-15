@@ -3,7 +3,6 @@
 @section('head')
     @include('admin.partial.loader.style',['load'=>[
        \App\Enums\Assets\StyleLoader::Toast(),
-       \App\Enums\Assets\StyleLoader::Datepicker(),
        \App\Enums\Assets\StyleLoader::Select2(),
        \App\Enums\Assets\StyleLoader::Alert(),
    ]])
@@ -85,54 +84,12 @@
     @include('admin.partial.share-script')
     @include('admin.partial.loader.script',['load'=>[
         \App\Enums\Assets\ScriptLoader::Alert(),
-        \App\Enums\Assets\ScriptLoader::Datepicker(),
         \App\Enums\Assets\ScriptLoader::Select2(),
     ]])
     <script>
         $(document).ready(function () {
-
-            const dataPickerConfig = {
-                format: 'YYYY-MM-DD',
-                initialValueType: 'persian',
-                initialValue: false,
-                autoClose: true
-            };
-
-            $('#dob').persianDatepicker(dataPickerConfig);
-
-            stateCompanyContainer('');
-            $('#person_type').change(function (){
-                stateCompanyContainer($(this).val());
-            });
-
-            stateIrnicContainer('');
-            $('#irnic').change(function (){
-                stateIrnicContainer($(this).val());
-            });
-
-            makeInputOnlyAlpha($('#en_first_name'));
-            makeInputOnlyAlpha($('#en_last_name'));
+            activeParentUl('{{ route('admin.presenter.index') }}');
             makeSelect2Remote($('#project_id'),'{{ route('admin.ajax.select2.project') }}',['title']);
         })
-
-        const companyContainer = $('#company_container');
-        function stateCompanyContainer(status){
-            if(status === '{{ \App\Enums\Database\User\PersonType::Legal }}'){
-                companyContainer.removeClass('d-none');
-            }
-            else{
-                companyContainer.addClass('d-none');
-            }
-        }
-
-        const irnicContainer = $('#irnic_container');
-        function stateIrnicContainer(status){
-            if(status === '{{ \App\Enums\Database\User\IrnicStatus::HasIt }}'){
-                irnicContainer.removeClass('d-none');
-            }
-            else{
-                irnicContainer.addClass('d-none');
-            }
-        }
     </script>
 @endsection

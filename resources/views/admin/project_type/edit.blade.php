@@ -11,12 +11,12 @@
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">پیام های آماده - ویرایش</h1>
+        <h1 class="page-title">انواع پروژه ها - ویرایش</h1>
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.sample-message.index') }}">پیام های آماده</a></li>
-                <li class="breadcrumb-item active">ویرایش</li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.project.type.index') }}">انواع پروژه ها</a></li>
+                <li class="breadcrumb-item active">ویرایش نوع</li>
             </ol>
         </div>
     </div>
@@ -30,13 +30,18 @@
                         @csrf
                         @method('PATCH')
 
-                        <x-admin.input identify="title" title="عنوان" :old="$sampleMessage->title"/>
+                        <x-admin.select-model class="multiple" identify="project_base_id"
+                                              title="انتخاب نوع پروژه"
+                                              :items="$projectBases"
+                                              key="id"
+                                              value="title"
+                                              :old="$projectType->project_base_id"/>
 
-                        <x-admin.textarea identify="message" rows="10" title="متن پیام" :old="$sampleMessage->message"/>
+                        <x-admin.input identify="title" title="عنوان" :old="$projectType->title"/>
 
                         <x-admin.button-submit title="{{ trans('panel.update') }}"/>
-
                         <x-admin.button-delete/>
+
                     </form>
 
                     <form id="deleteItem" action="{{ $routeDestroy }}" method="post" class="form-inline">
@@ -52,15 +57,12 @@
     @include('admin.partial.loader.script',[
         'load'=>[
             \App\Enums\Assets\ScriptLoader::Alert(),
-            \App\Enums\Assets\ScriptLoader::CKEditor(),
         ],
     ])
     @include('admin.partial.request')
-    @include('admin.partial.ckeditor')
     <script>
-        $(document).ready(function () {
-            CKEDITOR.replace( 'message');
-            activeParentUl('{{ route('admin.sample-message.index') }}');
-        })
+        $(document).ready(function (){
+            activeParentUl('{{ route('admin.project.type.index') }}');
+        });
     </script>
 @endsection

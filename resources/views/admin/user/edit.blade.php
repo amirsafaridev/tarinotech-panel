@@ -160,7 +160,7 @@
     @include('admin.partial.ckeditor')
     <script>
         $(document).ready(function () {
-
+            activeParentUl('{{ route('admin.user.index') }}');
             const dataPickerConfig = {
                 format: 'YYYY-MM-DD',
                 initialValueType: 'persian',

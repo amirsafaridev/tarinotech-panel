@@ -61,6 +61,7 @@
     @include('admin.partial.request')
     <script>
         $(document).ready(function () {
+            activeParentUl('{{ route('admin.blog.category.index') }}');
             const dataPickerConfig = {
                 format: 'YYYY/MM/DD',
                 initialValueType: 'persian',

@@ -166,17 +166,16 @@
 
 <script>
     $(document).ready(function () {
-        @if(!Route::is(['admin.word.index','admin.word.create','admin.word.edit']))
-        setTimeout(function (){
-            let currentLink = $('div.main-sidemenu a[href*="{{ \App\Helpers\Helper::getRouteSmall() }}"]');
-            $('a[href="{{ url()->current() }}"]').addClass('active');
-            let rootLi = currentLink.parents('li.slide');
-            if (!rootLi.hasClass('is-expanded')){
-                // rootLi.find('.side-menu__item').trigger('click');
-            }
-        },200)
-        @endif
+        activeParentUl('{{ url()->current() }}');
     })
+    function activeParentUl(route) {
+        setTimeout(function () {
+            const currentLink = $(`div.main-sidemenu a[href="${route}"]`);
+            const canExpand = currentLink.closest('li.can-expand');
+            canExpand.addClass('is-expanded');
+            currentLink.addClass('active')
+        }, 200);
+    }
 </script>
 </body>
 

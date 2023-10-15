@@ -62,5 +62,9 @@
         ],
     ])
     @include('admin.partial.request')
-
+    <script>
+        $(document).ready(function (){
+            activeParentUl('{{ route('admin.project.status.index') }}');
+        });
+    </script>
 @endsection

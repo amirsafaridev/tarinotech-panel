@@ -2,82 +2,71 @@
 
 namespace App\Http\Controllers\Admin\Project;
 
-use App\Enums\General\BtnType;
-use App\Helpers\Helper;
-use App\Helpers\Uploader\Uploader;
+use App\Enums\Database\Project\ProjectBase;
+use App\Filters\Admin\Project\DomainFilter;
+use App\Filters\Admin\Project\IDFilter;
+use App\Filters\Admin\Project\SortFilter;
+use App\Filters\Admin\Project\StatusFilter;
+use App\Filters\Admin\User\UserSearchFilter;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Admin\StoreRequest;
-use App\Http\Requests\Admin\Admin\UpdateRequest;
+use App\Http\Requests\Admin\Project\Ads\StoreRequest;
+use App\Http\Requests\Admin\Project\Ads\UpdateRequest;
 use App\Models\Admin;
+use App\Models\Project;
+use App\Models\ProjectAds;
 use DB;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
-use Yajra\DataTables\Facades\DataTables;
 
 class AdsProjectController extends Controller
 {
     public function index()
     {
-        $title = trans('panel.admin.index');
-        $routeData = route('admin.admin.data');
-        $selects = ['id', 'email', 'first_name', 'last_name', 'roles', 'latest_login', 'created_at'];
-        $skipSearch = [''];
-        $skipSort = [''];
+        $title = 'پروژه ها - گوگل ادز';
 
-        return view('admin.admin.index', compact('title', 'routeData', 'selects', 'skipSearch', 'skipSort'));
-    }
+        $projects = Project::query()
+            ->with(['status', 'type', 'user', 'admin'])
+            ->whereHasMorph('type', [ProjectAds::class])
+            ->whereHas('user', function (Builder $q) {
+                $q->filter([
+                    UserSearchFilter::class,
+                ]);
+            })
+            ->filter([
+                IDFilter::class,
+                DomainFilter::class,
+                StatusFilter::class,
+                SortFilter::class,
+            ])
+            ->paginate(12);
 
-    public function data()
-    {
-        try {
-            $admins = Admin::query()
-                ->with(['roles', 'latestLogin'])
-                ->withCount('logins')
-                ->get();
+        $sortItems = [
+            'id-desc' => 'شناسه (نزولی)',
+            'id-asc' => 'شناسه (صعودی)',
+            'price-desc' => 'قیمت (نزولی)',
+            'price-asc' => 'قیمت (صعودی)',
+        ];
 
-            return DataTables::of($admins)
-                ->editColumn('created_at', function ($admin) {
-                    return $admin->created_at->toJalali()->format(formatJalaliDateTime());
-                })
-                ->editColumn('latest_login', function ($admin) {
-                    return $admin->latestLogin ?
-                        $admin->latestLogin->login_at->toJalali()->format('h:i Y-m-d') :
-                        trans('panel.admin.not_login');
-                })
-                ->editColumn('roles', function ($admin) {
-                    return $admin->roles ? $admin->roles->pluck('name')->implode(', ') :
-                        trans('panel.admin.not_role');
-                })
-                ->addColumn('action', function ($admin) {
-                    $actions = Helper::btnMaker(BtnType::Warning, route('admin.admin.edit', $admin->id), trans('panel.action.edit'));
-                    $actions .= Helper::btnMaker(BtnType::Info, route('admin.admin.password', $admin->id), trans('panel.action.change_password'));
-                    $actions .= Helper::btnMaker(BtnType::Success, route('admin.admin.show', $admin->id), trans('panel.action.info'));
-
-                    return $actions;
-                })
-                ->make();
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
+        return view('admin.project.ads.index', compact('title', 'projects', 'sortItems'));
     }
 
     public function create()
     {
-        $title = trans('panel.admin.create');
-        $routeStore = route('admin.admin.store');
-        $roles = Role::all();
+        $title = 'پروژه  گوگل ادز - ایجاد';
+        $routeStore = route('admin.project.ads.store');
 
-        return view('admin.admin.create', compact('title', 'routeStore', 'roles'));
+        return view('admin.project.ads.create', compact('title', 'routeStore'));
     }
 
     public function store(StoreRequest $request)
     {
         try {
             DB::beginTransaction();
-            $item = $this->itemProvider($request);
-            $admin = Admin::create($item);
-            $admin->syncRoles($request->input('role'));
+
+            $projectAds = ProjectAds::query()->create($this->initialAdsProjectData($request));
+            $projectAds->project()->create($this->initialProjectData($request));
+
             DB::commit();
 
             return response()->json([
@@ -95,25 +84,30 @@ class AdsProjectController extends Controller
         }
     }
 
-    public function edit(Admin $admin)
+    public function edit($projectId)
     {
-        $title = trans('panel.admin.edit');
-        $routeUpdate = route('admin.admin.update', $admin->id);
-        $routeDestroy = route('admin.admin.destroy', $admin->id);
-        $roles = Role::all();
+        $project = Project::query()
+            ->whereHasMorph('type', [ProjectAds::class])
+            ->with('type')
+            ->findOrFail($projectId);
 
-        $oldRoles = $admin->roles;
+        $title = 'پروژه گوگل ادز - ویرایش';
+        $routeUpdate = route('admin.project.ads.update', $project->id);
 
-        return view('admin.admin.edit', compact('title', 'routeUpdate', 'routeDestroy', 'admin', 'roles', 'oldRoles'));
+        return view('admin.project.ads.edit', compact('title', 'routeUpdate', 'project'));
     }
 
-    public function update(UpdateRequest $request, Admin $admin)
+    public function update(UpdateRequest $request, $projectId)
     {
         try {
+            $project = Project::query()
+                ->whereHasMorph('type', [ProjectAds::class])
+                ->with('type')
+                ->findOrFail($projectId);
+
             DB::beginTransaction();
-            $item = $this->itemProvider($request, true);
-            $admin->update($item);
-            $admin->syncRoles($request->input('role'));
+            $project->update($this->initialProjectData($request));
+            $project->type->update($this->initialAdsProjectData($request));
             DB::commit();
 
             return response()->json([
@@ -155,44 +149,25 @@ class AdsProjectController extends Controller
         }
     }
 
-    protected function itemProvider(Request $request, bool $editMode = false): array
+    private function initialProjectData(Request $request): array
     {
-        $item['first_name'] = $request->input('first_name');
-        $item['last_name'] = $request->input('last_name');
-        $item['password'] = bcrypt($request->input('password'));
-        $item['has_access'] = $request->has('has_access');
+        return [
+            'title' => $request->input('title'),
+            'domain' => $request->input('domain_primary'),
+            'admin_id' => auth()->id(),
+            'user_id' => $request->input('user_id'),
+            'price' => 0,
+            'project_status_id' => $request->input('status_id'),
+            'note' => $request->input('note'),
+            'project_base_id' => ProjectBase::Ads,
+        ];
+    }
 
-        $dob = $request->input('dob');
-        $item['dob'] = empty($dob) ? null : Helper::toGregorian($dob);
-
-        $startCooperation = $request->input('start_cooperation');
-        $item['start_cooperation'] = empty($startCooperation) ? null : Helper::toGregorian($startCooperation);
-
-        $startLastContract = $request->input('start_last_contract');
-        $item['start_last_contract'] = empty($startLastContract) ? null : Helper::toGregorian($startLastContract);
-
-        $endLastContract = $request->input('end_last_contract');
-        $item['end_last_contract'] = empty($endLastContract) ? null : Helper::toGregorian($endLastContract);
-
-        $item['resume'] = $request->input('resume');
-        $item['description'] = $request->input('description');
-        $item['mobile'] = $request->input('mobile');
-
-        if (! $editMode) {
-            $item['email'] = $request->input('email');
-            $item['password'] = bcrypt($request->input('password'));
-        }
-
-        if ($request->hasFile('avatar')) {
-            $provider = (new Uploader())
-                ->fit(150, 150)
-                ->path('admin')
-                ->field('avatar')
-                ->upload();
-
-            $item['avatar'] = $provider['photo'];
-        }
-
-        return $item;
+    private function initialAdsProjectData(Request $req): array
+    {
+        return [
+            'field_activity' => $req->input('field_activity'),
+            'designed_by' => $req->input('designed_by'),
+        ];
     }
 }

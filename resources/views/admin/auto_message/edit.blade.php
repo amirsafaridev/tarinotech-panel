@@ -51,6 +51,7 @@
     <script>
         $(document).ready(function () {
             CKEDITOR.replace( 'message');
+            activeParentUl('{{ route('admin.auto-message.index') }}');
         })
     </script>
 @endsection

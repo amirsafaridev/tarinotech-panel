@@ -12,8 +12,7 @@ class DomainFilter extends FilterBase
     {
         $domain = request('domain');
         if ($domain) {
-            $cleanDomain = cleanAlphaNumeric($domain);
-            $query->where('domain', 'like', '%'.$cleanDomain.'%');
+            $query->where('domain', 'like', '%'.$domain.'%');
         }
 
         return $next($query);

@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Admin\Project\Seo;
 
+use App\Enums\Database\Project\ProjectDesignBy;
 use App\Enums\Database\Project\SeoAgreementDuration;
 use App\Enums\Database\Project\SeoHostLocation;
-use App\Enums\Database\Project\SeoProjectDesignBy;
 use BenSampo\Enum\Rules\EnumKey;
 use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Foundation\Http\FormRequest;
@@ -35,7 +35,7 @@ class StoreRequest extends FormRequest
             'due_date_payments' => 'required|integer|min:1',
             'agreement_at' => 'required|jdate',
             'agreement_duration' => ['required', new EnumValue(SeoAgreementDuration::class)],
-            'designed_by' => ['required', new EnumValue(SeoProjectDesignBy::class)],
+            'designed_by' => ['required', new EnumValue(ProjectDesignBy::class)],
             /* Host */
             'host_location' => ['required', new EnumKey(SeoHostLocation::class)],
             'host_provider' => 'required_if:host_location,'.SeoHostLocation::OUT_COMPANY,

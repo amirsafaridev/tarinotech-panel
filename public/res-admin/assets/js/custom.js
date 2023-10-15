@@ -364,7 +364,7 @@
     if (bodyhorizontalHover) {
         let li = document.querySelectorAll('.side-menu li')
         li.forEach((e, i) => {
-            e.classList.remove('is-expanded')
+            //e.classList.remove('is-expanded')
         })
         var animationSpeed = 300;
         // first level

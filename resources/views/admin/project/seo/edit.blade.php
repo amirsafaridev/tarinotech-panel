@@ -183,7 +183,7 @@
                                     identify="designed_by"
                                     title="طراحی سایت پروژه"
                                     :with-option="false"
-                                    :enum-class="\App\Enums\Database\Project\SeoProjectDesignBy::class"
+                                    :enum-class="\App\Enums\Database\Project\ProjectDesignBy::class"
                                     :old="$project->type->designed_by"/>
                         </div>
                     </div>
@@ -208,6 +208,8 @@
     @include('admin.partial.share-script')
     <script>
         $(document).ready(function () {
+            activeParentUl('{{ route('admin.project.seo.index') }}');
+
             $('#user_id').select2();
 
             $('#host_location').change(function (){

@@ -108,7 +108,7 @@
        })
    })
 
-    var position = window.location.pathname.split('/');
+    /*var position = window.location.pathname.split('/');
     $(".app-sidebar li a").each(function () {
         var $this = $(this);
         var pageUrl = $this.attr("href");
@@ -127,7 +127,7 @@
                 return false;
             }
         }
-    });
+    });*/
     if ($('.slide-item').hasClass('active')) {
         $('.app-sidebar').animate({
             scrollTop: $('a.slide-item.active').offset().top - 600
