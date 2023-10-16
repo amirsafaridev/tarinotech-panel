@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\FactorItem>
  */
-class ProjectTypeFactory extends Factory
+class FactorItemFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,8 +17,7 @@ class ProjectTypeFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => 'نوع پروژه',
-            'project_base_id' => rand(1, 3),
+            //
         ];
     }
 }

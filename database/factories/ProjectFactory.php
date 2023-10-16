@@ -40,7 +40,7 @@ class ProjectFactory extends Factory
         ];
 
         return [
-            'title' => $this->faker->randomElement(['طراحی سایت', 'سئو']).' '.$this->faker->randomElement($companyNames),
+            'title' => $this->faker->randomElement($companyNames),
             'domain' => $this->faker->domainName,
             'admin_id' => rand(1, 10),
             'user_id' => rand(1, 50),

@@ -80,15 +80,14 @@
                 </li>
 
                 <li class="slide can-expand">
-                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navProfile">
-                        <i class="side-menu__icon fal fa-user-edit"></i>
-                        <span class="side-menu__label">{{ trans('panel.profile.index') }}</span><i class="angle fal fa-angle-left"></i>
+                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navFactor">
+                        <i class="side-menu__icon fal fa-credit-card"></i>
+                        <span class="side-menu__label">فاکتور ها</span><i class="angle fal fa-angle-left"></i>
                     </a>
 
                     <ul class="slide-menu">
-                        <li><a href="{{ route('admin.profile.index') }}" class="slide-item">{{ trans('panel.profile.edit') }}</a></li>
-                        <li><a href="{{ route('admin.profile.password') }}" class="slide-item">{{ trans('panel.profile.password-change') }}</a></li>
-                        <li><a href="{{ route('admin.profile.logout') }}" class="slide-item">{{ trans('panel.profile.sign-out') }}</a></li>
+                        <li><a href="{{ route('admin.factor.index') }}" class="slide-item">لیست</a></li>
+                        <li><a href="{{ route('admin.factor.create') }}" class="slide-item">ایجاد</a></li>
                     </ul>
                 </li>
 
@@ -121,6 +120,19 @@
                         <li><a href="{{ route('admin.sample-message.index') }}" class="slide-item">پیام های آماده</a></li>
                         <li><a href="{{ route('admin.auto-message.index') }}" class="slide-item">پیام های خودکار</a></li>
                         <li><a href="{{ route('admin.free-day.index') }}" class="slide-item">تقویم تعطیلات</a></li>
+                    </ul>
+                </li>
+
+                <li class="slide can-expand">
+                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navProfile">
+                        <i class="side-menu__icon fal fa-user-edit"></i>
+                        <span class="side-menu__label">{{ trans('panel.profile.index') }}</span><i class="angle fal fa-angle-left"></i>
+                    </a>
+
+                    <ul class="slide-menu">
+                        <li><a href="{{ route('admin.profile.index') }}" class="slide-item">{{ trans('panel.profile.edit') }}</a></li>
+                        <li><a href="{{ route('admin.profile.password') }}" class="slide-item">{{ trans('panel.profile.password-change') }}</a></li>
+                        <li><a href="{{ route('admin.profile.logout') }}" class="slide-item">{{ trans('panel.profile.sign-out') }}</a></li>
                     </ul>
                 </li>
             </ul>
