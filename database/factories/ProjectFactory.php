@@ -47,6 +47,7 @@ class ProjectFactory extends Factory
             'project_base_id' => rand(1, 3),
             'project_status_id' => rand(1, 6),
             'price' => $this->faker->randomElement([10000, 50000, 600000, 80000, 10000000, 200000000]),
+            'note' => $this->faker->paragraph,
             'created_at' => now()->addMonths(rand(1, 5))->startOfMonth(),
             'updated_at' => now()->addMonths(rand(1, 5))->startOfMonth(),
         ];

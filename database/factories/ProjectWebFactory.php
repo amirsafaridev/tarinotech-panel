@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\Database\Project\WebDomain;
+use App\Enums\Database\Project\WebFacility;
 use App\Enums\Database\Project\WebHostLocation;
 use App\Service\Json\WebProject\DomainTransformer;
 use App\Service\Json\WebProject\HostTransformer;
@@ -32,27 +33,9 @@ class ProjectWebFactory extends Factory
             'host' => $this->makeHost(),
             'language' => $this->makeLanguage(),
             'sample' => $this->sample(),
-            'facilities' => $this->makeFacility(),
+            'facilities' => $this->faker->randomElements(WebFacility::getKeys()),
             'working_days' => $this->faker->numberBetween(30, 360),
         ];
-    }
-
-    private function makeFacility(): array
-    {
-        $activities = [
-            'تولید محصولات صنعتی',
-            'خدمات فنی و مهندسی',
-            'فروش و بازاریابی',
-            'آموزش و پژوهش',
-            'تکنولوژی اطلاعات و نرم‌افزار',
-            'حمل و نقل و انبارداری',
-            'مشاوره و خدمات مالی',
-            'بهداشت و درمان',
-            'ساختمان و ساختمان‌سازی',
-            'هنر و فرهنگ ورزی',
-        ];
-
-        return $this->faker->randomElements($activities);
     }
 
     private function makeHost(): array
