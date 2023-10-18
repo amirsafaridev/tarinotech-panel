@@ -88,10 +88,7 @@ class SeoProjectController extends Controller
 
     public function edit($projectId)
     {
-        $project = Project::query()
-            ->whereHasMorph('type', [ProjectSeo::class])
-            ->with('type')
-            ->findOrFail($projectId);
+        $project = $this->getOrFailProject($projectId);
 
         $title = 'پروژه سئو - ویرایش';
         $routeUpdate = route('admin.project.seo.update', $project->id);
@@ -102,10 +99,7 @@ class SeoProjectController extends Controller
     public function update(UpdateRequest $request, $projectId)
     {
         try {
-            $project = Project::query()
-                ->whereHasMorph('type', [ProjectSeo::class])
-                ->with('type')
-                ->findOrFail($projectId);
+            $project = $this->getOrFailProject($projectId);
 
             DB::beginTransaction();
             $project->update($this->initialProjectData($request));
@@ -127,11 +121,13 @@ class SeoProjectController extends Controller
         }
     }
 
-    public function show(Admin $admin)
+    public function show($projectId)
     {
-        $title = trans('panel.admin.show');
+        $project = $this->getOrFailProject($projectId);
 
-        return view('admin.admin.show', compact('title', 'admin'));
+        $title = 'پروژه سئو - نمایش';
+
+        return view('admin.project.seo.show', compact('title', 'project'));
     }
 
     public function destroy(Admin $admin)
@@ -193,5 +189,13 @@ class SeoProjectController extends Controller
         $host->setHostProvider($req->input('host_provider'));
 
         return $host;
+    }
+
+    private function getOrFailProject($projectId)
+    {
+        return Project::query()
+            ->whereHasMorph('type', [ProjectSeo::class])
+            ->with('type')
+            ->findOrFail($projectId);
     }
 }

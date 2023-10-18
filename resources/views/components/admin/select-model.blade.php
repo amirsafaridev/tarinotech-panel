@@ -7,7 +7,10 @@
             @if ($multiple) multiple @endif
             name="{{ $identify }}"
             id="{{ sanitizedIdentify($identify) }}">
-        <option value="">انتخاب گزینه</option>
+
+        @if($hasChoiceOption)
+            <option value="">انتخاب گزینه</option>
+        @endif
 
         @if ($items->isNotEmpty())
             @foreach ($items as $item)

@@ -2,59 +2,53 @@
 
 namespace App\Http\Controllers\Admin\Project;
 
-use App\Enums\General\BtnType;
-use App\Helpers\Helper;
+use App\Filters\Admin\Project\BaseIdFilter;
+use App\Filters\Admin\Project\DomainFilter;
+use App\Filters\Admin\Project\IDFilter;
+use App\Filters\Admin\Project\SortFilter;
+use App\Filters\Admin\Project\StatusFilter;
+use App\Filters\Admin\User\UserSearchFilter;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Project;
+use App\Models\ProjectAds;
+use App\Models\ProjectSeo;
+use App\Models\ProjectWeb;
 use DB;
 use Exception;
-use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Database\Eloquent\Builder;
 
 class ProjectController extends Controller
 {
     public function index()
     {
-        $title = trans('panel.admin.index');
-        $routeData = route('admin.admin.data');
-        $selects = ['id', 'email', 'first_name', 'last_name', 'roles', 'latest_login', 'created_at'];
-        $skipSearch = [''];
-        $skipSort = [''];
+        $title = 'پروژه ها';
 
-        return view('admin.admin.index', compact('title', 'routeData', 'selects', 'skipSearch', 'skipSort'));
-    }
+        $projects = Project::query()
+            ->with(['status', 'type', 'user', 'admin', 'base'])
+            ->whereHasMorph('type', [ProjectAds::class, ProjectWeb::class, ProjectSeo::class])
+            ->whereHas('user', function (Builder $q) {
+                $q->filter([
+                    UserSearchFilter::class,
+                ]);
+            })
+            ->filter([
+                IDFilter::class,
+                DomainFilter::class,
+                BaseIdFilter::class,
+                StatusFilter::class,
+                SortFilter::class,
+            ])
+            ->paginate(12);
 
-    public function data()
-    {
-        try {
-            $admins = Admin::query()
-                ->with(['roles', 'latestLogin'])
-                ->withCount('logins')
-                ->get();
+        $sortItems = [
+            'id-desc' => 'شناسه (نزولی)',
+            'id-asc' => 'شناسه (صعودی)',
+            'price-desc' => 'قیمت (نزولی)',
+            'price-asc' => 'قیمت (صعودی)',
+        ];
 
-            return DataTables::of($admins)
-                ->editColumn('created_at', function ($admin) {
-                    return $admin->created_at->toJalali()->format(formatJalaliDateTime());
-                })
-                ->editColumn('latest_login', function ($admin) {
-                    return $admin->latestLogin ?
-                        $admin->latestLogin->login_at->toJalali()->format('h:i Y-m-d') :
-                        trans('panel.admin.not_login');
-                })
-                ->editColumn('roles', function ($admin) {
-                    return $admin->roles ? $admin->roles->pluck('name')->implode(', ') :
-                        trans('panel.admin.not_role');
-                })
-                ->addColumn('action', function ($admin) {
-                    $actions = Helper::btnMaker(BtnType::Warning, route('admin.admin.edit', $admin->id), trans('panel.action.edit'));
-                    $actions .= Helper::btnMaker(BtnType::Info, route('admin.admin.password', $admin->id), trans('panel.action.change_password'));
-                    $actions .= Helper::btnMaker(BtnType::Success, route('admin.admin.show', $admin->id), trans('panel.action.info'));
-
-                    return $actions;
-                })
-                ->make();
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
+        return view('admin.project.index', compact('title', 'projects', 'sortItems'));
     }
 
     public function destroy(Admin $admin)

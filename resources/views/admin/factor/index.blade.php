@@ -24,7 +24,7 @@
                 <div class="card-header">
                     <h3 class="card-title">فاکتورها</h3>
                     <div class="card-options">
-                        <a href="{{ route('admin.factor.create') }}" class="btn btn-success btn-sm">ایجاد پروژه</a>
+                        <a href="{{ route('admin.factor.create') }}" class="btn btn-success btn-sm">ایجاد فاکتور</a>
                     </div>
                 </div>
 

@@ -86,10 +86,7 @@ class AdsProjectController extends Controller
 
     public function edit($projectId)
     {
-        $project = Project::query()
-            ->whereHasMorph('type', [ProjectAds::class])
-            ->with('type')
-            ->findOrFail($projectId);
+        $project = $this->getOrFailProject($projectId);
 
         $title = 'پروژه گوگل ادز - ویرایش';
         $routeUpdate = route('admin.project.ads.update', $project->id);
@@ -100,10 +97,7 @@ class AdsProjectController extends Controller
     public function update(UpdateRequest $request, $projectId)
     {
         try {
-            $project = Project::query()
-                ->whereHasMorph('type', [ProjectAds::class])
-                ->with('type')
-                ->findOrFail($projectId);
+            $project = $this->getOrFailProject($projectId);
 
             DB::beginTransaction();
             $project->update($this->initialProjectData($request));
@@ -125,11 +119,13 @@ class AdsProjectController extends Controller
         }
     }
 
-    public function show(Admin $admin)
+    public function show($projectId)
     {
-        $title = trans('panel.admin.show');
+        $project = $this->getOrFailProject($projectId);
 
-        return view('admin.admin.show', compact('title', 'admin'));
+        $title = 'پروژه گوگل ادز - نمایش';
+
+        return view('admin.project.ads.show', compact('title', 'project'));
     }
 
     public function destroy(Admin $admin)
@@ -169,5 +165,13 @@ class AdsProjectController extends Controller
             'field_activity' => $req->input('field_activity'),
             'designed_by' => $req->input('designed_by'),
         ];
+    }
+
+    private function getOrFailProject($projectId)
+    {
+        return Project::query()
+            ->whereHasMorph('type', [ProjectAds::class])
+            ->with('type')
+            ->findOrFail($projectId);
     }
 }

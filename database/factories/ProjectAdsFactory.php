@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Enums\Database\Project\ProjectDesignBy;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ProjectAds>
+ * @extends Factory
  */
 class ProjectAdsFactory extends Factory
 {
@@ -17,7 +18,8 @@ class ProjectAdsFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'field_activity' => 'زمینه کاری',
+            'designed_by' => ProjectDesignBy::getRandomValue(),
         ];
     }
 }

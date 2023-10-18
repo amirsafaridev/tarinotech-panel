@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Http\ViewComposers\Admin\Project\AdsProjectComposer;
+use App\Http\ViewComposers\Admin\Project\ProjectComposer;
 use App\Http\ViewComposers\Admin\Project\SeoProjectComposer;
 use App\Http\ViewComposers\Admin\Project\WebProjectComposer;
 use Illuminate\Support\ServiceProvider;
@@ -29,5 +30,6 @@ class ViewComposerProvider extends ServiceProvider
         view()->composer(['admin.project.web.*'], WebProjectComposer::class);
         view()->composer(['admin.project.seo.*'], SeoProjectComposer::class);
         view()->composer(['admin.project.ads.*'], AdsProjectComposer::class);
+        view()->composer(['admin.project.index'], ProjectComposer::class);
     }
 }

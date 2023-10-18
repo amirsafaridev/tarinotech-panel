@@ -91,10 +91,7 @@ class WebProjectController extends Controller
 
     public function edit($projectId)
     {
-        $project = Project::query()
-            ->whereHasMorph('type', [ProjectWeb::class])
-            ->with('type')
-            ->findOrFail($projectId);
+        $project = $this->getOrFailProject($projectId);
 
         $title = 'پروژه سایت - ویرایش';
         $routeUpdate = route('admin.project.web.update', $project->id);
@@ -106,10 +103,7 @@ class WebProjectController extends Controller
     {
         try {
 
-            $project = Project::query()
-                ->whereHasMorph('type', [ProjectWeb::class])
-                ->with('type')
-                ->findOrFail($projectId);
+            $project = $this->getOrFailProject($projectId);
 
             DB::beginTransaction();
             $project->update($this->initialProjectData($request));
@@ -131,11 +125,13 @@ class WebProjectController extends Controller
         }
     }
 
-    public function show(Admin $admin)
+    public function show($projectId)
     {
-        $title = trans('panel.admin.show');
+        $project = $this->getOrFailProject($projectId);
 
-        return view('admin.admin.show', compact('title', 'admin'));
+        $title = 'پروژه سایت - نمایش';
+
+        return view('admin.project.web.show', compact('title', 'project'));
     }
 
     public function destroy(Admin $admin)
@@ -268,5 +264,16 @@ class WebProjectController extends Controller
             'sample' => $sample->toArray(),
             'facilities' => $request->input('facilities', []),
         ];
+    }
+
+    /**
+     * @return Project|Project[]|Builder|Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|\LaravelIdea\Helper\App\Models\_IH_Project_C|\LaravelIdea\Helper\App\Models\_IH_Project_QB|\LaravelIdea\Helper\App\Models\_IH_Project_QB[]|null
+     */
+    private function getOrFailProject($projectId): \LaravelIdea\Helper\App\Models\_IH_Project_C|array|null|Builder|Project|\LaravelIdea\Helper\App\Models\_IH_Project_QB|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+    {
+        return Project::query()
+            ->whereHasMorph('type', [ProjectWeb::class])
+            ->with('type')
+            ->findOrFail($projectId);
     }
 }

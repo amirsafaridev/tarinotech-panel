@@ -19,9 +19,9 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PresenterController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\Project\AdsProjectController;
+use App\Http\Controllers\Admin\Project\ProjectController;
 use App\Http\Controllers\Admin\Project\SeoProjectController;
 use App\Http\Controllers\Admin\Project\WebProjectController;
-use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\ProjectStatusController;
 use App\Http\Controllers\Admin\ProjectTypeController;
 use App\Http\Controllers\Admin\Report\GoalController as GoalControllerReport;
@@ -171,8 +171,13 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::get('/project/web', 'index')->name('project.web.index');
         Route::get('/project/web/create', 'create')->name('project.web.create');
         Route::post('/project/web/store', 'store')->name('project.web.store');
+
+        Route::get('/project/web/{projectId}/show', 'show')->name('project.web.show')
+            ->whereNumber('projectId');
+
         Route::get('/project/web/{projectId}/edit', 'edit')->name('project.web.edit')
             ->whereNumber('projectId');
+
         Route::patch('/project/web/{projectId}/update', 'update')->name('project.web.update')
             ->whereNumber('projectId');
     });
@@ -181,8 +186,13 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::get('/project/seo', 'index')->name('project.seo.index');
         Route::get('/project/seo/create', 'create')->name('project.seo.create');
         Route::post('/project/seo/store', 'store')->name('project.seo.store');
+
+        Route::get('/project/seo/{projectId}/show', 'show')->name('project.seo.show')
+            ->whereNumber('projectId');
+
         Route::get('/project/seo/{projectId}/edit', 'edit')->name('project.seo.edit')
             ->whereNumber('projectId');
+
         Route::patch('/project/seo/{projectId}/update', 'update')->name('project.seo.update')
             ->whereNumber('projectId');
     });
@@ -191,15 +201,19 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::get('/project/ads', 'index')->name('project.ads.index');
         Route::get('/project/ads/create', 'create')->name('project.ads.create');
         Route::post('/project/ads/store', 'store')->name('project.ads.store');
+
+        Route::get('/project/ads/{projectId}/show', 'show')->name('project.ads.show')
+            ->whereNumber('projectId');
+
         Route::get('/project/ads/{projectId}/edit', 'edit')->name('project.ads.edit')
             ->whereNumber('projectId');
+
         Route::patch('/project/ads/{projectId}/update', 'update')->name('project.ads.update')
             ->whereNumber('projectId');
     });
 
     Route::controller(ProjectController::class)->group(function () {
         Route::get('/project', 'index')->name('project.index');
-        Route::get('/project/data', 'data')->name('project.data');
         Route::delete('/project/destroy/{project}', 'destroy')->name('project.destroy');
     });
 

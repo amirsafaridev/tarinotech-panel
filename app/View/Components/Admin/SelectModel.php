@@ -23,6 +23,7 @@ class SelectModel extends Component
         public bool $disabled = false,
         public bool $isSmall = false,
         public bool $multiple = false,
+        public bool $hasChoiceOption = true,
     ) {
         //
     }

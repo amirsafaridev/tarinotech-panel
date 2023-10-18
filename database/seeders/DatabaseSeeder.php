@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             ProjectTypeSeeder::class,
             ProjectStatusSeeder::class,
             ProjectWebSeeder::class,
+            ProjectSeoSeeder::class,
+            ProjectAdsSeeder::class,
             SettingSeeder::class,
             AdditionalFeatureSeeder::class,
             TransactionCategorySeeder::class,

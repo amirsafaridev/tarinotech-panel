@@ -60,7 +60,8 @@
                                         <td>{{ $project->status->title }}</td>
                                         <td>{{ verta($project->created_at)->format(formatJalaliDate()) }}</td>
                                         <td>
-                                            <a class="btn btn-warning btn-sm" href="{{ route('admin.project.ads.edit',$project->id) }}">ویرایش</a>
+                                            <a target="_blank" class="btn btn-warning btn-sm" href="{{ route('admin.project.ads.edit',$project->id) }}">ویرایش</a>
+                                            <a target="_blank" class="btn btn-info btn-sm" href="{{ route('admin.project.ads.show',$project->id) }}">نمایش</a>
                                         </td>
                                     </tr>
                                 @endforeach

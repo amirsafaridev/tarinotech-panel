@@ -1,4 +1,4 @@
-<form class="row mb-4" action="{{ route('admin.project.web.index') }}">
+<form class="row mb-4" action="{{ route('admin.project.index') }}">
     <div class="col-12 col-md-3 col-xl-2">
         <x-admin.input
                 identify="id"
@@ -14,15 +14,21 @@
     </div>
 
     <div class="col-12 col-md-3 col-xl-2">
-        <x-admin.select-model identify="package_id[]"
-                              title="پکیج"
+        <x-admin.input
+                identify="user"
+                title="کارفرما"
+                :old="request('user')"/>
+    </div>
+
+    <div class="col-12 col-md-3 col-xl-2">
+        <x-admin.select-model identify="base_id"
+                              title="نوع پروژه"
                               key="id"
                               value="title"
-                              :items="$packages"
-                              :is-small="true"
-                              :multiple="true"
-                              :old="request('package_id')"/>
+                              :items="$bases"
+                              :old="request('base_id')"/>
     </div>
+
 
     <div class="col-12 col-md-3 col-xl-2">
         <x-admin.select-model identify="status_id[]"
@@ -31,8 +37,10 @@
                               value="title"
                               :items="$statuses"
                               :multiple="true"
+                              :has-choice-option="false"
                               :old="request('status_id')"/>
     </div>
+
 
     <div class="col-12 col-md-3 col-xl-2">
         <x-admin.select-simple identify="sort"
