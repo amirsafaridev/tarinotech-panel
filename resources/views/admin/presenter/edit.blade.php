@@ -89,7 +89,7 @@
     <script>
         $(document).ready(function () {
             activeParentUl('{{ route('admin.presenter.index') }}');
-            makeSelect2Remote($('#project_id'),'{{ route('admin.ajax.select2.project') }}',['title']);
+            makeSelect2Remote($('#project_id'),'{{ route('admin.ajax.project.remote-select') }}',['title']);
         })
     </script>
 @endsection

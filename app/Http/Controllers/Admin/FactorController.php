@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\Database\Project\ProjectBase;
-use App\Filters\Admin\Project\DomainFilter;
-use App\Filters\Admin\Project\IDFilter;
-use App\Filters\Admin\Project\SortFilter;
-use App\Filters\Admin\Project\StatusFilter;
-use App\Filters\Admin\User\UserSearchFilter;
+use App\Enums\Database\Factor\FactorStatus;
+use App\Enums\Database\User\PersonType;
+use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Project\Ads\StoreRequest;
-use App\Http\Requests\Admin\Project\Ads\UpdateRequest;
+use App\Http\Requests\Admin\Factor\StoreRequest;
+use App\Http\Requests\Admin\Factor\UpdateRequest;
 use App\Models\Admin;
+use App\Models\Factor;
 use App\Models\Project;
 use App\Models\ProjectAds;
 use DB;
@@ -63,10 +61,7 @@ class FactorController extends Controller
     {
         try {
             DB::beginTransaction();
-
-            $projectAds = ProjectAds::query()->create($this->initialAdsProjectData($request));
-            $projectAds->project()->create($this->initialProjectData($request));
-
+            Factor::create($this->itemProvider($request));
             DB::commit();
 
             return response()->json([
@@ -149,25 +144,27 @@ class FactorController extends Controller
         }
     }
 
-    private function initialProjectData(Request $request): array
+    protected function itemProvider(Request $request): array
     {
-        return [
-            'title' => $request->input('title'),
-            'domain' => $request->input('domain_primary'),
-            'admin_id' => auth()->id(),
-            'user_id' => $request->input('user_id'),
-            'price' => 0,
-            'project_status_id' => $request->input('status_id'),
-            'note' => $request->input('note'),
-            'project_base_id' => ProjectBase::Ads,
-        ];
-    }
+        $item['project_id'] = $request->input('project_id');
+        $item['title'] = $request->input('title');
 
-    private function initialAdsProjectData(Request $req): array
-    {
-        return [
-            'field_activity' => $req->input('field_activity'),
-            'designed_by' => $req->input('designed_by'),
-        ];
+        $item['expired_at'] = Helper::toGregorian($request->input('expired_at'));
+        $item['status'] = FactorStatus::Pending;
+
+        $item['gateway_data'] = [];
+        $item['admin_id'] = auth()->id();
+
+        $item['is_official'] = false;
+
+        $project = Project::with('user')->find($item['project_id']);
+        if ($project) {
+            $user = $project->user;
+            if ($user && ($user->person_type === PersonType::Legal || $user->official_bill)) {
+                $item['is_official'] = true;
+            }
+        }
+
+        return $item;
     }
 }

@@ -7,7 +7,7 @@ use App\Http\Requests\Admin\Ajax\CalcWorkDayRequest;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
-class AjaxController extends Controller
+class CalendarController extends Controller
 {
     public function calculateWorkDaysWithFreeDays(CalcWorkDayRequest $request)
     {

@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\Database\Company\CompanyType;
+use App\Enums\Database\Project\ProjectBase;
 use App\Enums\Database\Project\ProjectDesignBy;
 use App\Enums\Database\Project\SeoAgreementDuration;
 use App\Enums\Database\Project\SeoHostLocation;
@@ -76,6 +77,12 @@ return [
     ProjectDesignBy::class => [
         ProjectDesignBy::ByCompany => 'داخل شرکت',
         ProjectDesignBy::ByOutsideCompany => 'خارج شرکت',
+    ],
+
+    ProjectBase::class => [
+        ProjectBase::Web => 'وب سایت',
+        ProjectBase::Seo => 'سئو',
+        ProjectBase::Ads => 'گوگل ادز',
     ],
 
     SeoAgreementDuration::class => [

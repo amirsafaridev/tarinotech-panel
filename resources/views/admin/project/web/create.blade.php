@@ -268,7 +268,7 @@
                 clearTimeout(debounceTimer);
                 alertDaysCalcMessage.html('<span class="fal fa-spinner fa-spin"></span>');
                 debounceTimer = setTimeout(function() {
-                    postAjax('{{ route('admin.ajax.calc-day-work') }}', {
+                    postAjax('{{ route('admin.ajax.calc.day.work') }}', {
                         days:self.val()
                     })
                     .then(function (response) {

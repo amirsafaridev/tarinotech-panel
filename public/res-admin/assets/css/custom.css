@@ -6,3 +6,8 @@
     opacity: 0.8;
     padding: 10px 0;
 }
+.factor-item-price{
+    font-weight: 900;
+    font-size: 28px;
+    line-height: 32px;
+}

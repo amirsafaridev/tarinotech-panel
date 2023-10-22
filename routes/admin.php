@@ -4,26 +4,12 @@ use App\Http\Controllers\Admin\AdditionalFeatureController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminGoalController;
 use App\Http\Controllers\Admin\AdminPasswordController;
-use App\Http\Controllers\Admin\Ajax\AjaxController;
-use App\Http\Controllers\Admin\Ajax\Select2Controller;
 use App\Http\Controllers\Admin\AutoMessageController;
-use App\Http\Controllers\Admin\Blog\BlogCategoryController;
-use App\Http\Controllers\Admin\Blog\BlogController;
-use App\Http\Controllers\Admin\FactorController;
 use App\Http\Controllers\Admin\FreeDayController;
 use App\Http\Controllers\Admin\GroupGoalController;
 use App\Http\Controllers\Admin\HomeController;
-use App\Http\Controllers\Admin\PackageController;
-use App\Http\Controllers\Admin\PackagePriceController;
 use App\Http\Controllers\Admin\PermissionController;
-use App\Http\Controllers\Admin\PresenterController;
 use App\Http\Controllers\Admin\ProfileController;
-use App\Http\Controllers\Admin\Project\AdsProjectController;
-use App\Http\Controllers\Admin\Project\ProjectController;
-use App\Http\Controllers\Admin\Project\SeoProjectController;
-use App\Http\Controllers\Admin\Project\WebProjectController;
-use App\Http\Controllers\Admin\ProjectStatusController;
-use App\Http\Controllers\Admin\ProjectTypeController;
 use App\Http\Controllers\Admin\Report\GoalController as GoalControllerReport;
 use App\Http\Controllers\Admin\Report\GoalGroupController as GoalGroupControllerReport;
 use App\Http\Controllers\Admin\Report\LoginController;
@@ -31,7 +17,6 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SampleMessageController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TransactionCategoryController;
-use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -74,22 +59,6 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::patch('/admin/{admin}/password', 'update')->name('admin.password.update');
     });
 
-    Route::controller(Select2Controller::class)->group(function () {
-        Route::get('/ajax/select2/admin', 'selectAdmin')->name('ajax.select2.admin');
-        Route::get('/ajax/select2/user', 'selectUser')->name('ajax.select2.user');
-        Route::get('/ajax/select2/project', 'selectProject')->name('ajax.select2.project');
-    });
-
-    Route::controller(Select2Controller::class)->group(function () {
-        Route::get('/ajax/select2/admin', 'selectAdmin')->name('ajax.select2.admin');
-        Route::get('/ajax/select2/user', 'selectUser')->name('ajax.select2.user');
-        Route::get('/ajax/select2/project', 'selectProject')->name('ajax.select2.project');
-    });
-
-    Route::controller(AjaxController::class)->group(function () {
-        Route::post('/ajax/calc-day-work', 'calculateWorkDaysWithFreeDays')->name('ajax.calc-day-work');
-    });
-
     Route::controller(AdminGoalController::class)->group(function () {
         Route::get('/admin/{admin}/goal', 'index')->name('admin.goal');
         Route::post('/admin/{admin}/goal', 'save')->name('admin.goal.save');
@@ -114,28 +83,6 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
             ->whereUlid('login');
     });
 
-    Route::controller(UserController::class)->group(function () {
-        Route::get('/user', 'index')->name('user.index');
-        Route::get('/user/data', 'data')->name('user.data');
-        Route::get('/user/create', 'create')->name('user.create');
-        Route::post('/user/store', 'store')->name('user.store');
-        Route::get('/user/{user}/edit', 'edit')->name('user.edit');
-        Route::get('/user/{user}/show', 'show')->name('user.show');
-        Route::patch('/user/{user}/update', 'update')->name('user.update');
-        Route::delete('/user/{user}/destroy', 'destroy')->name('user.destroy');
-    });
-
-    Route::controller(PresenterController::class)->group(function () {
-        Route::get('/presenter', 'index')->name('presenter.index');
-        Route::get('/presenter/data', 'data')->name('presenter.data');
-        Route::get('/presenter/create', 'create')->name('presenter.create');
-        Route::post('/presenter/store', 'store')->name('presenter.store');
-        Route::get('/presenter/{user}/edit', 'edit')->name('presenter.edit');
-        Route::get('/presenter/{user}/show', 'show')->name('presenter.show');
-        Route::patch('/presenter/{user}/update', 'update')->name('presenter.update');
-        Route::delete('/presenter/{user}/destroy', 'destroy')->name('presenter.destroy');
-    })->middleware('ensure.presenter');
-
     Route::controller(RoleController::class)->group(function () {
         Route::get('/role', 'index')->name('role.index');
         Route::get('/role/data', 'data')->name('role.data');
@@ -146,96 +93,9 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::delete('/role/destroy/{role}', 'destroy')->name('role.destroy');
     });
 
-    Route::controller(ProjectTypeController::class)->group(function () {
-        Route::get('/project/type', 'index')->name('project.type.index');
-        Route::get('/project/type/data', 'data')->name('project.type.data');
-        Route::get('/project/type/create', 'create')->name('project.type.create');
-        Route::post('/project/type/store', 'store')->name('project.type.store');
-        Route::get('/project/type/{projectType}/edit', 'edit')->name('project.type.edit');
-        Route::patch('/project/type/{projectType}/update', 'update')->name('project.type.update');
-        Route::delete('/project/type/{projectType}/destroy', 'destroy')->name('project.type.destroy');
-
-    });
-
-    Route::controller(ProjectStatusController::class)->group(function () {
-        Route::get('/project/status', 'index')->name('project.status.index');
-        Route::get('/project/status/data', 'data')->name('project.status.data');
-        Route::get('/project/status/create', 'create')->name('project.status.create');
-        Route::post('/project/status/store', 'store')->name('project.status.store');
-        Route::get('/project/status/{projectStatus}/edit', 'edit')->name('project.status.edit');
-        Route::patch('/project/status/{projectStatus}/update', 'update')->name('project.status.update');
-        Route::delete('/project/status/{projectStatus}/destroy', 'destroy')->name('project.status.destroy');
-    });
-
-    Route::controller(WebProjectController::class)->group(function () {
-        Route::get('/project/web', 'index')->name('project.web.index');
-        Route::get('/project/web/create', 'create')->name('project.web.create');
-        Route::post('/project/web/store', 'store')->name('project.web.store');
-
-        Route::get('/project/web/{projectId}/show', 'show')->name('project.web.show')
-            ->whereNumber('projectId');
-
-        Route::get('/project/web/{projectId}/edit', 'edit')->name('project.web.edit')
-            ->whereNumber('projectId');
-
-        Route::patch('/project/web/{projectId}/update', 'update')->name('project.web.update')
-            ->whereNumber('projectId');
-    });
-
-    Route::controller(SeoProjectController::class)->group(function () {
-        Route::get('/project/seo', 'index')->name('project.seo.index');
-        Route::get('/project/seo/create', 'create')->name('project.seo.create');
-        Route::post('/project/seo/store', 'store')->name('project.seo.store');
-
-        Route::get('/project/seo/{projectId}/show', 'show')->name('project.seo.show')
-            ->whereNumber('projectId');
-
-        Route::get('/project/seo/{projectId}/edit', 'edit')->name('project.seo.edit')
-            ->whereNumber('projectId');
-
-        Route::patch('/project/seo/{projectId}/update', 'update')->name('project.seo.update')
-            ->whereNumber('projectId');
-    });
-
-    Route::controller(AdsProjectController::class)->group(function () {
-        Route::get('/project/ads', 'index')->name('project.ads.index');
-        Route::get('/project/ads/create', 'create')->name('project.ads.create');
-        Route::post('/project/ads/store', 'store')->name('project.ads.store');
-
-        Route::get('/project/ads/{projectId}/show', 'show')->name('project.ads.show')
-            ->whereNumber('projectId');
-
-        Route::get('/project/ads/{projectId}/edit', 'edit')->name('project.ads.edit')
-            ->whereNumber('projectId');
-
-        Route::patch('/project/ads/{projectId}/update', 'update')->name('project.ads.update')
-            ->whereNumber('projectId');
-    });
-
-    Route::controller(ProjectController::class)->group(function () {
-        Route::get('/project', 'index')->name('project.index');
-        Route::delete('/project/destroy/{project}', 'destroy')->name('project.destroy');
-    });
-
     Route::controller(SettingController::class)->group(function () {
         Route::get('/setting', 'index')->name('setting.index');
         Route::patch('/setting', 'update')->name('setting.update');
-    });
-
-    Route::controller(PackagePriceController::class)->group(function () {
-        Route::get('/package/{package}/price/{packagePrice}/edit', 'edit')->name('package-price.edit');
-        Route::patch('/package/{package}/price/{packagePrice}/update', 'update')->name('package-price.update');
-        Route::delete('/package/{package}/price/{packagePrice}/destroy', 'destroy')->name('package-price.destroy');
-    });
-
-    Route::controller(PackageController::class)->group(function () {
-        Route::get('/package', 'index')->name('package.index');
-        Route::get('/package/data', 'data')->name('package.data');
-        Route::get('/package/create', 'create')->name('package.create');
-        Route::post('/package/store', 'store')->name('package.store');
-        Route::get('/package/{package}/edit', 'edit')->name('package.edit');
-        Route::patch('/package/{package}/update', 'update')->name('package.update');
-        Route::delete('/package/{package}/destroy', 'destroy')->name('package.destroy');
     });
 
     Route::controller(AdditionalFeatureController::class)->group(function () {
@@ -276,35 +136,6 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::get('/free-day/{freeDay}/edit', 'edit')->name('free-day.edit');
         Route::patch('/free-day/{freeDay}/update', 'update')->name('free-day.update');
         Route::delete('/free-day/{freeDay}/destroy', 'destroy')->name('free-day.destroy');
-    });
-
-    Route::controller(BlogCategoryController::class)->group(function () {
-        Route::get('/blog/category', 'index')->name('blog.category.index');
-        Route::get('/blog/category/data', 'data')->name('blog.category.data');
-        Route::get('/blog/category/create', 'create')->name('blog.category.create');
-        Route::post('/blog/category/store', 'store')->name('blog.category.store');
-        Route::get('/blog/category/{blogCategory}/edit', 'edit')->name('blog.category.edit');
-        Route::patch('/blog/category/{blogCategory}/update', 'update')->name('blog.category.update');
-        Route::delete('/blog/category/{blogCategory}/destroy', 'destroy')->name('blog.category.destroy');
-    });
-
-    Route::controller(BlogController::class)->group(function () {
-        Route::get('/blog', 'index')->name('blog.index');
-        Route::get('/blog/data', 'data')->name('blog.data');
-        Route::get('/blog/create', 'create')->name('blog.create');
-        Route::post('/blog/store', 'store')->name('blog.store');
-        Route::get('/blog/{blog}/edit', 'edit')->name('blog.edit');
-        Route::patch('/blog/{blog}/update', 'update')->name('blog.update');
-        Route::delete('/blog/{blog}/destroy', 'destroy')->name('blog.destroy');
-    });
-
-    Route::controller(FactorController::class)->group(function () {
-        Route::get('/factor', 'index')->name('factor.index');
-        Route::get('/factor/create', 'create')->name('factor.create');
-        Route::post('/factor/store', 'store')->name('factor.store');
-        Route::get('/factor/{factor}/edit', 'edit')->name('factor.edit');
-        Route::patch('/factor/{factor}/update', 'update')->name('factor.update');
-        Route::delete('/factor/{factor}/destroy', 'destroy')->name('factor.destroy');
     });
 
     Route::controller(AutoMessageController::class)->group(function () {

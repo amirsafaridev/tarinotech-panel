@@ -41,6 +41,21 @@
         });
     }
 
+    function getAjax(url) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                type: "GET",
+                url: url,
+                success: function (response) {
+                    resolve(response);
+                },
+                error: function (response) {
+                    reject(response);
+                }
+            });
+        });
+    }
+
     function makeInputPrice(inputSelect, haveDot = false) {
         // Function to add thousands separators
         function formatNumberWithCommas(x) {
@@ -119,7 +134,6 @@
             },
             dir: 'rtl',
             language: 'fa',
-            minimumInputLength: 2,
             templateResult: function (result) {
                 if (!result.id) {
                     return result.text;

@@ -17,8 +17,10 @@ class Input extends Component
         public string $title = '',
         public string $identify = '',
         public ?string $description = '',
+        public array $addClass = [],
         public ?string $old = null,
         public bool $disabled = false,
+        public bool $readOnly = false,
         public bool $isSmall = false,
     ) {
         //

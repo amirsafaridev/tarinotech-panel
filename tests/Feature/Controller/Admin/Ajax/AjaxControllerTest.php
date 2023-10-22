@@ -21,7 +21,7 @@ class AjaxControllerTest extends TestCase
         Admin::factory(1)->create();
         $admin = Admin::first();
         $this->actingAs($admin, 'admin');
-        $this->post(route('admin.ajax.calc-day-work'), [
+        $this->post(route('admin.ajax.calc.day.work'), [
             'days' => 10,
         ])
 
@@ -53,7 +53,7 @@ class AjaxControllerTest extends TestCase
         ]);
 
         $this->actingAs($admin, 'admin');
-        $this->post(route('admin.ajax.calc-day-work'), [
+        $this->post(route('admin.ajax.calc.day.work'), [
             'days' => 10,
         ])
             ->assertJson(function (AssertableJson $json) {
