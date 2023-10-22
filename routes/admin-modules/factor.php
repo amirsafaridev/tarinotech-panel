@@ -10,7 +10,8 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::get('/factor/create', 'create')->name('factor.create');
         Route::post('/factor/store', 'store')->name('factor.store');
         Route::get('/factor/{factor}/edit', 'edit')->name('factor.edit');
-        Route::patch('/factor/{factor}/update', 'update')->name('factor.update');
+        Route::get('/factor/{factor}/show', 'show')->name('factor.show');
+        Route::put('/factor/{factor}/update', 'update')->name('factor.update');
         Route::delete('/factor/{factor}/destroy', 'destroy')->name('factor.destroy');
     });
 });

@@ -79,7 +79,7 @@
                     projectId : value
                 })
                 .then(function (response) {
-                    projectInfo.html(response)
+                    projectInfo.html(response.html)
                 })
                 .catch(function (response) {
                     showToast(response);
@@ -100,7 +100,7 @@
             $('#btn_add_item').click(function (){
                 getAjax('{{ route('admin.ajax.factor.view-item') }}')
                     .then(function (response) {
-                        let dataResource = response;
+                        let dataResource = response.html;
                         dataResource = dataResource.replace(/__INDEX__/g, itemCount);
                         factorItemContainer.append(dataResource);
                         itemCount++;

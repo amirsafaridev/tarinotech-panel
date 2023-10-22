@@ -21,7 +21,12 @@ class ProjectController extends Controller
             ->with('user')
             ->findOrFail($projectId);
 
-        return View::make('admin.project.rows.single-factor', compact('project'));
+        $projectViewItem = (string) View::make('admin.project.rows.single-factor', compact('project'));
+
+        return response()->json([
+            'html' => $projectViewItem,
+            'message' => 'اطلاعات پروژه بارگیری شد.',
+        ]);
     }
 
     public function remoteSelect(Request $request)

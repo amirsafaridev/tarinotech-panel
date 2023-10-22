@@ -1,4 +1,4 @@
-<form class="row mb-4" action="{{ route('admin.project.ads.index') }}">
+<form class="row mb-4" action="{{ route('admin.factor.index') }}">
     <div class="col-12 col-md-3 col-xl-2">
         <x-admin.input
                 identify="id"
@@ -8,31 +8,27 @@
 
     <div class="col-12 col-md-3 col-xl-2">
         <x-admin.input
-                identify="domain"
-                title="دامنه"
-                :old="request('domain')"/>
+                identify="title"
+                title="عنوان"
+                :old="request('title')"/>
     </div>
 
     <div class="col-12 col-md-3 col-xl-2">
         <x-admin.input
-                identify="user"
-                title="کارفرما"
-                :old="request('user')"/>
+                identify="price_from"
+                title="قیمت از (ریال)"
+                :old="request('price_from')"/>
     </div>
 
     <div class="col-12 col-md-3 col-xl-2">
-        <x-admin.select-model identify="status_id[]"
-                              title="وضعیت پروژه"
-                              key="id"
-                              value="title"
-                              :items="$statuses"
-                              :multiple="true"
-                              :old="request('status_id')"/>
+        <x-admin.input
+                identify="price_to"
+                title="قیمت تا (ریال)"
+                :old="request('price_to')"/>
     </div>
 
-
     <div class="col-12 col-md-3 col-xl-2">
-        <x-admin.select-simple identify="sort"
+       <x-admin.select-simple identify="sort"
                                title="مرتب سازی"
                                :items="$sortItems"
                                :old="request('sort')"/>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\Database\Company\CompanyType;
+use App\Enums\Database\Factor\FactorStatus;
 use App\Enums\Database\Project\ProjectBase;
 use App\Enums\Database\Project\ProjectDesignBy;
 use App\Enums\Database\Project\SeoAgreementDuration;
@@ -83,6 +84,14 @@ return [
         ProjectBase::Web => 'وب سایت',
         ProjectBase::Seo => 'سئو',
         ProjectBase::Ads => 'گوگل ادز',
+    ],
+
+    FactorStatus::class => [
+        FactorStatus::Paid => 'پرداخت شده',
+        FactorStatus::Pending => 'در انتظار پرداخت',
+        FactorStatus::Expired => 'منقضی شده',
+        FactorStatus::Lock => 'در حال پرداخت',
+        FactorStatus::OnHold => 'نگه داشته شده',
     ],
 
     SeoAgreementDuration::class => [

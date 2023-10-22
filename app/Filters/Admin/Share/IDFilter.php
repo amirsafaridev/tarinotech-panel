@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Filters\Admin\Project;
+namespace App\Filters\Admin\Share;
 
 use App\Filters\FilterBase;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
+use function request;
 
 class IDFilter extends FilterBase
 {

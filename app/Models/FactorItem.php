@@ -8,18 +8,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class FactorItem extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'factor_id',
         'title',
         'transaction_category_id',
         'price',
-        'tax',
-        'discount',
+        'tax_rate',
         'tax_amount',
+        'discount',
         'final_price',
     ];
+
+    use HasFactory;
 
     public function factor(): BelongsTo
     {

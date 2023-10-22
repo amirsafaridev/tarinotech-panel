@@ -1,24 +1,47 @@
 @php
     $_index = '__INDEX__';
     if (isset($index)) $_index = $index;
+    $id = null;
+    $title = '';
+    $price = '';
+    $taxAmount = 0;
+    $discount = 0;
+    $finalPrice = 0;
+    $transactionCategoryId = 0;
+    if (isset($item)){
+        $id = $item->id;
+        $title = $item->title;
+        $price = $item->price;
+        $taxAmount = $item->tax_amount;
+        $discount = $item->discount;
+        $finalPrice = $item->final_price;
+        $transactionCategoryId = $item->transaction_category_id;
+    }
 @endphp
 <div class="card card-factor-item">
     <div class="card-header d-flex justify-content-between align-items-center">
         <div class="card-title">ایتم فاکتور</div>
-        <h4 class="factor-item-price p-0 m-0">0</h4>
+        <h4 class="factor-item-price p-0 m-0">{{ number_format($finalPrice) }}</h4>
     </div>
     <div class="card-body pb-4">
-        <x-admin.input identify="item[{{ $_index }}][title]" title="عنوان" />
 
-        <x-admin.select-simple identify="item[{{ $_index }}][transaction_category_id]" title="نوع واریزی"  :items="[]"/>
+        @if($id)
+            <x-admin.input identify="item[{{ $_index }}][id]" :old="$id" type="hidden"/>
+            <x-admin.input identify="item[{{ $_index }}][action]" old="update" type="hidden"/>
+        @else
+            <x-admin.input identify="item[{{ $_index }}][action]" old="store" type="hidden"/>
+        @endif
 
-        <x-admin.input identify="item[{{ $_index }}][price]" title="مبلغ (ریال)" :add-class="['price-input','calc']" />
+        <x-admin.input identify="item[{{ $_index }}][title]" title="عنوان" :old="$title"/>
 
-        <x-admin.input identify="item[{{ $_index }}][tax]" title="مالیات بر ارزش افزوده ۹ درصد (ریال)" :add-class="['tax-input','calc']" :read-only="true" />
+        <x-admin.select-model identify="item[{{ $_index }}][transaction_category_id]" title="نوع واریزی"  :items="$transactionCategories" key="id" value="title" :old="$transactionCategoryId"/>
 
-        <x-admin.input identify="item[{{ $_index }}][discount]" title="تخفیف (ریال)" :add-class="['offer-input','calc']" />
+        <x-admin.input identify="item[{{ $_index }}][price]" title="مبلغ (ریال)" :add-class="['price-input','calc']" :old="$price"/>
+
+        <x-admin.input identify="item[{{ $_index }}][tax]" title="مالیات بر ارزش افزوده ۹ درصد (ریال)" :add-class="['tax-input','calc']" :read-only="true" :old="$taxAmount"/>
+
+        <x-admin.input identify="item[{{ $_index }}][discount]" title="تخفیف (ریال)" :add-class="['offer-input','calc']" :old="$discount"/>
 
         <button class="btn btn-danger btn-sm btn-remove" type="button">حذف ردیف</button>
-
     </div>
 </div>

@@ -11,7 +11,8 @@
         <h1 class="page-title">فاکتورها</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a
+                            href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item active">فاکتورها</li>
             </ol>
         </div>
@@ -31,45 +32,50 @@
                 <div class="card-body">
                     @include('admin.partial.message')
 
-                    {{--@include('admin.project.ads.part.filter')--}}
+                   @include('admin.factor.part.filter')
 
-                    @if(isset($projects) && $projects->isNotEmpty())
+                    @if($factors->isNotEmpty())
                         <div class="table-responsive">
                             <table id="data-table" class="table">
                                 <thead>
                                 <tr>
                                     <th>شناسه</th>
-                                    <th>نام</th>
+                                    <th>عنوان</th>
+                                    <th>پروژه</th>
                                     <th>کارشناس</th>
-                                    <th>کارفرما</th>
-                                    <th>دامنه</th>
+                                    <th>کاربر</th>
+                                    <th>مبلغ</th>
                                     <th>وضعیت</th>
                                     <th>تاریخ ایجاد</th>
+                                    <th>مهلت پرداخت</th>
                                     <th>عملیات</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($projects as $project)
+                                @foreach($factors as $factor)
                                     <tr>
-                                        <td>{{ $project->id }}</td>
-                                        <td>{{ $project->title }}</td>
-                                        <td>{{ $project->admin->first_name }} {{ $project->admin->last_name }}</td>
-                                        <td>{{ $project->user->first_name }} {{ $project->user->last_name }}</td>
-                                        <td>{{ $project->domain }}</td>
-                                        <td>{{ $project->status->title }}</td>
-                                        <td>{{ verta($project->created_at)->format(formatJalaliDate()) }}</td>
-                                        <td>
-                                            <a class="btn btn-warning btn-sm" href="{{ route('admin.project.ads.edit',$project->id) }}">ویرایش</a>
-                                        </td>
+                                        <td>{{ $factor->id }}</td>
+                                        <td>{{ $factor->title }}</td>
+                                        <td>{{ $factor->project->title }}</td>
+                                        <td>{{ $factor->admin->first_name }} {{ $factor->admin->last_name }}</td>
+                                        <td>{{ $factor->user->first_name }} {{ $factor->user->last_name }}</td>
+                                        <td>{{ number_format($factor->final_price) }}</td>
+                                        <td>{{ \App\Enums\Database\Factor\FactorStatus::getDescription($factor->status) }}</td>
+                                        <td>{{ verta($factor->created_at)->format(formatJalaliDate()) }}</td>
+                                        <td>{{ verta($factor->expired_at)->format(formatJalaliDate()) }}</td>
+                                         <td>
+                                             <a class="btn btn-warning btn-sm" href="{{ route('admin.factor.edit',$factor->id) }}">ویرایش</a>
+                                             <a class="btn btn-info btn-sm" href="{{ route('admin.factor.show',$factor->id) }}">نمایش | پرینت</a>
+                                         </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
                             </table>
-                            {{ $projects->withQueryString()->links() }}
+                            {{ $factors->withQueryString()->links() }}
                         </div>
                     @else
                         <div class="alert alert-info">
-                            <p>پروژه ای یافت نشد!</p>
+                            <p>فاکتوری یافت نشد!</p>
                         </div>
                     @endif
 
@@ -82,10 +88,11 @@
     @include('admin.partial.loader.script',['load'=>[
         \App\Enums\Assets\ScriptLoader::Select2(),
     ]])
+    @include('admin.partial.share-script')
     <script>
-        $(document).ready(function (){
-            $('#package_id').select2();
-            $('#status_id').select2();
+        $(document).ready(function () {
+            makeInputPrice($('#price_from'));
+            makeInputPrice($('#price_to'));
         });
     </script>
 @endsection

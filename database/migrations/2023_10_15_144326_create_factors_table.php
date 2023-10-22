@@ -15,10 +15,11 @@ return new class extends Migration
         Schema::create('factors', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->unsignedBigInteger('admin_id');
             $table->char('identify')->unique()->index();
             $table->char('transaction_id')->index()->nullable();
+            $table->unsignedBigInteger('admin_id');
             $table->unsignedBigInteger('project_id');
+            $table->unsignedInteger('final_price')->default(0);
             $table->unsignedTinyInteger('status')->default(FactorStatus::Pending);
             $table->boolean('is_official')->default(false);
             $table->dateTime('expired_at')->nullable();

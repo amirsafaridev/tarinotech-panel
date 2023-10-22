@@ -16,6 +16,7 @@ return [
     'auto_message_index' => 'Auto Message Index',
     'auto_message_edit' => 'Auto Message Edit',
     'factor_index' => 'Factor Index',
+    'factor__index' => 'Factor  Index',
     'factor_create' => 'Factor Create',
     'factor_edit' => 'Factor Edit',
     'factor_show' => 'Factor Show',

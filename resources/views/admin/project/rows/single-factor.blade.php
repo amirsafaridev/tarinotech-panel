@@ -29,9 +29,7 @@
         </tr>
 
         <tr>
-            <td>نوع پروژه</td>
-            <td>Joan Powell</td>
-            <td>مبلغ پروژه</td>
+            <td>مبلغ پروژه (ریال)</td>
             <td>{{ number_format($project->price) }}</td>
         </tr>
 

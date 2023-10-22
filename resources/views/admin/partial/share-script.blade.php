@@ -47,6 +47,7 @@
                 type: "GET",
                 url: url,
                 success: function (response) {
+                    showToast(response.message, 'success');
                     resolve(response);
                 },
                 error: function (response) {

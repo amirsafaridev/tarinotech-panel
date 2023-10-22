@@ -252,5 +252,6 @@ return [
         'keywords_count' => 'تعداد کلمات سئو شدنی',
         'keywords' => 'کلمات کلیدی',
         'project_base_id' => 'پروژه',
+        'project_id' => 'پروژه',
     ],
 ];

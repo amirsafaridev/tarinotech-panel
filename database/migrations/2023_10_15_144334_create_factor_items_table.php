@@ -17,10 +17,12 @@ return new class extends Migration
             $table->string('title');
             $table->unsignedInteger('transaction_category_id');
             $table->unsignedInteger('price');
-            $table->unsignedInteger('tax');
-            $table->unsignedInteger('discount');
+            $table->decimal('tax_rate');
             $table->unsignedInteger('tax_amount');
+            $table->unsignedInteger('discount');
             $table->unsignedInteger('final_price');
+
+            $table->timestamps();
 
             $table->foreign('transaction_category_id')
                 ->references('id')

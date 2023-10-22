@@ -4,14 +4,20 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\Database\Factor\FactorStatus;
 use App\Enums\Database\User\PersonType;
+use App\Filters\Admin\Factor\PriceFilter;
+use App\Filters\Admin\Project\SortFilter;
+use App\Filters\Admin\Share\IDFilter;
+use App\Filters\Admin\Share\TitleFilter;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Factor\StoreRequest;
 use App\Http\Requests\Admin\Factor\UpdateRequest;
 use App\Models\Admin;
 use App\Models\Factor;
+use App\Models\FactorItem;
 use App\Models\Project;
 use App\Models\ProjectAds;
+use App\Models\TransactionCategory;
 use DB;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
@@ -22,6 +28,36 @@ class FactorController extends Controller
     public function index()
     {
         $title = 'فاکتور ها';
+
+        $factors = Factor::query()
+            ->with(['project.user', 'admin'])
+            ->filter([
+                IDFilter::class,
+                TitleFilter::class,
+                PriceFilter::class,
+                SortFilter::class,
+            ])
+            ->paginate(12);
+
+        $sortItems = [
+            'id-desc' => 'شناسه (نزولی)',
+            'id-asc' => 'شناسه (صعودی)',
+            'final_price-desc' => 'قیمت (نزولی)',
+            'final_price-asc' => 'قیمت (صعودی)',
+        ];
+
+        return view('admin.factor.index', compact('title', 'factors', 'sortItems'));
+    }
+
+    public function _index()
+    {
+        $title = 'فاکتور ها';
+        $sortItems = [
+            'id-desc' => 'شناسه (نزولی)',
+            'id-asc' => 'شناسه (صعودی)',
+            'price-desc' => 'قیمت (نزولی)',
+            'price-asc' => 'قیمت (صعودی)',
+        ];
 
         /*$projects = Project::query()
             ->with(['status', 'type', 'user', 'admin'])
@@ -46,7 +82,7 @@ class FactorController extends Controller
             'price-asc' => 'قیمت (صعودی)',
         ];*/
 
-        return view('admin.factor.index', compact('title'));
+        return view('admin.factor.index', compact('title', 'sortItems'));
     }
 
     public function create()
@@ -61,7 +97,27 @@ class FactorController extends Controller
     {
         try {
             DB::beginTransaction();
-            Factor::create($this->itemProvider($request));
+
+            $factor = Factor::create($this->itemProvider($request));
+
+            $taxRate = 0.09;
+
+            foreach ($request->input('item') as $item) {
+                $price = $item['price'];
+                $taxAmount = $price * $taxRate;
+                $finalPrice = ($price + $taxAmount) - $item['discount'];
+
+                $factor->items()->create([
+                    'title' => $item['title'],
+                    'transaction_category_id' => $item['transaction_category_id'],
+                    'price' => $price,
+                    'tax_rate' => $taxRate,
+                    'tax_amount' => $taxAmount,
+                    'discount' => $item['discount'],
+                    'final_price' => $finalPrice,
+                ]);
+            }
+
             DB::commit();
 
             return response()->json([
@@ -79,34 +135,72 @@ class FactorController extends Controller
         }
     }
 
-    public function edit($projectId)
+    public function edit(Factor $factor)
     {
-        $project = Project::query()
-            ->whereHasMorph('type', [ProjectAds::class])
-            ->with('type')
-            ->findOrFail($projectId);
+        $factor->load(['items', 'project']);
 
-        $title = 'پروژه گوگل ادز - ویرایش';
-        $routeUpdate = route('admin.project.ads.update', $project->id);
+        $title = 'فاکتور ها - ویرایش';
+        $routeUpdate = route('admin.factor.update', $factor->id);
+        $transactionCategories = TransactionCategory::query()->get();
 
-        return view('admin.project.ads.edit', compact('title', 'routeUpdate', 'project'));
+        return view('admin.factor.edit', compact('title', 'routeUpdate', 'factor', 'transactionCategories'));
     }
 
-    public function update(UpdateRequest $request, $projectId)
+    public function update(UpdateRequest $request, Factor $factor)
     {
         try {
-            $project = Project::query()
-                ->whereHasMorph('type', [ProjectAds::class])
-                ->with('type')
-                ->findOrFail($projectId);
 
             DB::beginTransaction();
-            $project->update($this->initialProjectData($request));
-            $project->type->update($this->initialAdsProjectData($request));
+            $factor->load('items');
+
+            $taxRate = 0.09;
+            $updatedItemIds = [];
+
+            foreach ($request->input('item') as $item) {
+                $price = $item['price'];
+                $taxAmount = $price * $taxRate;
+                $finalPrice = ($price + $taxAmount) - $item['discount'];
+                $action = $item['action'];
+
+                $itemParams = [
+                    'title' => $item['title'],
+                    'transaction_category_id' => $item['transaction_category_id'],
+                    'price' => $price,
+                    'tax_rate' => $taxRate,
+                    'tax_amount' => $taxAmount,
+                    'discount' => $item['discount'],
+                    'final_price' => $finalPrice,
+                ];
+
+                if ($action === 'store') {
+                    $factor->items()->create($itemParams);
+                } else {
+                    $updatedItemIds[] = $item['id'];
+                    $factorItemId = $item['id'];
+                    FactorItem::query()
+                        ->where('id', $factorItemId)
+                        ->update($itemParams);
+                }
+
+            }
+
+            $currentItemIds = $factor->items->pluck('id')->toArray();
+            $deletedItemIds = array_diff($currentItemIds, $updatedItemIds);
+            if (count($deletedItemIds)) {
+                FactorItem::query()
+                    ->whereIn('id', $deletedItemIds)
+                    ->delete();
+            }
+
+            $updatedAttributes = $this->itemProvider($request);
+            $updatedAttributes['status'] = $request->input('status');
+            $factor->update($updatedAttributes);
+
             DB::commit();
 
             return response()->json([
                 'result' => 'success',
+                'refresh' => true,
                 'message' => trans('panel.success_update'),
             ]);
         } catch (Exception $e) {
