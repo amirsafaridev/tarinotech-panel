@@ -51,6 +51,8 @@
 
                         <x-admin.button-submit title="به روز رسانی"/>
 
+                        <x-admin.button-delete/>
+
                         <button id="btn_add_item" class="btn btn-success" type="button">افزودن ایتم</button>
                     </div>
                 </div>
@@ -64,6 +66,11 @@
                 @endforeach
             @endif
         </div>
+    </form>
+
+    <form id="deleteItem" action="{{ $routeDestroy }}" method="post" class="form-inline">
+        @csrf
+        @method('DELETE')
     </form>
 
 @endsection

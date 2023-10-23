@@ -57,6 +57,10 @@
         });
     }
 
+    function printMe(){
+        window.print();
+    }
+
     function makeInputPrice(inputSelect, haveDot = false) {
         // Function to add thousands separators
         function formatNumberWithCommas(x) {

@@ -3,18 +3,20 @@
 namespace App\Models;
 
 use App\Traits\Filterable;
-use App\Traits\HasUniqueIdentifyTrait;
+use App\Traits\HasUniqueIdentify;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Factor extends Model
 {
     use HasFactory;
-    use HasUniqueIdentifyTrait;
+    use HasUniqueIdentify;
     use Filterable;
+    use SoftDeletes;
 
     protected $fillable = [
         'title',

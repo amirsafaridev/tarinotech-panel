@@ -55,7 +55,6 @@
                                         <td>{{ verta($project->deadline_at)->format(formatJalaliDate()) }}</td>
                                         <td>{{ verta($project->created_at)->format(formatJalaliDate()) }}</td>
                                         <td>
-
                                             @php
                                                 $typeProject;
                                                 switch ($project->project_base_id){

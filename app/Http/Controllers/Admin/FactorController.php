@@ -12,15 +12,12 @@ use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Factor\StoreRequest;
 use App\Http\Requests\Admin\Factor\UpdateRequest;
-use App\Models\Admin;
 use App\Models\Factor;
 use App\Models\FactorItem;
 use App\Models\Project;
-use App\Models\ProjectAds;
 use App\Models\TransactionCategory;
 use DB;
 use Exception;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class FactorController extends Controller
@@ -47,42 +44,6 @@ class FactorController extends Controller
         ];
 
         return view('admin.factor.index', compact('title', 'factors', 'sortItems'));
-    }
-
-    public function _index()
-    {
-        $title = 'فاکتور ها';
-        $sortItems = [
-            'id-desc' => 'شناسه (نزولی)',
-            'id-asc' => 'شناسه (صعودی)',
-            'price-desc' => 'قیمت (نزولی)',
-            'price-asc' => 'قیمت (صعودی)',
-        ];
-
-        /*$projects = Project::query()
-            ->with(['status', 'type', 'user', 'admin'])
-            ->whereHasMorph('type', [ProjectAds::class])
-            ->whereHas('user', function (Builder $q) {
-                $q->filter([
-                    UserSearchFilter::class,
-                ]);
-            })
-            ->filter([
-                IDFilter::class,
-                DomainFilter::class,
-                StatusFilter::class,
-                SortFilter::class,
-            ])
-            ->paginate(12);
-
-        $sortItems = [
-            'id-desc' => 'شناسه (نزولی)',
-            'id-asc' => 'شناسه (صعودی)',
-            'price-desc' => 'قیمت (نزولی)',
-            'price-asc' => 'قیمت (صعودی)',
-        ];*/
-
-        return view('admin.factor.index', compact('title', 'sortItems'));
     }
 
     public function create()
@@ -141,9 +102,10 @@ class FactorController extends Controller
 
         $title = 'فاکتور ها - ویرایش';
         $routeUpdate = route('admin.factor.update', $factor->id);
+        $routeDestroy = route('admin.factor.destroy', $factor->id);
         $transactionCategories = TransactionCategory::query()->get();
 
-        return view('admin.factor.edit', compact('title', 'routeUpdate', 'factor', 'transactionCategories'));
+        return view('admin.factor.edit', compact('title', 'routeUpdate', 'routeDestroy', 'factor', 'transactionCategories'));
     }
 
     public function update(UpdateRequest $request, Factor $factor)
@@ -214,27 +176,26 @@ class FactorController extends Controller
         }
     }
 
-    public function show(Admin $admin)
+    public function show(Factor $factor)
     {
-        $title = trans('panel.admin.show');
+        $title = 'نمایش فاکتور';
 
-        return view('admin.admin.show', compact('title', 'admin'));
+        $factor->load(['items.transactionCategory', 'project.user', 'admin']);
+
+        return view('admin.factor.show', compact('title', 'factor'));
     }
 
-    public function destroy(Admin $admin)
+    public function destroy(Factor $factor)
     {
         try {
-            DB::beginTransaction();
-            $admin->update(['email' => uniqid($admin->email).'_']);
-            $admin->delete();
-            DB::commit();
+            $factor->delete();
 
-            return redirect(route('admin.admin.index'))->with('success', trans('panel.success_delete'));
+            return redirect(route('admin.factor.index'))->with('success', trans('panel.success_delete'));
         } catch (Exception $e) {
             DB::rollBack();
             report($e);
 
-            return redirect(route('admin.admin.index'))->with('danger', trans('panel.error_delete'));
+            return redirect(route('admin.factor.index'))->with('danger', trans('panel.error_delete'));
         }
     }
 

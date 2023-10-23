@@ -5,7 +5,7 @@ namespace App\Traits;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Str;
 
-trait HasUniqueIdentifyTrait
+trait HasUniqueIdentify
 {
     public bool $isInt = false;
 

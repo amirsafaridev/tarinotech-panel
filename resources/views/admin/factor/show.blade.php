@@ -1,150 +1,311 @@
 @extends('admin.master')
 @section('title') {{ $title }} @endsection
 @section('head')
+    <style>
+        .print-main-table{
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            font-size: 16px;
+        }
+        .print-main-table table, .print-main-table th, .print-main-table td {
+            border: 1px solid #686868;
+        }
+        .print-main-table td{
+            padding: 10px;
+        }
+        .print-main-table p{
+            padding: 0;
+            margin: 0;
+        }
+        @media print {
+            .jumps-prevent{
+                display: none;
+            }
+            .rtl .app-content{
+                margin: 0;
+            }
+            .hide-in-print{
+                display: none !important;
+            }
 
+            .print-main-table .p-title{
+                font-weight: bold;
+                font-size: 18px;
+            }
+
+            .print-main-table .f-bold{
+                font-weight: bold;
+            }
+
+            .print-main-table .header-row-bg{
+                background-color: #f3f3f3;
+            }
+
+            .print-main-table table, .print-main-table th, .print-main-table td {
+                border: 1px solid #686868;
+                color: black;
+            }
+            .print-main-table td{
+                padding: 10px;
+            }
+
+            .card , .app-content , .page-main{
+                background-color: white !important;
+            }
+
+            .side-app {
+                padding: 0 !important;
+            }
+        }
+    </style>
 @endsection
 @section('content')
     <div class="page-header">
-        <h1 class="page-title">{{ trans('panel.admin.title') }}</h1>
+        <h1 class="page-title">فاکتور - نمایش</h1>
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.admin.index') }}">{{ trans('panel.admin.title') }}</a></li>
-                <li class="breadcrumb-item active">{{ trans('panel.admin.show') }}</li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.factor.index') }}">فاکتور ها</a></li>
+                <li class="breadcrumb-item active">نمایش</li>
             </ol>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-12 col-md-6 col-xl-3 mb-3">
+    <div class="row hide-in-print">
+        <div class="col-12 col-md-6 mb-3">
             <div class="card">
                 <div class="card-header">
-                    <span class="bold">اهداف فردی فروش</span>
+                    <span class="bold">اطلاعات فاکتور</span>
                 </div>
                 <div class="card-body">
-                    <p class="card-text mb-3">تعریف اهداف فردی فروش برای پرسنل</p>
-                    <a href="{{ route('admin.admin.goal',$admin->id) }}" class="btn btn-success">ثبت</a>
+                    @include('admin.factor.part.info',['factor' => $factor])
                 </div>
             </div>
         </div>
-
-        <div class="col-12 col-md-6 col-xl-3 mb-3">
-            <div class="card">
-                <div class="card-header">
-                    <span class="bold">ورود ها</span>
-                </div>
-                <div class="card-body">
-                    <p class="card-text mb-3">نمایش تاریخ ورود و خروج ها</p>
-                    <a href="{{ route('admin.report.login',['user-type'=>'admin','user-id'=>$admin->id]) }}" class="btn btn-success">گزارش</a>
-                </div>
+        @if($factor->items->isNotEmpty())
+            <div class="col-12 col-md-6 mb-3">
+                @foreach($factor->items as $item)
+                    @include('admin.factor.part.info-item',['item' => $item])
+                @endforeach
             </div>
-        </div>
+        @endif
     </div>
 
     <div class="row">
-        <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+        <div class="col-12">
             <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center hide-in-print">
+                    <span class="bold">پرینت فاکتور</span>
+                    <button id="btn_print" type="button" class="btn btn-sm btn-success">پرینت فاکتور</button>
+                </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-hover">
+                        <table class="print-main-table">
                             <tbody>
-                            <tr>
-                                <td>آواتار</td>
-                                <td>
-                                    @if($admin->avatar)
-                                        <img class="admin-avatar" src="{{ asset($admin->avatar) }}" alt="{{ $admin->first_name }} {{ $admin->last_name }}">
-                                    @endif
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>شناسه</td>
-                                <td><a href="{{ route('admin.admin.edit',$admin->id) }}">{{ $admin->id }}</a></td>
-                            </tr>
-                            <tr>
-                                <td>پست الکترونیک</td>
-                                <td><a href="mailto:{{ $admin->email }}">{{ $admin->email }}</a></td>
-                            </tr>
-                            <tr>
-                                <td>شماره همراه</td>
-                                <td><a href="tel:{{ $admin->mobile }}">{{ $admin->mobile }}</a></td>
-                            </tr>
-                            <tr>
-                                <td>نام</td>
-                                <td>{{ $admin->first_name }}</td>
-                            </tr>
-                            <tr>
-                                <td>نام خانوادگی</td>
-                                <td>{{ $admin->last_name }}</td>
-                            </tr>
-
-                            @if($admin->dob)
-                                <tr>
-                                    <td>تاریخ تولد</td>
-                                    <td>{{ $admin->dob->toJalali()->format('d F Y') }}</td>
+                                <tr class="header-row-bg">
+                                    <td colspan="4">
+                                        <p class="text-center p-title">صورت حساب الکترونیکی فروش خدمات شرکت برخط نگاران</p>
+                                    </td>
                                 </tr>
-                            @endif
-
-                            @if($admin->start_cooperation)
-                                <tr>
-                                    <td>تاریخ شروع همکاری</td>
-                                    <td>{{ $admin->start_cooperation->toJalali()->format('d F Y') }}</td>
+                                <tr class="header-row-bg">
+                                    <td colspan="4">
+                                        <p class="text-right p-title">مشحصات فروشنده</p>
+                                    </td>
                                 </tr>
-                            @endif
-
-                            @if($admin->start_last_contract)
                                 <tr>
-                                    <td>شروع آخرین قرارداد</td>
-                                    <td>{{ $admin->start_last_contract->toJalali()->format('d F Y') }}</td>
+                                    <td width="25%">
+                                        <p>
+                                            <span>شماره اقتصادی :</span>
+                                            <span>14005743726</span>
+                                        </p>
+                                    </td>
+                                    <td width="25%">
+                                        <p>
+                                            <span>شماره / شماره ملی :</span>
+                                            <span>14005743726</span>
+                                        </p>
+                                    </td>
+                                    <td width="25%">
+                                        <p>
+                                            <span>کد شعبه :</span>
+                                            <span>-</span>
+                                        </p>
+                                    </td>
+                                    <td width="25%">
+                                        <p>
+                                            <span>کد پستی :</span>
+                                            <span>1794636411</span>
+                                        </p>
+                                    </td>
                                 </tr>
-                            @endif
-
-
-                            @if($admin->end_last_contract)
                                 <tr>
-                                    <td>پایان آخرین قرارداد</td>
-                                    <td>{{ $admin->end_last_contract->toJalali()->format('d F Y') }}</td>
+                                    <td width="50%" colspan="2">
+                                        <p>
+                                            <span>نام شخص حقیقی/حقوقی :</span>
+                                            <span>معین تقی زاده</span>
+                                        </p>
+                                    </td>
+                                    <td width="50%" colspan="2">
+                                        <p>
+                                            <span>نام بنگاه اقتصادی :</span>
+                                            <span>برخط نکاران جهان ارتباط</span>
+                                        </p>
+                                    </td>
                                 </tr>
-                            @endif
-
-                            <tr>
-                                <td>رزومه</td>
-                                <td>{{ $admin->resume }}</td>
-                            </tr>
-
-                            <tr>
-                                <td>توضیحات</td>
-                                <td>{{ $admin->description }}</td>
-                            </tr>
-
-                            <tr>
-                                <td>دسترسی</td>
-                                <td>@include('admin.partial.bool_badge',['value'=>$admin->has_access])</td>
-                            </tr>
-
-                            <tr>
-                                <td>سطح دسترسی</td>
-                                <td>{{ $admin->roles()->get()->implode('name',',') }}</td>
-                            </tr>
-
-                            @if($admin->latestLogin)
                                 <tr>
-                                    <td>آخرین ورود</td>
-                                    <td>{{ $admin->latestLogin->login_at->toJalali()->format('d F Y - H:i') }}</td>
-                                </tr>
-                            @endif
+                                    <td width="25%">
+                                        <p>
+                                            <span>شماره پروتنه گمرکی :</span>
+                                            <span>-</span>
+                                        </p>
+                                    </td>
+                                    <td width="25%">
+                                        <p>
+                                            <span>کد گمرک محل اظهار :</span>
+                                            <span>-</span>
+                                        </p>
+                                    </td>
+                                    <td width="50%" colspan="2">
+                                        <p>
+                                            <span>شناسه یکتای ثبت قرارداد :</span>
+                                            <span>-</span>
+                                        </p>
+                                    </td>
 
-                            <tr>
-                                <td>تاریخ ایجاد</td>
-                                <td>{{$admin->created_at->toJalali()->format('d F Y - H:i')}}</td>
-                            </tr>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4" class="header-row-bg">
+                                        <p class="text-right p-title">مشحصات خریدار</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="25%">
+                                        <p>
+                                            <span>شماره اقتصادی :</span>
+                                            <span>14005743726</span>
+                                        </p>
+                                    </td>
+                                    <td width="25%">
+                                        <p>
+                                            <span>شماره / شماره ملی :</span>
+                                            <span>14005743726</span>
+                                        </p>
+                                    </td>
+                                    <td width="25%">
+                                        <p>
+                                            <span>کد شعبه :</span>
+                                            <span>-</span>
+                                        </p>
+                                    </td>
+                                    <td width="25%">
+                                        <p>
+                                            <span>کد پستی :</span>
+                                            <span>1794636411</span>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="50%" colspan="2">
+                                        <p>
+                                            <span>نام شخص حقیقی/حقوقی :</span>
+                                            <span>معین تقی زاده</span>
+                                        </p>
+                                    </td>
+                                    <td width="50%" colspan="2">
+                                        <p>
+                                            <span>نام بنگاه اقتصادی :</span>
+                                            <span>برخط نکاران جهان ارتباط</span>
+                                        </p>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4">
+                                        <p class="text-right">مشحصات کالا / خدمت مورد معامله</p>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4">
+                                        <table class="print-main-table inner-table">
+                                            <tbody>
+                                            <tr>
+                                                <td>ردیف</td>
+                                                <td>شرح کالا / خدمات</td>
+                                                <td>واحد اندازه گیری</td>
+                                                <td>تعداد / مقدار</td>
+                                                <td>مبلغ واحد (ریال)</td>
+                                                <td>نوع ارز</td>
+                                                <td>مبلغ تخفیف</td>
+                                                <td>نوع مالیت بر ارزش افزوده</td>
+                                                <td>مبلغ مالیات بر ارزش افزوده</td>
+                                                <td>مبلغ کالا / خدمات</td>
+                                            </tr>
+                                            @php
+                                                $totalDiscount = 0;
+                                                $totalTaxAmount = 0;
+                                                $totalPrice = 0;
+                                            @endphp
+
+                                            @if($factor->items->isNotEmpty())
+                                                @foreach($factor->items as $item)
+                                                    @php
+                                                        $totalDiscount += $item->discount;
+                                                        $totalTaxAmount += $item->tax_amount;
+                                                        $totalPrice += $item->final_price;
+                                                    @endphp
+                                                    <tr>
+                                                        <td>{{ $loop->index + 1}}</td>
+                                                        <td>{{ $item->title }}</td>
+                                                        <td>عدد</td>
+                                                        <td>1</td>
+                                                        <td>{{ number_format($item->price) }}</td>
+                                                        <td>ریال (ایران)</td>
+                                                        <td>{{ number_format($item->discount) }}</td>
+                                                        <td>9.00</td>
+                                                        <td>{{ number_format($item->tax_amount) }}</td>
+                                                        <td>{{ number_format($item->final_price) }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            @endif
+
+                                            <tr>
+                                                <td colspan="6">جمع کل</td>
+                                                <td class="f-bold">{{ number_format($totalDiscount) }}</td>
+                                                <td class="f-bold">-</td>
+                                                <td class="f-bold">{{ number_format($totalTaxAmount) }}</td>
+                                                <td class="f-bold">{{ number_format($totalPrice) }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td colspan="6">مبلغ نهایی</td>
+                                                <td colspan="4" class="f-bold">{{ number_format($totalPrice) }}</td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
+
 @endsection
 @section('script')
-
+    @include('admin.partial.share-script')
+    <script>
+        $(document).ready(function () {
+            activeParentUl('{{ route('admin.factor.index') }}');
+            $('#btn_print').click(function (){
+                printMe();
+            })
+        });
+    </script>
 @endsection
