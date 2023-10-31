@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('additional_features', function (Blueprint $table) {
-            $table->id();
+        Schema::create('facilities', function (Blueprint $table) {
+            $table->increments('id');
             $table->string('title');
             $table->unsignedTinyInteger('project_base_id');
             $table->timestamps();
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('additional_features');
+        Schema::dropIfExists('facilities');
     }
 };

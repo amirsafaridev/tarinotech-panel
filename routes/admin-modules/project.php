@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\Project\AdsProjectController;
 use App\Http\Controllers\Admin\Project\ProjectController;
 use App\Http\Controllers\Admin\Project\SeoProjectController;
 use App\Http\Controllers\Admin\Project\WebProjectController;
+use App\Http\Controllers\Admin\ProjectFacilityController;
 use App\Http\Controllers\Admin\ProjectStatusController;
 use App\Http\Controllers\Admin\ProjectTypeController;
 use Illuminate\Support\Facades\Route;
@@ -74,6 +75,21 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
 
         Route::patch('/project/ads/{projectId}/update', 'update')->name('project.ads.update')
             ->whereNumber('projectId');
+    });
+
+    Route::controller(ProjectFacilityController::class)->group(function () {
+        Route::group(['prefix' => '/project/{project}/'], function () {
+            Route::get('facility', 'index')->name('project.facility.index');
+
+            Route::get('facility/create', 'create')->name('project.facility.create');
+            Route::post('facility', 'store')->name('project.facility.store');
+
+            Route::get('facility/{facility}/edit', 'edit')->name('project.facility.edit');
+            Route::put('facility/{facility}', 'update')->name('project.facility.update');
+
+            Route::patch('facility/{facility}/confirm', 'update')->name('project.facility.confirm');
+            Route::delete('facility/{facility}', 'destroy')->name('project.facility.destroy');
+        });
     });
 
     Route::controller(ProjectController::class)->group(function () {

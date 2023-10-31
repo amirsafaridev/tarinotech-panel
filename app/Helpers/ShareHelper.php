@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\Database\Project\ProjectBase;
+
 if (! function_exists('isValidDateFormat')) {
     /**
      * Check if a date string is in a valid 'Y-m-d' format.
@@ -107,5 +109,17 @@ if (! function_exists('sanitizedIdentify')) {
     function sanitizedIdentify($identify): string
     {
         return str_replace('[]', '', $identify);
+    }
+}
+
+if (! function_exists('getRouteProjectType')) {
+    function getRouteProjectType(int $base): string
+    {
+        return match ($base) {
+            ProjectBase::Web => 'web',
+            ProjectBase::Seo => 'seo',
+            ProjectBase::Ads => 'ads',
+            default => 'not found',
+        };
     }
 }

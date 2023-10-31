@@ -11,7 +11,7 @@ trait HasUniqueIdentify
 
     abstract public function identifiable(): string;
 
-    protected static function bootHasUniqueIdentifyTrait()
+    protected static function bootHasUniqueIdentify()
     {
         static::creating(function ($model) {
             $model->{$model->identifiable()} = $model->generateUniqueValue($model->identifiable());

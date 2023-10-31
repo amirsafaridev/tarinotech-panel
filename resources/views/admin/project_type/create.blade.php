@@ -5,15 +5,22 @@
        \App\Enums\Assets\StyleLoader::Toast(),
    ]])
 @endsection
+@php
+    use \App\Enums\Database\Facility\FacilityPriceType;
+    use \App\Enums\Database\Facility\FacilityWorkCycle;
+    use \App\Enums\Database\Facility\FacilityFinancialCycle;
+@endphp
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">انواع پروژه ها - ایجاد</h1>
+        <h1 class="page-title">امکانات جانبی - ایجاد</h1>
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.project.type.index') }}">انواع پروژه ها</a></li>
-                <li class="breadcrumb-item active">ایجاد نوع</li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.project.index') }}">پروژه ها</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.project.'.getRouteProjectType($project->project_base_id).'.show',$project->id) }}">{{ $project->title }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.project.facility.index',$project->id) }}">امکانات جانبی</a></li>
+                <li class="breadcrumb-item active">ایجاد</li>
             </ol>
         </div>
     </div>
@@ -26,13 +33,24 @@
                     <form class="request-form forms-sample" method="post" action="{{ $routeStore }}">
                         @csrf
 
-                        <x-admin.select-model identify="project_base_id"
-                                              title="پروژه"
-                                              key="id"
-                                              value="title"
-                                              :items="$projectBases"/>
+                        <x-admin.select-model identify="title" title="انتخاب امکان جانبی" :items="$facilities" key="id" value="title"/>
 
-                        <x-admin.input identify="title" title="عنوان"/>
+                        <x-admin.select-enum identify="price_type" title="قیمت ایجاد" :enum-class="FacilityPriceType::class" />
+                        <div id="price_value_wrapper" class="d-none">
+                            <x-admin.input identify="price_value" title="قیمت مورد نظر (ریال)" />
+                        </div>
+
+                        <x-admin.select-enum identify="work_cycle" title="سیکل کاری تمدید" :enum-class="FacilityWorkCycle::class" />
+                        <div id="work_cycle_value_wrapper" class="d-none">
+                            <x-admin.input identify="work_cycle_value" title="تاریخ مورد نظر" />
+                        </div>
+
+                        <x-admin.select-enum identify="financial_cycle" title="سیکل مالی" :enum-class="FacilityFinancialCycle::class" />
+                        <div id="financial_cycle_value_wrapper" class="d-none">
+                            <x-admin.input identify="financial_cycle_value" title="قیمت مورد نظر" />
+                        </div>
+
+                        <x-admin.input identify="added_at" title="تاریخ ایجاد" />
 
                         <x-admin.button-submit/>
                     </form>
@@ -43,9 +61,51 @@
 @endsection
 @section('script')
     @include('admin.partial.request')
+    @include('admin.partial.share-script')
     <script>
         $(document).ready(function (){
-            activeParentUl('{{ route('admin.project.type.index') }}');
+            activeParentUl('{{ route('admin.project.index') }}');
+
+            const priceType = $('#price_type');
+            const priceValue = $('#price_value');
+            const priceValueWrapper = $('#price_value_wrapper');
+            priceType.change(function (){
+                const _this = $(this);
+                if(parseInt(_this.val()) === parseInt('{{ FacilityPriceType::Input }}')){
+                    priceValueWrapper.removeClass('d-none');
+                }
+                else{
+                    priceValueWrapper.addClass('d-none');
+                }
+            })
+            priceType.trigger('change');
+            makeInputPrice(priceValue);
+
+            const workCycle = $('#work_cycle');
+            const workCycleValue = $('#work_cycle_value');
+            const workCycleValueWrapper = $('#work_cycle_value_wrapper');
+            workCycle.change(function (){
+                const _this = $(this);
+                if(parseInt(_this.val()) === parseInt('{{ FacilityWorkCycle::InputDate }}')){
+                    workCycleValueWrapper.removeClass('d-none');
+                }
+                else{
+                    workCycleValueWrapper.addClass('d-none');
+                }
+            })
+
+            const financial_cycle = $('#financial_cycle');
+            const financial_cycle_value = $('#financial_cycle_value');
+            const financialCycleValueWrapper = $('#financial_cycle_value_wrapper');
+            workCycle.change(function (){
+                const _this = $(this);
+                if(parseInt(_this.val()) === parseInt('{{ FacilityWorkCycle::InputDate }}')){
+                    workCycleValueWrapper.removeClass('d-none');
+                }
+                else{
+                    workCycleValueWrapper.addClass('d-none');
+                }
+            })
         });
     </script>
 @endsection

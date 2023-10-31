@@ -14,6 +14,7 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin', 'pre
     });
     Route::controller(FactorController::class)->group(function () {
         Route::get('/factor/view-item', 'getViewItem')->name('factor.view-item');
+        Route::post('/factor/make-installments', 'makeInstallments')->name('factor.make-installments');
     });
 
     Route::controller(ProjectController::class)->group(function () {

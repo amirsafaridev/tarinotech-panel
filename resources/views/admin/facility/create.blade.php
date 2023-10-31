@@ -12,7 +12,7 @@
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.additional-features.index') }}">امکانات جانبی</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.facility.index') }}">امکانات جانبی</a></li>
                 <li class="breadcrumb-item active">جدید</li>
             </ol>
         </div>
@@ -44,7 +44,7 @@
     @include('admin.partial.request')
     <script>
         $(document).ready(function (){
-            activeParentUl('{{ route('admin.additional-features.index') }}');
+            activeParentUl('{{ route('admin.facility.index') }}');
         })
     </script>
 @endsection

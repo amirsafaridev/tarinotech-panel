@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Domin\Jobs\FactorItemCreateJob;
+use App\Domin\Jobs\FactorItemUpdateJob;
 use App\Enums\Database\Factor\FactorStatus;
 use App\Enums\Database\User\PersonType;
 use App\Filters\Admin\Factor\PriceFilter;
 use App\Filters\Admin\Project\SortFilter;
 use App\Filters\Admin\Share\IDFilter;
 use App\Filters\Admin\Share\TitleFilter;
+use App\Foundation\ValueObjects\Requests\FactorItemValues;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Factor\StoreRequest;
@@ -57,36 +60,18 @@ class FactorController extends Controller
     public function store(StoreRequest $request)
     {
         try {
-            DB::beginTransaction();
-
             $factor = Factor::create($this->itemProvider($request));
-
-            $taxRate = 0.09;
-
             foreach ($request->input('item') as $item) {
-                $price = $item['price'];
-                $taxAmount = $price * $taxRate;
-                $finalPrice = ($price + $taxAmount) - $item['discount'];
-
-                $factor->items()->create([
-                    'title' => $item['title'],
-                    'transaction_category_id' => $item['transaction_category_id'],
-                    'price' => $price,
-                    'tax_rate' => $taxRate,
-                    'tax_amount' => $taxAmount,
-                    'discount' => $item['discount'],
-                    'final_price' => $finalPrice,
-                ]);
+                resolve(FactorItemCreateJob::class)->handle(
+                    $this->getSetItem($factor, $item)
+                );
             }
-
-            DB::commit();
 
             return response()->json([
                 'result' => 'success',
                 'message' => trans('panel.success_store'),
             ]);
         } catch (Exception $e) {
-            DB::rollBack();
             report($e);
 
             return response()->json([
@@ -114,34 +99,19 @@ class FactorController extends Controller
 
             DB::beginTransaction();
             $factor->load('items');
-
-            $taxRate = 0.09;
             $updatedItemIds = [];
 
             foreach ($request->input('item') as $item) {
-                $price = $item['price'];
-                $taxAmount = $price * $taxRate;
-                $finalPrice = ($price + $taxAmount) - $item['discount'];
+                $factorItemValues = $this->getSetItem($factor, $item);
+
                 $action = $item['action'];
 
-                $itemParams = [
-                    'title' => $item['title'],
-                    'transaction_category_id' => $item['transaction_category_id'],
-                    'price' => $price,
-                    'tax_rate' => $taxRate,
-                    'tax_amount' => $taxAmount,
-                    'discount' => $item['discount'],
-                    'final_price' => $finalPrice,
-                ];
-
                 if ($action === 'store') {
-                    $factor->items()->create($itemParams);
+                    resolve(FactorItemCreateJob::class)->handle($factorItemValues);
                 } else {
                     $updatedItemIds[] = $item['id'];
                     $factorItemId = $item['id'];
-                    FactorItem::query()
-                        ->where('id', $factorItemId)
-                        ->update($itemParams);
+                    resolve(FactorItemUpdateJob::class)->handle($factorItemValues, $factorItemId);
                 }
 
             }
@@ -221,5 +191,15 @@ class FactorController extends Controller
         }
 
         return $item;
+    }
+
+    private function getSetItem(Factor $factor, array $item): FactorItemValues
+    {
+        return resolve(FactorItemValues::class)
+            ->setFactorId($factor->id)
+            ->setTitle($item['title'])
+            ->setTransactionCategoryId($item['transaction_category_id'])
+            ->setPrice($item['price'])
+            ->setDiscount($item['discount']);
     }
 }

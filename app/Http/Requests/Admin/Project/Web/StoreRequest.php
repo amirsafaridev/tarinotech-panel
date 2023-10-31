@@ -25,7 +25,7 @@ class StoreRequest extends FormRequest
             'user_id' => 'required|exists:users,id',
             'status_id' => 'required|exists:project_statuses,id',
             'price' => 'required|integer',
-            'deadline_at' => 'required|date_format:Y-m-d',
+            'deadline_at' => 'required|jdate',
 
             'field_activity' => 'required|max:255',
             'package_id' => 'required|exists:packages,id',

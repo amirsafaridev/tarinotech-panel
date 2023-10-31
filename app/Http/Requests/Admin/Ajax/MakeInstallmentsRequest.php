@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin\AdditionalFeature;
+namespace App\Http\Requests\Admin\Ajax;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends FormRequest
+class MakeInstallmentsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,8 +20,14 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|max:255',
-            'project_base_id' => 'required|exists:project_bases,id',
+            'price' => 'required|integer|min:1',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'price' => str_replace(',', '', $this->input('price')),
+        ]);
     }
 }

@@ -15,7 +15,7 @@
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.additional-features.index') }}">امکانات جانبی</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.facility.index') }}">امکانات جانبی</a></li>
                 <li class="breadcrumb-item active">ویرایش</li>
             </ol>
         </div>
@@ -36,9 +36,9 @@
                                               key="id"
                                               value="title"
                                               :items="$projectBases"
-                                              :old="$additionalFeature->project_base_id"/>
+                                              :old="$facility->project_base_id"/>
 
-                        <x-admin.input identify="title" title="عنوان" :old="$additionalFeature->title"/>
+                        <x-admin.input identify="title" title="عنوان" :old="$facility->title"/>
 
                         <x-admin.button-submit title="{{ trans('panel.update') }}"/>
 
@@ -63,7 +63,7 @@
     @include('admin.partial.request')
     <script>
         $(document).ready(function (){
-            activeParentUl('{{ route('admin.additional-features.index') }}');
+            activeParentUl('{{ route('admin.facility.index') }}');
         })
     </script>
 @endsection

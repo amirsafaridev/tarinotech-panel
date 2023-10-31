@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\Admin\AdditionalFeatureController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminGoalController;
 use App\Http\Controllers\Admin\AdminPasswordController;
 use App\Http\Controllers\Admin\AutoMessageController;
+use App\Http\Controllers\Admin\FacilityController;
 use App\Http\Controllers\Admin\FreeDayController;
 use App\Http\Controllers\Admin\GroupGoalController;
 use App\Http\Controllers\Admin\HomeController;
@@ -98,14 +98,14 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::patch('/setting', 'update')->name('setting.update');
     });
 
-    Route::controller(AdditionalFeatureController::class)->group(function () {
-        Route::get('/additional-features', 'index')->name('additional-features.index');
-        Route::get('/additional-features/data', 'data')->name('additional-features.data');
-        Route::get('/additional-features/create', 'create')->name('additional-features.create');
-        Route::post('/additional-features/store', 'store')->name('additional-features.store');
-        Route::get('/additional-features/{additionalFeature}/edit', 'edit')->name('additional-features.edit');
-        Route::patch('/additional-features/{additionalFeature}/update', 'update')->name('additional-features.update');
-        Route::delete('/additional-features/{additionalFeature}/destroy', 'destroy')->name('additional-features.destroy');
+    Route::controller(FacilityController::class)->group(function () {
+        Route::get('/facility', 'index')->name('facility.index');
+        Route::get('/facility/data', 'data')->name('facility.data');
+        Route::get('/facility/create', 'create')->name('facility.create');
+        Route::post('/facility/store', 'store')->name('facility.store');
+        Route::get('/facility/{facility}/edit', 'edit')->name('facility.edit');
+        Route::patch('/facility/{facility}/update', 'update')->name('facility.update');
+        Route::delete('/facility/{facility}/destroy', 'destroy')->name('facility.destroy');
     });
 
     Route::controller(TransactionCategoryController::class)->group(function () {

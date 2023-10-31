@@ -5,6 +5,7 @@
        \App\Enums\Assets\StyleLoader::Toast(),
        \App\Enums\Assets\StyleLoader::Select2(),
         \App\Enums\Assets\StyleLoader::Datepicker(),
+        \App\Enums\Assets\StyleLoader::Alert(),
    ]])
 @endsection
 @section('content')
@@ -196,7 +197,12 @@
                         </div>
                     </div>
 
-                    <x-admin.input identify="price" title="قیمت (ریال)"/>
+                    <div class="d-flex align-items-end gap-2 mt-3">
+                        <div class="flex-grow-1">
+                            <x-admin.input identify="price" title="قیمت (ریال)"/>
+                        </div>
+                        <button type="button" id="make_installments" class="btn btn-primary mb-2">ایجاد اقساط</button>
+                    </div>
 
                     <x-admin.textarea identify="similar_sites" title="سایت های مشابه" description="از نظر موضوعی و زمینه فعالیت مانند رقبا"/>
 
@@ -216,12 +222,16 @@
                 </div>
             </div>
         </div>
+        <div class="col-xl-6 col-lg-6 col-md-6 col-12" id="factor_item_container">
+
+        </div>
     </form>
 @endsection
 @section('script')
     @include('admin.partial.loader.script',['load'=>[
         \App\Enums\Assets\ScriptLoader::Select2(),
         \App\Enums\Assets\ScriptLoader::Datepicker(),
+        \App\Enums\Assets\ScriptLoader::Alert(),
     ]])
     @include('admin.partial.request')
     @include('admin.partial.share-script')
@@ -260,6 +270,39 @@
             const alertDaysCalcMessage = $('#alert_working_days .message');
             let debounceTimer;
 
+            const price = $('#price');
+            const makeInstallments = $('#make_installments');
+            const factorItemContainer = $('#factor_item_container');
+            makeInstallments.click(function (){
+                postAjax('{{ route('admin.ajax.factor.make-installments') }}', {
+                    days:deadlineAt.val(),
+                    price:price.val()
+                })
+                    .then(function (response) {
+                        factorItemContainer.html(response.html);
+                        updatePriceInputs();
+                    })
+                    .catch(function (response) {
+                        console.log(response);
+                    });
+            });
+
+            factorItemContainer.on('click','.btn-remove',function (){
+                const self = $(this);
+                swal({
+                    title: "حذف",
+                    text: "آیا مطمئن هستید که میخواهید این مورد را حذف کنید؟",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#ff0f3b",
+                    confirmButtonText: "حذف",
+                    cancelButtonText: "صرفه نظر",
+                    closeOnConfirm: true
+                }, function () {
+                    self.closest('.card-factor-item').remove();
+                });
+            });
+
             workingDays.on('keyup', function() {
                 const self = $(this);
                 if(!self.val()){
@@ -286,7 +329,7 @@
                 }, 2000);
             });
             makeInputNumber(workingDays);
-            makeInputPrice($('#price'));
+            makeInputPrice(price);
         })
 
 
@@ -308,6 +351,66 @@
             else{
                 hostContainer.addClass('d-none');
             }
+        }
+
+        function priceInputMaker(input) {
+            input.off('click');
+            input.off('input');
+            input.off('change');
+            makeInputPrice(input);
+        }
+
+        function updatePriceInputs(){
+
+            $('input.offer-input').each(function (){
+                const input = $(this);
+                priceInputMaker(input);
+                input.on("input", function () {
+                    updateTotalPrice(input);
+                });
+            });
+
+            $('input.price-input').each(function (){
+                const input = $(this);
+                priceInputMaker(input);
+
+                input.on("input", function () {
+                    const priceInput = $(this);
+                    const value = parseInt(priceInput.val().replace(/,/g, ''), 10) || 0;
+
+                    const taxInput = priceInput.parent().parent().find('.tax-input');
+
+                    if(value <= 0){
+                        taxInput.val(0);
+                    }
+                    else{
+                        let taxCalc = Math.round(value * 0.09);
+                        taxInput.val(numberWithCommas(taxCalc))
+                    }
+                    updateTotalPrice(input);
+                })
+            })
+        }
+
+        function updateTotalPrice(card){
+            const cardItem = card.parent().parent().parent();
+            const h4FinalPrice  = cardItem.find('.factor-item-price');
+
+            let totalPrice = 0;
+            let totalSub = 0;
+
+            cardItem.find('.calc').each(function () {
+
+                const inputInProcess = $(this);
+                let price = parseInt(inputInProcess.val().replace(/,/g, ''), 10) || 0;
+
+                if (inputInProcess.hasClass('offer-input')) {
+                    totalSub += price;
+                } else {
+                    totalPrice += price;
+                }
+            });
+            h4FinalPrice.text(numberWithCommas(totalPrice - totalSub));
         }
     </script>
 @endsection

@@ -69,8 +69,8 @@ class WebProjectController extends Controller
         try {
             DB::beginTransaction();
 
-            $projectWeb = ProjectWeb::query()->create($this->initialProjectData($request));
-            $projectWeb->project()->create($this->initialWebProjectData($request));
+            $projectWeb = ProjectWeb::query()->create($this->initialWebProjectData($request));
+            $projectWeb->project()->create($this->initialProjectData($request));
 
             DB::commit();
 
@@ -266,10 +266,7 @@ class WebProjectController extends Controller
         ];
     }
 
-    /**
-     * @return Project|Project[]|Builder|Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|\LaravelIdea\Helper\App\Models\_IH_Project_C|\LaravelIdea\Helper\App\Models\_IH_Project_QB|\LaravelIdea\Helper\App\Models\_IH_Project_QB[]|null
-     */
-    private function getOrFailProject($projectId): \LaravelIdea\Helper\App\Models\_IH_Project_C|array|null|Builder|Project|\LaravelIdea\Helper\App\Models\_IH_Project_QB|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+    private function getOrFailProject($projectId): Project
     {
         return Project::query()
             ->whereHasMorph('type', [ProjectWeb::class])

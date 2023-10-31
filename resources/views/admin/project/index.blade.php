@@ -55,25 +55,9 @@
                                         <td>{{ verta($project->deadline_at)->format(formatJalaliDate()) }}</td>
                                         <td>{{ verta($project->created_at)->format(formatJalaliDate()) }}</td>
                                         <td>
-                                            @php
-                                                $typeProject;
-                                                switch ($project->project_base_id){
-                                                    case \App\Enums\Database\Project\ProjectBase::Web:{
-                                                        $typeProject = 'web';
-                                                        break;
-                                                    }
-                                                    case \App\Enums\Database\Project\ProjectBase::Seo:{
-                                                        $typeProject = 'seo';
-                                                        break;
-                                                    }
-                                                    case \App\Enums\Database\Project\ProjectBase::Ads:{
-                                                        $typeProject = 'ads';
-                                                        break;
-                                                    }
-                                                }
-                                            @endphp
-                                            <a target="_blank" class="btn btn-warning btn-sm" href="{{ route('admin.project.'.$typeProject.'.edit',$project->id) }}">ویرایش</a>
-                                            <a target="_blank" class="btn btn-info btn-sm" href="{{ route('admin.project.'.$typeProject.'.show',$project->id) }}">نمایش</a>
+                                            <a target="_blank" class="btn btn-warning btn-sm" href="{{ route('admin.project.'.getRouteProjectType($project->project_base_id).'.edit',$project->id) }}">ویرایش</a>
+                                            <a target="_blank" class="btn btn-success btn-sm" href="{{ route('admin.project.facility.index',$project->id) }}">امکانات جانبی</a>
+                                            <a target="_blank" class="btn btn-info btn-sm" href="{{ route('admin.project.'.getRouteProjectType($project->project_base_id).'.show',$project->id) }}">نمایش</a>
                                         </td>
                                     </tr>
                                 @endforeach

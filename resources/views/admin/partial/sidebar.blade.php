@@ -115,7 +115,7 @@
                         <li><a href="{{ route('admin.project.type.index') }}" class="slide-item">انواع پروژه ها</a></li>
                         <li><a href="{{ route('admin.project.status.index') }}" class="slide-item">وضعیت پروژه ها</a></li>
                         <li><a href="{{ route('admin.package.index') }}" class="slide-item">پکیج ها</a></li>
-                        <li><a href="{{ route('admin.additional-features.index') }}" class="slide-item">امکانات جانبی</a></li>
+                        <li><a href="{{ route('admin.facility.index') }}" class="slide-item">امکانات جانبی</a></li>
                         <li><a href="{{ route('admin.transaction-category.index') }}" class="slide-item">انواع واریزی</a></li>
                         <li><a href="{{ route('admin.sample-message.index') }}" class="slide-item">پیام های آماده</a></li>
                         <li><a href="{{ route('admin.auto-message.index') }}" class="slide-item">پیام های خودکار</a></li>

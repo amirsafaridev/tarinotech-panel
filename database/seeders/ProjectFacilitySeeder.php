@@ -2,20 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Models\Facility;
 use Illuminate\Database\Seeder;
 
-class AdditionalFeatureSeeder extends Seeder
+class ProjectFacilitySeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-
-        Facility::factory(20)->create();
+        //
     }
 }
