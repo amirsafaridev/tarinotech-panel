@@ -18,6 +18,8 @@ class AdminFactory extends Factory
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'mobile' => $this->faker->numerify('09#########'),
+            'mobile_company' => $this->faker->numerify('09#########'),
+            'number_company' => $this->faker->numerify('021######'),
             'email' => $this->faker->unique()->email,
             'password' => bcrypt('12345678'),
             'has_access' => true,

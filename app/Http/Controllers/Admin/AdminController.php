@@ -9,10 +9,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Admin\StoreRequest;
 use App\Http\Requests\Admin\Admin\UpdateRequest;
 use App\Models\Admin;
+use App\Notifications\Admin\Admin\SendPasswordByEmailNotification;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class AdminController extends Controller
@@ -64,7 +66,7 @@ class AdminController extends Controller
 
     public function create()
     {
-        $title = trans('panel.admin.create');
+        $title = 'پرسنل - ایجاد';
         $routeStore = route('admin.admin.store');
         $roles = Role::all();
 
@@ -76,9 +78,13 @@ class AdminController extends Controller
         try {
             DB::beginTransaction();
             $item = $this->itemProvider($request);
+            $password = Str::random(8);
+            $item['password'] = bcrypt($password);
             $admin = Admin::create($item);
             $admin->syncRoles($request->input('role'));
             DB::commit();
+
+            $admin->notify(new SendPasswordByEmailNotification($password));
 
             return response()->json([
                 'result' => 'success',
@@ -97,7 +103,7 @@ class AdminController extends Controller
 
     public function edit(Admin $admin)
     {
-        $title = trans('panel.admin.edit');
+        $title = 'پرسنل - ویرایش';
         $routeUpdate = route('admin.admin.update', $admin->id);
         $routeDestroy = route('admin.admin.destroy', $admin->id);
         $roles = Role::all();
@@ -159,7 +165,6 @@ class AdminController extends Controller
     {
         $item['first_name'] = $request->input('first_name');
         $item['last_name'] = $request->input('last_name');
-        $item['password'] = bcrypt($request->input('password'));
         $item['has_access'] = $request->has('has_access');
 
         $dob = $request->input('dob');
@@ -177,6 +182,8 @@ class AdminController extends Controller
         $item['resume'] = $request->input('resume');
         $item['description'] = $request->input('description');
         $item['mobile'] = $request->input('mobile');
+        $item['mobile_company'] = $request->input('mobile_company');
+        $item['number_company'] = $request->input('number_company');
 
         if (! $editMode) {
             $item['email'] = $request->input('email');

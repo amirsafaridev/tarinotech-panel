@@ -68,6 +68,25 @@
                                 <td>شماره همراه</td>
                                 <td><a href="tel:{{ $admin->mobile }}">{{ $admin->mobile }}</a></td>
                             </tr>
+
+                            <tr>
+                                <td>شماره همراه شرکتی</td>
+                                <td>
+                                    @if($admin->mobile_company)
+                                        <a href="tel:{{ $admin->mobile_company }}">{{ $admin->mobile_company }}</a>
+                                    @endif
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>شماره داخلی</td>
+                                <td>
+                                    @if($admin->number_company)
+                                        <a href="tel:{{ $admin->number_company }}">{{ $admin->number_company }}</a>
+                                    @endif
+                                </td>
+                            </tr>
+
                             <tr>
                                 <td>نام</td>
                                 <td>{{ $admin->first_name }}</td>

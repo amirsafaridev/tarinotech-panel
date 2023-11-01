@@ -253,5 +253,7 @@ return [
         'keywords' => 'کلمات کلیدی',
         'project_base_id' => 'پروژه',
         'project_id' => 'پروژه',
+        'mobile_company' => 'موبایل شرکتی',
+        'number_company' => 'شماره داخلی',
     ],
 ];

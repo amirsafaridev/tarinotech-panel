@@ -50,7 +50,7 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::post('/admin/store', 'store')->name('admin.store');
         Route::get('/admin/{admin}/show', 'show')->name('admin.show');
         Route::get('/admin/{admin}/edit', 'edit')->name('admin.edit');
-        Route::patch('/admin/{admin}/update', 'update')->name('admin.update');
+        Route::put('/admin/{admin}/update', 'update')->name('admin.update');
         Route::delete('/admin/{admin}/destroy', 'destroy')->name('admin.destroy');
     });
 

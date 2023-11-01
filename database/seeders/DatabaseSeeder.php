@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             FreeDaySeeder::class,
             BlogCategorySeeder::class,
             BlogSeeder::class,
+            RoleSeeder::class,
         ]);
 
         resolve(PermissionService::class)->sync();

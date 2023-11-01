@@ -24,8 +24,9 @@ class StoreRequest extends FormRequest
             'email' => 'required|unique:admins,email|email',
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
-            'mobile' => ['required', new IRMobile()],
-            'password' => 'required|min:8|max:255',
+            'mobile' => ['required', 'size:11', new IRMobile()],
+            'mobile_company' => ['size:11', new IRMobile()],
+            'number_company' => 'numeric',
             'avatar' => 'nullable|image|mimes:png,jpg,jpeg|max:2000',
             'role' => 'required|exists:roles,id',
             'dob' => 'nullable|jdate',
@@ -33,5 +34,6 @@ class StoreRequest extends FormRequest
             'start_last_contract' => 'nullable|jdate',
             'end_last_contract' => 'nullable|jdate',
         ];
+
     }
 }
