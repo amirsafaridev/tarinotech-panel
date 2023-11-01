@@ -16,13 +16,16 @@
 
             <ul class="side-menu">
                 <li class="sub-category">
-                    <h3>{{ trans('panel.dashboard.main') }}</h3>
+                    <h3>داشبورد</h3>
                 </li>
                 <li class="slide">
                     <a class="side-menu__item" data-bs-toggle="slide" href="{{ route('admin.dashboard') }}">
                         <i class="side-menu__icon fal fa-chart-bar"></i>
                         <span class="side-menu__label">{{ trans('panel.dashboard.title') }}</span>
                     </a>
+                </li>
+                <li class="sub-category">
+                    <h3>مدیریت پرسنل</h3>
                 </li>
                 <li class="slide can-expand">
                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navAdmin">
@@ -52,6 +55,10 @@
                     </ul>
                 </li>
 
+                <li class="sub-category">
+                    <h3>مدیریت مشتری ها</h3>
+                </li>
+
                 <li class="slide can-expand">
                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navUser">
                         <i class="side-menu__icon fal fa-user"></i>
@@ -63,6 +70,10 @@
                         <li><a href="{{ route('admin.user.create') }}" class="slide-item">ایجاد</a></li>
                         <li><a href="{{ route('admin.presenter.index') }}" class="slide-item">نمایندگان</a></li>
                     </ul>
+                </li>
+
+                <li class="sub-category">
+                    <h3>مدیریت پروژه ها</h3>
                 </li>
 
                 <li class="slide can-expand">
@@ -79,6 +90,10 @@
                     </ul>
                 </li>
 
+                <li class="sub-category">
+                    <h3>امور مالی</h3>
+                </li>
+
                 <li class="slide can-expand">
                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navFactor">
                         <i class="side-menu__icon fal fa-credit-card"></i>
@@ -89,6 +104,10 @@
                         <li><a href="{{ route('admin.factor.index') }}" class="slide-item">لیست</a></li>
                         <li><a href="{{ route('admin.factor.create') }}" class="slide-item">ایجاد</a></li>
                     </ul>
+                </li>
+
+                <li class="sub-category">
+                    <h3>محتوا</h3>
                 </li>
 
                 <li class="slide can-expand">
@@ -102,6 +121,10 @@
                         <li><a href="{{ route('admin.blog.create') }}" class="slide-item">ایجاد</a></li>
                         <li><a href="{{ route('admin.blog.category.index') }}" class="slide-item">دسته بندی ها</a></li>
                     </ul>
+                </li>
+
+                <li class="sub-category">
+                    <h3>تنظیمات پلتفرم</h3>
                 </li>
 
                 <li class="slide can-expand">
@@ -121,6 +144,10 @@
                         <li><a href="{{ route('admin.auto-message.index') }}" class="slide-item">پیام های خودکار</a></li>
                         <li><a href="{{ route('admin.free-day.index') }}" class="slide-item">تقویم تعطیلات</a></li>
                     </ul>
+                </li>
+
+                <li class="sub-category">
+                    <h3>پروفایل من</h3>
                 </li>
 
                 <li class="slide can-expand">
