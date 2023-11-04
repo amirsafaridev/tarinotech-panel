@@ -5,7 +5,6 @@
         'load'=>[
             \App\Enums\Assets\StyleLoader::Toast(),
             \App\Enums\Assets\StyleLoader::Alert(),
-            \App\Enums\Assets\StyleLoader::Datepicker(),
         ]
     ])
 @endsection
@@ -55,21 +54,12 @@
     @include('admin.partial.loader.script',[
         'load'=>[
             \App\Enums\Assets\ScriptLoader::Alert(),
-            \App\Enums\Assets\ScriptLoader::Datepicker(),
         ],
     ])
     @include('admin.partial.request')
     <script>
         $(document).ready(function () {
             activeParentUl('{{ route('admin.blog.category.index') }}');
-            const dataPickerConfig = {
-                format: 'YYYY/MM/DD',
-                initialValueType: 'persian',
-                initialValue: false,
-                autoClose: true
-            };
-
-            $('#free_at').persianDatepicker(dataPickerConfig);
         })
     </script>
 @endsection

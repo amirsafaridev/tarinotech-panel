@@ -22,8 +22,7 @@
 @endif
 
 @if (in_array(\App\Enums\Assets\ScriptLoader::Datepicker(),$load))
-    <script type="text/javascript" src="{{asset('res-admin/assets/plugins/persian-datepicker/persian-date.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('res-admin/assets/plugins/persian-datepicker/persian-datepicker.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('res-admin/assets/plugins/JalaliDatePicker/jalalidatepicker.min.js')}}"></script>
 @endif
 
 @if (in_array(\App\Enums\Assets\ScriptLoader::InputMask(),$load))

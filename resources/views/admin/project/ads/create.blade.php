@@ -13,7 +13,8 @@
         <h1 class="page-title">پروژه گوگل ادز - ایجاد</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a
+                            href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.project.index') }}">پروژه ها</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.project.ads.index') }}">گوگل ادز</a></li>
                 <li class="breadcrumb-item active">ایجاد</li>
@@ -30,7 +31,8 @@
                 <div class="card-header">
                     <h3 class="card-title">کارفرما و پروژه</h3>
                     <div class="card-options">
-                        <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i class="fal fa-chevron-up"></i></a>
+                        <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i
+                                    class="fal fa-chevron-up"></i></a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -52,7 +54,8 @@
                 <div class="card-header">
                     <h3 class="card-title">اطلاعات دامنه</h3>
                     <div class="card-options">
-                        <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i class="fal fa-chevron-up"></i></a>
+                        <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i
+                                    class="fal fa-chevron-up"></i></a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -65,14 +68,18 @@
                 <div class="card-header">
                     <h3 class="card-title">اطلاعات قرارداد</h3>
                     <div class="card-options">
-                        <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i class="fal fa-chevron-up"></i></a>
+                        <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i
+                                    class="fal fa-chevron-up"></i></a>
                     </div>
                 </div>
                 <div class="card-body pb-4">
 
                     <div class="row">
                         <div class="col-12 col-md-6">
-                            <x-admin.input identify="agreement_at" title="تاریخ قرارداد"/>
+                            <x-admin.input
+                                    identify="agreement_at"
+                                    title="تاریخ قرارداد"
+                                    :is-date-picker="true"/>
                         </div>
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="field_activity" title="زمینه فعالیت"/>
@@ -110,34 +117,27 @@
             activeParentUl('{{ route('admin.project.ads.index') }}');
             $('#user_id').select2();
 
-            $('#host_location').change(function (){
-                if($(this).val() === 'IN_COMPANY'){
+            $('#host_location').change(function () {
+                if ($(this).val() === 'IN_COMPANY') {
                     stateHostContainer(false);
-                }
-                else{
+                } else {
                     stateHostContainer(true);
                 }
             });
 
-            const dataPickerConfig = {
-                format: 'YYYY/MM/DD',
-                initialValueType: 'persian',
-                initialValue: false,
-                autoClose: true
-            };
+            jalaliDatepicker.startWatch();
 
-            $('#agreement_at').persianDatepicker(dataPickerConfig);
             makeInputPrice($('#price'));
             makeInputPrice($('#price_monthly'));
             makeInputPrice($('#keywords_count'));
         })
 
         const hostContainer = $('#host_container');
-        function stateHostContainer(status){
-            if(status){
+
+        function stateHostContainer(status) {
+            if (status) {
                 hostContainer.removeClass('d-none');
-            }
-            else{
+            } else {
                 hostContainer.addClass('d-none');
             }
         }

@@ -65,7 +65,7 @@
                                 <x-admin.input identify="document_id" title="شماره شناسنامه" />
                             </div>
                             <div class="col-12 col-md-6">
-                                <x-admin.input identify="dob" title="تاریخ تولد" />
+                                <x-admin.input identify="dob" title="تاریخ تولد" :is-date-picker="true" />
                             </div>
                         </div>
 
@@ -144,15 +144,7 @@
     @include('admin.partial.ckeditor')
     <script>
         $(document).ready(function () {
-
-            const dataPickerConfig = {
-                format: 'YYYY-MM-DD',
-                initialValueType: 'persian',
-                initialValue: false,
-                autoClose: true
-            };
-
-            $('#dob').persianDatepicker(dataPickerConfig);
+            jalaliDatepicker.startWatch();
 
             stateCompanyContainer('');
             $('#person_type').change(function (){

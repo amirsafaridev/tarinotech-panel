@@ -77,7 +77,8 @@
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="agreement_at"
                                            title="تاریخ قرارداد"
-                                           :old="verta($project->agreement_at)->format('Y/m/d')"/>
+                                           :old="verta($project->agreement_at)->format('Y/m/d')"
+                                           :is-date-picker="true"/>
                         </div>
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="field_activity"
@@ -130,14 +131,7 @@
                 }
             });
 
-            const dataPickerConfig = {
-                format: 'YYYY/MM/DD',
-                initialValueType: 'persian',
-                initialValue: false,
-                autoClose: true
-            };
-
-            $('#agreement_at').persianDatepicker(dataPickerConfig);
+            jalaliDatepicker.startWatch();
             makeInputPrice($('#price'));
             makeInputPrice($('#price_monthly'));
             makeInputPrice($('#keywords_count'));

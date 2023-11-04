@@ -14,7 +14,8 @@
         <h1 class="page-title">فاکتور - ویرایش</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a
+                            href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.factor.index') }}">فاکتور ها</a></li>
                 <li class="breadcrumb-item active">ویرایش</li>
             </ol>
@@ -37,17 +38,25 @@
                         <div class="mb-3">
                             <label for="project_id" class="form-label">انتخاب پروژه</label>
                             <select class="form-control" name="project_id" id="project_id">
-                                <option selected="selected" value="{{ $factor->project->id }}">{{ $factor->project->title }} - ({{ $factor->project->domain }})</option>
+                                <option selected="selected"
+                                        value="{{ $factor->project->id }}">{{ $factor->project->title }} -
+                                    ({{ $factor->project->domain }})
+                                </option>
                             </select>
                         </div>
 
                         <div id="project_info"></div>
 
-                        <x-admin.input identify="title" title="عنوان فاکتور" :old="$factor->title" />
+                        <x-admin.input identify="title" title="عنوان فاکتور" :old="$factor->title"/>
 
-                        <x-admin.select-enum identify="status" title="وضعیت" :enum-class="\App\Enums\Database\Factor\FactorStatus::class" :old="$factor->status"/>
+                        <x-admin.select-enum identify="status" title="وضعیت"
+                                             :enum-class="\App\Enums\Database\Factor\FactorStatus::class"
+                                             :old="$factor->status"/>
 
-                        <x-admin.input identify="expired_at" title="تاریخ انقضاء" old="{{ verta($factor->expired_at)->format('Y/m/d') }}" />
+                        <x-admin.input identify="expired_at"
+                                       title="تاریخ انقضاء"
+                                       old="{{ verta($factor->expired_at)->format('Y/m/d') }}"
+                                       :is-date-picker="true"/>
 
                         <x-admin.button-submit title="به روز رسانی"/>
 
@@ -103,17 +112,11 @@
                     });
             });*/
 
-            const dataPickerConfig = {
-                format: 'YYYY/MM/DD',
-                initialValueType: 'persian',
-                initialValue: false,
-                autoClose: true
-            };
-            $('#expired_at').persianDatepicker(dataPickerConfig);
+            jalaliDatepicker.startWatch();
 
             const factorItemContainer = $('#factor_item_container');
             let itemCount = {{ $factor->items->count() }};
-            $('#btn_add_item').click(function (){
+            $('#btn_add_item').click(function () {
                 getAjax('{{ route('admin.ajax.factor.view-item') }}')
                     .then(function (response) {
                         let dataResource = response.html;
@@ -128,7 +131,7 @@
                     });
             })
 
-            factorItemContainer.on('click','.btn-remove',function (){
+            factorItemContainer.on('click', '.btn-remove', function () {
                 const self = $(this);
                 swal({
                     title: "حذف",
@@ -157,9 +160,9 @@
             makeInputPrice(input);
         }
 
-        function updateTotalPrice(card){
+        function updateTotalPrice(card) {
             const cardItem = card.parent().parent().parent();
-            const h4FinalPrice  = cardItem.find('.factor-item-price');
+            const h4FinalPrice = cardItem.find('.factor-item-price');
 
             let totalPrice = 0;
             let totalSub = 0;
@@ -178,9 +181,9 @@
             h4FinalPrice.text(numberWithCommas(totalPrice - totalSub));
         }
 
-        function updatePriceInputs(){
+        function updatePriceInputs() {
 
-            $('input.offer-input').each(function (){
+            $('input.offer-input').each(function () {
                 const input = $(this);
                 priceInputMaker(input);
                 input.on("input", function () {
@@ -188,7 +191,7 @@
                 });
             });
 
-            $('input.price-input').each(function (){
+            $('input.price-input').each(function () {
                 const input = $(this);
                 priceInputMaker(input);
 
@@ -198,10 +201,9 @@
 
                     const taxInput = priceInput.parent().parent().find('.tax-input');
 
-                    if(value <= 0){
+                    if (value <= 0) {
                         taxInput.val(0);
-                    }
-                    else{
+                    } else {
                         let taxCalc = Math.round(value * 0.09);
                         taxInput.val(numberWithCommas(taxCalc))
                     }

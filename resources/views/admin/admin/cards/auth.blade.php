@@ -1,4 +1,5 @@
 @php
+    $editMode = isset($admin);
     $email = $admin->email ?? '';
     $mobile = $admin->mobile ?? '';
 @endphp
@@ -24,7 +25,7 @@
                               key="id"
                               value="name"/>
 
-        @if(!$admin)
+        @if(!$editMode)
             <div class="alert alert-success">
                 <p>گذرواژه برای پست الکترونیکی و شماره همراه ارسال خواهد شد.</p>
             </div>

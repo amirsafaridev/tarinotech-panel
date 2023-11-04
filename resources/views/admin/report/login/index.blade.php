@@ -56,11 +56,11 @@
                             </div>
 
                             <div class="col-12 col-md-3">
-                                <x-admin.input identify="start_at" title="از تاریخ" type="text" />
+                                <x-admin.input identify="start_at" title="از تاریخ" type="text" :is-date-picker="true" />
                             </div>
 
                             <div class="col-12 col-md-3">
-                                <x-admin.input identify="end_at" title="تا تاریخ" type="text" />
+                                <x-admin.input identify="end_at" title="تا تاریخ" type="text" :is-date-picker="true"/>
                             </div>
 
                         </div>
@@ -183,14 +183,7 @@
         }
 
         function makePersianDatePicker() {
-            const dataPickerConfig = {
-                format: 'YYYY-MM-DD',
-                initialValueType: 'persian',
-                initialValue: false,
-                autoClose: true
-            };
-            $('#start_at').persianDatepicker(dataPickerConfig);
-            $('#end_at').persianDatepicker(dataPickerConfig);
+            jalaliDatepicker.startWatch();
         }
     </script>
 @endsection

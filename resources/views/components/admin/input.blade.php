@@ -9,6 +9,7 @@
            @if ($old)  value="{{ $old }}" @endif
            @if ($disabled) disabled @endif
            @if ($readOnly) readonly @endif
+           @if ($isDatePicker) data-jdp @endif
     />
     @if ($description)
         <p class="form-help">{{ $description }}</p>

@@ -66,7 +66,7 @@
                                 <x-admin.input identify="document_id" title="شماره شناسنامه" :old="$user->document_id" />
                             </div>
                             <div class="col-12 col-md-6">
-                                <x-admin.input identify="dob" title="تاریخ تولد" :old="$user->dob" />
+                                <x-admin.input identify="dob" title="تاریخ تولد" :old="$user->dob" :is-date-picker="true"/>
                             </div>
                         </div>
 
@@ -161,14 +161,8 @@
     <script>
         $(document).ready(function () {
             activeParentUl('{{ route('admin.user.index') }}');
-            const dataPickerConfig = {
-                format: 'YYYY-MM-DD',
-                initialValueType: 'persian',
-                initialValue: false,
-                autoClose: true
-            };
 
-            $('#dob').persianDatepicker(dataPickerConfig);
+            jalaliDatepicker.startWatch();
 
             stateCompanyContainer('{{ $user->person_type }}');
             $('#person_type').change(function (){

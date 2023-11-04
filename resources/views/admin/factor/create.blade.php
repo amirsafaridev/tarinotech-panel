@@ -14,7 +14,8 @@
         <h1 class="page-title">فاکتور - ایجاد</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a
+                            href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.factor.index') }}">فاکتور ها</a></li>
                 <li class="breadcrumb-item active">ایجاد</li>
             </ol>
@@ -35,16 +36,19 @@
 
                         <div class="mb-3">
                             <label for="project_id" class="form-label">انتخاب پروژه</label>
-                            <select  class="form-control" name="project_id" id="project_id">
+                            <select class="form-control" name="project_id" id="project_id">
                                 <option value="">انتخاب پروژه</option>
                             </select>
                         </div>
 
                         <div id="project_info"></div>
 
-                        <x-admin.input identify="title" title="عنوان فاکتور" />
+                        <x-admin.input identify="title" title="عنوان فاکتور"/>
 
-                        <x-admin.input identify="expired_at" title="تاریخ انقضاء" old="{{ verta(now()->addDays(3))->format('Y/m/d') }}" />
+                        <x-admin.input identify="expired_at"
+                                       title="تاریخ انقضاء"
+                                       :is-date-picker="true"
+                                       old="{{ verta(now()->addDays(3))->format('Y/m/d') }}"/>
 
                         <x-admin.button-submit/>
 
@@ -72,32 +76,26 @@
 
             const projectId = $('#project_id');
             const projectInfo = $('#project_info');
-            makeSelect2Remote(projectId,'{{ route('admin.ajax.project.remote-select') }}',['domain']);
-            projectId.change(function (){
+            makeSelect2Remote(projectId, '{{ route('admin.ajax.project.remote-select') }}', ['domain']);
+            projectId.change(function () {
                 const value = $(this).val();
                 postAjax('{{ route('admin.ajax.project.single') }}', {
-                    projectId : value
+                    projectId: value
                 })
-                .then(function (response) {
-                    projectInfo.html(response.html)
-                })
-                .catch(function (response) {
-                    showToast(response);
-                    console.log(response);
-                });
+                    .then(function (response) {
+                        projectInfo.html(response.html)
+                    })
+                    .catch(function (response) {
+                        showToast(response);
+                        console.log(response);
+                    });
             });
 
-            const dataPickerConfig = {
-                format: 'YYYY/MM/DD',
-                initialValueType: 'persian',
-                initialValue: false,
-                autoClose: true
-            };
-            $('#expired_at').persianDatepicker(dataPickerConfig);
+            jalaliDatepicker.startWatch();
 
             const factorItemContainer = $('#factor_item_container');
             let itemCount = 0;
-            $('#btn_add_item').click(function (){
+            $('#btn_add_item').click(function () {
                 getAjax('{{ route('admin.ajax.factor.view-item') }}')
                     .then(function (response) {
                         let dataResource = response.html;
@@ -112,7 +110,7 @@
                     });
             })
 
-            factorItemContainer.on('click','.btn-remove',function (){
+            factorItemContainer.on('click', '.btn-remove', function () {
                 const self = $(this);
                 swal({
                     title: "حذف",
@@ -137,9 +135,9 @@
             makeInputPrice(input);
         }
 
-        function updateTotalPrice(card){
+        function updateTotalPrice(card) {
             const cardItem = card.parent().parent().parent();
-            const h4FinalPrice  = cardItem.find('.factor-item-price');
+            const h4FinalPrice = cardItem.find('.factor-item-price');
 
             let totalPrice = 0;
             let totalSub = 0;
@@ -158,9 +156,9 @@
             h4FinalPrice.text(numberWithCommas(totalPrice - totalSub));
         }
 
-        function updatePriceInputs(){
+        function updatePriceInputs() {
 
-            $('input.offer-input').each(function (){
+            $('input.offer-input').each(function () {
                 const input = $(this);
                 priceInputMaker(input);
                 input.on("input", function () {
@@ -168,7 +166,7 @@
                 });
             });
 
-            $('input.price-input').each(function (){
+            $('input.price-input').each(function () {
                 const input = $(this);
                 priceInputMaker(input);
 
@@ -178,10 +176,9 @@
 
                     const taxInput = priceInput.parent().parent().find('.tax-input');
 
-                    if(value <= 0){
+                    if (value <= 0) {
                         taxInput.val(0);
-                    }
-                    else{
+                    } else {
                         let taxCalc = Math.round(value * 0.09);
                         taxInput.val(numberWithCommas(taxCalc))
                     }

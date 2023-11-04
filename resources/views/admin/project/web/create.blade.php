@@ -14,7 +14,8 @@
         <h1 class="page-title">پروژه وب سایت - ایجاد</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a
+                            href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.project.index') }}">پروژه ها</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.project.web.index') }}">وب سایت ها</a></li>
                 <li class="breadcrumb-item active">ایجاد</li>
@@ -31,7 +32,8 @@
                 <div class="card-header">
                     <h3 class="card-title">کارفرما و پروژه</h3>
                     <div class="card-options">
-                        <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i class="fal fa-chevron-up"></i></a>
+                        <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i
+                                    class="fal fa-chevron-up"></i></a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -53,7 +55,8 @@
                 <div class="card-header">
                     <h3 class="card-title">اطلاعات دامنه</h3>
                     <div class="card-options">
-                        <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i class="fal fa-chevron-up"></i></a>
+                        <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i
+                                    class="fal fa-chevron-up"></i></a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -86,10 +89,11 @@
                 <div class="card-header">
                     <h3 class="card-title">اطلاعات هاست</h3>
                     <div class="card-options">
-                        <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i class="fal fa-chevron-up"></i></a>
+                        <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i
+                                    class="fal fa-chevron-up"></i></a>
                     </div>
                 </div>
-                <div class="card-body" >
+                <div class="card-body">
                     <x-admin.checkbox identify="have_host" description="هاست دارد؟"/>
 
                     <div class="row d-none" id="host_container">
@@ -122,10 +126,11 @@
                 <div class="card-header">
                     <h3 class="card-title">اطلاعات ربان</h3>
                     <div class="card-options">
-                        <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i class="fal fa-chevron-up"></i></a>
+                        <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i
+                                    class="fal fa-chevron-up"></i></a>
                     </div>
                 </div>
-                <div class="card-body" >
+                <div class="card-body">
                     <x-admin.select-enum
                             identify="primary_language"
                             title="زبان اصلی"
@@ -145,7 +150,8 @@
                 <div class="card-header">
                     <h3 class="card-title">اطلاعات قرارداد</h3>
                     <div class="card-options">
-                        <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i class="fal fa-chevron-up"></i></a>
+                        <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i
+                                    class="fal fa-chevron-up"></i></a>
                     </div>
                 </div>
                 <div class="card-body pb-4">
@@ -170,7 +176,10 @@
 
                     <div class="row">
                         <div class="col-12 col-md-6">
-                            <x-admin.input identify="agreement_at" title="تاریخ قرارداد"/>
+                            <x-admin.input identify="agreement_at"
+                                           title="تاریخ قرارداد"
+                                           :is-date-picker="true"
+                            />
                         </div>
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="field_activity" title="زمینه فعالیت"/>
@@ -187,11 +196,13 @@
 
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="deadline_at"
-                                           title="تاریخ تحویل"/>
+                                           title="تاریخ تحویل"
+                                            :is-date-picker="true"/>
                         </div>
 
                         <div class="col-12">
-                            <div class="alert alert-success d-flex justify-content-center align-items-center" id="alert_working_days" role="alert">
+                            <div class="alert alert-success d-flex justify-content-center align-items-center"
+                                 id="alert_working_days" role="alert">
                                 <span class="message">برای محاسبه تاریخ تحویل لطفا عدد روز کاری را وارد کنید.</span>
                             </div>
                         </div>
@@ -204,7 +215,8 @@
                         <button type="button" id="make_installments" class="btn btn-primary mb-2">ایجاد اقساط</button>
                     </div>
 
-                    <x-admin.textarea identify="similar_sites" title="سایت های مشابه" description="از نظر موضوعی و زمینه فعالیت مانند رقبا"/>
+                    <x-admin.textarea identify="similar_sites" title="سایت های مشابه"
+                                      description="از نظر موضوعی و زمینه فعالیت مانند رقبا"/>
 
                     <x-admin.textarea identify="favorite_sites" title="سایت های مورد پسند"/>
 
@@ -244,26 +256,18 @@
             $('#languages').select2();
             $('#facilities').select2();
 
-            $('#have_domain').change(function (){
+            $('#have_domain').change(function () {
                 stateDomainContainer($(this).is(':checked'));
             });
 
-            $('#have_host').change(function (){
+            $('#have_host').change(function () {
                 stateHostContainer($(this).is(':checked'));
             });
 
-            const dataPickerConfig = {
-                format: 'YYYY/MM/DD',
-                initialValueType: 'persian',
-                initialValue: false,
-                autoClose: true
-            };
 
-            $('#agreement_at').persianDatepicker(dataPickerConfig);
-
+            jalaliDatepicker.startWatch();
 
             const deadlineAt = $('#deadline_at');
-            $(deadlineAt).persianDatepicker(dataPickerConfig);
 
             const workingDays = $('#working_days');
             const alertWorkingDays = $('#alert_working_days');
@@ -273,10 +277,10 @@
             const price = $('#price');
             const makeInstallments = $('#make_installments');
             const factorItemContainer = $('#factor_item_container');
-            makeInstallments.click(function (){
+            makeInstallments.click(function () {
                 postAjax('{{ route('admin.ajax.factor.make-installments') }}', {
-                    days:deadlineAt.val(),
-                    price:price.val()
+                    days: deadlineAt.val(),
+                    price: price.val()
                 })
                     .then(function (response) {
                         factorItemContainer.html(response.html);
@@ -287,7 +291,7 @@
                     });
             });
 
-            factorItemContainer.on('click','.btn-remove',function (){
+            factorItemContainer.on('click', '.btn-remove', function () {
                 const self = $(this);
                 swal({
                     title: "حذف",
@@ -303,29 +307,29 @@
                 });
             });
 
-            workingDays.on('keyup', function() {
+            workingDays.on('keyup', function () {
                 const self = $(this);
-                if(!self.val()){
+                if (!self.val()) {
                     return;
                 }
                 clearTimeout(debounceTimer);
                 alertDaysCalcMessage.html('<span class="fal fa-spinner fa-spin"></span>');
-                debounceTimer = setTimeout(function() {
+                debounceTimer = setTimeout(function () {
                     postAjax('{{ route('admin.ajax.calendar.calc.day.work') }}', {
-                        days:self.val()
+                        days: self.val()
                     })
-                    .then(function (response) {
-                        let totalWorkDays = response.total_work_days;
-                        let totalFreeDays = response.total_free_days;
-                        let finalDateJalali = response.final_date_jalali;
-                        let finalDate = response.final_date_jalali;
-                        let updatedMessage = `تعداد روز های محاسبه شده ${totalWorkDays} می باشد و تعداد روز های تعطیل محاسبه شده ${totalFreeDays} می باشد. تاریخ تحویل ${finalDateJalali} می باشد`;
-                        alertDaysCalcMessage.html(updatedMessage);
-                        deadlineAt.val(finalDate);
-                    })
-                    .catch(function (response) {
-                        console.log(response);
-                    });
+                        .then(function (response) {
+                            let totalWorkDays = response.total_work_days;
+                            let totalFreeDays = response.total_free_days;
+                            let finalDateJalali = response.final_date_jalali;
+                            let finalDate = response.final_date_jalali;
+                            let updatedMessage = `تعداد روز های محاسبه شده ${totalWorkDays} می باشد و تعداد روز های تعطیل محاسبه شده ${totalFreeDays} می باشد. تاریخ تحویل ${finalDateJalali} می باشد`;
+                            alertDaysCalcMessage.html(updatedMessage);
+                            deadlineAt.val(finalDate);
+                        })
+                        .catch(function (response) {
+                            console.log(response);
+                        });
                 }, 2000);
             });
             makeInputNumber(workingDays);
@@ -334,21 +338,21 @@
 
 
         const domainContainer = $('#domain_container');
-        function stateDomainContainer(status){
-            if(status){
+
+        function stateDomainContainer(status) {
+            if (status) {
                 domainContainer.removeClass('d-none');
-            }
-            else{
+            } else {
                 domainContainer.addClass('d-none');
             }
         }
 
         const hostContainer = $('#host_container');
-        function stateHostContainer(status){
-            if(status){
+
+        function stateHostContainer(status) {
+            if (status) {
                 hostContainer.removeClass('d-none');
-            }
-            else{
+            } else {
                 hostContainer.addClass('d-none');
             }
         }
@@ -360,9 +364,9 @@
             makeInputPrice(input);
         }
 
-        function updatePriceInputs(){
+        function updatePriceInputs() {
 
-            $('input.offer-input').each(function (){
+            $('input.offer-input').each(function () {
                 const input = $(this);
                 priceInputMaker(input);
                 input.on("input", function () {
@@ -370,7 +374,7 @@
                 });
             });
 
-            $('input.price-input').each(function (){
+            $('input.price-input').each(function () {
                 const input = $(this);
                 priceInputMaker(input);
 
@@ -380,10 +384,9 @@
 
                     const taxInput = priceInput.parent().parent().find('.tax-input');
 
-                    if(value <= 0){
+                    if (value <= 0) {
                         taxInput.val(0);
-                    }
-                    else{
+                    } else {
                         let taxCalc = Math.round(value * 0.09);
                         taxInput.val(numberWithCommas(taxCalc))
                     }
@@ -392,9 +395,9 @@
             })
         }
 
-        function updateTotalPrice(card){
+        function updateTotalPrice(card) {
             const cardItem = card.parent().parent().parent();
-            const h4FinalPrice  = cardItem.find('.factor-item-price');
+            const h4FinalPrice = cardItem.find('.factor-item-price');
 
             let totalPrice = 0;
             let totalSub = 0;

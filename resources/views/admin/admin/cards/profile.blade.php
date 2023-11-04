@@ -7,7 +7,7 @@
     $nationalCode = $admin->national_code ?? null;
     $shabaNumber = $admin->shaba_number ?? null;
     $cartNumber = $admin->cart_number ?? null;
-    $dob = $admin->dob?->toJalali()->format('Y/m/d');
+    $dob = isset($admin->dob) ? $admin->dob->toJalali()->format('Y/m/d') : null;
     $resume = $admin->resume ?? null;
 @endphp
 <div class="card">
@@ -25,25 +25,46 @@
                  alt="{{ $firstName . ' ' . $lastName }}">
         @endif
 
-        <x-admin.input identify="avatar" title="تصویر" type="file"/>
+        <x-admin.input identify="avatar"
+                       title="تصویر"
+                       type="file"/>
 
-        <x-admin.input identify="first_name" title="نام" :old="$firstName"/>
+        <x-admin.input identify="first_name"
+                       title="نام"
+                       :old="$firstName"/>
 
-        <x-admin.input identify="last_name" title="نام خانوادگی" :old="$lastName"/>
+        <x-admin.input identify="last_name"
+                       title="نام خانوادگی"
+                       :old="$lastName"/>
 
-        <x-admin.input identify="tel" title="شماره تماس" :old="$tel"/>
+        <x-admin.input identify="tel"
+                       title="شماره تماس"
+                       :old="$tel"/>
 
-        <x-admin.input identify="postal_code" title="کد پستی" :old="$postalCode"/>
+        <x-admin.input identify="postal_code"
+                       title="کد پستی"
+                       :old="$postalCode"/>
 
-        <x-admin.input identify="national_code" title="کد ملی" :old="$nationalCode"/>
+        <x-admin.input identify="national_code"
+                       title="کد ملی"
+                       :old="$nationalCode"/>
 
-        <x-admin.input identify="shaba_number" title="شبا" :old="$shabaNumber"/>
+        <x-admin.input identify="shaba_number"
+                       title="شبا"
+                       :old="$shabaNumber"/>
 
-        <x-admin.input identify="cart_number" title="شماره کارت" :old="$cartNumber"/>
+        <x-admin.input identify="cart_number"
+                       title="شماره کارت"
+                       :old="$cartNumber"/>
 
-        <x-admin.input identify="dob" title="تاریخ تولد" :old="$dob"/>
+        <x-admin.input identify="dob"
+                       title="تاریخ تولد"
+                       :is-date-picker="true"
+                       :old="$dob"/>
 
-        <x-admin.textarea identify="resume" title="رزومه" :old="$resume"/>
+        <x-admin.textarea identify="resume"
+                          title="رزومه"
+                          :old="$resume"/>
 
     </div>
 </div>

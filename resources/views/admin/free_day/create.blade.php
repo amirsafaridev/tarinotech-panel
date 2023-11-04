@@ -12,7 +12,8 @@
         <h1 class="page-title">تقویم تعطیلات - جدید</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a
+                            href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.free-day.index') }}">تقویم تعطیلات</a></li>
                 <li class="breadcrumb-item active">جدید</li>
             </ol>
@@ -27,7 +28,9 @@
                     <form class="request-form forms-sample" method="post" action="{{ $routeStore }}">
                         @csrf
                         <x-admin.input identify="title" title="عنوان"/>
-                        <x-admin.input identify="free_at" title="تاریخ"/>
+                        <x-admin.input identify="free_at"
+                                       title="تاریخ"
+                                       :is-date-picker="true"/>
                         <x-admin.button-submit/>
                     </form>
                 </div>
@@ -43,14 +46,7 @@
     <script>
         $(document).ready(function () {
             activeParentUl('{{ route('admin.free-day.index') }}');
-            const dataPickerConfig = {
-                format: 'YYYY/MM/DD',
-                initialValueType: 'persian',
-                initialValue: false,
-                autoClose: true
-            };
-
-            $('#free_at').persianDatepicker(dataPickerConfig);
+            jalaliDatepicker.startWatch();
         })
     </script>
 @endsection

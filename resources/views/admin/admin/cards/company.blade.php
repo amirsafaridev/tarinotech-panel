@@ -1,5 +1,5 @@
 @php
-    $editMode = (bool)$admin->id;
+    $editMode = isset($admin);
     $id = $admin->id ?? null;
     $mobileCompany = $admin->mobile_company ?? null;
     $workLocation = $admin->work_location ?? null;
@@ -10,9 +10,9 @@
     $numberCompany = $admin->number_company ?? null;
     $description = $admin->description ?? null;
 
-    $startCooperation = $admin->start_cooperation?->toJalali()->format('Y/m/d');
-    $startLastContract = $admin->start_last_contract?->toJalali()->format('Y/m/d');
-    $endLastContract = $admin->end_last_contract?->toJalali()->format('Y/m/d');
+    $startCooperation = isset($admin->start_cooperation) ? $admin->start_cooperation->toJalali()->format('Y/m/d') : null;
+    $startLastContract =  isset($admin->start_last_contract) ? $admin->start_last_contract->toJalali()->format('Y/m/d') : null;
+    $endLastContract =  isset($admin->end_last_contract) ? $admin->end_last_contract->toJalali()->format('Y/m/d') : null;
 
 @endphp
 
@@ -56,14 +56,17 @@
 
         <x-admin.input identify="start_cooperation"
                        title="شروع همکاری"
+                       :is-date-picker="true"
                        :old="$startCooperation"/>
 
         <x-admin.input identify="start_last_contract"
                        title="تاریخ شروع آخرین قرارداد"
+                       :is-date-picker="true"
                        :old="$startLastContract"/>
 
         <x-admin.input identify="end_last_contract"
                        title="تاریج پایان آخرین قرارداد"
+                       :is-date-picker="true"
                        :old="$endLastContract"
         />
 

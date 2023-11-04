@@ -15,7 +15,8 @@
         <h1 class="page-title">تقویم تعطیلات - ویرایش</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a
+                            href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.free-day.index') }}">تقویم تعطیلات</a></li>
                 <li class="breadcrumb-item active">ویرایش</li>
             </ol>
@@ -33,7 +34,10 @@
 
                         <x-admin.input identify="title" title="عنوان" :old="$freeDay->title"/>
 
-                        <x-admin.input identify="free_at" title="تاریخ" :old="$freeDay->free_at->toJalali()->format('Y/m/d')"/>
+                        <x-admin.input identify="free_at"
+                                       title="تاریخ"
+                                       :old="$freeDay->free_at->toJalali()->format('Y/m/d')"
+                                       :is-date-picker="true"/>
 
                         <x-admin.button-submit title="{{ trans('panel.update') }}"/>
 
@@ -60,14 +64,7 @@
     <script>
         $(document).ready(function () {
             activeParentUl('{{ route('admin.free-day.index') }}');
-            const dataPickerConfig = {
-                format: 'YYYY/MM/DD',
-                initialValueType: 'persian',
-                initialValue: false,
-                autoClose: true
-            };
-
-            $('#free_at').persianDatepicker(dataPickerConfig);
+            jalaliDatepicker.startWatch();
         })
     </script>
 @endsection
