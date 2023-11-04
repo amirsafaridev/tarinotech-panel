@@ -5,8 +5,10 @@ namespace App\Http\Requests\Admin\Admin;
 use App\Enums\Database\Admin\TypeInsurance;
 use App\Enums\Database\Admin\WorkLocation;
 use App\Rules\IRMobile;
+use App\Rules\ShabaNumber;
 use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
@@ -24,6 +26,10 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'email' => ['required', 'email',
+                Rule::unique('admins', 'email')
+                    ->ignore($this->input('id')),
+            ],
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
             'mobile' => ['required', 'size:11', new IRMobile()],
@@ -36,14 +42,14 @@ class UpdateRequest extends FormRequest
             'start_last_contract' => 'nullable|jdate',
             'end_last_contract' => 'nullable|jdate',
 
-            'tel' => 'size:11|numeric',
-            'postal_code' => 'size:16|numeric',
+            'tel' => 'size:11|string',
+            'postal_code' => 'size:10|string',
             'work_location' => ['required', new EnumValue(WorkLocation::class)],
             'type_insurance' => ['required', new EnumValue(TypeInsurance::class)],
             'promissory' => 'int|min:0',
-            'national_code' => 'size:10|numeric',
-            'shaba_number' => 'size:20|numeric',
-            'cart_number' => 'size:16|numeric',
+            'national_code' => 'size:10|string',
+            'shaba_number' => ['nullable', 'size:26', new ShabaNumber()],
+            'cart_number' => 'size:16|string',
         ];
     }
 

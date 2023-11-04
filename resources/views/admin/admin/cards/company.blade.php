@@ -1,3 +1,21 @@
+@php
+    $editMode = (bool)$admin->id;
+    $id = $admin->id ?? null;
+    $mobileCompany = $admin->mobile_company ?? null;
+    $workLocation = $admin->work_location ?? null;
+    $typeInsurance = $admin->type_insurance ?? null;
+    $promissory = $admin->promissory ?? null;
+    $hasContract = $admin->has_contract ?? false;
+    $hasAccess = $admin->has_access ?? false;
+    $numberCompany = $admin->number_company ?? null;
+    $description = $admin->description ?? null;
+
+    $startCooperation = $admin->start_cooperation?->toJalali()->format('Y/m/d');
+    $startLastContract = $admin->start_last_contract?->toJalali()->format('Y/m/d');
+    $endLastContract = $admin->end_last_contract?->toJalali()->format('Y/m/d');
+
+@endphp
+
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">اطلاعات شرکتی</h3>
@@ -8,34 +26,65 @@
     </div>
     <div class="card-body">
 
-        <x-admin.input identify="mobile_company" title="شماره همراه شرکتی" />
+        <x-admin.input identify="mobile_company"
+                       title="شماره همراه شرکتی"
+                       :old="$mobileCompany"/>
 
         <x-admin.select-enum identify="work_location"
                              title="محل انجام کار"
                              :with-option="false"
-                             :enum-class="\App\Enums\Database\Admin\WorkLocation::class"/>
+                             :enum-class="\App\Enums\Database\Admin\WorkLocation::class"
+                             :old="$workLocation"/>
 
         <x-admin.select-enum identify="type_insurance"
                              title="نوع بیمه"
                              :with-option="false"
-                             :enum-class="\App\Enums\Database\Admin\TypeInsurance::class"/>
+                             :enum-class="\App\Enums\Database\Admin\TypeInsurance::class"
+                             :old="$typeInsurance"/>
 
-        <x-admin.input identify="promissory" title="سفته"/>
+        <x-admin.input identify="promissory"
+                       title="سفته"
+                       :old="$promissory"/>
 
-        <x-admin.checkbox identify="has_contract" description="قرارداد دارد؟"/>
+        <x-admin.checkbox identify="has_contract"
+                          description="قرارداد دارد؟"
+                          :old="$hasContract"/>
 
-        <x-admin.input identify="number_company" title="شماره داخلی"/>
+        <x-admin.input identify="number_company"
+                       title="شماره داخلی"
+                       :old="$numberCompany"/>
 
-        <x-admin.input identify="start_cooperation" title="شروع همکاری"/>
+        <x-admin.input identify="start_cooperation"
+                       title="شروع همکاری"
+                       :old="$startCooperation"/>
 
-        <x-admin.input identify="start_last_contract" title="تاریخ شروع آخرین قرارداد"/>
+        <x-admin.input identify="start_last_contract"
+                       title="تاریخ شروع آخرین قرارداد"
+                       :old="$startLastContract"/>
 
-        <x-admin.input identify="end_last_contract" title="تاریج پایان آخرین قرارداد"/>
+        <x-admin.input identify="end_last_contract"
+                       title="تاریج پایان آخرین قرارداد"
+                       :old="$endLastContract"
+        />
 
-        <x-admin.textarea identify="description" title="توضیحات"/>
+        <x-admin.textarea identify="description"
+                          title="توضیحات"
+                          :old="$description"/>
 
-        <x-admin.checkbox identify="has_access" description="بلاک شود"/>
+        <x-admin.checkbox identify="has_access"
+                          description="بلاک شود"
+                          :old="$hasAccess"/>
 
-        <x-admin.button-submit/>
+        @if($editMode)
+            <x-admin.input identify="id"
+                           type="hidden"
+                           :old="$id"/>
+            <x-admin.button-submit title="{{ trans('panel.update') }}"/>
+
+            <x-admin.button-delete/>
+        @else
+            <x-admin.button-submit/>
+        @endif
+
     </div>
 </div>

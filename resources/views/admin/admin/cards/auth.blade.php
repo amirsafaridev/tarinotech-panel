@@ -1,3 +1,7 @@
+@php
+    $email = $admin->email ?? '';
+    $mobile = $admin->mobile ?? '';
+@endphp
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">اطلاعات ورود</h3>
@@ -8,9 +12,9 @@
     </div>
     <div class="card-body">
 
-        <x-admin.input identify="email" title="پست الکترونیکی"/>
+        <x-admin.input identify="email" title="پست الکترونیکی" :old="$email"/>
 
-        <x-admin.input identify="mobile" title="شماره همراه"/>
+        <x-admin.input identify="mobile" title="شماره همراه" :old="$mobile"/>
 
         <x-admin.select-model multiple="multiple"
                               identify="role[]"
@@ -20,9 +24,10 @@
                               key="id"
                               value="name"/>
 
-        <div class="alert alert-success">
-            <p>گذرواژه برای پست الکترونیکی و شماره همراه ارسال خواهد شد.</p>
-        </div>
-
+        @if(!$admin)
+            <div class="alert alert-success">
+                <p>گذرواژه برای پست الکترونیکی و شماره همراه ارسال خواهد شد.</p>
+            </div>
+        @endif
     </div>
 </div>

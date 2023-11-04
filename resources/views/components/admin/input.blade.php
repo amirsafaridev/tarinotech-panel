@@ -6,7 +6,7 @@
            class="form-control @if ($isSmall) form-control-sm @endif @if(count($addClass)){{ implode(' ',$addClass) }}@endif"
            name="{{ $identify }}"
            id="{{ $identify }}"
-           value="{{ $old ?? '' }}"
+           @if ($old)  value="{{ $old }}" @endif
            @if ($disabled) disabled @endif
            @if ($readOnly) readonly @endif
     />
