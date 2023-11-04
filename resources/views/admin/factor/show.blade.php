@@ -299,7 +299,7 @@
 
 @endsection
 @section('script')
-    @include('admin.partial.share-script')
+    @include('admin.partial.script.global')
     <script>
         $(document).ready(function () {
             activeParentUl('{{ route('admin.factor.index') }}');

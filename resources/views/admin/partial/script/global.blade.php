@@ -57,12 +57,7 @@
         });
     }
 
-    function printMe(){
-        window.print();
-    }
-
     function makeInputPrice(inputSelect, haveDot = false) {
-        // Function to add thousands separators
         function formatNumberWithCommas(x) {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
@@ -75,12 +70,8 @@
 
         inputSelect.on("input", function () {
             let inputValue = $(this).val();
-
-            // Use a single regular expression for cleaning
             const regex = haveDot ? /[^0-9.]/g : /[^0-9]/g;
             inputValue = inputValue.replace(regex, "");
-
-            // Remove multiple dots
             inputValue = inputValue.replace(/(\..*?)\./g, '$1');
             inputValue = numberWithCommas(inputValue);
             $(this).val(inputValue);
@@ -89,31 +80,28 @@
 
     function makeInputOnlyAlpha(inputSelect) {
         inputSelect.on("input", function () {
-            // Get the current input value
             let inputValue = $(this).val();
-
-            // Use a regular expression to remove any characters that are not alphabetic or spaces
             let sanitizedValue = inputValue.replace(/[^a-zA-Z\s]/g, '');
+            $(this).val(sanitizedValue);
+        });
+    }
 
-            // Update the input field with the sanitized value
+    function makeInputOnlyAlphaNumber(inputSelect) {
+        inputSelect.on("input", function () {
+            let inputValue = $(this).val();
+            let sanitizedValue = inputValue.replace(/[^a-zA-Z0-9\s]/g, '');
             $(this).val(sanitizedValue);
         });
     }
 
     function makeInputNumber(inputSelect) {
         inputSelect.on("input", function () {
-            // Get the current input value
             let inputValue = $(this).val();
-
-            // Use a regular expression to remove any characters that are not alphabetic or spaces
             let sanitizedValue = inputValue.replace(/[^0-9\s]/g, '');
-
-            // Update the input field with the sanitized value
             $(this).val(sanitizedValue);
         });
     }
 
-    // Helper function to add thousands separator (comma)
     function numberWithCommas(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
@@ -160,5 +148,9 @@
                 return finalResult.join(' ');
             }
         });
+    }
+
+    function printMe(){
+        window.print();
     }
 </script>

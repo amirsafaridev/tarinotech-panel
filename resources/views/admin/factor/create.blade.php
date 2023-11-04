@@ -66,7 +66,7 @@
 
     ]])
     @include('admin.partial.request')
-    @include('admin.partial.share-script')
+    @include('admin.partial.script.global')
     <script>
         $(document).ready(function () {
 

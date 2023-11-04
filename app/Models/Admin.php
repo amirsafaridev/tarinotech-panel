@@ -42,6 +42,19 @@ class Admin extends Authenticatable
         'end_last_contract',
         'resume',
         'description',
+
+        'mobile_company',
+        'number_company',
+        'tel',
+        'postal_code',
+        'work_location',
+        'type_insurance',
+        'has_contract',
+        'promissory',
+        'national_code',
+        'shaba_number',
+        'cart_number',
+
     ];
 
     /**

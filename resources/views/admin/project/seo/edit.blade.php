@@ -205,7 +205,7 @@
         \App\Enums\Assets\ScriptLoader::Select2(),
     ]])
     @include('admin.partial.request')
-    @include('admin.partial.share-script')
+    @include('admin.partial.script.global')
     <script>
         $(document).ready(function () {
             activeParentUl('{{ route('admin.project.seo.index') }}');

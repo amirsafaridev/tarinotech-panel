@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\Database\Admin\TypeInsurance;
+use App\Enums\Database\Admin\WorkLocation;
 use App\Enums\Database\Company\CompanyType;
 use App\Enums\Database\Facility\FacilityFinancialCycle;
 use App\Enums\Database\Facility\FacilityPriceType;
@@ -120,5 +122,18 @@ return [
         FacilityFinancialCycle::CalcFromPackage => 'محاسبه روی پکیج',
         FacilityFinancialCycle::InputLater => 'بعدا درج میشود',
         FacilityFinancialCycle::TwentyPercentCreationPrice => '۲۰ درصد قیمت ایجاد',
+    ],
+
+    TypeInsurance::class => [
+        TypeInsurance::None => 'ندارد',
+        TypeInsurance::TaminInPerson => 'تامین اجتماعی - حضوری',
+        TypeInsurance::TaminInRemote => 'تامین اجتماعی - ریموت',
+    ],
+
+    WorkLocation::class => [
+        WorkLocation::None => 'ندارد',
+        WorkLocation::Remote => 'ریموت',
+        WorkLocation::Hybrid => 'هیبریدی',
+        WorkLocation::InPerson => 'حضوری',
     ],
 ];

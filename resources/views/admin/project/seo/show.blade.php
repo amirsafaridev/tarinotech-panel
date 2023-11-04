@@ -50,7 +50,7 @@
 @endsection
 @section('script')
     @include('admin.partial.loader.script',['load'=>[]])
-    @include('admin.partial.share-script')
+    @include('admin.partial.script.global')
     <script>
         $(document).ready(function () {
             activeParentUl('{{ route('admin.project.seo.index') }}');

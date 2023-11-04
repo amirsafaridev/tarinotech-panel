@@ -81,7 +81,7 @@
 @endsection
 @section('script')
     @include('admin.partial.request')
-    @include('admin.partial.share-script')
+    @include('admin.partial.script.global')
     @include('admin.partial.loader.script',['load'=>[
         \App\Enums\Assets\ScriptLoader::Alert(),
         \App\Enums\Assets\ScriptLoader::Select2(),

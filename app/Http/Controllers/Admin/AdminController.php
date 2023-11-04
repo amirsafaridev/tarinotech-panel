@@ -84,7 +84,7 @@ class AdminController extends Controller
             $admin->syncRoles($request->input('role'));
             DB::commit();
 
-            $admin->notify(new SendPasswordByEmailNotification($password));
+            //$admin->notify(new SendPasswordByEmailNotification($password));
 
             return response()->json([
                 'result' => 'success',
@@ -184,6 +184,20 @@ class AdminController extends Controller
         $item['mobile'] = $request->input('mobile');
         $item['mobile_company'] = $request->input('mobile_company');
         $item['number_company'] = $request->input('number_company');
+
+        $item['tel'] = $request->input('tel');
+        $item['postal_code'] = $request->input('postal_code');
+        $item['work_location'] = $request->input('work_location');
+        $item['type_insurance'] = $request->input('type_insurance');
+        $item['has_contract'] = $request->has('has_contract');
+
+        if ($request->input('promissory')) {
+            $item['promissory'] = $request->input('promissory');
+        }
+
+        $item['national_code'] = $request->input('national_code');
+        $item['shaba_number'] = $request->input('shaba_number');
+        $item['cart_number'] = $request->input('cart_number');
 
         if (! $editMode) {
             $item['email'] = $request->input('email');

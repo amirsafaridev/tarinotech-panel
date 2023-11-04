@@ -27,7 +27,7 @@
 @endif
 
 @if (in_array(\App\Enums\Assets\ScriptLoader::InputMask(),$load))
-    <script type="text/javascript" src="{{asset('res-admin/assets/plugins/inputmask/dist/min/jquery.inputmask.bundle.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('res-admin/assets/plugins/input-mask/jquery.mask.min.js')}}"></script>
 @endif
 
 @if (in_array(\App\Enums\Assets\ScriptLoader::CKEditor(),$load))

@@ -5,11 +5,7 @@
        \App\Enums\Assets\StyleLoader::Toast(),
    ]])
 @endsection
-@php
-    use \App\Enums\Database\Facility\FacilityPriceType;
-    use \App\Enums\Database\Facility\FacilityWorkCycle;
-    use \App\Enums\Database\Facility\FacilityFinancialCycle;
-@endphp
+
 @section('content')
 
     <div class="page-header">
@@ -35,17 +31,17 @@
 
                         <x-admin.select-model identify="title" title="انتخاب امکان جانبی" :items="$facilities" key="id" value="title"/>
 
-                        <x-admin.select-enum identify="price_type" title="قیمت ایجاد" :enum-class="FacilityPriceType::class" />
+                        <x-admin.select-enum identify="price_type" title="قیمت ایجاد" :enum-class="\App\Enums\Database\Facility\FacilityPriceType::class" />
                         <div id="price_value_wrapper" class="d-none">
                             <x-admin.input identify="price_value" title="قیمت مورد نظر (ریال)" />
                         </div>
 
-                        <x-admin.select-enum identify="work_cycle" title="سیکل کاری تمدید" :enum-class="FacilityWorkCycle::class" />
+                        <x-admin.select-enum identify="work_cycle" title="سیکل کاری تمدید" :enum-class="\App\Enums\Database\Facility\FacilityWorkCycle::class" />
                         <div id="work_cycle_value_wrapper" class="d-none">
                             <x-admin.input identify="work_cycle_value" title="تاریخ مورد نظر" />
                         </div>
 
-                        <x-admin.select-enum identify="financial_cycle" title="سیکل مالی" :enum-class="FacilityFinancialCycle::class" />
+                        <x-admin.select-enum identify="financial_cycle" title="سیکل مالی" :enum-class="\App\Enums\Database\Facility\FacilityFinancialCycle::class" />
                         <div id="financial_cycle_value_wrapper" class="d-none">
                             <x-admin.input identify="financial_cycle_value" title="قیمت مورد نظر" />
                         </div>
@@ -61,7 +57,7 @@
 @endsection
 @section('script')
     @include('admin.partial.request')
-    @include('admin.partial.share-script')
+    @include('admin.partial.script.global')
     <script>
         $(document).ready(function (){
             activeParentUl('{{ route('admin.project.index') }}');
@@ -71,7 +67,7 @@
             const priceValueWrapper = $('#price_value_wrapper');
             priceType.change(function (){
                 const _this = $(this);
-                if(parseInt(_this.val()) === parseInt('{{ FacilityPriceType::Input }}')){
+                if(parseInt(_this.val()) === parseInt('{{ \App\Enums\Database\Facility\FacilityPriceType::Input }}')){
                     priceValueWrapper.removeClass('d-none');
                 }
                 else{
@@ -82,11 +78,10 @@
             makeInputPrice(priceValue);
 
             const workCycle = $('#work_cycle');
-            const workCycleValue = $('#work_cycle_value');
             const workCycleValueWrapper = $('#work_cycle_value_wrapper');
             workCycle.change(function (){
                 const _this = $(this);
-                if(parseInt(_this.val()) === parseInt('{{ FacilityWorkCycle::InputDate }}')){
+                if(parseInt(_this.val()) === parseInt('{{ \App\Enums\Database\Facility\FacilityWorkCycle::InputDate }}')){
                     workCycleValueWrapper.removeClass('d-none');
                 }
                 else{
@@ -99,7 +94,7 @@
             const financialCycleValueWrapper = $('#financial_cycle_value_wrapper');
             workCycle.change(function (){
                 const _this = $(this);
-                if(parseInt(_this.val()) === parseInt('{{ FacilityWorkCycle::InputDate }}')){
+                if(parseInt(_this.val()) === parseInt('{{ \App\Enums\Database\Facility\FacilityWorkCycle::InputDate }}')){
                     workCycleValueWrapper.removeClass('d-none');
                 }
                 else{

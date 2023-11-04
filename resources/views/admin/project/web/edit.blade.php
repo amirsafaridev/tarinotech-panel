@@ -271,7 +271,7 @@
          \App\Enums\Assets\ScriptLoader::Datepicker(),
     ]])
     @include('admin.partial.request')
-    @include('admin.partial.share-script')
+    @include('admin.partial.script.global')
     <script>
         $(document).ready(function () {
             activeParentUl('{{ route('admin.project.web.index') }}');

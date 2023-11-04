@@ -255,5 +255,12 @@ return [
         'project_id' => 'پروژه',
         'mobile_company' => 'موبایل شرکتی',
         'number_company' => 'شماره داخلی',
+
+        'work_location' => 'محل کار',
+        'type_insurance' => 'نوع بیمه',
+        'promissory' => 'سفته',
+        'national_code' => 'کد ملی',
+        'shaba_number' => 'شبا',
+        'cart_number' => 'شماره کارت',
     ],
 ];

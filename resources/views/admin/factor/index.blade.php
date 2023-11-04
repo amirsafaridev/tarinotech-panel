@@ -88,7 +88,7 @@
     @include('admin.partial.loader.script',['load'=>[
         \App\Enums\Assets\ScriptLoader::Select2(),
     ]])
-    @include('admin.partial.share-script')
+    @include('admin.partial.script.global')
     <script>
         $(document).ready(function () {
             makeInputPrice($('#price_from'));

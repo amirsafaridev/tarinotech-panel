@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Admin\Admin;
 
+use App\Enums\Database\Admin\TypeInsurance;
+use App\Enums\Database\Admin\WorkLocation;
 use App\Rules\IRMobile;
+use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest
@@ -32,6 +35,26 @@ class UpdateRequest extends FormRequest
             'start_cooperation' => 'nullable|jdate',
             'start_last_contract' => 'nullable|jdate',
             'end_last_contract' => 'nullable|jdate',
+
+            'tel' => 'size:11|numeric',
+            'postal_code' => 'size:16|numeric',
+            'work_location' => ['required', new EnumValue(WorkLocation::class)],
+            'type_insurance' => ['required', new EnumValue(TypeInsurance::class)],
+            'promissory' => 'int|min:0',
+            'national_code' => 'size:10|numeric',
+            'shaba_number' => 'size:20|numeric',
+            'cart_number' => 'size:16|numeric',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'work_location' => (int) $this->input('work_location'),
+            'type_insurance' => (int) $this->input('type_insurance'),
+            'shaba_number' => str_replace(' ', '', $this->input('shaba_number')),
+            'cart_number' => str_replace(' ', '', $this->input('cart_number')),
+            'promissory' => str_replace(',', '', $this->input('promissory')),
+        ]);
     }
 }

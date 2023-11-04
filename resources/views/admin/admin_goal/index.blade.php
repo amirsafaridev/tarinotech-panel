@@ -77,7 +77,7 @@
     @include('admin.partial.loader.script',['load'=>[
         \App\Enums\Assets\ScriptLoader::Toast(),
     ]])
-    @include('admin.partial.share-script')
+    @include('admin.partial.script.global')
     <script>
         $(document).ready(function () {
             makeInputPrice($(".inp-profitability-dollar"), true);
