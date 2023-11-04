@@ -1,6 +1,6 @@
 <script>
     $(document).ready(function (){
-        CKEDITOR.config.customConfig = '{{ asset('res-admin/assets/plugins/ckeditor/basic-config.js'.'?update='.time()) }}';
+        CKEDITOR.config.customConfig = '{{ asset('res-admin/assets/plugins/ckeditor/config.js'.'?update='.time()) }}';
 
         CKEDITOR.on( 'instanceCreated', function ( event, data ) {
             let editor = event.editor;
