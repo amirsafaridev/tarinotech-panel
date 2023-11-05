@@ -6,7 +6,6 @@
     $typeInsurance = $admin->type_insurance ?? null;
     $promissory = $admin->promissory ?? null;
     $hasContract = $admin->has_contract ?? false;
-    $hasAccess = $admin->has_access ?? false;
     $numberCompany = $admin->number_company ?? null;
     $description = $admin->description ?? null;
 
@@ -74,9 +73,6 @@
                           title="توضیحات"
                           :old="$description"/>
 
-        <x-admin.checkbox identify="has_access"
-                          description="بلاک شود"
-                          :old="$hasAccess"/>
 
         @if($editMode)
             <x-admin.input identify="id"

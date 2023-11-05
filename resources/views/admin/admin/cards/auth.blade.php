@@ -2,6 +2,7 @@
     $editMode = isset($admin);
     $email = $admin->email ?? '';
     $mobile = $admin->mobile ?? '';
+     $hasAccess = $admin->has_access ?? false;
 @endphp
 <div class="card">
     <div class="card-header">
@@ -29,6 +30,12 @@
             <div class="alert alert-success">
                 <p>گذرواژه برای پست الکترونیکی و شماره همراه ارسال خواهد شد.</p>
             </div>
+        @endif
+
+        @if($editMode)
+            <x-admin.checkbox identify="has_access"
+                              description="قطع دسترسی"
+                              :old="$hasAccess"/>
         @endif
     </div>
 </div>

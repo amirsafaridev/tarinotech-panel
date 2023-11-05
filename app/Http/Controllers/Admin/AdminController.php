@@ -118,6 +118,7 @@ class AdminController extends Controller
         try {
             DB::beginTransaction();
             $item = $this->itemProvider($request, true);
+            $item['has_access'] = $request->has('has_access');
             $admin->update($item);
             $admin->syncRoles($request->input('role'));
             DB::commit();
@@ -165,7 +166,6 @@ class AdminController extends Controller
     {
         $item['first_name'] = $request->input('first_name');
         $item['last_name'] = $request->input('last_name');
-        $item['has_access'] = $request->has('has_access');
 
         $dob = $request->input('dob');
         $item['dob'] = empty($dob) ? null : Helper::toGregorian($dob);
