@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Helpers\Uploader\Uploader;
+use App\Helpers\Uploader\PhotoUploader;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Profile\PasswordUpdateRequest;
 use App\Http\Requests\Admin\Profile\UpdateRequest;
@@ -82,7 +82,7 @@ class ProfileController extends Controller
         $admin->first_name = $request->input('first_name');
         $admin->last_name = $request->input('last_name');
         if ($request->hasFile('avatar')) {
-            $provider = (new Uploader())
+            $provider = (new PhotoUploader())
                 ->fit(150, 150)
                 ->path('admin')
                 ->field('avatar')

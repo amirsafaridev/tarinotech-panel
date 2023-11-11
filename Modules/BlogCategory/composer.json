@@ -1,0 +1,31 @@
+{
+    "name": "nwidart/blogcategory",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\BlogCategory\\": "",
+            "Modules\\BlogCategory\\App\\": "app/",
+            "Modules\\BlogCategory\\Database\\Factories\\": "database/factories/",
+            "Modules\\BlogCategory\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\BlogCategory\\Tests\\": "tests/"
+        }
+    }
+}

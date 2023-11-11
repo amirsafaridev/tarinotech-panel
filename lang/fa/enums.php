@@ -3,9 +3,9 @@
 use App\Enums\Database\Admin\TypeInsurance;
 use App\Enums\Database\Admin\WorkLocation;
 use App\Enums\Database\Company\CompanyType;
-use App\Enums\Database\Facility\FacilityFinancialCycle;
-use App\Enums\Database\Facility\FacilityPriceType;
-use App\Enums\Database\Facility\FacilityWorkCycle;
+use App\Enums\Database\Facility\FinancialCycle;
+use App\Enums\Database\Facility\PriceType;
+use App\Enums\Database\Facility\WorkCycle;
 use App\Enums\Database\Factor\FactorStatus;
 use App\Enums\Database\Project\ProjectBase;
 use App\Enums\Database\Project\ProjectDesignBy;
@@ -104,24 +104,24 @@ return [
         SeoAgreementDuration::SixMonth => 'شش ماهه',
     ],
 
-    FacilityPriceType::class => [
-        FacilityPriceType::None => 'ندارد',
-        FacilityPriceType::Input => 'وارد کردن مبلغ',
-        FacilityPriceType::Package => 'جزو پکیج انتخابی',
+    PriceType::class => [
+        PriceType::None => 'ندارد',
+        PriceType::Input => 'وارد کردن مبلغ',
+        PriceType::Package => 'جزو پکیج انتخابی',
     ],
 
-    FacilityWorkCycle::class => [
-        FacilityWorkCycle::None => 'ندارد',
-        FacilityWorkCycle::InputDate => 'ثبت تاریخ',
-        FacilityWorkCycle::Yearly => 'سالانه',
+    WorkCycle::class => [
+        WorkCycle::None => 'ندارد',
+        WorkCycle::InputDate => 'ثبت تاریخ',
+        WorkCycle::Yearly => 'سالانه',
     ],
 
-    FacilityFinancialCycle::class => [
-        FacilityFinancialCycle::None => 'ندارد',
-        FacilityFinancialCycle::InputPrice => 'درج قیمت',
-        FacilityFinancialCycle::CalcFromPackage => 'محاسبه روی پکیج',
-        FacilityFinancialCycle::InputLater => 'بعدا درج میشود',
-        FacilityFinancialCycle::TwentyPercentCreationPrice => '۲۰ درصد قیمت ایجاد',
+    FinancialCycle::class => [
+        FinancialCycle::None => 'ندارد',
+        FinancialCycle::InputPrice => 'درج قیمت',
+        FinancialCycle::CalcFromPackage => 'محاسبه روی پکیج',
+        FinancialCycle::InputLater => 'بعدا درج میشود',
+        FinancialCycle::TwentyPercentCreationPrice => '۲۰ درصد قیمت ایجاد',
     ],
 
     TypeInsurance::class => [

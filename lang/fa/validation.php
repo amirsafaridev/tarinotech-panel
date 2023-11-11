@@ -262,5 +262,14 @@ return [
         'national_code' => 'کد ملی',
         'shaba_number' => 'شبا',
         'cart_number' => 'شماره کارت',
+
+        'price_type' => 'قیمت ایجاد',
+        'price_value' => 'قیمت',
+        'facility_id' => 'امکان جانبی',
+        'work_cycle' => 'سیکل کاری',
+        'work_cycle_value' => 'تاریخ',
+        'financial_cycle' => 'سیکل کالی',
+        'financial_cycle_value' => 'قیمت',
+        'added_at' => 'تاریخ ایجاد',
     ],
 ];

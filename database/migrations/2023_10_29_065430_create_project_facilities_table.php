@@ -1,9 +1,9 @@
 <?php
 
-use App\Enums\Database\Facility\FacilityFinancialCycle;
-use App\Enums\Database\Facility\FacilityPriceType;
 use App\Enums\Database\Facility\FacilityStatus;
-use App\Enums\Database\Facility\FacilityWorkCycle;
+use App\Enums\Database\Facility\FinancialCycle;
+use App\Enums\Database\Facility\PriceType;
+use App\Enums\Database\Facility\WorkCycle;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,13 +20,13 @@ return new class extends Migration
             $table->unsignedBigInteger('project_id');
             $table->unsignedInteger('facility_id');
 
-            $table->unsignedTinyInteger('price_type')->default(FacilityPriceType::None);
+            $table->unsignedTinyInteger('price_type')->default(PriceType::None);
             $table->unsignedInteger('price_value')->default(0);
 
-            $table->unsignedTinyInteger('work_cycle')->default(FacilityWorkCycle::None);
+            $table->unsignedTinyInteger('work_cycle')->default(WorkCycle::None);
             $table->date('work_cycle_value')->nullable();
 
-            $table->unsignedTinyInteger('financial_cycle')->default(FacilityFinancialCycle::None);
+            $table->unsignedTinyInteger('financial_cycle')->default(FinancialCycle::None);
             $table->unsignedInteger('financial_cycle_value')->default(0);
 
             $table->unsignedTinyInteger('status')->default(FacilityStatus::Renewal);

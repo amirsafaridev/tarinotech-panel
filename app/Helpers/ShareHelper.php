@@ -123,3 +123,10 @@ if (! function_exists('getRouteProjectType')) {
         };
     }
 }
+
+if (! function_exists('facilityCalculator')) {
+    function facilityCalculator(int $price, int $work, int $financial): string
+    {
+
+    }
+}

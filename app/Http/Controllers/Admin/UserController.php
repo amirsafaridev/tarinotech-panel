@@ -7,7 +7,7 @@ use App\Enums\Database\User\UserType;
 use App\Enums\General\BtnType;
 use App\Helpers\Helper;
 use App\Helpers\Uploader\FileUploader;
-use App\Helpers\Uploader\Uploader;
+use App\Helpers\Uploader\PhotoUploader;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\StoreRequest;
 use App\Http\Requests\Admin\User\UpdateRequest;
@@ -192,7 +192,7 @@ class UserController extends Controller
         $item['user_type'] = UserType::Primary;
 
         if ($req->hasFile('avatar')) {
-            $provider = (new Uploader())
+            $provider = (new PhotoUploader())
                 ->fit(250, 250)
                 ->path('user')
                 ->field('avatar')

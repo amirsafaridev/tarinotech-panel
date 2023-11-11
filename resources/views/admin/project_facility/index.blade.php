@@ -27,6 +27,52 @@
 
                 <div class="card-body">
                     @include('admin.partial.message')
+
+
+
+                    @if($facilities->isNotEmpty())
+                        <div class="table-responsive">
+                            <table id="data-table" class="table">
+                                <thead>
+                                <tr>
+                                    <th>شناسه</th>
+                                    <th>امکان جانبی</th>
+                                    <th>قیمت ایجاد</th>
+                                    <th>سیکل کاری تمدید</th>
+                                    <th>سیکل مالی</th>
+                                    <th>محاسبه</th>
+                                    <th>وضعیت</th>
+                                    <th>تاریخ ثبت</th>
+                                    <th>تاریخ ایجاد</th>
+                                    <th>عملیات</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($facilities as $facility)
+                                    <tr>
+                                        <td>{{ $facility->id }}</td>
+                                        <td>{{ $facility->facility->title }}</td>
+                                        <td>{{ \App\Enums\Database\Facility\PriceType::getDescription($facility->price_type) }}</td>
+                                        <td>{{ \App\Enums\Database\Facility\WorkCycle::getDescription($facility->work_cycle) }}</td>
+                                        <td>{{ \App\Enums\Database\Facility\FinancialCycle::getDescription($facility->financial_cycle) }}</td>
+                                        <td>0</td>
+                                        <td>{{ \App\Enums\Database\Facility\FacilityStatus::getDescription($facility->status) }}</td>
+                                        <td>{{ verta($facility->added_at)->format(formatJalaliDate()) }}</td>
+                                        <td>{{ verta($facility->created_at)->format(formatJalaliDate()) }}</td>
+                                        <td>
+                                            <a target="_blank" class="btn btn-warning btn-sm">ویرایش</a>
+                                            <button type="button" class="btn btn-danger btn-sm">حذف</button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @else
+                        <div class="alert alert-info">
+                            <p>پروژه ای یافت نشد!</p>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

@@ -4,8 +4,33 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProjectFacility extends Model
 {
     use HasFactory;
+
+    protected $casts = [
+        'added_at' => 'date',
+    ];
+
+    protected $fillable = [
+        'project_id',
+        'facility_id',
+        'price_type',
+        'price_value',
+        'work_cycle',
+        'work_cycle_value',
+        'financial_cycle',
+        'financial_cycle_value',
+        'status',
+        'renewal_at',
+        'added_at',
+        'description',
+    ];
+
+    public function facility(): BelongsTo
+    {
+        return $this->belongsTo(Facility::class);
+    }
 }
