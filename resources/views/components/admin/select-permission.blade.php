@@ -1,6 +1,6 @@
 <div class="form-group">
     <label for="{{ sanitizedIdentify($identify) }}" class="form-label">{{ $title }}</label>
-    <select class="form-control" name="{{ $identify }}" id="{{ sanitizedIdentify($identify) }}" {{ $attributes }}>
+    <select class="form-control" name="{{ $identify }}" id="{{ sanitizedIdentify($identify) }}" multiple="multiple">
         @if ($items->isNotEmpty())
             @foreach ($items as $item)
                 @php

@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 use App\Service\PermissionService;
 use Illuminate\Database\Seeder;
+use Modules\Blog\database\seeders\BlogDatabaseSeeder;
+use Modules\BlogCategory\database\seeders\BlogCategoryDatabaseSeeder;
+use Modules\Role\database\seeders\RoleDatabaseSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -29,9 +32,9 @@ class DatabaseSeeder extends Seeder
             SampleMessageSeeder::class,
             AutoMessageSeeder::class,
             FreeDaySeeder::class,
-            BlogCategorySeeder::class,
-            BlogSeeder::class,
-            RoleSeeder::class,
+            BlogCategoryDatabaseSeeder::class,
+            BlogDatabaseSeeder::class,
+            RoleDatabaseSeeder::class,
         ]);
 
         resolve(PermissionService::class)->sync();

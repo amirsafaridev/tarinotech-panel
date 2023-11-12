@@ -1,0 +1,12 @@
+{
+    "name": "BlogCategory",
+    "alias": "blogcategory",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\BlogCategory\\app\\Providers\\BlogCategoryServiceProvider",
+        "Modules\\BlogCategory\\app\\Providers\\EventServiceProvider"
+    ],
+    "files": []
+}

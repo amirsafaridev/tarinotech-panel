@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\Database\Facility\FinancialCycle;
+use App\Enums\Database\Facility\PriceType;
+use App\Enums\Database\Facility\WorkCycle;
+use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProjectType\StoreRequest;
 use App\Http\Requests\Admin\ProjectType\UpdateRequest;
 use App\Models\Facility;
 use App\Models\Project;
 use App\Models\ProjectBase;
+use App\Models\ProjectFacility;
 use App\Models\ProjectType;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProjectFacilityController extends Controller
@@ -17,8 +23,12 @@ class ProjectFacilityController extends Controller
     public function index(Project $project)
     {
         $title = 'امکانات جانبی';
+        $facilities = ProjectFacility::query()
+            ->with('facility')
+            ->where('project_id', $project->id)
+            ->get();
 
-        return view('admin.project_facility.index', compact('title', 'project'));
+        return view('admin.project_facility.index', compact('title', 'project', 'facilities'));
     }
 
     public function create(Project $project)
@@ -30,12 +40,16 @@ class ProjectFacilityController extends Controller
         return view('admin.project_type.create', compact('title', 'routeStore', 'project', 'facilities'));
     }
 
-    public function store(StoreRequest $request)
+    public function store(Project $project, StoreRequest $request)
     {
         try {
 
-            $item = $this->itemProvider($request);
-            ProjectType::create($item);
+            if (! $this->isPossibleModes($request)) {
+                return $this->getImpossibleResponse();
+            }
+
+            $item = $this->itemProvider($request, $project->id);
+            ProjectFacility::create($item);
 
             return response()->json([
                 'result' => 'success',
@@ -47,16 +61,17 @@ class ProjectFacilityController extends Controller
 
             return response()->json([
                 'result' => 'exception',
+                'result1' => $e->getMessage(),
                 'message' => trans('panel.error_store'),
             ], 500);
         }
     }
 
-    public function edit(ProjectType $projectType)
+    public function edit(Project $project, ProjectFacility $projectFacility)
     {
         $title = 'انواع پزوژه ها - ویرایش';
-        $routeUpdate = route('admin.project.type.update', $projectType->id);
-        $routeDestroy = route('admin.project.type.destroy', $projectType->id);
+        $routeUpdate = route('admin.project.facility.update', $projectFacility->id);
+        $routeDestroy = route('admin.project.facility.destroy', $projectFacility->id);
         $projectBases = ProjectBase::query()->get();
 
         return view('admin.project_type.edit', compact('title', 'routeUpdate', 'routeDestroy', 'projectType', 'projectBases'));
@@ -97,12 +112,91 @@ class ProjectFacilityController extends Controller
         }
     }
 
-    protected function itemProvider(Request $request): array
+    protected function itemProvider(Request $req, int $projectId): array
     {
-        $item['title'] = $request->input('title');
-        $item['project_base_id'] = $request->input('project_base_id');
-        $item['note'] = $request->input('note');
+        $item['project_id'] = $projectId;
+        $item['facility_id'] = $req->input('facility_id');
+        $item['price_type'] = $req->input('price_type');
+        $item['price_value'] = (int) $req->input('price_value', 0);
+        $item['work_cycle'] = $req->input('work_cycle');
+        $workCycleValue = $req->input('work_cycle_value');
+        $item['work_cycle_value'] = empty($workCycleValue) ? null : $workCycleValue;
+        $item['financial_cycle'] = $req->input('financial_cycle');
+        $item['financial_cycle_value'] = (int) $req->input('financial_cycle_value', 0);
+        $item['added_at'] = Helper::toGregorian($req->input('added_at'));
+        $item['description'] = $req->input('description');
 
         return $item;
+    }
+
+    private function isPossibleModes(Request $request): bool
+    {
+        $priceType = (int) $request->input('price_type');
+        $workCycle = (int) $request->input('work_cycle');
+        $financialCycle = (int) $request->input('financial_cycle');
+
+        if ($priceType === PriceType::None &&
+            $workCycle === WorkCycle::None &&
+            $financialCycle === FinancialCycle::CalcFromPackage) {
+            return false;
+        }
+
+        if ($priceType === PriceType::Package &&
+            $workCycle === WorkCycle::None &&
+            $financialCycle === FinancialCycle::TwentyPercentCreationPrice) {
+            return false;
+        }
+
+        if ($priceType === PriceType::Input &&
+            $workCycle === WorkCycle::None &&
+            $financialCycle === FinancialCycle::CalcFromPackage) {
+            return false;
+        }
+
+        if ($priceType === PriceType::None &&
+            $workCycle === WorkCycle::Yearly &&
+            $financialCycle === FinancialCycle::CalcFromPackage) {
+            return false;
+        }
+
+        if ($priceType === PriceType::None &&
+            $workCycle === WorkCycle::InputDate &&
+            $financialCycle === FinancialCycle::CalcFromPackage) {
+            return false;
+        }
+
+        if ($priceType === PriceType::Package &&
+            $workCycle === WorkCycle::Yearly &&
+            $financialCycle === FinancialCycle::TwentyPercentCreationPrice) {
+            return false;
+        }
+
+        if ($priceType === PriceType::Package &&
+            $workCycle === WorkCycle::InputDate &&
+            $financialCycle === FinancialCycle::TwentyPercentCreationPrice) {
+            return false;
+        }
+
+        if ($priceType === PriceType::Input &&
+            $workCycle === WorkCycle::Yearly &&
+            $financialCycle === FinancialCycle::CalcFromPackage) {
+            return false;
+        }
+
+        if ($priceType === PriceType::Input &&
+            $workCycle === WorkCycle::InputDate &&
+            $financialCycle === FinancialCycle::CalcFromPackage) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function getImpossibleResponse(): JsonResponse
+    {
+        return response()->json([
+            'result' => 'error',
+            'message' => 'این حالت قابل ثبت نیست',
+        ]);
     }
 }

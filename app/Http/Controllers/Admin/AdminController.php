@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\General\BtnType;
 use App\Helpers\Helper;
-use App\Helpers\Uploader\Uploader;
+use App\Helpers\Uploader\PhotoUploader;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Admin\StoreRequest;
 use App\Http\Requests\Admin\Admin\UpdateRequest;
@@ -205,7 +205,7 @@ class AdminController extends Controller
         }
 
         if ($request->hasFile('avatar')) {
-            $provider = (new Uploader())
+            $provider = (new PhotoUploader())
                 ->fit(150, 150)
                 ->path('admin')
                 ->field('avatar')

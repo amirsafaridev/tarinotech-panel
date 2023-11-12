@@ -1,0 +1,31 @@
+{
+    "name": "tarinotech/log",
+    "description": "",
+    "authors": [
+        {
+            "name": "Ali Mousavi",
+            "email": "mosaviali701@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Log\\": "",
+            "Modules\\Log\\App\\": "app/",
+            "Modules\\Log\\Database\\Factories\\": "database/factories/",
+            "Modules\\Log\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Log\\Tests\\": "tests/"
+        }
+    }
+}
