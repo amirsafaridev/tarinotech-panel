@@ -1,4 +1,13 @@
 {
     "Blog": true,
-    "BlogCategory": true
+    "BlogCategory": true,
+    "Rule": true,
+    "Role": true,
+    "Project": true,
+    "Admin": true,
+    "User": true,
+    "Factor": true,
+    "Setting": true,
+    "Package": true,
+    "Log": true
 }

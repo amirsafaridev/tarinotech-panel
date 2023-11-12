@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug')->unique();
-            $table->unsignedInteger('blog_category_id')->nullable();
+            $table->unsignedInteger('blog_category_id');
             $table->string('photo')->nullable();
             $table->text('body');
             $table->boolean('is_publish')->default(true);
@@ -25,8 +25,7 @@ return new class extends Migration
 
             $table->foreign('blog_category_id')
                 ->on('blog_categories')
-                ->references('id')
-                ->nullOnDelete();
+                ->references('id');
         });
     }
 

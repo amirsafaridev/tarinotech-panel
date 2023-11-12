@@ -6,11 +6,11 @@
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">بلاگ ها</h1>
+        <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item active">بلاگ ها</li>
+                <li class="breadcrumb-item active">{{ $title }}</li>
             </ol>
         </div>
     </div>
@@ -27,11 +27,7 @@
                                 <tr>
                                     <th>شناسه</th>
                                     <th>نام</th>
-                                    <th>دامنه</th>
-                                    <th>نوع</th>
-                                    <th>قیمت</th>
-                                    <th>وضعیت</th>
-                                    <th>تاریخ تحویل</th>
+                                    <th>دسته بندی</th>
                                     <th>تاریخ ایجاد</th>
                                     <th>عملیات</th>
                                 </tr>
@@ -41,6 +37,7 @@
                                     <tr>
                                         <td>{{ $blog->id }}</td>
                                         <td>{{ $blog->title }}</td>
+                                        <td>{{ $blog->category?->title }}</td>
                                         <td>{{ verta($blog->created_at)->format(formatJalaliDate()) }}</td>
                                         <td>
                                             <a target="_blank" class="btn btn-warning btn-sm" href="{{ route('admin.blog.edit',$blog->id) }}">ویرایش</a>

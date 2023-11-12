@@ -17,7 +17,7 @@ class BlogController extends Controller
 
     const INDEX_TITLE = 'بلاگ ها';
 
-    const CREATE_TITLE = 'بلاگ ها - جدید';
+    const CREATE_TITLE = 'بلاگ ها - ایجاد';
 
     const EDIT_TITLE = 'بلاگ ها - ویرایش';
 
@@ -27,6 +27,7 @@ class BlogController extends Controller
 
         $blogs = Blog::query()
             ->with('category')
+            ->latest()
             ->paginate(10);
 
         return view('blog::admin.index', compact('title', 'blogs'));
@@ -46,9 +47,9 @@ class BlogController extends Controller
 
             return $this->successResponse();
 
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
 
-            return $this->exceptionResponse($e);
+            return $this->exceptionResponse($exception);
         }
     }
 
@@ -57,18 +58,6 @@ class BlogController extends Controller
         $title = self::EDIT_TITLE;
 
         return view('blog::admin.edit', compact('title', 'blog'));
-    }
-
-    public function destroy(Blog $blog)
-    {
-        try {
-            $blog->delete();
-
-            return $this->successBack();
-        } catch (Exception $exception) {
-
-            return $this->exceptionBack($exception);
-        }
     }
 
     public function update(UpdateRequest $request, Blog $blog)
@@ -82,6 +71,18 @@ class BlogController extends Controller
         } catch (Exception $exception) {
 
             return $this->exceptionResponse($exception);
+        }
+    }
+
+    public function destroy(Blog $blog)
+    {
+        try {
+            $blog->delete();
+
+            return $this->successBack(route('admin.blog.index'));
+        } catch (Exception $exception) {
+
+            return $this->exceptionBack($exception);
         }
     }
 

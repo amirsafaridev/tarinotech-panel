@@ -2,11 +2,11 @@
 
 namespace Modules\Blog\app\Models;
 
-use App\Models\BlogCategory;
 use App\Traits\HasSlugTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\BlogCategory\app\Models\BlogCategory;
 
 class Blog extends Model
 {

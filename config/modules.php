@@ -222,10 +222,10 @@ return [
     */
 
     'composer' => [
-        'vendor' => 'nwidart',
+        'vendor' => 'tarinotech',
         'author' => [
-            'name' => 'Nicolas Widart',
-            'email' => 'n.widart@gmail.com',
+            'name' => 'Ali Mousavi',
+            'email' => 'mosaviali701@gmail.com',
         ],
         'composer-output' => false,
     ],

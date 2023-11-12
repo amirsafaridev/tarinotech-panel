@@ -3,6 +3,7 @@
 namespace Modules\BlogCategory\database\seeders;
 
 use Illuminate\Database\Seeder;
+use Modules\BlogCategory\database\factories\BlogCategoryFactory;
 
 class BlogCategoryDatabaseSeeder extends Seeder
 {
@@ -11,6 +12,8 @@ class BlogCategoryDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call([]);
+        BlogCategoryFactory::new()
+            ->count(10)
+            ->create();
     }
 }

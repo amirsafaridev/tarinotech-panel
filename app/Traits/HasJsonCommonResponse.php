@@ -34,14 +34,15 @@ trait HasJsonCommonResponse
         ], 500);
     }
 
-    protected function successBack(): RedirectResponse
+    protected function successBack($route): RedirectResponse
     {
-        return back()->with('success', trans('panel.error_delete'));
+        return redirect($route)
+            ->with('success', trans('panel.success_delete'));
     }
 
-    protected function errorBack(): RedirectResponse
+    protected function errorBack($message): RedirectResponse
     {
-        return back()->with('danger', trans('panel.error_delete'));
+        return redirect()->with('danger', $message);
     }
 
     protected function exceptionBack(Exception $exception): RedirectResponse

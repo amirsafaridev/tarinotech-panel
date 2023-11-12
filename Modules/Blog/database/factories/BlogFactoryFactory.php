@@ -19,11 +19,7 @@ class BlogFactoryFactory extends Factory
     {
         return [
             'title' => 'بلاگ - '.$this->faker->numerify(),
-            'blog_category_id' => $this->faker->randomElement(
-                [
-                    $this->faker->numberBetween(1, 10),
-                    null,
-                ]),
+            'blog_category_id' => $this->faker->numberBetween(1, 10),
             'body' => $this->faker->paragraph,
         ];
     }

@@ -13,7 +13,6 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\Report\GoalController as GoalControllerReport;
 use App\Http\Controllers\Admin\Report\GoalGroupController as GoalGroupControllerReport;
 use App\Http\Controllers\Admin\Report\LoginController;
-use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SampleMessageController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TransactionCategoryController;
@@ -81,16 +80,6 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::get('/report/login', 'index')->name('report.login');
         Route::get('/report/{login}/login', 'show')->name('report.login-show')
             ->whereUlid('login');
-    });
-
-    Route::controller(RoleController::class)->group(function () {
-        Route::get('/role', 'index')->name('role.index');
-        Route::get('/role/data', 'data')->name('role.data');
-        Route::get('/role/create', 'create')->name('role.create');
-        Route::post('/role/store', 'store')->name('role.store');
-        Route::get('/role/edit/{role}', 'edit')->name('role.edit');
-        Route::patch('/role/update/{role}', 'update')->name('role.update');
-        Route::delete('/role/destroy/{role}', 'destroy')->name('role.destroy');
     });
 
     Route::controller(SettingController::class)->group(function () {
