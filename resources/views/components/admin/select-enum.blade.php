@@ -8,7 +8,6 @@
             @php
                 $isSelected = !empty($old) && ((is_array($old) && in_array($key, $old)) || (is_string($old) && $old == $key));
             @endphp
-            {{ var_dump($isSelected) }}
             <option @if ($isSelected) selected="selected" @endif value="{{ $key }}">{{ $value }}</option>
         @endforeach
     </select>

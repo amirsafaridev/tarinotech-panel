@@ -7,11 +7,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Str;
+use Modules\Log\app\Enums\LogNames;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Login extends Model
 {
     use HasFactory;
     use HasUlids;
+    use LogsActivity;
 
     protected $fillable = [
         'id',
@@ -39,5 +43,12 @@ class Login extends Model
             'agent' => request()->userAgent(),
             'login_at' => now(),
         ]);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName(LogNames::LOGIN)
+            ->logAll();
     }
 }

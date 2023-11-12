@@ -7,11 +7,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Modules\Log\app\Enums\LogNames;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class ProjectWeb extends Model
 {
     use HasFactory;
     use Filterable;
+    use LogsActivity;
 
     protected $fillable = [
         'field_activity',
@@ -43,5 +47,12 @@ class ProjectWeb extends Model
     public function package(): BelongsTo
     {
         return $this->belongsTo(Package::class);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName(LogNames::PROJECT_WEB)
+            ->logAll();
     }
 }

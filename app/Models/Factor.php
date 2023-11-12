@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Log\app\Enums\LogNames;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Factor extends Model
 {
@@ -17,6 +20,7 @@ class Factor extends Model
     use HasUniqueIdentify;
     use Filterable;
     use SoftDeletes;
+    use LogsActivity;
 
     protected $fillable = [
         'title',
@@ -61,5 +65,12 @@ class Factor extends Model
         $this->isInt = true;
 
         return 'identify';
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName(LogNames::FACTOR)
+            ->logAll();
     }
 }

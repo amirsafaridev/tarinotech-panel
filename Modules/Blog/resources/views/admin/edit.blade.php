@@ -61,7 +61,7 @@
                         <x-admin.button-delete/>
                     </form>
 
-                    <form id="deleteItem" action="{{ route('blog.destroy',$blog->id) }}" method="post" class="form-inline">
+                    <form id="deleteItem" action="{{ route('admin.blog.destroy',$blog->id) }}" method="post" class="form-inline">
                         @csrf
                         @method('DELETE')
                     </form>

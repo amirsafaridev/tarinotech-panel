@@ -7,5 +7,7 @@
     "providers": [
         "Modules\\Log\\app\\Providers\\LogServiceProvider"
     ],
-    "files": []
+    "files": [
+        "app/Helpers/helper.php"
+    ]
 }

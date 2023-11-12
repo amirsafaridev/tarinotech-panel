@@ -18,6 +18,8 @@ use App\Enums\Database\Setting\SettingItems;
 use App\Enums\Database\User\IrnicStatus;
 use App\Enums\Database\User\PersonType;
 use App\Enums\Database\User\UserType;
+use Modules\Log\app\Enums\LogEvents;
+use Modules\Log\app\Enums\LogNames;
 
 return [
     IrnicStatus::class => [
@@ -135,5 +137,41 @@ return [
         WorkLocation::Remote => 'ریموت',
         WorkLocation::Hybrid => 'هیبریدی',
         WorkLocation::InPerson => 'حضوری',
+    ],
+
+    LogNames::class => [
+        LogNames::BLOG => 'بلاگ',
+        LogNames::BLOG_CATEGORY => 'دسته بندی بلاگ',
+        LogNames::ADDRESS => 'آدرس',
+        LogNames::ADMIN => 'ادمین',
+        LogNames::COMPANY => 'شرکت',
+        LogNames::FACILITY => 'امکانات جانبی',
+        LogNames::FACTOR => 'فاکتور',
+        LogNames::FACTOR_ITEM => 'فاکتور ایتم',
+        LogNames::FREE_DAY => 'تقویم تعطیلات',
+        LogNames::LOGIN => 'ورود',
+        LogNames::OTP_CODE => 'کد otp',
+        LogNames::PACKAGE => 'پکیج',
+        LogNames::PACKAGE_PRICE => 'قیمت وکیج',
+        LogNames::PROJECT => 'پروژه',
+        LogNames::PROJECT_ADS => 'پروژه ادوردز',
+        LogNames::PROJECT_BASE => 'نوع پروژه',
+        LogNames::PROJECT_FACILITY => 'امکانات جانبی پروژه',
+        LogNames::PROJECT_SEO => 'پروژه سئو',
+        LogNames::PROJECT_STATUS => 'وضعیت پروژه',
+        LogNames::PROJECT_TYPE => 'نوع پروژه',
+        LogNames::PROJECT_WEB => 'پروژه وب',
+        LogNames::SALE_GOAL => 'هدف فروش',
+        LogNames::SAMPLE_MESSAGE => 'پیام اماده',
+        LogNames::SETTING => 'تنظیمات',
+        LogNames::TRANSACTION_CATEGORY => 'دسته بندی تراکنش',
+        LogNames::USER => 'کاربر',
+    ],
+
+    LogEvents::class => [
+        LogEvents::CREATED => 'ایجاد',
+        LogEvents::DELETED => 'حذف',
+        LogEvents::UPDATED => 'به روز رسانی',
+        LogEvents::RESTORED => 'بازگردانی',
     ],
 ];

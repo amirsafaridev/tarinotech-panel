@@ -8,12 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Log\app\Enums\LogNames;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Project extends Model
 {
     use HasFactory;
     use SoftDeletes;
     use Filterable;
+    use LogsActivity;
 
     protected $fillable = [
         'title',
@@ -58,5 +62,12 @@ class Project extends Model
     public function admin(): BelongsTo
     {
         return $this->belongsTo(Admin::class, 'admin_id');
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName(LogNames::PROJECT)
+            ->logAll();
     }
 }

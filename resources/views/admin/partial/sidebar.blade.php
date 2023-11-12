@@ -124,6 +124,21 @@
                 </li>
 
                 <li class="sub-category">
+                    <h3>لاگ ها</h3>
+                </li>
+
+                <li class="slide can-expand">
+                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navBlog">
+                        <i class="side-menu__icon fal fa-bug"></i>
+                        <span class="side-menu__label">لاگ ها</span><i class="angle fal fa-angle-left"></i>
+                    </a>
+
+                    <ul class="slide-menu">
+                        <li><a href="{{ route('admin.log.index') }}" class="slide-item">لیست</a></li>
+                    </ul>
+                </li>
+
+                <li class="sub-category">
                     <h3>تنظیمات پلتفرم</h3>
                 </li>
 

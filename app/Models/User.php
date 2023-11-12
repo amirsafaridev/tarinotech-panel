@@ -13,10 +13,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Modules\Log\app\Enums\LogNames;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes,Filterable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
+    use SoftDeletes;
+    use Filterable;
+    use LogsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -93,5 +101,13 @@ class User extends Authenticatable
     public function latestLogin(): MorphOne
     {
         return $this->morphOne(Login::class, 'user')->latest('login_at');
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName(LogNames::USER)
+            ->logExcept(['password'])
+            ->logAll();
     }
 }
