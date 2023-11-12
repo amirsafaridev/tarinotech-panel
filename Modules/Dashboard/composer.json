@@ -1,0 +1,31 @@
+{
+    "name": "tarinotech/dashboard",
+    "description": "",
+    "authors": [
+        {
+            "name": "Ali Mousavi",
+            "email": "mosaviali701@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Dashboard\\": "",
+            "Modules\\Dashboard\\App\\": "app/",
+            "Modules\\Dashboard\\Database\\Factories\\": "database/factories/",
+            "Modules\\Dashboard\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Dashboard\\Tests\\": "tests/"
+        }
+    }
+}

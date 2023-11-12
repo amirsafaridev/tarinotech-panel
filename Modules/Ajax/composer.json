@@ -1,0 +1,31 @@
+{
+    "name": "tarinotech/ajax",
+    "description": "",
+    "authors": [
+        {
+            "name": "Ali Mousavi",
+            "email": "mosaviali701@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Ajax\\": "",
+            "Modules\\Ajax\\App\\": "app/",
+            "Modules\\Ajax\\Database\\Factories\\": "database/factories/",
+            "Modules\\Ajax\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Ajax\\Tests\\": "tests/"
+        }
+    }
+}

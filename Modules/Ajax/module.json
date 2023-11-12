@@ -1,0 +1,11 @@
+{
+    "name": "Ajax",
+    "alias": "ajax",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Ajax\\app\\Providers\\AjaxServiceProvider"
+    ],
+    "files": []
+}

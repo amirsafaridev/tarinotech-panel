@@ -9,5 +9,11 @@
     "Factor": true,
     "Setting": true,
     "Package": true,
-    "Log": true
+    "Log": true,
+    "Ajax": true,
+    "Chat": true,
+    "Ticket": true,
+    "Report": true,
+    "Payment": true,
+    "Dashboard": true
 }
