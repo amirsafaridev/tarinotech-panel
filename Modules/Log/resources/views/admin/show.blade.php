@@ -45,12 +45,12 @@
 
                             <tr>
                                 <td>نوع کاربر</td>
-                                <td>{{ getEventCauserType($activity->causer_type) }}</td>
+                                <td>{{ $activity->causer ? getEventCauserType($activity->causer_type) : '-'}}</td>
                             </tr>
 
                             <tr>
                                 <td>پروفایل</td>
-                                <td>{!! getCauserProfile($activity->causer) !!}</td>
+                                <td>{!!  $activity->causer ?  getCauserProfile($activity->causer) : '-' !!}</td>
                             </tr>
 
 

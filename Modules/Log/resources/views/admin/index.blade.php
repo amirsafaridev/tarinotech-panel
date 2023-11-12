@@ -52,8 +52,14 @@
                                         <td>{{ $item->id }}</td>
                                         <td>{{ getEventName($item->log_name) }}</td>
                                         <td>{!! getEventType($item->event) !!}</td>
-                                        <td>{{ getEventCauserType($item->causer_type) }}</td>
-                                        <td>{!! getCauserProfile($item->causer) !!}</td>
+                                        @if($item->causer)
+                                            <td>{{ getEventCauserType($item->causer_type) }}</td>
+                                            <td>{!! getCauserProfile($item->causer) !!}</td>
+                                        @else
+                                            <td>-</td>
+                                            <td>-</td>
+                                        @endif
+
                                         <td>{{ verta($item->created_at)->format(formatJalaliDateTime()) }}</td>
                                         <td>
                                             <a target="_blank" class="btn btn-info btn-sm" href="{{ route('admin.log.show',$item->id) }}">نمایش</a>
