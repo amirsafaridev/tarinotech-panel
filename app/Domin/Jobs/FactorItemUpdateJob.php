@@ -7,7 +7,7 @@ use App\Models\FactorItem;
 
 class FactorItemUpdateJob
 {
-    public function handle(FactorItemValues $values, int $id)
+    public function handle(FactorItemValues $values, int $id): float|int
     {
         $taxRate = 0.09;
         $price = $values->getPrice();
@@ -26,5 +26,7 @@ class FactorItemUpdateJob
                 'tax_amount' => $taxAmount,
                 'final_price' => $finalPrice,
             ]);
+
+        return $finalPrice;
     }
 }

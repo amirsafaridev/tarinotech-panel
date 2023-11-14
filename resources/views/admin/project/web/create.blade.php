@@ -212,7 +212,7 @@
                         <div class="flex-grow-1">
                             <x-admin.input identify="price" title="قیمت (ریال)"/>
                         </div>
-                        <button type="button" id="make_installments" class="btn btn-primary mb-2">ایجاد اقساط</button>
+                        <button type="button" id="make_installments" class="btn btn-primary mb-2">ایجاد فاکتور ها</button>
                     </div>
 
                     <x-admin.textarea identify="similar_sites" title="سایت های مشابه"

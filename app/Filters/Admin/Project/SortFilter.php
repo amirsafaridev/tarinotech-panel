@@ -16,12 +16,16 @@ class SortFilter extends FilterBase
         $sortParam = request('sort');
 
         if (empty($sortParam) || ! str($sortParam)->contains('-')) {
+            $query->orderByDesc('id');
+
             return $next($query);
         }
 
         [$sortKey, $sortOrder] = explode('-', $sortParam);
 
         if (! in_array($sortKey, $allowedSortKeys) || ! in_array($sortOrder, $allowedSortOrders)) {
+            $query->orderByDesc('id');
+
             return $next($query);
         }
 

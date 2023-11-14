@@ -52,13 +52,13 @@
 
                         <x-admin.button-submit/>
 
-                        <button id="btn_add_item" class="btn btn-success" type="button">افزودن ایتم</button>
+                        <button id="btn_add_item" class="btn btn-success" type="button">افزودن آیتم</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="factor_item_container" class="col-xl-6 col-lg-6 col-md-6 col-12"></div>
+        <div id="factor_item_container" class="col-12"></div>
     </form>
 
 @endsection

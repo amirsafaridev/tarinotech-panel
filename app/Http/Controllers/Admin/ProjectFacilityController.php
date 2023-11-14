@@ -37,7 +37,7 @@ class ProjectFacilityController extends Controller
         $routeStore = route('admin.project.facility.store', $project->id);
         $facilities = Facility::query()->get();
 
-        return view('admin.project_type.create', compact('title', 'routeStore', 'project', 'facilities'));
+        return view('admin.project_facility.create', compact('title', 'routeStore', 'project', 'facilities'));
     }
 
     public function store(Project $project, StoreRequest $request)
@@ -74,7 +74,7 @@ class ProjectFacilityController extends Controller
         $routeDestroy = route('admin.project.facility.destroy', $projectFacility->id);
         $projectBases = ProjectBase::query()->get();
 
-        return view('admin.project_type.edit', compact('title', 'routeUpdate', 'routeDestroy', 'projectType', 'projectBases'));
+        return view('admin.project_facility.edit', compact('title', 'routeUpdate', 'routeDestroy', 'projectFacility', 'projectBases'));
     }
 
     public function update(UpdateRequest $request, ProjectType $projectType)

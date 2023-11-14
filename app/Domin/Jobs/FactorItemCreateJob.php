@@ -7,14 +7,14 @@ use App\Models\FactorItem;
 
 class FactorItemCreateJob
 {
-    public function handle(FactorItemValues $values)
+    public function handle(FactorItemValues $values): FactorItem
     {
         $taxRate = 0.09;
         $price = $values->getPrice();
         $taxAmount = $price * $taxRate;
         $finalPrice = ($price + $taxAmount) - $values->getDiscount();
 
-        FactorItem::query()->create([
+        return FactorItem::query()->create([
             'factor_id' => $values->getFactorId(),
             'title' => $values->getTitle(),
             'transaction_category_id' => $values->getTransactionCategoryId(),

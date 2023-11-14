@@ -1,7 +1,7 @@
 @extends('admin.master')
 @section('title') {{ $title }} @endsection
 @section('head')
-
+    @include('admin.partial.loader.style',['load'=>[\App\Enums\Assets\StyleLoader::DataTable()]])
 @endsection
 @section('content')
 
@@ -20,44 +20,27 @@
             <div class="card">
                 <div class="card-body">
                     @include('admin.partial.message')
-                    @if($blogs->isNotEmpty())
-                        <div class="table-responsive">
-                            <table id="data-table" class="table">
-                                <thead>
-                                <tr>
-                                    <th>شناسه</th>
-                                    <th>نام</th>
-                                    <th>دسته بندی</th>
-                                    <th>تاریخ ایجاد</th>
-                                    <th>عملیات</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($blogs as $blog)
-                                    <tr>
-                                        <td>{{ $blog->id }}</td>
-                                        <td>{{ $blog->title }}</td>
-                                        <td>{{ $blog->category?->title }}</td>
-                                        <td>{{ verta($blog->created_at)->format(formatJalaliDate()) }}</td>
-                                        <td>
-                                            <a target="_blank" class="btn btn-warning btn-sm" href="{{ route('admin.blog.edit',$blog->id) }}">ویرایش</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                            {{ $blogs->withQueryString()->links() }}
-                        </div>
-                    @else
-                        <div class="alert alert-info">
-                            <p>پروژه ای یافت نشد!</p>
-                        </div>
-                    @endif
+                    <div class="table-responsive">
+                        <table id="data-table" class="table">
+                            <thead>
+                            <tr>
+                                <th>شناسه</th>
+                                <th>نام</th>
+                                <th>دسته بندی</th>
+                                <th>تاریخ ایجاد</th>
+                                <th>عملیات</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
 @section('script')
-
+    @include('admin.partial.loader.script',['load'=>[\App\Enums\Assets\ScriptLoader::DataTable()]])
+    @include('admin.partial.datatable')
 @endsection

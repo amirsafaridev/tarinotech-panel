@@ -16,6 +16,12 @@
             </td>
         </tr>
         <tr>
+            <td>کارفرما</td>
+            <td>
+                <a href="{{ route('admin.user.show',$factor->project->user_id) }}">{{ $factor->project->user->first_name }} {{ $factor->project->user->last_name }}</a>
+            </td>
+        </tr>
+        <tr>
             <td>شناسه یکتا</td>
             <td>{{ $factor->identify }}</td>
         </tr>

@@ -55,11 +55,6 @@ class LogController extends Controller
         return view('log::admin.index', compact('title', 'logs', 'sortItems'));
     }
 
-    private function allowSort(array $allowed, $sort): ?array
-    {
-        return in_array($sort, $allowed) ? explode('-', $sort) : null;
-    }
-
     public function show(Activity $activity)
     {
         $title = self::SHOW_TITLE;

@@ -14,7 +14,7 @@ class PackageController extends Controller
 {
     public function index()
     {
-        $title = 'پیکج ها';
+        $title = 'پکیج های طراحی سایت';
         $packages = Package::query()->with('finalPrice')->get();
 
         return view('admin.package.index', compact('title', 'packages'));
@@ -22,7 +22,7 @@ class PackageController extends Controller
 
     public function create()
     {
-        $title = 'پیکج جدید';
+        $title = 'پکیج های طراحی سایت - جدید';
         $routeStore = route('admin.package.store');
 
         return view('admin.package.create', compact('title', 'routeStore'));
@@ -58,7 +58,7 @@ class PackageController extends Controller
     public function edit(Package $package)
     {
 
-        $title = 'ویرایش وضعیت';
+        $title = 'پکیج های طراحی سایت - ویرایش';
         $routeUpdate = route('admin.package.update', $package->id);
         $routeDestroy = route('admin.package.destroy', $package->id);
 

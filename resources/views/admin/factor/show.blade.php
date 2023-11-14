@@ -149,7 +149,7 @@
                                     <td width="50%" colspan="2">
                                         <p>
                                             <span>نام بنگاه اقتصادی :</span>
-                                            <span>برخط نکاران جهان ارتباط</span>
+                                            <span>برخط نگاران جهان ارتباط</span>
                                         </p>
                                     </td>
                                 </tr>
@@ -190,7 +190,7 @@
                                     <td width="25%">
                                         <p>
                                             <span>شماره / شماره ملی :</span>
-                                            <span>14005743726</span>
+                                            <span>{{ $factor->project->user->national_id }}</span>
                                         </p>
                                     </td>
                                     <td width="25%">
@@ -202,21 +202,21 @@
                                     <td width="25%">
                                         <p>
                                             <span>کد پستی :</span>
-                                            <span>1794636411</span>
+                                            <span>{{ $factor->project->user->address?->postal_code }}</span>
                                         </p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="50%" colspan="2">
                                         <p>
-                                            <span>نام شخص حقیقی/حقوقی :</span>
-                                            <span>معین تقی زاده</span>
+                                            <span>نام شخص {{ \App\Enums\Database\User\PersonType::getDescription($factor->project->user->person_type) }} :</span>
+                                            <span>{{ $factor->project->user->first_name }} {{ $factor->project->user->last_name }}</span>
                                         </p>
                                     </td>
                                     <td width="50%" colspan="2">
                                         <p>
                                             <span>نام بنگاه اقتصادی :</span>
-                                            <span>برخط نکاران جهان ارتباط</span>
+                                            <span>{{ $factor->project->user->comany?->title }}</span>
                                         </p>
                                     </td>
                                 </tr>

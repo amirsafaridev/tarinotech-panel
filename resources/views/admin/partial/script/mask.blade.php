@@ -1,12 +1,12 @@
 <script>
     function applyShabaMask(inputSelect) {
-        inputSelect.mask('IR00 0000 0000 0000 0000 0000 00', {
+        inputSelect.mask('IR000000000000000000000000', {
             translation: {
                 'I': {pattern: /[Ii]/, optional: false},
                 'R': {pattern: /[Rr]/, optional: false},
                 '0': {pattern: /\d/, optional: false}
             },
-            placeholder: "IR__ ____ ____ ____ ____ ____ __",
+            placeholder: "IR________________________",
             clearIfNotMatch: true
         });
     }

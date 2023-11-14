@@ -2,17 +2,22 @@
 
 namespace Modules\Blog\app\Http\Controllers\Admin;
 
+use App\Enums\General\BtnType;
+use App\Helpers\Helper;
 use App\Helpers\Uploader\PhotoUploader;
 use App\Http\Controllers\Controller;
+use App\Traits\HasDatatable;
 use App\Traits\HasJsonCommonResponse;
 use Exception;
 use Illuminate\Http\Request;
 use Modules\Blog\app\Http\Requests\Admin\StoreRequest;
 use Modules\Blog\app\Http\Requests\Admin\UpdateRequest;
 use Modules\Blog\app\Models\Blog;
+use Yajra\DataTables\Facades\DataTables;
 
 class BlogController extends Controller
 {
+    use HasDatatable;
     use HasJsonCommonResponse;
 
     const INDEX_TITLE = 'بلاگ ها';
@@ -25,12 +30,31 @@ class BlogController extends Controller
     {
         $title = self::INDEX_TITLE;
 
-        $blogs = Blog::query()
-            ->with('category')
-            ->latest()
-            ->paginate(10);
+        $routeData = $this->getDataRoute();
 
-        return view('blog::admin.index', compact('title', 'blogs'));
+        $selects = $this->getColumns();
+
+        return view('blog::admin.index', compact('title', 'routeData', 'selects'));
+    }
+
+    public function data()
+    {
+        try {
+            $blogs = Blog::query()
+                ->with(['category'])
+                ->get();
+
+            return DataTables::of($blogs)
+                ->editColumn('created_at', function ($blog) {
+                    return $blog->created_at->toJalali()->format(formatJalaliDateTime());
+                })
+                ->addColumn('action', function ($blog) {
+                    return Helper::btnMaker(BtnType::Warning, route('admin.blog.edit', $blog->id), trans('panel.action.edit'));
+                })
+                ->make();
+        } catch (Exception $exception) {
+            return $this->exceptionResponse($exception);
+        }
     }
 
     public function create()
@@ -109,5 +133,19 @@ class BlogController extends Controller
         }
 
         return $blogData;
+    }
+
+    public function getDataRoute(): string
+    {
+        $this->routeData = route('admin.blog.data');
+
+        return $this->routeData;
+    }
+
+    public function getColumns(): array
+    {
+        $this->columns = ['id', 'title', 'category.title', 'created_at'];
+
+        return $this->columns;
     }
 }

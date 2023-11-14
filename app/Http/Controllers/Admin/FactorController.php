@@ -61,11 +61,16 @@ class FactorController extends Controller
     {
         try {
             $factor = Factor::create($this->itemProvider($request));
+            $finalPrice = 0;
             foreach ($request->input('item') as $item) {
-                resolve(FactorItemCreateJob::class)->handle(
+                $factorItem = resolve(FactorItemCreateJob::class)->handle(
                     $this->getSetItem($factor, $item)
                 );
+                $finalPrice += $factorItem->final_price;
             }
+
+            $updatedAttributes['final_price'] = $finalPrice;
+            $factor->update($updatedAttributes);
 
             return response()->json([
                 'result' => 'success',
@@ -100,18 +105,19 @@ class FactorController extends Controller
             DB::beginTransaction();
             $factor->load('items');
             $updatedItemIds = [];
-
             foreach ($request->input('item') as $item) {
                 $factorItemValues = $this->getSetItem($factor, $item);
 
                 $action = $item['action'];
 
                 if ($action === 'store') {
-                    resolve(FactorItemCreateJob::class)->handle($factorItemValues);
+                    $factorItem = resolve(FactorItemCreateJob::class)
+                        ->handle($factorItemValues);
                 } else {
                     $updatedItemIds[] = $item['id'];
                     $factorItemId = $item['id'];
-                    resolve(FactorItemUpdateJob::class)->handle($factorItemValues, $factorItemId);
+                    resolve(FactorItemUpdateJob::class)
+                        ->handle($factorItemValues, $factorItemId);
                 }
 
             }

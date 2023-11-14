@@ -35,5 +35,6 @@ class FactorObserver
             $factor->final_price = $finalPrice;
             $factor->save();
         }
+
     }
 }

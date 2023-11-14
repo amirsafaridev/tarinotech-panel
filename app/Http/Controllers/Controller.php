@@ -9,4 +9,9 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
+
+    public function allowSort(array $allowed, $sort): ?array
+    {
+        return in_array($sort, $allowed) ? explode('-', $sort) : null;
+    }
 }

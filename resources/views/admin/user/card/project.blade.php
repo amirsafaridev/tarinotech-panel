@@ -21,7 +21,8 @@
                             <td>{{ $project->title }}</td>
                             <td>{{ $project->created_at->toJalali()->format(formatJalaliDateTime()) }}</td>
                             <td>
-                                <a class="btn btn-success btn-sm" href="{{ route('admin.project.edit',$project->id) }}">نمایش پروژه</a>
+                                <a target="_blank" class="btn btn-info btn-sm" href="{{ route('admin.project.'.getRouteProjectType($project->project_base_id).'.show',$project->id) }}">نمایش</a>
+
                             </td>
                         </tr>
                     @endforeach

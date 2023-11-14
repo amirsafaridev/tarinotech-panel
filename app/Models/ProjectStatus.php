@@ -17,7 +17,7 @@ class ProjectStatus extends Model
 
     protected $fillable = [
         'title',
-        'project_type_id',
+        'project_base_id',
         'note',
     ];
 
