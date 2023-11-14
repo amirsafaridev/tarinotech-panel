@@ -161,7 +161,7 @@
         }
 
         function updateTotalPrice(card) {
-            const cardItem = card.parent().parent().parent();
+            const cardItem = card.parent().parent().parent().parent().parent();
             const h4FinalPrice = cardItem.find('.factor-item-price');
 
             let totalPrice = 0;
@@ -199,7 +199,7 @@
                     const priceInput = $(this);
                     const value = parseInt(priceInput.val().replace(/,/g, ''), 10) || 0;
 
-                    const taxInput = priceInput.parent().parent().find('.tax-input');
+                    const taxInput = priceInput.parent().parent().parent().find('.tax-input');
 
                     if (value <= 0) {
                         taxInput.val(0);
