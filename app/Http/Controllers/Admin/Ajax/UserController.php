@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\Ajax;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
+use Modules\User\app\Models\User;
 
 class UserController extends Controller
 {

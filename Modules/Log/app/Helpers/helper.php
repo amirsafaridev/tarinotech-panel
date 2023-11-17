@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\Admin;
-use App\Models\User;
 use Modules\Log\app\Enums\LogEvents;
 use Modules\Log\app\Enums\LogNames;
+use Modules\User\app\Models\User;
 
 if (! function_exists('getEventName')) {
 

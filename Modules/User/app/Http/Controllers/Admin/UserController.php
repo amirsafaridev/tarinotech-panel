@@ -1,0 +1,303 @@
+<?php
+
+namespace Modules\User\app\Http\Controllers\Admin;
+
+use App\Enums\General\BtnType;
+use App\Foundation\ValueObjects\Datatable\ColumnOption;
+use App\Helpers\Helper;
+use App\Helpers\Uploader\FileUploader;
+use App\Helpers\Uploader\PhotoUploader;
+use App\Http\Controllers\Controller;
+use App\Traits\HasDatatable;
+use App\Traits\HasJsonCommonResponse;
+use Crypt;
+use DB;
+use Exception;
+use Illuminate\Http\Request;
+use Modules\User\app\Enums\PersonType;
+use Modules\User\app\Enums\UserType;
+use Modules\User\app\Http\Requests\Admin\User\StoreRequest;
+use Modules\User\app\Http\Requests\Admin\User\UpdateRequest;
+use Modules\User\app\Models\Address;
+use Modules\User\app\Models\Company;
+use Modules\User\app\Models\Irnic;
+use Modules\User\app\Models\User;
+use Yajra\DataTables\Facades\DataTables;
+
+use function formatJalaliDateTime;
+use function route;
+use function trans;
+use function view;
+
+class UserController extends Controller
+{
+    use HasDatatable;
+    use HasJsonCommonResponse;
+
+    const INDEX_TITLE = 'مشتری ها';
+
+    const CREATE_TITLE = 'مشتری ها - ایجاد';
+
+    const EDIT_TITLE = 'مشتری ها - ویرایش';
+
+    const SHOW_TITLE = 'مشتری ها - نمایش';
+
+    public function index()
+    {
+        $title = self::INDEX_TITLE;
+
+        $routeData = $this->getDataRoute();
+
+        $columns = $this->getColumns();
+
+        return view('user::admin.index', compact('title', 'routeData', 'columns'));
+    }
+
+    public function data()
+    {
+        try {
+            $users = User::query();
+
+            return DataTables::eloquent($users)
+                ->editColumn('created_at', function (User $user) {
+                    return $user->created_at->toJalali()->format(formatJalaliDateTime());
+                })
+                ->editColumn('person_type', function (User $user) {
+                    return Helper::renderPersonType($user->person_type);
+                })
+                ->addColumn('action', function (User $user) {
+                    $actions = Helper::btnMaker(BtnType::Warning, route('admin.user.edit', $user->id), trans('panel.action.edit'));
+                    $actions .= Helper::btnMaker(BtnType::Info, route('admin.user.show', $user->id), trans('panel.action.show'));
+
+                    return $actions;
+                })
+                ->rawColumns(['action', 'person_type'])
+                ->make();
+        } catch (Exception $exception) {
+            return $this->exceptionResponse($exception);
+        }
+    }
+
+    public function create()
+    {
+        $title = self::CREATE_TITLE;
+
+        return view('user::admin.create', compact('title'));
+    }
+
+    public function store(StoreRequest $req)
+    {
+        try {
+            DB::beginTransaction();
+            $item = $this->prepareItemData($req);
+
+            $user = User::query()
+                ->create($item);
+
+            if ($req->input('person_type') === PersonType::Legal) {
+                $this->updateCompany($req, $user->id);
+            }
+
+            $this->updateIrnic($req, $user->id);
+
+            $this->updateAddress($req, $user->id);
+
+            DB::commit();
+
+            return $this->successResponse();
+        } catch (Exception $exception) {
+            DB::rollBack();
+
+            return $this->exceptionResponse($exception);
+        }
+    }
+
+    public function edit(User $user)
+    {
+        $user->load(['address', 'company', 'irnic']);
+
+        $title = self::EDIT_TITLE;
+
+        return view('user::admin.edit', compact('title', 'user'));
+    }
+
+    public function update(UpdateRequest $req, User $user)
+    {
+        try {
+            DB::beginTransaction();
+
+            $item = $this->prepareItemData($req);
+            $user->update($item);
+
+            if ($req->input('person_type') === PersonType::Legal) {
+                $this->updateCompany($req, $user->id);
+            }
+
+            $this->updateIrnic($req, $user->id);
+
+            $this->updateAddress($req, $user->id);
+
+            DB::commit();
+
+            return $this->successUpdateResponse();
+        } catch (Exception $exception) {
+            DB::rollBack();
+
+            return $this->exceptionResponse($exception);
+        }
+    }
+
+    public function show(User $user)
+    {
+        $title = self::SHOW_TITLE;
+        $user->load(['address', 'company', 'irnic', 'projects', 'latestLogin']);
+
+        return view('admin.user.show', compact('title', 'user'));
+    }
+
+    public function destroy(User $user)
+    {
+        try {
+            $user->update([
+                'mobile' => uniqid($user->mobile.'_'),
+            ]);
+            $user->delete();
+
+            return $this->successBack(route('admin.user.index'));
+
+        } catch (Exception $exception) {
+            return $this->exceptionBack($exception);
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function prepareItemData(Request $req): array
+    {
+        $userData['first_name'] = $req->input('first_name');
+        $userData['last_name'] = $req->input('last_name');
+        $userData['en_first_name'] = $req->input('en_first_name');
+        $userData['en_last_name'] = $req->input('en_last_name');
+        $userData['father_name'] = $req->input('father_name');
+        $userData['national_id'] = $req->input('national_id');
+        $userData['document_id'] = $req->input('document_id');
+        $userData['tel'] = $req->input('tel');
+        $userData['email'] = $req->input('email');
+        $userData['person_type'] = $req->input('person_type');
+
+        /** Not required in edit mode */
+        if ($req->input('mobile')) {
+            $userData['mobile'] = $req->input('mobile');
+        }
+
+        $dob = $req->input('dob');
+        $userData['dob'] = empty($dob) ? null : Helper::toGregorian($dob);
+
+        $userData['official_bill'] = $req->has('official_bill');
+        $userData['is_block'] = $req->has('is_block');
+
+        $userData['user_type'] = UserType::Primary;
+
+        if ($req->hasFile('avatar')) {
+            $imageUploader = (new PhotoUploader())
+                ->fit(250, 250)
+                ->path('user')
+                ->field('avatar')
+                ->upload();
+
+            $userData['avatar'] = $imageUploader->getPath();
+        }
+
+        if ($req->hasFile('national_photo')) {
+            $provider = (new FileUploader());
+            $provider->path('user')
+                ->field('national_photo')
+                ->upload();
+            $userData['national_photo'] = $provider->getPathStore();
+        }
+
+        return $userData;
+    }
+
+    private function updateCompany(Request $req, int $userId): void
+    {
+        Company::query()->updateOrCreate([
+            'user_id' => $userId,
+        ], [
+            'name' => $req->input('company_name'),
+            'identify' => $req->input('company_identify'),
+            'register_id' => $req->input('company_register_id'),
+            'type' => $req->input('company_type'),
+            'user_id' => $userId,
+        ]);
+    }
+
+    private function updateAddress(Request $req, int $userId): void
+    {
+        Address::query()->updateOrCreate([
+            'user_id' => $userId,
+        ], [
+            'address' => $req->input('address'),
+            'postal_code' => $req->input('postal_code'),
+            'user_id' => $userId,
+        ]);
+    }
+
+    private function updateIrnic(Request $req, int $userId): void
+    {
+        Irnic::query()->updateOrCreate([
+            'user_id' => $userId,
+        ], [
+            'status' => $req->input('irnic_status'),
+            'identify' => $req->input('irnic_identify', ''),
+            'password' => $req->input('irnic_password') ? Crypt::encrypt($req->input('irnic_password')) : '',
+            'user_id' => $userId,
+        ]);
+    }
+
+    public function getDataRoute(): string
+    {
+        return route('admin.user.data');
+    }
+
+    public function getColumns(): array
+    {
+        $columnOption = resolve(ColumnOption::class);
+
+        return [
+            $columnOption->setName('id')
+                ->setAs('شناسه')
+                ->make(),
+            $columnOption->clear()
+                ->setName('mobile')
+                ->setAs('موبایل')
+                ->make(),
+            $columnOption->clear()
+                ->setName('first_name')
+                ->setAs('نام')
+                ->make(),
+            $columnOption->clear()
+                ->setName('last_name')
+                ->setAs('نام خانوادگی')
+                ->make(),
+            $columnOption->clear()
+                ->setName('person_type')
+                ->setAs('نوع کاربر')
+                ->make(),
+            $columnOption->clear()
+                ->setName('is_block')
+                ->setAs('مسدود شده')
+                ->make(),
+            $columnOption->clear()
+                ->setName('created_at')
+                ->setAs('تاریخ ایجاد')
+                ->make(),
+            $columnOption->clear()
+                ->setName('action')
+                ->setAs('عملیات')
+                ->removeAction()
+                ->make(),
+        ];
+    }
+}

@@ -4,7 +4,7 @@ namespace Modules\Factor\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Ajax\MakeInstallmentsRequest;
-use App\Models\TransactionCategory;
+use Modules\Factor\app\Models\TransactionCategory;
 use View;
 
 class MakeViewController extends Controller

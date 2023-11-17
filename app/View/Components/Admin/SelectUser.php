@@ -2,11 +2,12 @@
 
 namespace App\View\Components\Admin;
 
-use App\Enums\Database\User\UserType;
-use App\Models\User;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Modules\User\app\Enums\UserType;
+use Modules\User\app\Models\User;
+
 use function view;
 
 class SelectUser extends Component

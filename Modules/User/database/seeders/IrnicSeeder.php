@@ -3,16 +3,15 @@
 namespace Modules\User\database\seeders;
 
 use Illuminate\Database\Seeder;
+use Modules\User\database\factories\IrnicFactory;
 
-class UserDatabaseSeeder extends Seeder
+class IrnicSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $this->call([
-            UserSeeder::class,
-        ]);
+        IrnicFactory::new()->count(20)->create();
     }
 }

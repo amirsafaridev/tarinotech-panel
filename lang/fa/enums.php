@@ -15,11 +15,11 @@ use App\Enums\Database\Project\WebFacility;
 use App\Enums\Database\Project\WebHostLocation;
 use App\Enums\Database\Project\WebLanguage;
 use App\Enums\Database\Setting\SettingItems;
-use App\Enums\Database\User\IrnicStatus;
-use App\Enums\Database\User\PersonType;
-use App\Enums\Database\User\UserType;
 use Modules\Log\app\Enums\LogEvents;
 use Modules\Log\app\Enums\LogNames;
+use Modules\User\app\Enums\IrnicStatus;
+use Modules\User\app\Enums\PersonType;
+use Modules\User\app\Enums\UserType;
 
 return [
     IrnicStatus::class => [

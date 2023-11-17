@@ -209,7 +209,7 @@
                                 <tr>
                                     <td width="50%" colspan="2">
                                         <p>
-                                            <span>نام شخص {{ \App\Enums\Database\User\PersonType::getDescription($factor->project->user->person_type) }} :</span>
+                                            <span>نام شخص {{ \Modules\User\app\Enums\PersonType::getDescription($factor->project->user->person_type) }} :</span>
                                             <span>{{ $factor->project->user->first_name }} {{ $factor->project->user->last_name }}</span>
                                         </p>
                                     </td>

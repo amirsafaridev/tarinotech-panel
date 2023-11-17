@@ -4,7 +4,6 @@ namespace Modules\Factor\app\Models;
 
 use App\Models\Admin;
 use App\Models\Project;
-use App\Models\User;
 use App\Traits\Filterable;
 use App\Traits\HasUniqueIdentify;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Log\app\Enums\LogNames;
+use Modules\User\app\Models\User;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 

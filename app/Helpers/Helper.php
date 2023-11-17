@@ -2,13 +2,13 @@
 
 namespace App\Helpers;
 
-use App\Enums\Database\User\PersonType;
 use App\Enums\General\BtnType;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Modules\User\app\Enums\PersonType;
 use Verta;
 
 class Helper

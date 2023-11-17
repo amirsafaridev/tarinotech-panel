@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\Database\User\UserType;
 use App\Enums\General\BtnType;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Presenter\StoreRequest;
 use App\Http\Requests\Admin\Presenter\UpdateRequest;
 use App\Models\Project;
-use App\Models\User;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
+use Modules\User\app\Enums\UserType;
+use Modules\User\app\Models\User;
 use Yajra\DataTables\Facades\DataTables;
 
 class PresenterController extends Controller

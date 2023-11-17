@@ -6,7 +6,9 @@ use App\Service\PermissionService;
 use Illuminate\Database\Seeder;
 use Modules\Blog\database\seeders\BlogDatabaseSeeder;
 use Modules\BlogCategory\database\seeders\BlogCategoryDatabaseSeeder;
+use Modules\Factor\database\seeders\FactorDatabaseSeeder;
 use Modules\Role\database\seeders\RoleDatabaseSeeder;
+use Modules\User\database\seeders\UserDatabaseSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,7 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminSeeder::class,
             LoginSeeder::class,
-            UserSeeder::class,
+            UserDatabaseSeeder::class,
             PackageSeeder::class,
             ProjectBaseSeeder::class,
             ProjectTypeSeeder::class,
@@ -28,7 +30,7 @@ class DatabaseSeeder extends Seeder
             ProjectAdsSeeder::class,
             SettingSeeder::class,
             AdditionalFeatureSeeder::class,
-            TransactionCategorySeeder::class,
+            FactorDatabaseSeeder::class,
             SampleMessageSeeder::class,
             AutoMessageSeeder::class,
             FreeDaySeeder::class,

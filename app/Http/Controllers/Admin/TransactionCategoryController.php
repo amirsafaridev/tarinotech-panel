@@ -7,10 +7,10 @@ use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\TransactionCategory\StoreRequest;
 use App\Http\Requests\Admin\TransactionCategory\UpdateRequest;
-use App\Models\TransactionCategory;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
+use Modules\Factor\app\Models\TransactionCategory;
 use Yajra\DataTables\Facades\DataTables;
 
 class TransactionCategoryController extends Controller

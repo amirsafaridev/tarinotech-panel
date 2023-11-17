@@ -5,14 +5,12 @@ namespace Modules\Factor\app\Http\Controllers\Admin;
 use App\Domin\Jobs\FactorItemCreateJob;
 use App\Domin\Jobs\FactorItemUpdateJob;
 use App\Enums\Database\Factor\FactorStatus;
-use App\Enums\Database\User\PersonType;
 use App\Filters\Admin\Share\IDFilter;
 use App\Filters\Admin\Share\TitleFilter;
 use App\Foundation\ValueObjects\Requests\FactorItemValues;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
-use App\Models\TransactionCategory;
 use App\Traits\HasJsonCommonResponse;
 use DB;
 use Exception;
@@ -23,6 +21,8 @@ use Modules\Factor\app\Http\Requests\Admin\Factor\StoreRequest;
 use Modules\Factor\app\Http\Requests\Admin\Factor\UpdateRequest;
 use Modules\Factor\app\Models\Factor;
 use Modules\Factor\app\Models\FactorItem;
+use Modules\Factor\app\Models\TransactionCategory;
+use Modules\User\app\Enums\PersonType;
 
 class FactorController extends Controller
 {

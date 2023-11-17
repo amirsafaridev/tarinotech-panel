@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
+use Modules\User\app\Http\Controllers\Admin\UserController;
 
 Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], function () {
 

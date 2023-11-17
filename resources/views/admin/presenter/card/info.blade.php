@@ -54,7 +54,7 @@
                 </tr>
                 <tr>
                     <td>نوع کاربر</td>
-                    <td>{{ \App\Enums\Database\User\UserType::getDescription($user->user_type) }}</td>
+                    <td>{{ \Modules\User\app\Enums\UserType::getDescription($user->user_type) }}</td>
                 </tr>
 
                 <tr>

@@ -3,16 +3,15 @@
 namespace Modules\User\database\seeders;
 
 use Illuminate\Database\Seeder;
+use Modules\User\database\factories\CompanyFactory;
 
-class UserDatabaseSeeder extends Seeder
+class CompanySeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $this->call([
-            UserSeeder::class,
-        ]);
+        CompanyFactory::new()->count(20)->create();
     }
 }

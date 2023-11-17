@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use App\Enums\Database\User\UserType;
 use Closure;
 use Illuminate\Http\Request;
+use Modules\User\app\Enums\UserType;
 use Symfony\Component\HttpFoundation\Response;
 
 class IsPresenterUser

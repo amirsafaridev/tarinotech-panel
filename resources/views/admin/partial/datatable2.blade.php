@@ -32,7 +32,7 @@
                 @if($column['name'] == 'is_seen')
                 {
                     "targets": parseInt({{$loop->index}}),
-                    "data": "{{ $select }}",
+                    "data": "{{ $column['name'] }}",
                     "render": function (data, type, row, meta) {
                         if (data === 0) {
                             return '<span class="badge bg-danger">دیده نشده</span>';
@@ -45,7 +45,7 @@
                 @if($column['name'] == 'is_active')
                 {
                     "targets": parseInt({{$loop->index}}),
-                    "data": "{{ $select }}",
+                    "data": "{{ $column['name'] }}",
                     "render": function (data, type, row, meta) {
                         if (data === 0) {
                             return '<span class="badge bg-danger">غیر فعال</span>';
@@ -59,7 +59,7 @@
                 @if($column['name'] == 'is_publish' || $column['name'] == 'is_public')
                 {
                     "targets": parseInt({{$loop->index}}),
-                    "data": "{{ $select }}",
+                    "data": "{{ $column['name'] }}",
                     "render": function (data, type, row, meta) {
                         if (data === 0) {
                             return '<span class="badge bg-info">عدم انتشار</span>';
@@ -72,7 +72,7 @@
                 @if($column['name'] == 'is_block')
                 {
                     "targets": parseInt({{$loop->index}}),
-                    "data": "{{ $select }}",
+                    "data": "{{ $column['name'] }}",
                     "render": function (data, type, row, meta) {
                         if (data === 1) {
                             return '<span class="badge bg-danger">بلاک شده</span>';
@@ -85,7 +85,7 @@
                 @if($column['name'] == 'in_home')
                 {
                     "targets": parseInt({{$loop->index}}),
-                    "data": "{{ $select }}",
+                    "data": "{{ $column['name'] }}",
                     "render": function (data, type, row, meta) {
                         if (data === 0) {
                             return '<span class="badge bg-danger">بدون نمایش</span>';
@@ -98,7 +98,7 @@
                 @if($column['name'] == 'rate')
                 {
                     "targets": parseInt({{$loop->index}}),
-                    "data": "{{ $select }}",
+                    "data": "{{ $column['name'] }}",
                     "render": function (data, type, row, meta) {
                         return '<img src="{{ env('app_url') }}/res-share/rates/'+data+'.jpg" />';
                     }

@@ -3,12 +3,15 @@
 namespace Modules\Factor\database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Factor\app\Models\FactorItem;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Modules\Factor\app\Models\FactorItem>
+ * @extends Factory
  */
 class FactorItemFactory extends Factory
 {
+    protected $model = FactorItem::class;
+
     /**
      * Define the model's default state.
      *

@@ -2,7 +2,6 @@
 
 namespace Modules\Factor\app\Models;
 
-use App\Models\TransactionCategory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

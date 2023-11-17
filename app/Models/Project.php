@@ -9,15 +9,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Log\app\Enums\LogNames;
+use Modules\User\app\Models\User;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Project extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
     use Filterable;
+    use HasFactory;
     use LogsActivity;
+    use SoftDeletes;
 
     protected $fillable = [
         'title',

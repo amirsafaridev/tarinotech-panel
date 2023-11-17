@@ -3,10 +3,10 @@
 namespace Tests\Feature\Controller\Admin;
 
 use App\Enums\Database\Company\CompanyType;
-use App\Enums\Database\User\IrnicStatus;
-use App\Enums\Database\User\PersonType;
 use App\Models\Admin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\User\app\Enums\IrnicStatus;
+use Modules\User\app\Enums\PersonType;
 use Tests\TestCase;
 
 class UserControllerTest extends TestCase

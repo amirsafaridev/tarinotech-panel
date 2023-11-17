@@ -21,7 +21,7 @@
         </tr>
         <tr>
             <td>نوع شخص</td>
-            <td>{{ \App\Enums\Database\User\PersonType::getDescription($project->user->person_type) }}</td>
+            <td>{{ \Modules\User\app\Enums\PersonType::getDescription($project->user->person_type) }}</td>
         </tr>
 
         </tbody>
