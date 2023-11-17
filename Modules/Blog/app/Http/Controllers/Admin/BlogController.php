@@ -3,6 +3,7 @@
 namespace Modules\Blog\app\Http\Controllers\Admin;
 
 use App\Enums\General\BtnType;
+use App\Foundation\ValueObjects\Datatable\ColumnOption;
 use App\Helpers\Helper;
 use App\Helpers\Uploader\PhotoUploader;
 use App\Http\Controllers\Controller;
@@ -32,19 +33,18 @@ class BlogController extends Controller
 
         $routeData = $this->getDataRoute();
 
-        $selects = $this->getColumns();
+        $columns = $this->getColumns();
 
-        return view('blog::admin.index', compact('title', 'routeData', 'selects'));
+        return view('blog::admin.index', compact('title', 'routeData', 'columns'));
     }
 
     public function data()
     {
         try {
             $blogs = Blog::query()
-                ->with(['category'])
-                ->get();
+                ->with(['category']);
 
-            return DataTables::of($blogs)
+            return DataTables::eloquent($blogs)
                 ->editColumn('created_at', function ($blog) {
                     return $blog->created_at->toJalali()->format(formatJalaliDateTime());
                 })
@@ -137,15 +137,35 @@ class BlogController extends Controller
 
     public function getDataRoute(): string
     {
-        $this->routeData = route('admin.blog.data');
-
-        return $this->routeData;
+        return route('admin.blog.data');
     }
 
     public function getColumns(): array
     {
-        $this->columns = ['id', 'title', 'category.title', 'created_at'];
 
-        return $this->columns;
+        $columnOption = resolve(ColumnOption::class);
+
+        return [
+            $columnOption->setName('id')
+                ->setAs('شناسه')
+                ->make(),
+            $columnOption->clear()
+                ->setName('title')
+                ->setAs('عنوان')
+                ->make(),
+            $columnOption->clear()
+                ->setName('category.title')
+                ->setAs('دسته بندی')
+                ->make(),
+            $columnOption->clear()
+                ->setName('created_at')
+                ->setAs('ایجاد')
+                ->make(),
+            $columnOption->clear()
+                ->setName('action')
+                ->setAs('عملیات')
+                ->removeAction()
+                ->make(),
+        ];
     }
 }

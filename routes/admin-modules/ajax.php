@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Admin\Ajax\AdminController;
 use App\Http\Controllers\Admin\Ajax\CalendarController;
-use App\Http\Controllers\Admin\Ajax\FactorController;
 use App\Http\Controllers\Admin\Ajax\ProjectController;
 use App\Http\Controllers\Admin\Ajax\UserController;
 use Illuminate\Support\Facades\Route;
@@ -11,10 +10,6 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin', 'pre
 
     Route::controller(CalendarController::class)->group(function () {
         Route::post('/calendar/calc-day-work', 'calculateWorkDaysWithFreeDays')->name('calendar.calc.day.work');
-    });
-    Route::controller(FactorController::class)->group(function () {
-        Route::get('/factor/view-item', 'getViewItem')->name('factor.view-item');
-        Route::post('/factor/make-installments', 'makeInstallments')->name('factor.make-installments');
     });
 
     Route::controller(ProjectController::class)->group(function () {

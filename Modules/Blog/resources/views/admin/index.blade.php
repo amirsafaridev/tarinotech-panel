@@ -24,13 +24,20 @@
                         <table id="data-table" class="table">
                             <thead>
                             <tr>
-                                <th>شناسه</th>
-                                <th>نام</th>
-                                <th>دسته بندی</th>
-                                <th>تاریخ ایجاد</th>
-                                <th>عملیات</th>
+                                @foreach ($columns as $column)
+                                <th>{{ $column['as'] }}</th>
+                                @endforeach
                             </tr>
                             </thead>
+
+                            <tfoot>
+                            <tr>
+                                @foreach ($columns as $column)
+                                    <th>{{ $column['as'] }}</th>
+                                @endforeach
+                            </tr>
+                            </tfoot>
+
                             <tbody>
                             </tbody>
                         </table>
@@ -42,5 +49,5 @@
 @endsection
 @section('script')
     @include('admin.partial.loader.script',['load'=>[\App\Enums\Assets\ScriptLoader::DataTable()]])
-    @include('admin.partial.datatable')
+    @include('admin.partial.datatable2')
 @endsection

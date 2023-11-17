@@ -41,8 +41,6 @@ class RouteServiceProvider extends ServiceProvider
                 ->group([
                     base_path('routes/admin.php'),
                     base_path('routes/admin-modules/project.php'),
-                    base_path('routes/admin-modules/factor.php'),
-                    base_path('routes/admin-modules/blog.php'),
                     base_path('routes/admin-modules/user.php'),
                     base_path('routes/admin-modules/presenter.php'),
                     base_path('routes/admin-modules/package.php'),

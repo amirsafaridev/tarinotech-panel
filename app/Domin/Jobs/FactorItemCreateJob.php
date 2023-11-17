@@ -3,7 +3,7 @@
 namespace App\Domin\Jobs;
 
 use App\Foundation\ValueObjects\Requests\FactorItemValues;
-use App\Models\FactorItem;
+use Modules\Factor\app\Models\FactorItem;
 
 class FactorItemCreateJob
 {
