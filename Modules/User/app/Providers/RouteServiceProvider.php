@@ -53,10 +53,10 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapAdminRoutes(): void
     {
         $prefix = config('routes.admin-prefix');
-        Route::prefix($prefix.'/user')
+        Route::prefix($prefix.'/')
             ->namespace($this->moduleNamespace)
             ->middleware(['web', 'admin.auth'])
-            ->as('admin.user.')
+            ->as('admin.')
             ->group(module_path('User', '/routes/admin.php'));
     }
 }

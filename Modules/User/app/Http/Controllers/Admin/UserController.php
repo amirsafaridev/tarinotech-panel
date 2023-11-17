@@ -24,11 +24,6 @@ use Modules\User\app\Models\Irnic;
 use Modules\User\app\Models\User;
 use Yajra\DataTables\Facades\DataTables;
 
-use function formatJalaliDateTime;
-use function route;
-use function trans;
-use function view;
-
 class UserController extends Controller
 {
     use HasDatatable;
@@ -50,7 +45,7 @@ class UserController extends Controller
 
         $columns = $this->getColumns();
 
-        return view('user::admin.index', compact('title', 'routeData', 'columns'));
+        return view('user::admin.user.index', compact('title', 'routeData', 'columns'));
     }
 
     public function data()
@@ -82,7 +77,7 @@ class UserController extends Controller
     {
         $title = self::CREATE_TITLE;
 
-        return view('user::admin.create', compact('title'));
+        return view('user::admin.user.create', compact('title'));
     }
 
     public function store(StoreRequest $req)
@@ -118,7 +113,7 @@ class UserController extends Controller
 
         $title = self::EDIT_TITLE;
 
-        return view('user::admin.edit', compact('title', 'user'));
+        return view('user::admin.user.edit', compact('title', 'user'));
     }
 
     public function update(UpdateRequest $req, User $user)
@@ -149,10 +144,11 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        $title = self::SHOW_TITLE;
         $user->load(['address', 'company', 'irnic', 'projects', 'latestLogin']);
 
-        return view('admin.user.show', compact('title', 'user'));
+        $title = self::SHOW_TITLE;
+
+        return view('user::admin.user.show', compact('title', 'user'));
     }
 
     public function destroy(User $user)
