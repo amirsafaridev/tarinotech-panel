@@ -3,6 +3,7 @@
 use Modules\Admin\app\Http\Controllers\Admin\AdminController;
 use Modules\Admin\app\Http\Controllers\Admin\GoalController;
 use Modules\Admin\app\Http\Controllers\Admin\PasswordController;
+use Modules\Admin\app\Http\Controllers\Admin\ProfileController;
 
 Route::group(['guard' => 'admin'], function () {
     Route::get('/', [AdminController::class, 'index'])->name('index');
@@ -10,6 +11,16 @@ Route::group(['guard' => 'admin'], function () {
 
     Route::get('/create', [AdminController::class, 'create'])->name('create');
     Route::post('/', [AdminController::class, 'store'])->name('store');
+
+    Route::group(['prefix' => 'profile', 'as' => 'profile.'], function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('index');
+        Route::patch('/', [ProfileController::class, 'update'])->name('update');
+
+        Route::get('/profile/logout', [ProfileController::class, 'logout'])->name('logout');
+
+        Route::get('/profile/password', [ProfileController::class, 'password'])->name('password');
+        Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])->name('password.update');
+    });
 
     Route::group([], function () {
         Route::get('/{admin}', [AdminController::class, 'edit'])->name('edit');
@@ -24,5 +35,4 @@ Route::group(['guard' => 'admin'], function () {
         Route::post('/{admin}/goal', [GoalController::class, 'save'])->name('goal.save');
 
     })->whereNumber('admin');
-
 });

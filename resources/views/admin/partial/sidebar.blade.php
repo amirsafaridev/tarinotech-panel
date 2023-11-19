@@ -172,9 +172,9 @@
                     </a>
 
                     <ul class="slide-menu">
-                        <li><a href="{{ route('admin.profile.index') }}" class="slide-item">{{ trans('panel.profile.edit') }}</a></li>
-                        <li><a href="{{ route('admin.profile.password') }}" class="slide-item">{{ trans('panel.profile.password-change') }}</a></li>
-                        <li><a href="{{ route('admin.profile.logout') }}" class="slide-item">{{ trans('panel.profile.sign-out') }}</a></li>
+                        <li><a href="{{ route('admin.admin.profile.index') }}" class="slide-item">پروفایل</a></li>
+                        <li><a href="{{ route('admin.admin.profile.password') }}" class="slide-item">تغییر گذر واژه</a></li>
+                        <li><a href="{{ route('admin.admin.profile.logout') }}" class="slide-item">خروج</a></li>
                     </ul>
                 </li>
             </ul>

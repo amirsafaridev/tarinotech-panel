@@ -8,12 +8,12 @@
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">{{ trans('panel.profile.password-change') }}</h1>
+        <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.profile.index') }}">{{ trans('panel.profile.index') }}</a></li>
-                <li class="breadcrumb-item active">{{ trans('panel.profile.password-change') }}</li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.admin.profile.index') }}">{{ trans('panel.profile.index') }}</a></li>
+                <li class="breadcrumb-item active">ویرایش</li>
             </ol>
         </div>
     </div>
@@ -23,7 +23,7 @@
             <div class="card">
 
                 <div class="card-body">
-                    <form class="request-form forms-sample" method="post" action="{{ $routeUpdate }}">
+                    <form class="request-form forms-sample" method="post" action="{{ route('admin.admin.profile.password.update') }}">
                         @csrf
                         @method('PATCH')
 

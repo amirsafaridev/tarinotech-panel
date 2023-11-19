@@ -100,11 +100,11 @@
                                                 </div>
                                             </div>
                                             <div class="dropdown-divider m-0"></div>
-                                            <a class="dropdown-item" href="{{ route('admin.profile.index') }}">
+                                            <a class="dropdown-item" href="{{ route('admin.admin.profile.index') }}">
                                                 <i class="dropdown-icon fe fe-user"></i>
                                                 <span>{{ trans('panel.profile.edit') }}</span>
                                             </a>
-                                            <a class="dropdown-item" href="{{ route('admin.profile.logout') }}">
+                                            <a class="dropdown-item" href="{{ route('admin.admin.profile.logout') }}">
                                                 <i class="dropdown-icon fe fe-alert-circle"></i>
                                                 <span>{{ trans('panel.profile.sign-out') }}</span>
                                             </a>

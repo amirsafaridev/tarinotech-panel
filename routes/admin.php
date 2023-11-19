@@ -6,7 +6,6 @@ use App\Http\Controllers\Admin\FreeDayController;
 use App\Http\Controllers\Admin\GroupGoalController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\PermissionController;
-use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\Report\GoalGroupController as GoalGroupControllerReport;
 use App\Http\Controllers\Admin\Report\LoginController;
 use App\Http\Controllers\Admin\SampleMessageController;
@@ -95,13 +94,5 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::get('/auto-message/data', 'data')->name('auto-message.data');
         Route::get('/auto-message/{sampleMessage}/edit', 'edit')->name('auto-message.edit');
         Route::patch('/auto-message/{sampleMessage}/update', 'update')->name('auto-message.update');
-    });
-
-    Route::controller(ProfileController::class)->group(function () {
-        Route::get('/profile', 'index')->name('profile.index');
-        Route::get('/profile/logout', 'logout')->name('profile.logout');
-        Route::get('/profile/password', 'password')->name('profile.password');
-        Route::patch('/profile', 'update')->name('profile.update');
-        Route::patch('/profile/password', 'updatePassword')->name('profile.password.update');
     });
 });

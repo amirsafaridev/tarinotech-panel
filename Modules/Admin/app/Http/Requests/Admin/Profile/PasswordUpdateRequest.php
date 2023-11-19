@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin\Profile;
+namespace Modules\Admin\app\Http\Requests\Admin\Profile;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,7 +24,7 @@ class PasswordUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'current_password' => 'required|min:8|email',
+            'current_password' => 'required|min:8',
             'new_password' => 'required|same:new_password_rep|min:8',
             'new_password_rep' => 'required|min:8',
         ];
