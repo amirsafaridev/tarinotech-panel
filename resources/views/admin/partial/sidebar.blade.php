@@ -135,6 +135,7 @@
 
                     <ul class="slide-menu">
                         <li><a href="{{ route('admin.log.index') }}" class="slide-item">لیست</a></li>
+                        <li><a href="{{ route('admin.login.index') }}" class="slide-item">ورود ها</a></li>
                     </ul>
                 </li>
 

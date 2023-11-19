@@ -30,8 +30,8 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
-use Modules\Login\app\Http\Middleware\RedirectIfAdmin;
-use Modules\Login\app\Http\Middleware\RedirectIfNotAdmin;
+use Modules\Auth\app\Http\Middleware\Admin\RedirectIfAdmin;
+use Modules\Auth\app\Http\Middleware\Admin\RedirectIfNotAdmin;
 
 class Kernel extends HttpKernel
 {

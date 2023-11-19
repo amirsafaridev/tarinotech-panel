@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Login\app\Providers;
+namespace Modules\Auth\app\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
@@ -10,7 +10,7 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * The module namespace to assume when generating URLs to actions.
      */
-    protected string $moduleNamespace = 'Modules\Login\app\Http\Controllers';
+    protected string $moduleNamespace = 'Modules\Auth\app\Http\Controllers';
 
     /**
      * Called before routes are registered.
@@ -28,9 +28,22 @@ class RouteServiceProvider extends ServiceProvider
     public function map(): void
     {
         $this->mapApiRoutes();
-
         $this->mapAdminRoutes();
+    }
 
+    /**
+     * Define the "admin" routes for the application.
+     *
+     * These routes are typically stateless.
+     */
+    protected function mapAdminRoutes(): void
+    {
+        $prefix = config('routes.admin-prefix');
+        Route::prefix($prefix.'/auth')
+            ->namespace($this->moduleNamespace)
+            ->middleware(['web'])
+            ->as('auth.admin.')
+            ->group(module_path('Auth', '/routes/admin.php'));
     }
 
     /**
@@ -43,21 +56,6 @@ class RouteServiceProvider extends ServiceProvider
         Route::prefix('api')
             ->middleware('api')
             ->namespace($this->moduleNamespace)
-            ->group(module_path('Login', '/routes/api.php'));
-    }
-
-    /**
-     * Define the "admin" routes for the application.
-     *
-     * These routes are typically stateless.
-     */
-    protected function mapAdminRoutes(): void
-    {
-        $prefix = config('routes.admin-prefix');
-        Route::prefix($prefix.'/login')
-            ->namespace($this->moduleNamespace)
-            ->middleware(['web', 'admin.auth'])
-            ->as('admin.login.')
-            ->group(module_path('Login', '/routes/admin.php'));
+            ->group(module_path('Auth', '/routes/api.php'));
     }
 }

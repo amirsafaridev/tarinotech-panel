@@ -3,70 +3,56 @@
 namespace Modules\Login\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Modules\Admin\app\Models\Admin;
-use Modules\Login\app\Models\Login;
-
-use function redirect;
-use function view;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Modules\Auth\app\Models\Login;
 
 class LoginController extends Controller
 {
-    use AuthenticatesUsers;
+    const INDEX_TITLE = 'لاگین ها - لیست';
 
-    const INDEX_TITLE = 'تارینوتک - ورود';
-
-    public function __construct()
-    {
-        $this->middleware('admin.guest:admin', ['except' => 'logout']);
-    }
-
-    protected function guard()
-    {
-        return Auth::guard('admin');
-    }
+    const SHOW_TITLE = 'لاگین ها - نمایش';
 
     public function index()
     {
         $title = self::INDEX_TITLE;
+        $sortItems = [
+            'id-desc' => 'شناسه (نزولی)',
+            'id-asc' => 'شناسه (صعودی)',
 
-        if (app()->isLocal()) {
-            Auth::guard('admin')->loginUsingId(1);
-        }
+            'login_at-desc' => 'تاریخ ورود (نزولی)',
+            'login_at-asc' => 'تاریخ ورود (صعودی)',
+        ];
 
-        return view('login::admin.login', compact('title'));
+        $canSort = $this->allowSort(array_keys($sortItems), request('sort'));
+
+        $userFilter = request('user');
+
+        $logins = Login::query()
+            ->with(['user' => fn (MorphTo $query) => $query->withTrashed()])
+            ->when($userFilter, function (Builder $query) use ($userFilter) {
+                $query->whereHas('user', function (Builder $query) use ($userFilter) {
+                    $userSearch = '%'.$userFilter.'%';
+                    $query->where('first_name', 'like', $userSearch)
+                        ->orWhere('last_name', 'like', $userSearch)
+                        ->orWhere('email', 'like', $userSearch)
+                        ->orWhere('mobile', 'like', $userSearch);
+                });
+            })
+            ->when($canSort, function (Builder $query) use ($canSort) {
+                return $query->orderBy($canSort[0], $canSort[1]);
+            }, function (Builder $query) {
+                return $query->orderByDesc('id');
+            })
+            ->paginate(10);
+
+        return view('login::admin.index', compact('title', 'sortItems', 'logins'));
     }
 
-    public function logout(Request $request)
+    public function show(Login $login)
     {
-        $this->guard()->logout();
-        $request->session()->invalidate();
+        $title = self::SHOW_TITLE;
 
-        return $this->loggedOut($request) ?: redirect()->route('admin.dashboard');
-    }
-
-    protected function validateLogin(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-            'captcha' => 'required|captcha',
-        ]);
-    }
-
-    /**
-     * @param  Admin  $user
-     */
-    protected function authenticated(Request $request, $user)
-    {
-        $login = new Login();
-        $login->userLogin($user);
-    }
-
-    protected function credentials(Request $request)
-    {
-        return array_merge($request->only($this->username(), 'password'), ['has_access' => true]);
+        return view('login::admin.show', compact('title', 'login'));
     }
 }

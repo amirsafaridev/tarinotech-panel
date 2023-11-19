@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Report;
 
 use App\Http\Controllers\Controller;
-use Modules\Login\app\Models\Login;
+use Modules\Auth\app\Models\Login;
 
 use function view;
 

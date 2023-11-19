@@ -1,8 +1,6 @@
 <?php
 
 return [
-    'admin_goal_index' => 'Admin Goal Index',
-    'admin_goal_save' => 'Admin Goal Save',
     'auto_message_index' => 'Auto Message Index',
     'auto_message_edit' => 'Auto Message Edit',
     'facility_index' => 'Facility Index',
@@ -24,10 +22,6 @@ return [
     'package_price_edit' => 'Package Price Edit',
     'package_price_destroy' => 'Package Price Destroy',
     'permission_sync' => 'Permission Sync',
-    'profile_index' => 'Profile Index',
-    'profile_password' => 'Profile Password',
-    'profile_update_password' => 'Profile Update Password',
-    'profile_logout' => 'Profile Logout',
     'project_facility_index' => 'Project Facility Index',
     'project_facility_create' => 'Project Facility Create',
     'project_facility_edit' => 'Project Facility Edit',

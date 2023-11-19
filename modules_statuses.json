@@ -16,5 +16,6 @@
     "Report": true,
     "Payment": true,
     "Dashboard": true,
-    "Login": true
+    "Login": true,
+    "Auth": true
 }
