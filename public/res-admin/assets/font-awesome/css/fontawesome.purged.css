@@ -22,6 +22,39 @@
     font-family: "Font Awesome 6 Pro"
 }
 
+ .fa-spin {
+    -webkit-animation-delay: var(--fa-animation-delay, 0s);
+    animation-delay: var(--fa-animation-delay, 0s);
+    -webkit-animation-direction: var(--fa-animation-direction, normal);
+    animation-direction: var(--fa-animation-direction, normal)
+}
+
+.fa-spin {
+    -webkit-animation-name: fa-spin;
+    animation-name: fa-spin;
+    -webkit-animation-duration: var(--fa-animation-duration, 2s);
+    animation-duration: var(--fa-animation-duration, 2s);
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, linear);
+    animation-timing-function: var(--fa-animation-timing, linear)
+}
+
+@media (prefers-reduced-motion: reduce) {
+     .fa-spin {
+        -webkit-animation-delay: -1ms;
+        animation-delay: -1ms;
+        -webkit-animation-duration: 1ms;
+        animation-duration: 1ms;
+        -webkit-animation-iteration-count: 1;
+        animation-iteration-count: 1;
+        -webkit-transition-delay: 0s;
+        transition-delay: 0s;
+        -webkit-transition-duration: 0s;
+        transition-duration: 0s
+    }
+}
+
 @-webkit-keyframes fa-beat {
     0%, 90% {
         -webkit-transform: scale(1);
@@ -258,28 +291,28 @@
     }
 }
 
- .fa-navicon:before {
-    content: "\f0c9"
+.fa-page:before {
+    content: "\e428"
 }
 
- .fa-list:before {
-    content: "\f03a"
+ .fa-navicon:before {
+    content: "\f0c9"
 }
 
 .fa-lock:before {
     content: "\f023"
 }
 
+.fa-chevron-up:before {
+    content: "\f077"
+}
+
 .fa-user:before {
     content: "\f007"
 }
 
-.fa-repeat:before {
-    content: "\f363"
-}
-
- .fa-sign-in:before {
-    content: "\f090"
+.fa-box:before {
+    content: "\f466"
 }
 
 .fa-user-edit:before {
@@ -294,16 +327,20 @@
     content: "\f058"
 }
 
-.fa-language:before {
-    content: "\f1ab"
-}
-
-.fa-phone:before {
-    content: "\f095"
+.fa-cog:before {
+    content: "\f013"
 }
 
 .fa-sun:before {
     content: "\f185"
+}
+
+.fa-bug:before {
+    content: "\f188"
+}
+
+ .fa-credit-card:before {
+    content: "\f09d"
 }
 
  .fa-search:before {
@@ -318,14 +355,14 @@
     content: "\f106"
 }
 
+.fa-spinner:before {
+    content: "\f110"
+}
+
 .fa-moon:before {
     content: "\f186"
 }
 
 .fa-angle-left:before {
     content: "\f104"
-}
-
-.fa-brain:before {
-    content: "\f5dc"
 }

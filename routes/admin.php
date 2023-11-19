@@ -5,7 +5,6 @@ use App\Http\Controllers\Admin\FacilityController;
 use App\Http\Controllers\Admin\FreeDayController;
 use App\Http\Controllers\Admin\GroupGoalController;
 use App\Http\Controllers\Admin\HomeController;
-use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\Report\GoalGroupController as GoalGroupControllerReport;
 use App\Http\Controllers\Admin\Report\LoginController;
 use App\Http\Controllers\Admin\SampleMessageController;
@@ -23,7 +22,6 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
     /* this function for help to route ui dashboard */
     Route::get('/', [HomeController::class, 'redirect'])->name('home');
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
-    Route::get('/permission/sync', [PermissionController::class, 'sync'])->name('permission.sync');
 
     Route::controller(GroupGoalController::class)->group(function () {
         Route::get('/group-goal', 'index')->name('admin.group-goal');

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Role\app\Http\Controllers\Admin\PermissionController;
 use Modules\Role\app\Http\Controllers\Admin\RoleController;
 
 Route::group(['guard' => 'admin'], function () {
@@ -11,4 +12,7 @@ Route::group(['guard' => 'admin'], function () {
     Route::post('/', [RoleController::class, 'store'])->name('store');
     Route::patch('/{role}', [RoleController::class, 'update'])->name('update');
     Route::delete('/{role}', [RoleController::class, 'destroy'])->name('destroy');
+
+    Route::get('/permission/sync', [PermissionController::class, 'sync'])->name('permission.sync');
+
 });

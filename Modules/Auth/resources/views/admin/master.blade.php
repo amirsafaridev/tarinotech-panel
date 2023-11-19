@@ -12,23 +12,9 @@
 
     @include('favicon')
 
-    <title>@yield('title','Worder')</title>
+    <title>@yield('title','Tarinotech App')</title>
+    <link href="{{ asset('res-admin/assets/css/style.min.css') }}" rel="stylesheet" />
 
-    @if(app()->isLocal())
-        <link id="style" href="{{ asset('res-admin/assets/plugins/bootstrap/css/bootstrap.rtl.purged.css') }}" rel="stylesheet" />
-    @else
-        <link id="style" href="{{ asset('res-admin/assets/plugins/bootstrap/css/bootstrap.rtl.min.css') }}" rel="stylesheet" />
-    @endif
-
-    @if(app()->isLocal())
-        <link href="{{ asset('res-admin/assets/css/style.css') }}" rel="stylesheet" />
-    @else
-        <link href="{{ asset('res-admin/assets/css/style.purged.css') }}" rel="stylesheet" />
-    @endif
-
-    <link href="{{ asset('res-admin/assets/css/dark-style.css') }}" rel="stylesheet" />
-    <link href="{{ asset('res-admin/assets/css/skin-modes.css') }}" rel="stylesheet" />
-    <link id="theme" rel="stylesheet" type="text/css" media="all" href="{{ asset('res-admin/assets/colors/color1.css') }}" />
 </head>
 
 <body class="app sidebar-mini rtl dark-mode">

@@ -1,5 +1,10 @@
 @charset "UTF-8";
 @import "fonts.css";
+@import "../plugins/bootstrap/css/bootstrap.rtl.min.css";
+@import "dark-style.css";
+@import "skin-modes.css";
+@import "../colors/color1.css";
+
 :root {
     --primary-bg-color: #6c5ffc;
     --primary-bg-hover: #233ac5;

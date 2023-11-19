@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace Modules\Role\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Service\PermissionService;

@@ -21,7 +21,6 @@ return [
     'package_destroy' => 'Package Destroy',
     'package_price_edit' => 'Package Price Edit',
     'package_price_destroy' => 'Package Price Destroy',
-    'permission_sync' => 'Permission Sync',
     'project_facility_index' => 'Project Facility Index',
     'project_facility_create' => 'Project Facility Create',
     'project_facility_edit' => 'Project Facility Edit',

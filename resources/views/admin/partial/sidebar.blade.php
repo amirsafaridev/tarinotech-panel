@@ -49,7 +49,7 @@
                     </a>
 
                     <ul class="slide-menu">
-                        <li><a href="{{ route('admin.permission.sync') }}" class="slide-item">{{ trans('panel.permission.sync') }}</a></li>
+                        <li><a href="{{ route('admin.role.permission.sync') }}" class="slide-item">{{ trans('panel.permission.sync') }}</a></li>
                         <li><a href="{{ route('admin.role.index') }}" class="slide-item">{{ trans('panel.list') }}</a></li>
                         <li><a href="{{ route('admin.role.create') }}" class="slide-item">{{ trans('panel.create') }}</a></li>
                     </ul>
