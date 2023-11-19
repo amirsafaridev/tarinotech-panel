@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Auth\ResetPasswordRequest;
-use App\Models\Admin;
 use App\Models\OtpCode;
 use Auth;
 use DB;
 use Exception;
+use Modules\Admin\app\Models\Admin;
 
 class ResetPasswordController extends Controller
 {

@@ -12,7 +12,6 @@ use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Project\Web\StoreRequest;
 use App\Http\Requests\Admin\Project\Web\UpdateRequest;
-use App\Models\Admin;
 use App\Models\Project;
 use App\Models\ProjectWeb;
 use App\Service\Json\WebProject\DomainTransformer;
@@ -24,6 +23,7 @@ use DB;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Modules\Admin\app\Models\Admin;
 
 class WebProjectController extends Controller
 {

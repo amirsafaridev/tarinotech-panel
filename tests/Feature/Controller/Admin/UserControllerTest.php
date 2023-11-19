@@ -3,8 +3,8 @@
 namespace Tests\Feature\Controller\Admin;
 
 use App\Enums\Database\Company\CompanyType;
-use App\Models\Admin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Admin\app\Models\Admin;
 use Modules\User\app\Enums\IrnicStatus;
 use Modules\User\app\Enums\PersonType;
 use Tests\TestCase;

@@ -10,7 +10,7 @@
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">پرسنل - ایجاد</h1>
+        <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
@@ -20,18 +20,18 @@
         </div>
     </div>
 
-    <form class="row request-form forms-sample" method="post" action="{{ $routeStore }}">
+    <form class="row request-form forms-sample" method="post" action="{{ route('admin.admin.store') }}">
         <div class="col-12">
             @include('admin.partial.message')
             @csrf
         </div>
 
         <div class="col-xl-6 col-lg-6 col-md-6 col-12">
-            @include('admin.admin.cards.auth')
+            @include('admin::admin.cards.auth')
 
-            @include('admin.admin.cards.profile')
+            @include('admin::admin.cards.profile')
 
-            @include('admin.admin.cards.company')
+            @include('admin::admin.cards.company')
 
         </div>
     </form>
@@ -49,5 +49,5 @@
     @include('admin.partial.script.global')
     @include('admin.partial.script.mask')
     @include('admin.partial.ckeditor')
-    @include('admin.admin.script.share')
+    @include('admin::admin.script.share')
 @endsection

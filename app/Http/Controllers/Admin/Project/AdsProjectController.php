@@ -11,13 +11,13 @@ use App\Filters\Admin\User\UserSearchFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Project\Ads\StoreRequest;
 use App\Http\Requests\Admin\Project\Ads\UpdateRequest;
-use App\Models\Admin;
 use App\Models\Project;
 use App\Models\ProjectAds;
 use DB;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Modules\Admin\app\Models\Admin;
 
 class AdsProjectController extends Controller
 {

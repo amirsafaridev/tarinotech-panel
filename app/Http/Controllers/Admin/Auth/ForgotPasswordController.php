@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Admin\Auth;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Auth\ForgetPasswordRequest;
-use App\Models\Admin;
 use App\Models\OtpCode;
 use App\Notifications\Admin\Auth\OtpCodeEmail;
 use App\Notifications\Admin\Auth\OtpCodeSms;
 use Exception;
+use Modules\Admin\app\Models\Admin;
 
 class ForgotPasswordController extends Controller
 {

@@ -6,10 +6,10 @@ use App\Helpers\Uploader\PhotoUploader;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Profile\PasswordUpdateRequest;
 use App\Http\Requests\Admin\Profile\UpdateRequest;
-use App\Models\Admin;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Modules\Admin\app\Models\Admin;
 
 class ProfileController extends Controller
 {

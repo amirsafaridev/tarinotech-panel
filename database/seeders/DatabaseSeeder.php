@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Service\PermissionService;
 use Illuminate\Database\Seeder;
+use Modules\Admin\database\seeders\AdminDatabaseSeeder;
 use Modules\Blog\database\seeders\BlogDatabaseSeeder;
 use Modules\BlogCategory\database\seeders\BlogCategoryDatabaseSeeder;
 use Modules\Factor\database\seeders\FactorDatabaseSeeder;
@@ -18,9 +19,9 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            AdminSeeder::class,
+            AdminDatabaseSeeder::class, //DONE
             LoginSeeder::class,
-            UserDatabaseSeeder::class,
+            UserDatabaseSeeder::class, //DONE
             PackageSeeder::class,
             ProjectBaseSeeder::class,
             ProjectTypeSeeder::class,
@@ -30,13 +31,13 @@ class DatabaseSeeder extends Seeder
             ProjectAdsSeeder::class,
             SettingSeeder::class,
             AdditionalFeatureSeeder::class,
-            FactorDatabaseSeeder::class,
+            FactorDatabaseSeeder::class, //DONE
             SampleMessageSeeder::class,
             AutoMessageSeeder::class,
             FreeDaySeeder::class,
-            BlogCategoryDatabaseSeeder::class,
-            BlogDatabaseSeeder::class,
-            RoleDatabaseSeeder::class,
+            BlogCategoryDatabaseSeeder::class, //DONE
+            BlogDatabaseSeeder::class, //DONE
+            RoleDatabaseSeeder::class, //DONE
         ]);
 
         resolve(PermissionService::class)->sync();

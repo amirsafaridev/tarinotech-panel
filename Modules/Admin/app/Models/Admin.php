@@ -1,7 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace Modules\Admin\app\Models;
 
+use App\Models\Login;
+use App\Models\OtpCode;
+use App\Models\Project;
+use App\Models\SaleGoal;
 use App\Notifications\Admin\Auth\ResetPassword;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,10 +23,10 @@ use Spatie\Permission\Traits\HasRoles;
 class Admin extends Authenticatable
 {
     use HasFactory;
-    use Notifiable;
-    use SoftDeletes;
     use HasRoles;
     use LogsActivity;
+    use Notifiable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.

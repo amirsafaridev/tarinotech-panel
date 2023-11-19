@@ -12,7 +12,6 @@ use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Project\Seo\StoreRequest;
 use App\Http\Requests\Admin\Project\Seo\UpdateRequest;
-use App\Models\Admin;
 use App\Models\Project;
 use App\Models\ProjectSeo;
 use App\Service\Json\SeoProject\HostTransformer;
@@ -20,6 +19,7 @@ use DB;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Modules\Admin\app\Models\Admin;
 
 class SeoProjectController extends Controller
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin\Admin;
+namespace Modules\Admin\app\Http\Requests\Admin;
 
 use App\Enums\Database\Admin\TypeInsurance;
 use App\Enums\Database\Admin\WorkLocation;

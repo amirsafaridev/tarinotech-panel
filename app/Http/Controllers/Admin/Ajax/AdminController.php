@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\Ajax;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
 use Illuminate\Http\Request;
+use Modules\Admin\app\Models\Admin;
 
 class AdminController extends Controller
 {

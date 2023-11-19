@@ -1,9 +1,9 @@
 <?php
 
-namespace Database\Seeders;
+namespace Modules\Admin\database\seeders;
 
-use App\Models\Admin;
 use Illuminate\Database\Seeder;
+use Modules\Admin\database\factories\AdminFactory;
 
 class AdminSeeder extends Seeder
 {
@@ -12,6 +12,7 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        Admin::factory(10)->create();
+        AdminFactory::new()->count(10)
+            ->create();
     }
 }

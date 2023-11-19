@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminGoalController;
-use App\Http\Controllers\Admin\AdminPasswordController;
 use App\Http\Controllers\Admin\AutoMessageController;
 use App\Http\Controllers\Admin\FacilityController;
 use App\Http\Controllers\Admin\FreeDayController;
@@ -41,22 +39,6 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
     Route::get('/', [HomeController::class, 'redirect'])->name('home');
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
     Route::get('/permission/sync', [PermissionController::class, 'sync'])->name('permission.sync');
-
-    Route::controller(AdminController::class)->group(function () {
-        Route::get('/admin', 'index')->name('admin.index');
-        Route::get('/admin/data', 'data')->name('admin.data');
-        Route::get('/admin/create', 'create')->name('admin.create');
-        Route::post('/admin/store', 'store')->name('admin.store');
-        Route::get('/admin/{admin}/show', 'show')->name('admin.show');
-        Route::get('/admin/{admin}/edit', 'edit')->name('admin.edit');
-        Route::put('/admin/{admin}/update', 'update')->name('admin.update');
-        Route::delete('/admin/{admin}/destroy', 'destroy')->name('admin.destroy');
-    });
-
-    Route::controller(AdminPasswordController::class)->group(function () {
-        Route::get('/admin/{admin}/password', 'index')->name('admin.password');
-        Route::patch('/admin/{admin}/password', 'update')->name('admin.password.update');
-    });
 
     Route::controller(AdminGoalController::class)->group(function () {
         Route::get('/admin/{admin}/goal', 'index')->name('admin.goal');

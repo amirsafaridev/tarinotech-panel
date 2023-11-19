@@ -1,8 +1,10 @@
 <?php
 
-namespace Database\Factories;
+namespace Modules\Admin\database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+
+use function bcrypt;
 
 /**
  * @extends Factory

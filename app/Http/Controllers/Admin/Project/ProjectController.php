@@ -9,7 +9,6 @@ use App\Filters\Admin\Project\StatusFilter;
 use App\Filters\Admin\Share\IDFilter;
 use App\Filters\Admin\User\UserSearchFilter;
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
 use App\Models\Project;
 use App\Models\ProjectAds;
 use App\Models\ProjectSeo;
@@ -17,6 +16,7 @@ use App\Models\ProjectWeb;
 use DB;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
+use Modules\Admin\app\Models\Admin;
 
 class ProjectController extends Controller
 {

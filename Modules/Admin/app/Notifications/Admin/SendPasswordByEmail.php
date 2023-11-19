@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Notifications\Admin\Admin;
+namespace Modules\Admin\app\Notifications\Admin;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class SendPasswordByEmailNotification extends Notification
+use function route;
+
+class SendPasswordByEmail extends Notification
 {
     use Queueable;
 
@@ -21,14 +23,15 @@ class SendPasswordByEmailNotification extends Notification
 
     /**
      * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
      */
-    public function via(object $notifiable): array
+    public function via($notifiable): array
     {
         return ['mail'];
     }
 
+    /**
+     * Get the mail representation of the notification.
+     */
     /**
      * Get the mail representation of the notification.
      */
@@ -43,13 +46,9 @@ class SendPasswordByEmailNotification extends Notification
 
     /**
      * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
      */
-    public function toArray(object $notifiable): array
+    public function toArray($notifiable): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 }

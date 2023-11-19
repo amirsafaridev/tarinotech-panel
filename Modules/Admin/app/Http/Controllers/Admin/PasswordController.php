@@ -1,23 +1,27 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace Modules\Admin\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\AdminPassword\UpdateRequest;
-use App\Models\Admin;
+use App\Traits\HasJsonCommonResponse;
 use Exception;
+use Modules\Admin\app\Http\Requests\Admin\UpdatePasswordRequest;
+use Modules\Admin\app\Models\Admin;
 
-class AdminPasswordController extends Controller
+class PasswordController extends Controller
 {
+    use HasJsonCommonResponse;
+
+    const INDEX_TITLE = 'پرسنل - ویرایش گذرواژه';
+
     public function index(Admin $admin)
     {
-        $title = trans('panel.admin.edit_password');
-        $routeUpdate = route('admin.admin.password.update', $admin->id);
+        $title = self::INDEX_TITLE;
 
-        return view('admin.admin_password.edit', compact('title', 'routeUpdate', 'admin'));
+        return view('admin::admin.password.edit', compact('title', 'admin'));
     }
 
-    public function update(UpdateRequest $request, Admin $admin)
+    public function update(UpdatePasswordRequest $request, Admin $admin)
     {
         try {
             $admin->update([

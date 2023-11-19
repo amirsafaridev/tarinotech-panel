@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Goal\SaveRequest;
-use App\Models\Admin;
 use App\Models\SaleGoal;
 use Exception;
+use Modules\Admin\app\Models\Admin;
 
 class AdminGoalController extends Controller
 {

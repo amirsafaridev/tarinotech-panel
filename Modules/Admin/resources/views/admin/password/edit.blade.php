@@ -8,14 +8,12 @@
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">{{ trans('panel.admin.title') }}</h1>
+        <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a
-                            href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a
-                            href="{{ route('admin.admin.index') }}">{{ trans('panel.admin.title') }}</a></li>
-                <li class="breadcrumb-item active">{{ trans('panel.admin.edit_password') }}</li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.admin.index') }}">{{ trans('panel.admin.title') }}</a></li>
+                <li class="breadcrumb-item active">ویرایش</li>
             </ol>
         </div>
     </div>
@@ -25,8 +23,7 @@
             <div class="card">
                 <div class="card-body pb-3">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" enctype="multipart/form-data" method="post"
-                          action="{{ $routeUpdate }}">
+                    <form class="request-form forms-sample" enctype="multipart/form-data" method="post" action="{{ route('admin.admin.password.update',$admin->id) }}">
                         @csrf
                         @method('PATCH')
 
@@ -64,7 +61,6 @@
                                 <td>{{ $admin->last_name }}</td>
                             </tr>
 
-
                             <tr>
                                 <td>دسترسی</td>
                                 <td>@include('admin.partial.bool_badge',['value'=>$admin->has_access])</td>
@@ -72,15 +68,16 @@
                                 <td>{{ $admin->roles()->get()->implode('name',',') }}</td>
                             </tr>
 
-
                             <tr>
                                 <td>تاریخ ایجاد</td>
-                                <td>{{$admin->created_at->toJalali()->format('d F Y - H:i')}}</td>
+                                <td>{{$admin->created_at->toJalali()->format(formatJalaliDateTime())}}</td>
 
                                 <td>آخرین ورود</td>
                                 <td>
                                     @if($admin->latestLogin)
-                                        {{ $admin->latestLogin->login_at->toJalali()->format('d F Y - H:i') }}
+                                        {{ $admin->latestLogin->login_at->toJalali()->format(formatJalaliDateTime()) }}
+                                    @else
+                                        <span>بدون ورود</span>
                                     @endif
                                 </td>
                             </tr>
@@ -91,7 +88,7 @@
 
                         <x-admin.input identify="password_rep" title="تکرار گذرواژه" type="password"/>
 
-                        <x-admin.button-submit title="{{ trans('panel.update') }}"/>
+                        <x-admin.button-submit title="به روز رسانی"/>
 
                     </form>
 
@@ -104,10 +101,9 @@
     @include('admin.partial.request')
     @include('admin.partial.loader.script',['load'=>[
     ]])
-    @include('admin.partial.ckeditor')
     <script>
         $(document).ready(function () {
-
+            activeParentUl('{{ route('admin.admin.index') }}');
         })
     </script>
 @endsection

@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Admin;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Admin\app\Models\Admin;
 
 class LoginFactory extends Factory
 {

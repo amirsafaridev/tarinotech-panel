@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Admin;
+use Modules\Admin\app\Models\Admin;
 use Modules\Log\app\Enums\LogEvents;
 use Modules\Log\app\Enums\LogNames;
 use Modules\User\app\Models\User;
