@@ -5,6 +5,7 @@ module.exports = {
         require('postcss-import'),
         purgecss({
             content: [
+                './Modules/**/*.php',
                 './resources/views/**/*.php',
                 './public/res-admin/assets/js/jquery.min.js',
                 './public/res-admin/assets/js/sticky.js',
@@ -16,7 +17,14 @@ module.exports = {
             ],
         }),
         cssnano({
-            preset: ['default', { discardComments: { removeAll: true } }],
+            preset: [
+                'default',
+                {
+                    discardComments: {
+                        removeAll: true,
+                    },
+                },
+            ],
         }),
     ],
     map: {
