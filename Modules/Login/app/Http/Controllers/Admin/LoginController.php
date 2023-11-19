@@ -31,7 +31,6 @@ class LoginController extends Controller
     public function index()
     {
         $title = self::INDEX_TITLE;
-        //Auth::guard('admin')->loginUsingId(1);
 
         return view('login::admin.login', compact('title'));
     }

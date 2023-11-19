@@ -3,16 +3,15 @@
 namespace Modules\Login\database\seeders;
 
 use Illuminate\Database\Seeder;
+use Modules\Login\database\factories\LoginFactory;
 
-class LoginDatabaseSeeder extends Seeder
+class LoginSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $this->call([
-            LoginSeeder::class,
-        ]);
+        LoginFactory::new()->count(50)->create();
     }
 }

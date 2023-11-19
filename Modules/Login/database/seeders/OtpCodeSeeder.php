@@ -1,17 +1,16 @@
 <?php
 
-namespace Database\Seeders;
+namespace Modules\Login\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Login\app\Models\Login;
 
-class LoginSeeder extends Seeder
+class OtpCodeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Login::factory(50)->create();
+        //
     }
 }

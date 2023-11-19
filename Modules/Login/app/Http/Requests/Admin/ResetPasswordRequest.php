@@ -22,7 +22,7 @@ class ResetPasswordRequest extends FormRequest
         return [
             'password' => 'required|same:password_rep|min:8',
             'code' => 'required',
-            //'captcha' => 'required|captcha',
+            'captcha' => 'required|captcha',
         ];
     }
 
