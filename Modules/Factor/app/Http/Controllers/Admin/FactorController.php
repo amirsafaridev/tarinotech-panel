@@ -171,7 +171,7 @@ class FactorController extends Controller
         try {
             $factor->delete();
 
-            return $this->successBack(route('admin.factor.index'));
+            return $this->successDestroyBack(route('admin.factor.index'));
 
         } catch (Exception $exception) {
             DB::rollBack();

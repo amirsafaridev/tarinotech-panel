@@ -271,5 +271,6 @@ return [
         'financial_cycle' => 'سیکل کالی',
         'financial_cycle_value' => 'قیمت',
         'added_at' => 'تاریخ ایجاد',
+        'blog_category_id' => 'دسته بندی بلاگ',
     ],
 ];

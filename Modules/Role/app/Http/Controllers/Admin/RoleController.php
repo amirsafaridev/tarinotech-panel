@@ -89,7 +89,7 @@ class RoleController extends Controller
         try {
             $role->delete();
 
-            return $this->successBack(route('admin.role.index'));
+            return $this->successDestroyBack(route('admin.role.index'));
         } catch (Exception $exception) {
 
             return $this->exceptionBack($exception);

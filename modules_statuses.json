@@ -15,5 +15,6 @@
     "Ticket": true,
     "Report": true,
     "Payment": true,
-    "Dashboard": true
+    "Dashboard": true,
+    "Login": true
 }

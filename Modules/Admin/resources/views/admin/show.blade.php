@@ -165,5 +165,9 @@
     </div>
 @endsection
 @section('script')
-
+    <script>
+        $(document).ready(function () {
+            activeParentUl('{{ route('admin.admin.index') }}');
+        })
+    </script>
 @endsection

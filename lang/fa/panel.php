@@ -70,6 +70,7 @@ return [
     'success_update' => 'با موفقیت به روز شد.',
     'success_delete' => 'با موفقیت حذف شد.',
     'error_delete' => 'خطا در حذف اطلاعات',
+    'error_exception' => 'خطایی رخ داده است!',
     'error_update' => 'خطا در ویرایش اطلاعات',
     'dashboard' => [
         'title' => 'داشبورد',

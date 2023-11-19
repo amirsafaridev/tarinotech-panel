@@ -149,7 +149,7 @@ class AdminController extends Controller
             $admin->delete();
             DB::commit();
 
-            return $this->successBack(route('admin.admin.index'));
+            return $this->successDestroyBack(route('admin.admin.index'));
         } catch (Exception $exception) {
             DB::rollBack();
 

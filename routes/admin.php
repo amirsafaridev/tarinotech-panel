@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminGoalController;
 use App\Http\Controllers\Admin\AutoMessageController;
 use App\Http\Controllers\Admin\FacilityController;
 use App\Http\Controllers\Admin\FreeDayController;
@@ -8,42 +7,24 @@ use App\Http\Controllers\Admin\GroupGoalController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\ProfileController;
-use App\Http\Controllers\Admin\Report\GoalController as GoalControllerReport;
 use App\Http\Controllers\Admin\Report\GoalGroupController as GoalGroupControllerReport;
 use App\Http\Controllers\Admin\Report\LoginController;
 use App\Http\Controllers\Admin\SampleMessageController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TransactionCategoryController;
 use Illuminate\Support\Facades\Route;
+use Modules\Admin\app\Http\Controllers\Admin\GoalReportController as GoalControllerReport;
 
 /**
  * TODO
  * Update Route Name
  * Update Controls And Homogenization
  */
-Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
-    Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
-    Route::post('login', 'Auth\LoginController@login');
-    Route::post('logout', 'Auth\LoginController@logout')->name('logout');
-
-    // Reset Password
-    Route::get('password/forget', 'Auth\ForgotPasswordController@index')->name('password.forget');
-    Route::post('password/sendOtpCode', 'Auth\ForgotPasswordController@sendOtpCode')->name('password.email');
-
-    Route::get('password/reset', 'Auth\ResetPasswordController@index')->name('password.reset');
-    Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
-});
-
 Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], function () {
     /* this function for help to route ui dashboard */
     Route::get('/', [HomeController::class, 'redirect'])->name('home');
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
     Route::get('/permission/sync', [PermissionController::class, 'sync'])->name('permission.sync');
-
-    Route::controller(AdminGoalController::class)->group(function () {
-        Route::get('/admin/{admin}/goal', 'index')->name('admin.goal');
-        Route::post('/admin/{admin}/goal', 'save')->name('admin.goal.save');
-    });
 
     Route::controller(GroupGoalController::class)->group(function () {
         Route::get('/group-goal', 'index')->name('admin.group-goal');

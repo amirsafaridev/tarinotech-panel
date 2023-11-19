@@ -2,8 +2,6 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\Admin\RedirectIfAdmin;
-use App\Http\Middleware\Admin\RedirectIfNotAdmin;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CheckPermission;
 use App\Http\Middleware\EncryptCookies;
@@ -32,6 +30,8 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
+use Modules\Login\app\Http\Middleware\RedirectIfAdmin;
+use Modules\Login\app\Http\Middleware\RedirectIfNotAdmin;
 
 class Kernel extends HttpKernel
 {

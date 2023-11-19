@@ -3,7 +3,6 @@
 namespace Modules\User\app\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Models\Login;
 use App\Models\Project;
 use App\Traits\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,6 +15,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Modules\Log\app\Enums\LogNames;
+use Modules\Login\app\Models\Login;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 

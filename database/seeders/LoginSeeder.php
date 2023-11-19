@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Login;
 use Illuminate\Database\Seeder;
+use Modules\Login\app\Models\Login;
 
 class LoginSeeder extends Seeder
 {

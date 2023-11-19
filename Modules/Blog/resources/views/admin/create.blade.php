@@ -23,7 +23,7 @@
             <div class="card">
                 <div class="card-body pb-4">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ $routeStore }}">
+                    <form class="request-form forms-sample" method="post" action="{{ route('admin.blog.store') }}">
                         @csrf
                         <x-admin.select-model identify="blog_category_id" title="دسته بندی" :items="$categories" value="title" key="id"/>
 

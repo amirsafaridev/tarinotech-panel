@@ -34,7 +34,7 @@ trait HasJsonCommonResponse
         ], 500);
     }
 
-    protected function successBack($route): RedirectResponse
+    protected function successDestroyBack($route): RedirectResponse
     {
         return redirect($route)
             ->with('success', trans('panel.success_delete'));
@@ -49,6 +49,6 @@ trait HasJsonCommonResponse
     {
         report($exception);
 
-        return back()->with('danger', trans('panel.error_delete'));
+        return back()->with('danger', trans('panel.error_exception'));
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use Modules\Admin\app\Http\Controllers\Admin\AdminController;
+use Modules\Admin\app\Http\Controllers\Admin\GoalController;
 use Modules\Admin\app\Http\Controllers\Admin\PasswordController;
 
 Route::group(['guard' => 'admin'], function () {
@@ -19,5 +20,9 @@ Route::group(['guard' => 'admin'], function () {
         Route::get('/{admin}/password', [PasswordController::class, 'index'])->name('password');
         Route::patch('/{admin}/password', [PasswordController::class, 'update'])->name('password.update');
 
+        Route::get('/{admin}/goal', [GoalController::class, 'index'])->name('goal');
+        Route::post('/{admin}/goal', [GoalController::class, 'save'])->name('goal.save');
+
     })->whereNumber('admin');
+
 });

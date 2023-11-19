@@ -140,7 +140,7 @@ class PresenterController extends Controller
             ]);
             $user->delete();
 
-            return $this->successBack(route('admin.presenter.index'));
+            return $this->successDestroyBack(route('admin.presenter.index'));
 
         } catch (Exception $exception) {
             return $this->exceptionBack($exception);

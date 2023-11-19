@@ -159,7 +159,7 @@ class UserController extends Controller
             ]);
             $user->delete();
 
-            return $this->successBack(route('admin.user.index'));
+            return $this->successDestroyBack(route('admin.user.index'));
 
         } catch (Exception $exception) {
             return $this->exceptionBack($exception);

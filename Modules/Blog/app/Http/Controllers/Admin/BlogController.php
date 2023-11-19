@@ -103,7 +103,7 @@ class BlogController extends Controller
         try {
             $blog->delete();
 
-            return $this->successBack(route('admin.blog.index'));
+            return $this->successDestroyBack(route('admin.blog.index'));
         } catch (Exception $exception) {
 
             return $this->exceptionBack($exception);

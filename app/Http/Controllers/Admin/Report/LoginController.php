@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Admin\Report;
 
 use App\Http\Controllers\Controller;
-use App\Models\Login;
+use Modules\Login\app\Models\Login;
+
 use function view;
 
 class LoginController extends Controller

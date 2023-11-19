@@ -3,6 +3,7 @@
 namespace Modules\Admin\database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Admin\app\Models\Admin;
 
 use function bcrypt;
 
@@ -11,6 +12,8 @@ use function bcrypt;
  */
 class AdminFactory extends Factory
 {
+    protected $model = Admin::class;
+
     /**
      * Define the model's default state.
      */

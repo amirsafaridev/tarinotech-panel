@@ -86,7 +86,7 @@ class BlogCategoryController extends Controller
 
             $blogCategory->delete();
 
-            return $this->successBack(route('admin.blog.category.index'));
+            return $this->successDestroyBack(route('admin.blog.category.index'));
         } catch (Exception $exception) {
 
             return $this->exceptionBack($exception);
