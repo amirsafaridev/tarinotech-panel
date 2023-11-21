@@ -2,6 +2,7 @@
 @import "fonts.css";
 @import "../plugins/bootstrap/css/bootstrap.rtl.min.css";
 @import "dark-style.css";
+@import "../font-awesome/css/fontawesome.min.css";
 @import "skin-modes.css";
 @import "../colors/color1.css";
 

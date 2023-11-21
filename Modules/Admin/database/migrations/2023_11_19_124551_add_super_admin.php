@@ -15,7 +15,7 @@ return new class extends Migration
                 'first_name' => 'معین',
                 'last_name' => 'تقی زاده',
                 'mobile' => '09195331311',
-                'email' => 'mn71@gmail.com',
+                'email' => 'mnte170@gmail.com',
                 'password' => bcrypt('sg5454ghOpd[!@4'),
                 'created_at' => now(),
                 'updated_at' => now(),

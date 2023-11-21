@@ -41,7 +41,7 @@ class SendPasswordByEmail extends Notification
             ->subject('کاربری شما ایجاد شد')
             ->line(sprintf('پرسنل عزیز (%s) کاربری شما با موفقیت ایجاد شد', $notifiable->first_name.' '.$notifiable->last_name))
             ->line(sprintf('گذرواژه شما %s می باشد برای ورود از لینک زیر استفاده کنید.', $this->password))
-            ->action('صفحه ورود', route('admin.login'));
+            ->action('صفحه ورود', route('auth.admin.login'));
     }
 
     /**

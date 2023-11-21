@@ -14,29 +14,14 @@
 
     <title>@yield('title','تارینوتک - پرتال')</title>
 
-    @if(app()->isLocal())
-        <link id="style" href="{{ asset('res-admin/assets/plugins/bootstrap/css/bootstrap.rtl.min.css') }}" rel="stylesheet" />
-    @else
-        <link id="style" href="{{ asset('res-admin/assets/plugins/bootstrap/css/bootstrap.rtl.min.css') }}" rel="stylesheet" />
-    @endif
-
-    <link href="{{ asset('res-admin/assets/css/dark-style.css') }}" rel="stylesheet" />
-
-    @if(app()->isLocal())
-        <link href="{{ asset('res-admin/assets/font-awesome/css/fontawesome.min.css') }}" rel="stylesheet" />
-    @else
-        <link href="{{ asset('res-admin/assets/font-awesome/css/fontawesome.min.css') }}" rel="stylesheet" />
-    @endif
 
     <link href="{{ asset('res-admin/assets/font-awesome/css/light.css') }}" rel="stylesheet" />
     <link href="{{ asset('res-admin/assets/font-awesome/css/solid.css') }}" rel="stylesheet" />
 
-    <link id="theme" rel="stylesheet" type="text/css" media="all" href="{{ asset('res-admin/assets/colors/color1.css') }}" />
-
     @if(app()->isLocal())
         <link href="{{ asset('res-admin/assets/css/style.css') }}" rel="stylesheet" />
     @else
-        <link href="{{ asset('res-admin/assets/css/style.css') }}" rel="stylesheet" />
+        <link href="{{ asset('res-admin/assets/css/style.min.css') }}" rel="stylesheet" />
     @endif
 
     <link href="{{ asset('res-admin/assets/css/custom.css') }}" rel="stylesheet" />

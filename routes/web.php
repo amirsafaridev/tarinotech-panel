@@ -17,4 +17,5 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/test', [TestController::class, 'index']);
+Route::get('/test/send-email', [TestController::class, 'sendEmail']);
 Route::get('/deploy', [DeployController::class, 'index']);
