@@ -31,11 +31,11 @@ class UserController extends Controller
 
     const INDEX_TITLE = 'مشتری ها';
 
-    const CREATE_TITLE = 'مشتری ها - ایجاد';
+    const CREATE_TITLE = 'ایجاد مشتری ها';
 
-    const EDIT_TITLE = 'مشتری ها - ویرایش';
+    const EDIT_TITLE = 'ویرایش مشتری ها';
 
-    const SHOW_TITLE = 'مشتری ها - نمایش';
+    const SHOW_TITLE = 'نمایش مشتری';
 
     public function index()
     {
@@ -85,6 +85,7 @@ class UserController extends Controller
         try {
             DB::beginTransaction();
             $item = $this->prepareItemData($req);
+            $item['is_block'] = false;
 
             $user = User::query()
                 ->create($item);
@@ -122,6 +123,8 @@ class UserController extends Controller
             DB::beginTransaction();
 
             $item = $this->prepareItemData($req);
+            $item['is_block'] = $req->has('is_block');
+
             $user->update($item);
 
             if ($req->input('person_type') === PersonType::Legal) {
@@ -191,7 +194,6 @@ class UserController extends Controller
         $userData['dob'] = empty($dob) ? null : Helper::toGregorian($dob);
 
         $userData['official_bill'] = $req->has('official_bill');
-        $userData['is_block'] = $req->has('is_block');
 
         $userData['user_type'] = UserType::Primary;
 

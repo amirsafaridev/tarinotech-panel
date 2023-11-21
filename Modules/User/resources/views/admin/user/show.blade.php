@@ -17,10 +17,10 @@
 
     <div class="row">
         <div class="col-xl-6 col-lg-6 col-md-6 col-12">
-            @include('admin.user.card.info')
+            @include('user::admin.user.card.info')
         </div>
         <div class="col-xl-6 col-lg-6 col-md-6 col-12">
-            @include('admin.user.card.project',['projects' => $user->projects])
+            @include('user::admin.user.card.project',['projects' => $user->projects])
         </div>
     </div>
 @endsection

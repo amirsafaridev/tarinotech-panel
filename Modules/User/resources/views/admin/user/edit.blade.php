@@ -66,7 +66,7 @@
                                 <x-admin.input identify="document_id" title="شماره شناسنامه" :old="$user->document_id" />
                             </div>
                             <div class="col-12 col-md-6">
-                                <x-admin.input identify="dob" title="تاریخ تولد" :old="$user->dob" :is-date-picker="true"/>
+                                <x-admin.input identify="dob" title="تاریخ تولد" :old="$user->dob->toJalali()->format('Y/m/d')" :is-date-picker="true"/>
                             </div>
                         </div>
 
@@ -132,7 +132,7 @@
 
                         <x-admin.checkbox identify="official_bill" description="درخواست فاکتور رسمی"  :old="$user->official_bill"/>
 
-                        <x-admin.checkbox identify="is_block" description="دسترسی داشته باشد" :old="$user->is_block" />
+                        <x-admin.checkbox identify="is_block" description="عدم دسترسی" :old="$user->is_block" />
 
                         <x-admin.button-submit title="{{ trans('panel.update') }}"/>
 
@@ -150,52 +150,22 @@
     </div>
 @endsection
 @section('script')
+    @include('admin.partial.loader.script',['load'=>[
+       \App\Enums\Assets\ScriptLoader::Alert(),
+       \App\Enums\Assets\ScriptLoader::Datepicker(),
+       \App\Enums\Assets\ScriptLoader::Select2(),
+       \App\Enums\Assets\ScriptLoader::InputMask(),
+   ]])
+
     @include('admin.partial.request')
     @include('admin.partial.script.global')
-    @include('admin.partial.loader.script',['load'=>[
-        \App\Enums\Assets\ScriptLoader::Alert(),
-        \App\Enums\Assets\ScriptLoader::Datepicker(),
-        \App\Enums\Assets\ScriptLoader::Select2(),
-    ]])
+    @include('admin.partial.script.mask')
+
     @include('admin.partial.ckeditor')
+    @include('user::admin.user.script.share')
     <script>
         $(document).ready(function () {
             activeParentUl('{{ route('admin.user.index') }}');
-
-            jalaliDatepicker.startWatch();
-
-            stateCompanyContainer('{{ $user->person_type }}');
-            $('#person_type').change(function (){
-                stateCompanyContainer($(this).val());
-            });
-
-            stateIrnicContainer('{{ $user->irnic->status }}');
-            $('#irnic_status').change(function (){
-                stateIrnicContainer($(this).val());
-            });
-
-            makeInputOnlyAlpha($('#en_first_name'));
-            makeInputOnlyAlpha($('#en_last_name'));
         })
-
-        const companyContainer = $('#company_container');
-        function stateCompanyContainer(status){
-            if(status === '{{ \Modules\User\app\Enums\PersonType::Legal }}'){
-                companyContainer.removeClass('d-none');
-            }
-            else{
-                companyContainer.addClass('d-none');
-            }
-        }
-
-        const irnicContainer = $('#irnic_container');
-        function stateIrnicContainer(status){
-            if(status === '{{ \Modules\User\app\Enums\IrnicStatus::HasIt }}'){
-                irnicContainer.removeClass('d-none');
-            }
-            else{
-                irnicContainer.addClass('d-none');
-            }
-        }
     </script>
 @endsection

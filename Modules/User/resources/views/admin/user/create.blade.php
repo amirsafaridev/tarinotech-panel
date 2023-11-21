@@ -124,8 +124,6 @@
 
                         <x-admin.checkbox identify="official_bill" description="درخواست فاکتور رسمی"  />
 
-                        <x-admin.checkbox identify="is_block" description="دسترسی داشته باشد"  />
-
                         <x-admin.button-submit/>
                     </form>
                 </div>
@@ -134,50 +132,22 @@
     </div>
 @endsection
 @section('script')
+    @include('admin.partial.loader.script',['load'=>[
+       \App\Enums\Assets\ScriptLoader::Alert(),
+       \App\Enums\Assets\ScriptLoader::Datepicker(),
+       \App\Enums\Assets\ScriptLoader::Select2(),
+       \App\Enums\Assets\ScriptLoader::InputMask(),
+   ]])
+
     @include('admin.partial.request')
     @include('admin.partial.script.global')
-    @include('admin.partial.loader.script',['load'=>[
-        \App\Enums\Assets\ScriptLoader::Alert(),
-        \App\Enums\Assets\ScriptLoader::Datepicker(),
-        \App\Enums\Assets\ScriptLoader::Select2(),
-    ]])
+    @include('admin.partial.script.mask')
+
     @include('admin.partial.ckeditor')
+    @include('user::admin.user.script.share')
+
     <script>
         $(document).ready(function () {
-            jalaliDatepicker.startWatch();
-
-            stateCompanyContainer('');
-            $('#person_type').change(function (){
-                stateCompanyContainer($(this).val());
-            });
-
-            stateIrnicContainer('');
-            $('#irnic').change(function (){
-                stateIrnicContainer($(this).val());
-            });
-
-            makeInputOnlyAlpha($('#en_first_name'));
-            makeInputOnlyAlpha($('#en_last_name'));
         })
-
-        const companyContainer = $('#company_container');
-        function stateCompanyContainer(status){
-            if(status === '{{ \Modules\User\app\Enums\PersonType::Legal }}'){
-                companyContainer.removeClass('d-none');
-            }
-            else{
-                companyContainer.addClass('d-none');
-            }
-        }
-
-        const irnicContainer = $('#irnic_container');
-        function stateIrnicContainer(status){
-            if(status === '{{ \Modules\User\app\Enums\IrnicStatus::HasIt }}'){
-                irnicContainer.removeClass('d-none');
-            }
-            else{
-                irnicContainer.addClass('d-none');
-            }
-        }
     </script>
 @endsection

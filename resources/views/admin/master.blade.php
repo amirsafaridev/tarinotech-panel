@@ -143,7 +143,7 @@
     </footer>
 </div>
 
-<a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+<a href="#top" id="back-to-top"><i class="fal fa-angle-up"></i></a>
 
 <script src="{{ asset('res-admin/assets/js/jquery.min.js') }}"></script>
 

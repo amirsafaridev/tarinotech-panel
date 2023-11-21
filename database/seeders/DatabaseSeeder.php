@@ -8,7 +8,6 @@ use Modules\Admin\database\seeders\AdminDatabaseSeeder;
 use Modules\Blog\database\seeders\BlogDatabaseSeeder;
 use Modules\BlogCategory\database\seeders\BlogCategoryDatabaseSeeder;
 use Modules\Factor\database\seeders\FactorDatabaseSeeder;
-use Modules\Login\database\seeders\LoginDatabaseSeeder;
 use Modules\Role\database\seeders\RoleDatabaseSeeder;
 use Modules\User\database\seeders\UserDatabaseSeeder;
 
@@ -20,9 +19,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            RoleDatabaseSeeder::class, //DONE
+            //RoleDatabaseSeeder::class, //DONE
             AdminDatabaseSeeder::class, //DONE
-            LoginDatabaseSeeder::class, //DONE
             UserDatabaseSeeder::class, //DONE
             PackageSeeder::class,
             ProjectBaseSeeder::class,

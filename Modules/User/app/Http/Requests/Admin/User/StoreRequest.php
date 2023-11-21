@@ -36,7 +36,7 @@ class StoreRequest extends FormRequest
             'father_name' => 'required|max:255',
             'national_id' => 'required|max:255',
             'document_id' => 'required|max:255',
-            'dob' => 'required|date_format:Y-m-d',
+            'dob' => 'required|jdate',
             'person_type' => ['required', new EnumValue(PersonType::class, false)],
             'address' => 'required',
             'postal_code' => 'required|max:255',

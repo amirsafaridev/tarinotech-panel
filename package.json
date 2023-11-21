@@ -4,7 +4,7 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "css:clean": "npx postcss public/res-admin/assets/css/style.css -o public/res-admin/assets/css/style.min.css"
+        "build:css": "npx postcss public/res-admin/assets/css/style.css -o public/res-admin/assets/css/style.min.css"
     },
     "devDependencies": {
         "@fullhuman/postcss-purgecss": "^5.0.0",

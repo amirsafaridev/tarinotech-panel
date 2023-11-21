@@ -73,6 +73,7 @@ class User extends Authenticatable
     protected $casts = [
         'verify_at' => 'datetime',
         'password' => 'hashed',
+        'dob' => 'datetime',
     ];
 
     public function address(): HasOne
