@@ -24,7 +24,7 @@ class ViewComposerProvider extends ServiceProvider
      */
     public function boot()
     {
-        view()->composer(['blog::admin.create', 'blog::admin.edit'], function ($view) {
+        view()->composer(['blog::admin.create', 'blog::admin.edit', 'blog::admin.index'], function ($view) {
             $categories = BlogCategory::orderBy('title')
                 ->get();
             $view->with('categories', $categories);

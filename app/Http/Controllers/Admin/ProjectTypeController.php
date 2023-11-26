@@ -17,7 +17,7 @@ class ProjectTypeController extends Controller
 {
     public function index()
     {
-        $title = 'انواع پزوژه ها';
+        $title = 'پروژه ها';
         $routeData = route('admin.project.type.data');
         $selects = ['id', 'title', 'base.title', 'created_at'];
 

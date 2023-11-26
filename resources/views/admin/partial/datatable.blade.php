@@ -115,7 +115,4 @@
 
         "order": [[0, "desc"]],
     });
-    function jsNumberFormat(number) {
-        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
 </script>

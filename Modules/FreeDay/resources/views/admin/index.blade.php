@@ -31,7 +31,7 @@
                         <table id="data-table" class="table">
                             <thead>
                             <tr>
-                                @foreach ($columns as $column)
+                                @foreach ($dataTable['columns'] as $column)
                                     <th>{{ $column['as'] }}</th>
                                 @endforeach
                             </tr>
@@ -39,7 +39,7 @@
 
                             <tfoot>
                             <tr>
-                                @foreach ($columns as $column)
+                                @foreach ($dataTable['columns'] as $column)
                                     <th>{{ $column['as'] }}</th>
                                 @endforeach
                             </tr>

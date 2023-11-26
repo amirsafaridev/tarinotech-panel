@@ -99,7 +99,7 @@
                     </div>
 
                     <x-admin.textarea identify="note"
-                                      title="اطلاعات بیشتر (یاداشت)"
+                                      title="اطلاعات بیشتر (یادداشت)"
                                       :old="$project->note"/>
 
                     <x-admin.button-submit/>

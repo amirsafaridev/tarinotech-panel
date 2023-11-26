@@ -176,7 +176,7 @@
                         </div>
                     </div>
 
-                    <x-admin.textarea identify="note" title="اطلاعات بیشتر (یاداشت)"/>
+                    <x-admin.textarea identify="note" title="اطلاعات بیشتر (یادداشت)"/>
 
                     <x-admin.button-submit/>
 

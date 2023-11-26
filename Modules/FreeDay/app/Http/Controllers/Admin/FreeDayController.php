@@ -4,6 +4,7 @@ namespace Modules\FreeDay\app\Http\Controllers\Admin;
 
 use App\Enums\General\BtnType;
 use App\Foundation\ValueObjects\Datatable\ColumnOption;
+use App\Foundation\ValueObjects\Datatable\DatatableBase;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Traits\HasDatatable;
@@ -32,9 +33,9 @@ class FreeDayController extends Controller
 
         $routeData = $this->getDataRoute();
 
-        $columns = $this->getColumns();
+        $dataTable = $this->getDataTable();
 
-        return view('freeday::admin.index', compact('title', 'routeData', 'columns'));
+        return view('freeday::admin.index', compact('title', 'routeData', 'dataTable'));
     }
 
     public function data()
@@ -124,27 +125,25 @@ class FreeDayController extends Controller
         return route('admin.free-day.data');
     }
 
-    public function getColumns(): array
+    public function getDataTable(): array
     {
-        $columnOption = resolve(ColumnOption::class);
-
-        return [
-            $columnOption->setName('id')
-                ->setAs('شناسه')
-                ->make(),
-            $columnOption->clear()
-                ->setName('title')
-                ->setAs('عنوان')
-                ->make(),
-            $columnOption->clear()
-                ->setName('free_at')
-                ->setAs('تاریخ')
-                ->make(),
-            $columnOption->clear()
-                ->setName('action')
-                ->setAs('عملیات')
-                ->removeAction()
-                ->make(),
-        ];
+        return (new DatatableBase())
+            ->addColumn(
+                ColumnOption::new()->setName('id')
+                    ->setAs('شناسه')
+            )->addColumn(
+                ColumnOption::new()
+                    ->setName('title')
+                    ->setAs('عنوان')
+            )->addColumn(
+                ColumnOption::new()
+                    ->setName('free_at')
+                    ->setAs('تاریخ')
+            )->addColumn(
+                ColumnOption::new()
+                    ->setName('action')
+                    ->setAs('عملیات')
+                    ->removeAction()
+            )->render();
     }
 }

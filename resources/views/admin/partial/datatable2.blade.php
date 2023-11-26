@@ -1,5 +1,5 @@
 <script>
-    let table = $('#data-table').DataTable({
+    let dataTable = $('#data-table').DataTable({
         processing: true,
         serverSide: true,
         responsive:true,
@@ -7,9 +7,17 @@
         language: {
             url: '{{ asset('res-admin/assets/plugins/datatable/persian.json') }}'
         },
-        ajax: '{{ $routeData }}',
+        ajax: {
+            url:'{{ $routeData }}',
+            type: 'GET',
+            data: function (d) {
+                @foreach($dataTable['externalFilters'] as $filter)
+                d.{{ $filter['key'] }} = $('#{{ $filter['key'] }}').val();
+                @endforeach
+            }
+        },
         "columns": [
-            @foreach ($columns as $column)
+            @foreach ($dataTable['columns'] as $column)
                 {
                     'data': '{{ $column['name'] }}',
                     'name': '{{ $column['name'] }}',
@@ -28,7 +36,7 @@
             @endforeach
         ],
         "columnDefs": [
-            @foreach ($columns as $column)
+            @foreach ($dataTable['columns'] as $column)
                 @if($column['name'] == 'is_seen')
                 {
                     "targets": parseInt({{$loop->index}}),
@@ -106,11 +114,6 @@
                 @endif
             @endforeach
         ],
-
-
         "order": [[0, "desc"]],
     });
-    function jsNumberFormat(number) {
-        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
 </script>

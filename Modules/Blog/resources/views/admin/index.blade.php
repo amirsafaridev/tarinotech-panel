@@ -17,22 +17,24 @@
 
     <div class="row">
         <div class="col-xl-12 col-lg-12">
+
             <div class="card">
                 <div class="card-body">
                     @include('admin.partial.message')
+                    @include('blog::admin.part.filter')
                     <div class="table-responsive">
                         <table id="data-table" class="table">
                             <thead>
                             <tr>
-                                @foreach ($columns as $column)
-                                <th>{{ $column['as'] }}</th>
+                                @foreach ($dataTable['columns'] as $column)
+                                    <th>{{ $column['as'] }}</th>
                                 @endforeach
                             </tr>
                             </thead>
 
                             <tfoot>
                             <tr>
-                                @foreach ($columns as $column)
+                                @foreach ($dataTable['columns'] as $column)
                                     <th>{{ $column['as'] }}</th>
                                 @endforeach
                             </tr>
@@ -50,4 +52,11 @@
 @section('script')
     @include('admin.partial.loader.script',['load'=>[\App\Enums\Assets\ScriptLoader::DataTable()]])
     @include('admin.partial.datatable2')
+    <script>
+        $(document).ready(function (){
+            $('#category_id').on('change', function () {
+                dataTable.ajax.reload();
+            });
+        })
+    </script>
 @endsection

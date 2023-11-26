@@ -228,7 +228,7 @@
                             :with-option="false"
                             :enum-class="\App\Enums\Database\Project\WebFacility::class"/>
 
-                    <x-admin.textarea identify="note" title="اطلاعات بیشتر (یاداشت)"/>
+                    <x-admin.textarea identify="note" title="اطلاعات بیشتر (یادداشت)"/>
 
                     <x-admin.button-submit/>
 

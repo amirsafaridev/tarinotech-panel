@@ -4,12 +4,15 @@ namespace Modules\Blog\app\Http\Controllers\Admin;
 
 use App\Enums\General\BtnType;
 use App\Foundation\ValueObjects\Datatable\ColumnOption;
+use App\Foundation\ValueObjects\Datatable\DatatableBase;
+use App\Foundation\ValueObjects\Datatable\ExternalFilter;
 use App\Helpers\Helper;
 use App\Helpers\Uploader\PhotoUploader;
 use App\Http\Controllers\Controller;
 use App\Traits\HasDatatable;
 use App\Traits\HasJsonCommonResponse;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Modules\Blog\app\Http\Requests\Admin\StoreRequest;
 use Modules\Blog\app\Http\Requests\Admin\UpdateRequest;
@@ -33,15 +36,18 @@ class BlogController extends Controller
 
         $routeData = $this->getDataRoute();
 
-        $columns = $this->getColumns();
+        $dataTable = $this->getDataTable();
 
-        return view('blog::admin.index', compact('title', 'routeData', 'columns'));
+        return view('blog::admin.index', compact('title', 'routeData', 'dataTable'));
     }
 
     public function data()
     {
         try {
             $blogs = Blog::query()
+                ->when(is_numeric(request('category_id')), function (Builder $q) {
+                    return $q->where('blog_category_id', request('category_id'));
+                })
                 ->with(['category']);
 
             return DataTables::eloquent($blogs)
@@ -140,32 +146,27 @@ class BlogController extends Controller
         return route('admin.blog.data');
     }
 
-    public function getColumns(): array
+    public function getDataTable(): array
     {
-
-        $columnOption = resolve(ColumnOption::class);
-
-        return [
-            $columnOption->setName('id')
-                ->setAs('شناسه')
-                ->make(),
-            $columnOption->clear()
-                ->setName('title')
-                ->setAs('عنوان')
-                ->make(),
-            $columnOption->clear()
-                ->setName('category.title')
-                ->setAs('دسته بندی')
-                ->make(),
-            $columnOption->clear()
-                ->setName('created_at')
-                ->setAs('ایجاد')
-                ->make(),
-            $columnOption->clear()
-                ->setName('action')
-                ->setAs('عملیات')
-                ->removeAction()
-                ->make(),
-        ];
+        return (new DatatableBase())
+            ->addColumn(
+                ColumnOption::new()->setName('id')->setAs('شناسه')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('title')->setAs('عنوان')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('category.title')->setAs('دسته بندی')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('created_at')->setAs('ایجاد')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('action')
+                    ->setAs('عملیات')
+                    ->removeAction()
+            )
+            ->addExternalFilter(ExternalFilter::new()->setKey('category_id'))
+            ->render();
     }
 }

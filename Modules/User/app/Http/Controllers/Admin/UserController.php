@@ -4,6 +4,7 @@ namespace Modules\User\app\Http\Controllers\Admin;
 
 use App\Enums\General\BtnType;
 use App\Foundation\ValueObjects\Datatable\ColumnOption;
+use App\Foundation\ValueObjects\Datatable\DatatableBase;
 use App\Helpers\Helper;
 use App\Helpers\Uploader\FileUploader;
 use App\Helpers\Uploader\PhotoUploader;
@@ -43,9 +44,9 @@ class UserController extends Controller
 
         $routeData = $this->getDataRoute();
 
-        $columns = $this->getColumns();
+        $dataTable = $this->getDataTable();
 
-        return view('user::admin.user.index', compact('title', 'routeData', 'columns'));
+        return view('user::admin.user.index', compact('title', 'routeData', 'dataTable'));
     }
 
     public function data()
@@ -259,43 +260,49 @@ class UserController extends Controller
         return route('admin.user.data');
     }
 
-    public function getColumns(): array
+    public function getDataTable(): array
     {
-        $columnOption = resolve(ColumnOption::class);
-
-        return [
-            $columnOption->setName('id')
-                ->setAs('شناسه')
-                ->make(),
-            $columnOption->clear()
-                ->setName('mobile')
-                ->setAs('موبایل')
-                ->make(),
-            $columnOption->clear()
-                ->setName('first_name')
-                ->setAs('نام')
-                ->make(),
-            $columnOption->clear()
-                ->setName('last_name')
-                ->setAs('نام خانوادگی')
-                ->make(),
-            $columnOption->clear()
-                ->setName('person_type')
-                ->setAs('نوع کاربر')
-                ->make(),
-            $columnOption->clear()
-                ->setName('is_block')
-                ->setAs('مسدود شده')
-                ->make(),
-            $columnOption->clear()
-                ->setName('created_at')
-                ->setAs('تاریخ ایجاد')
-                ->make(),
-            $columnOption->clear()
-                ->setName('action')
-                ->setAs('عملیات')
-                ->removeAction()
-                ->make(),
-        ];
+        return (new DatatableBase())
+            ->addColumn(
+                ColumnOption::new()->setName('id')
+                    ->setAs('شناسه')
+            )
+            ->addColumn(
+                ColumnOption::new()
+                    ->setName('mobile')
+                    ->setAs('موبایل')
+            )
+            ->addColumn(
+                ColumnOption::new()
+                    ->setName('first_name')
+                    ->setAs('نام')
+            )
+            ->addColumn(
+                ColumnOption::new()
+                    ->setName('last_name')
+                    ->setAs('نام خانوادگی')
+            )
+            ->addColumn(
+                ColumnOption::new()
+                    ->setName('person_type')
+                    ->setAs('نوع کاربر')
+            )
+            ->addColumn(
+                ColumnOption::new()
+                    ->setName('is_block')
+                    ->setAs('مسدود شده')
+            )
+            ->addColumn(
+                ColumnOption::new()
+                    ->setName('created_at')
+                    ->setAs('تاریخ ایجاد')
+            )
+            ->addColumn(
+                ColumnOption::new()
+                    ->setName('action')
+                    ->removeAction()
+                    ->setAs('عملیات')
+            )
+            ->render();
     }
 }

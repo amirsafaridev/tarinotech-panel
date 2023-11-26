@@ -12,6 +12,11 @@ class ColumnOption
 
     private string $as = '';
 
+    public static function new(): ColumnOption
+    {
+        return new self();
+    }
+
     public function setName(string $name): ColumnOption
     {
         $this->name = $name;
@@ -59,16 +64,6 @@ class ColumnOption
     public function setAs(string $as): ColumnOption
     {
         $this->as = $as;
-
-        return $this;
-    }
-
-    public function clear(): ColumnOption
-    {
-        $this->setName('');
-        $this->setAs('');
-        $this->setSearchable(true);
-        $this->setSortable(true);
 
         return $this;
     }

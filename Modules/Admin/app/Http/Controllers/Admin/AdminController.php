@@ -4,6 +4,7 @@ namespace Modules\Admin\app\Http\Controllers\Admin;
 
 use App\Enums\General\BtnType;
 use App\Foundation\ValueObjects\Datatable\ColumnOption;
+use App\Foundation\ValueObjects\Datatable\DatatableBase;
 use App\Helpers\Helper;
 use App\Helpers\Uploader\PhotoUploader;
 use App\Http\Controllers\Controller;
@@ -40,9 +41,9 @@ class AdminController extends Controller
 
         $routeData = $this->getDataRoute();
 
-        $columns = $this->getColumns();
+        $dataTable = $this->getDataTable();
 
-        return view('admin::admin.index', compact('title', 'routeData', 'columns'));
+        return view('admin::admin.index', compact('title', 'routeData', 'dataTable'));
     }
 
     public function data()
@@ -221,50 +222,25 @@ class AdminController extends Controller
         return route('admin.admin.data');
     }
 
-    public function getColumns(): array
+    public function getDataTable(): array
     {
-        $columnOption = resolve(ColumnOption::class);
-
-        return [
-            $columnOption->setName('id')
-                ->setAs('شناسه')
-                ->make(),
-            $columnOption->clear()
-                ->setName('email')
-                ->setAs('ایمیل')
-                ->make(),
-            $columnOption->clear()
-                ->setName('first_name')
-                ->setAs('نام')
-                ->make(),
-
-            $columnOption->clear()
-                ->setName('last_name')
-                ->setAs('نام خانوادگی')
-                ->make(),
-
-            $columnOption->clear()
-                ->setName('roles')
-                ->setAs('نقش ها')
-                ->setSortable(false)
-                ->setSearchable(false)
-                ->make(),
-
-            $columnOption->clear()
-                ->setName('latest_login')
-                ->setAs('آخرین ورود')
-                ->setSortable(false)
-                ->setSearchable(false)
-                ->make(),
-            $columnOption->clear()
-                ->setName('created_at')
-                ->setAs('تاریخ ایجاد')
-                ->make(),
-            $columnOption->clear()
-                ->setName('action')
-                ->setAs('عملیات')
-                ->removeAction()
-                ->make(),
-        ];
+        return (new DatatableBase())
+            ->addColumn(
+                ColumnOption::new()->setName('id')->setAs('شناسه')
+            )->addColumn(
+                ColumnOption::new()->setName('email')->setAs('ایمیل')
+            )->addColumn(
+                ColumnOption::new()->setName('first_name')->setAs('نام')
+            )->addColumn(
+                ColumnOption::new()->setName('last_name')->setAs('نام خانوادگی')
+            )->addColumn(
+                ColumnOption::new()->setName('roles')->setAs('نقش ها')->setSortable(false)->setSearchable(false)
+            )->addColumn(
+                ColumnOption::new()->setName('latest_login')->setAs('آخرین ورود')->setSortable(false)->setSearchable(false)
+            )->addColumn(
+                ColumnOption::new()->setName('created_at')->setAs('تاریخ ایجاد')
+            )->addColumn(
+                ColumnOption::new()->setName('action')->setAs('عملیات')->removeAction()
+            )->render();
     }
 }

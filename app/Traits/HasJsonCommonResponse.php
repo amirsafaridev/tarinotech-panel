@@ -30,7 +30,7 @@ trait HasJsonCommonResponse
 
         return response()->json([
             'result' => 'exception',
-            'message' => trans('panel.error_store'),
+            'message' => trans('panel.error'),
         ], 500);
     }
 
