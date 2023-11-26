@@ -18,9 +18,10 @@ class ProjectAdsSeeder extends Seeder
             ->create()->each(function (ProjectAds $projectAds) {
                 Project::factory(1)
                     ->create([
-                        'type_id' => $projectAds->id,
-                        'type_type' => ProjectAds::class,
-                        'project_base_id' => ProjectBase::Ads,
+                        'target_id' => $projectAds->id,
+                        'target_type' => ProjectAds::class,
+                        'base_id' => ProjectBase::Ads,
+                        'type_id' => rand(1, 7),
                     ]);
             });
     }

@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Controller\Admin\Ajax;
 
-use App\Models\FreeDay;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Modules\Admin\app\Models\Admin;
+use Modules\FreeDay\app\Models\FreeDay;
 use Tests\TestCase;
 
 class AjaxControllerTest extends TestCase

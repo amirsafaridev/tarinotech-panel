@@ -1,7 +1,7 @@
 @extends('auth::admin.master')
 @section('title') {{ $title }} @endsection
 @section('content')
-    <h3 class="text-center">{{ trans('panel.auth.login.login') }}</h3>
+    <h3 class="text-center">ورود به پورتال</h3>
     <form action="{{ route('auth.admin.login') }}" method="post" class="forms-sample">
         @csrf
 
@@ -56,7 +56,7 @@
         </div>
 
         <div class="d-flex justify-content-between align-items-center">
-            <button class="btn btn-success btn-md">{{ trans('panel.auth.login.submit') }}</button>
+            <button class="btn btn-success btn-md">ورود به پورتال</button>
             <a href="{{ route('auth.admin.password.forget') }}">{{ trans('panel.auth.login.forget') }}</a>
         </div>
     </form>

@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Admin\AutoMessageController;
 use App\Http\Controllers\Admin\FacilityController;
-use App\Http\Controllers\Admin\FreeDayController;
 use App\Http\Controllers\Admin\GroupGoalController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\Report\GoalGroupController as GoalGroupControllerReport;
@@ -75,16 +74,6 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::get('/sample-message/{sampleMessage}/edit', 'edit')->name('sample-message.edit');
         Route::patch('/sample-message/{sampleMessage}/update', 'update')->name('sample-message.update');
         Route::delete('/sample-message/{sampleMessage}/destroy', 'destroy')->name('sample-message.destroy');
-    });
-
-    Route::controller(FreeDayController::class)->group(function () {
-        Route::get('/free-day', 'index')->name('free-day.index');
-        Route::get('/free-day/data', 'data')->name('free-day.data');
-        Route::get('/free-day/create', 'create')->name('free-day.create');
-        Route::post('/free-day/store', 'store')->name('free-day.store');
-        Route::get('/free-day/{freeDay}/edit', 'edit')->name('free-day.edit');
-        Route::patch('/free-day/{freeDay}/update', 'update')->name('free-day.update');
-        Route::delete('/free-day/{freeDay}/destroy', 'destroy')->name('free-day.destroy');
     });
 
     Route::controller(AutoMessageController::class)->group(function () {

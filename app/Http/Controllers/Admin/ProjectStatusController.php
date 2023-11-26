@@ -7,8 +7,8 @@ use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProjectStatus\StoreRequest;
 use App\Http\Requests\Admin\ProjectStatus\UpdateRequest;
-use App\Models\ProjectBase;
 use App\Models\ProjectStatus;
+use App\Models\ProjectType;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -20,7 +20,7 @@ class ProjectStatusController extends Controller
     {
         $title = 'وضعیت پروژه ها';
         $routeData = route('admin.project.status.data');
-        $selects = ['id', 'title', 'base.title', 'projects_count', 'created_at'];
+        $selects = ['id', 'title', 'type.base.title', 'type.title', 'projects_count', 'created_at'];
 
         return view('admin.project_status.index', compact('title', 'routeData', 'selects'));
     }
@@ -32,7 +32,7 @@ class ProjectStatusController extends Controller
             $projectStatuses = ProjectStatus::query()
                 ->select('project_statuses.*')
                 ->withCount('projects')
-                ->with('base');
+                ->with('type.base');
 
             return DataTables::of($projectStatuses)
                 ->editColumn('created_at', function (ProjectStatus $projectStatus) {
@@ -51,9 +51,9 @@ class ProjectStatusController extends Controller
     {
         $title = 'وضعیت جدید';
         $routeStore = route('admin.project.status.store');
-        $projectBases = ProjectBase::query()->get();
+        $projectTypes = $this->toCompose();
 
-        return view('admin.project_status.create', compact('title', 'routeStore', 'projectBases'));
+        return view('admin.project_status.create', compact('title', 'routeStore', 'projectTypes'));
     }
 
     public function store(StoreRequest $request)
@@ -84,9 +84,9 @@ class ProjectStatusController extends Controller
         $title = 'ویرایش وضعیت';
         $routeUpdate = route('admin.project.status.update', $projectStatus->id);
         $routeDestroy = route('admin.project.status.destroy', $projectStatus->id);
-        $projectBases = ProjectBase::query()->get();
+        $projectTypes = $this->toCompose();
 
-        return view('admin.project_status.edit', compact('title', 'routeUpdate', 'routeDestroy', 'projectStatus', 'projectBases'));
+        return view('admin.project_status.edit', compact('title', 'routeUpdate', 'routeDestroy', 'projectStatus', 'projectTypes'));
     }
 
     public function update(UpdateRequest $request, ProjectStatus $projectStatus)
@@ -128,9 +128,22 @@ class ProjectStatusController extends Controller
     protected function itemProvider(Request $request): array
     {
         $item['title'] = $request->input('title');
-        $item['project_base_id'] = $request->input('project_base_id');
+        $item['type_id'] = $request->input('type_id');
         $item['note'] = $request->input('note');
 
         return $item;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    private function toCompose(): array
+    {
+        return ProjectType::query()
+            ->with('base')
+            ->get()
+            ->mapWithKeys(function ($projectType) {
+                return [$projectType->id => $projectType->base->title.' - '.$projectType->title];
+            })->toArray();
     }
 }

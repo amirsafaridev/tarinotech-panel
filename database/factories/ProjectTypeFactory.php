@@ -18,7 +18,7 @@ class ProjectTypeFactory extends Factory
     {
         return [
             'title' => 'نوع پروژه',
-            'project_base_id' => rand(1, 3),
+            'base_id' => rand(1, 3),
         ];
     }
 }

@@ -30,12 +30,12 @@
                         @csrf
                         @method('PATCH')
 
-                        <x-admin.select-model class="multiple" identify="project_base_id"
+                        <x-admin.select-model class="multiple" identify="base_id"
                                               title="انتخاب نوع پروژه"
                                               :items="$projectBases"
                                               key="id"
                                               value="title"
-                                              :old="$projectType->project_base_id"/>
+                                              :old="$projectType->base_id"/>
 
                         <x-admin.input identify="title" title="عنوان" :old="$projectType->title"/>
 

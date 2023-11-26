@@ -17,7 +17,7 @@ class AdsProjectComposer
     {
 
         $statuses = ProjectStatus::query()
-            ->where('project_base_id', ProjectBase::Ads)
+            ->where('type_id', ProjectBase::Ads)
             ->get();
 
         $view->with(compact('statuses'));

@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Database\Project\ProjectBase;
 use App\Models\ProjectStatus;
+use App\Models\ProjectType;
 use Illuminate\Database\Seeder;
 
 class ProjectStatusSeeder extends Seeder
@@ -12,19 +14,55 @@ class ProjectStatusSeeder extends Seeder
      */
     public function run(): void
     {
-        $statuses = ['درحال طراحی', 'در انتظار پرداخت', 'انجام شده', 'پشتیبانی', 'طراحی گرافیکی', 'لغو شده'];
 
-        $dataToInsert = [];
+        $statuses = [
+            ProjectBase::Web => [
+                'درحال طراحی',
+                'در انتظار تأیید',
+                'در حال توسعه',
+                'انجام شده',
+                'نیاز به به‌روزرسانی',
+                'در انتظار بازخورد',
+                'پیش‌نویس',
+                'لغو شده',
+            ],
+            ProjectBase::Seo => [
+                'تحلیل واژه‌ها',
+                'بهینه‌سازی محتوا',
+                'لینک‌سازی',
+                'بررسی رقبا',
+                'تحلیل عملکرد',
+                'بهبودات',
+                'انجام شده',
+                'لغو شده',
+            ],
+            ProjectBase::Ads => [
+                'تعیین استراتژی',
+                'ایجاد کمپین‌ها',
+                'تنظیم اهداف',
+                'تأیید تبلیغات',
+                'اپتیمایز کمپین‌ها',
+                'بررسی عملکرد',
+                'موفقیت‌آمیز',
+                'لغو شده',
+            ],
+        ];
 
-        foreach ($statuses as $status) {
-            $dataToInsert[] = [
-                'title' => $status,
-                'project_base_id' => rand(1, 3),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
+        $projectTypes = ProjectType::query()
+            ->get();
+
+        $statusesToInsert = [];
+
+        foreach ($projectTypes as $projectType) {
+            foreach ($statuses[$projectType->base_id] as $status) {
+                $statusesToInsert[] = [
+                    'title' => $status,
+                    'type_id' => $projectType->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
         }
-
-        ProjectStatus::query()->insert($dataToInsert);
+        ProjectStatus::query()->insert($statusesToInsert);
     }
 }

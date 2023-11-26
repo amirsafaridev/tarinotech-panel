@@ -23,7 +23,7 @@ class ForgotPasswordController extends Controller
 {
     use HasJsonCommonResponse;
 
-    const INDEX_TITLE = 'پرتال تارینوتک - فراموشی گذرواژه';
+    const INDEX_TITLE = 'پورتال تارینوتک - فراموشی گذرواژه';
 
     public function __construct()
     {

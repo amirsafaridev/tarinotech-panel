@@ -17,12 +17,17 @@ class ProjectType extends Model
 
     protected $fillable = [
         'title',
-        'project_base_id',
+        'base_id',
     ];
 
     public function base(): BelongsTo
     {
-        return $this->belongsTo(ProjectBase::class, 'project_base_id');
+        return $this->belongsTo(ProjectBase::class, 'base_id');
+    }
+
+    public function statuses(): HasMany
+    {
+        return $this->hasMany(ProjectStatus::class, 'type_id');
     }
 
     public function additionalFeatures(): HasMany

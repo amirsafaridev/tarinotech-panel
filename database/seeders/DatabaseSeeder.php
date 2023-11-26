@@ -8,7 +8,7 @@ use Modules\Admin\database\seeders\AdminDatabaseSeeder;
 use Modules\Blog\database\seeders\BlogDatabaseSeeder;
 use Modules\BlogCategory\database\seeders\BlogCategoryDatabaseSeeder;
 use Modules\Factor\database\seeders\FactorDatabaseSeeder;
-use Modules\Role\database\seeders\RoleDatabaseSeeder;
+use Modules\FreeDay\database\seeders\FreeDayDatabaseSeeder;
 use Modules\User\database\seeders\UserDatabaseSeeder;
 
 class DatabaseSeeder extends Seeder
@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
             FactorDatabaseSeeder::class, //DONE
             SampleMessageSeeder::class,
             AutoMessageSeeder::class,
-            FreeDaySeeder::class,
+            FreeDayDatabaseSeeder::class, // DONE
             BlogCategoryDatabaseSeeder::class, //DONE
             BlogDatabaseSeeder::class, //DONE
         ]);

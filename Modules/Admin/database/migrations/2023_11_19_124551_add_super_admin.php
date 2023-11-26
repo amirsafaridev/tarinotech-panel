@@ -20,7 +20,20 @@ return new class extends Migration
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-        Admin::first()->syncRoles(1);
+
+        DB::table('admins')
+            ->insert([
+                'first_name' => 'علی',
+                'last_name' => 'موسوی',
+                'mobile' => '09358394242',
+                'email' => 'mosaviali701@gmail.com',
+                'password' => bcrypt('12345678@p'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+        Admin::where('id', 1)->syncRoles(1);
+        Admin::where('id', 2)->syncRoles(1);
     }
 
     /**

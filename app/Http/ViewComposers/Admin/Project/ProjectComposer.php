@@ -21,10 +21,10 @@ class ProjectComposer
 
         $statuses = collect([]);
 
-        $baseId = request('base_id');
-        if ($baseId && is_numeric($baseId)) {
+        $typeId = request('type_id');
+        if ($typeId && is_numeric($typeId)) {
             $statuses = ProjectStatus::query()
-                ->where('project_base_id', $baseId)
+                ->where('type_id', $typeId)
                 ->get();
         }
 

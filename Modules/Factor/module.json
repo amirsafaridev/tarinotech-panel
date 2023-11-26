@@ -7,5 +7,7 @@
     "providers": [
         "Modules\\Factor\\app\\Providers\\FactorServiceProvider"
     ],
-    "files": []
+    "files": [
+        "app/Helpers/helper.php"
+    ]
 }

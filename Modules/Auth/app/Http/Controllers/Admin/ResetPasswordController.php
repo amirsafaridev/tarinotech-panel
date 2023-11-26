@@ -21,7 +21,7 @@ use function view;
 
 class ResetPasswordController extends Controller
 {
-    const INDEX_TITLE = 'پرتال تارینوتک - بازنشانی گذرواژه';
+    const INDEX_TITLE = 'پورتال تارینوتک - بازنشانی گذرواژه';
 
     public function __construct()
     {

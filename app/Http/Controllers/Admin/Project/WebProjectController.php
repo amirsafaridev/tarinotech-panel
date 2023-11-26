@@ -32,8 +32,8 @@ class WebProjectController extends Controller
         $title = 'پروژه ها - وب سایت ها';
 
         $projects = Project::query()
-            ->with(['status', 'type.package'])
-            ->whereHasMorph('type', [ProjectWeb::class], function (Builder $q) {
+            ->with(['status', 'target.package'])
+            ->whereHasMorph('target', [ProjectWeb::class], function (Builder $q) {
                 $q->filter([
                     PackageFilter::class,
                 ]);
@@ -153,17 +153,14 @@ class WebProjectController extends Controller
 
     private function getDomain(Request $req): DomainTransformer
     {
-
-        $domainPassword = $req->input('domain_password') ?
-            Crypt::encrypt($req->input('domain_password')) :
-            '';
+        $domainPassword = $req->input('domain_password') ? Crypt::encrypt($req->input('domain_password')) : '';
         $domains = resolve(DomainTransformer::class);
         $domains->setHaveDomain($req->has('have_domain'));
         $domains->setDomainProviderWebsite($req->input('domain_provider_website'));
         $domains->setDomainUsername($req->input('domain_username'));
         $domains->setDomainPassword($domainPassword);
         $domains->setDomainPrimary($req->input('domain_primary'));
-        $domains->setDomainsRequired($req->input('domains_required'));
+        $domains->setDomainsRequired($req->input('domains_required', []));
         $domains->setOtherDomain($req->input('other_domain'));
 
         return $domains;
@@ -171,9 +168,7 @@ class WebProjectController extends Controller
 
     private function getHost(Request $req): HostTransformer
     {
-        $hostPassword = $req->input('host_password') ?
-            Crypt::encrypt($req->input('host_password')) :
-            '';
+        $hostPassword = $req->input('host_password') ? Crypt::encrypt($req->input('host_password')) : '';
 
         $host = resolve(HostTransformer::class);
         $host->setHaveHost($req->has('have_host'));
@@ -225,9 +220,10 @@ class WebProjectController extends Controller
             'admin_id' => auth()->id(),
             'user_id' => $request->input('user_id'),
             'price' => $request->input('price'),
-            'project_status_id' => $request->input('status_id'),
+            'status_id' => $request->input('status_id'),
+            'type_id' => $request->input('type_id'),
             'note' => $request->input('note'),
-            'project_base_id' => ProjectBase::Web,
+            'base_id' => ProjectBase::Web,
         ];
 
         if (! empty($agreementAt)) {
@@ -255,7 +251,7 @@ class WebProjectController extends Controller
         return [
             'field_activity' => $request->input('field_activity'),
             'package_id' => $request->input('package_id'),
-            'project_type_id' => $request->input('project_type_id'),
+            'type_id' => $request->input('type_id'),
             'pages' => $request->input('pages'),
             'working_days' => $request->input('working_days'),
             'domains' => $domain->toArray(),
@@ -263,14 +259,15 @@ class WebProjectController extends Controller
             'language' => $language->toArray(),
             'sample' => $sample->toArray(),
             'facilities' => $request->input('facilities', []),
+            'project_type_id' => 1,
         ];
     }
 
     private function getOrFailProject($projectId): Project
     {
         return Project::query()
-            ->whereHasMorph('type', [ProjectWeb::class])
-            ->with('type')
+            ->whereHasMorph('target', [ProjectWeb::class])
+            ->with('target')
             ->findOrFail($projectId);
     }
 }

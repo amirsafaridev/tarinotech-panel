@@ -17,18 +17,18 @@ class ProjectStatus extends Model
 
     protected $fillable = [
         'title',
-        'project_base_id',
+        'type_id',
         'note',
     ];
 
-    public function base(): BelongsTo
+    public function type(): BelongsTo
     {
-        return $this->belongsTo(ProjectBase::class, 'project_base_id');
+        return $this->belongsTo(ProjectType::class, 'type_id');
     }
 
     public function projects(): HasMany
     {
-        return $this->hasMany(Project::class);
+        return $this->hasMany(Project::class, 'status_id');
     }
 
     public function getActivitylogOptions(): LogOptions

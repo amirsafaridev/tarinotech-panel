@@ -12,7 +12,7 @@
 
     @include('favicon')
 
-    <title>@yield('title','تارینوتک - پرتال')</title>
+    <title>@yield('title','تارینوتک - پورتال')</title>
 
 
     <link href="{{ asset('res-admin/assets/font-awesome/css/light.css') }}" rel="stylesheet" />

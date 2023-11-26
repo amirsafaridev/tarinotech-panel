@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Database\Project\ProjectBase;
 use App\Models\ProjectType;
 use Illuminate\Database\Seeder;
 
@@ -12,27 +13,36 @@ class ProjectTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        $types = [
-            'شرکتی',
-            'فروشگاهی',
-            'خبری',
-            'شخصی',
-            'آموزشی',
-            'درج آگهی',
-            'سایر',
+        $projectBaseTypes = [
+            ProjectBase::Seo => [
+                'پروژه سئو',
+            ],
+            ProjectBase::Ads => [
+                'تبلیغات',
+            ],
+            ProjectBase::Web => [
+                'شرکتی',
+                'فروشگاهی',
+                'خبری',
+                'شخصی',
+                'آموزشی',
+                'درج آگهی',
+            ],
         ];
 
-        $dataToInsert = [];
+        $projectTypesToInsert = [];
 
-        foreach ($types as $type) {
-            $dataToInsert[] = [
-                'title' => $type,
-                'project_base_id' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
+        foreach ($projectBaseTypes as $baseId => $typeTitles) {
+            foreach ($typeTitles as $title) {
+                $projectTypesToInsert[] = [
+                    'title' => $title,
+                    'base_id' => $baseId,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
         }
 
-        ProjectType::query()->insert($dataToInsert);
+        ProjectType::query()->insert($projectTypesToInsert);
     }
 }

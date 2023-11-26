@@ -24,4 +24,5 @@ return [
     'name' => 'نام',
     'permissions_count' => 'تعداد پرمیشن',
     'project.title' => 'نام پروژه',
+    'type.base.title' => 'پایه',
 ];

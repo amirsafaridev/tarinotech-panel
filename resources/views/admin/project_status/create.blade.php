@@ -26,12 +26,12 @@
                     <form class="request-form forms-sample" method="post" action="{{ $routeStore }}">
                         @csrf
 
-                        <x-admin.select-model class="multiple"
-                                              identify="project_base_id"
+                        <x-admin.select-simple class="multiple"
+                                              identify="type_id"
                                               title="انتخاب نوع پروژه"
                                               key="id"
                                               value="title"
-                                              :items="$projectBases"/>
+                                              :items="$projectTypes"/>
 
                         <x-admin.input identify="title" title="عنوان"/>
 

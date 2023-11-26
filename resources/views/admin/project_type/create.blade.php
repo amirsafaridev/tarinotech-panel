@@ -26,7 +26,7 @@
                     <form class="request-form forms-sample" method="post" action="{{ $routeStore }}">
                         @csrf
 
-                        <x-admin.select-model identify="project_base_id"
+                        <x-admin.select-model identify="base_id"
                                               title="پروژه"
                                               key="id"
                                               value="title"

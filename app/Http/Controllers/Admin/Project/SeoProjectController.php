@@ -28,8 +28,8 @@ class SeoProjectController extends Controller
         $title = 'پروژه ها - سئو';
 
         $projects = Project::query()
-            ->with(['status', 'type', 'user', 'admin'])
-            ->whereHasMorph('type', [ProjectSeo::class])
+            ->with(['status', 'target', 'user', 'admin'])
+            ->whereHasMorph('target', [ProjectSeo::class])
             ->whereHas('user', function (Builder $q) {
                 $q->filter([
                     UserSearchFilter::class,
@@ -194,8 +194,8 @@ class SeoProjectController extends Controller
     private function getOrFailProject($projectId)
     {
         return Project::query()
-            ->whereHasMorph('type', [ProjectSeo::class])
-            ->with('type')
+            ->whereHasMorph('target', [ProjectSeo::class])
+            ->with('target')
             ->findOrFail($projectId);
     }
 }

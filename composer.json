@@ -10,6 +10,7 @@
     "require": {
         "php": "^8.1",
         "ext-mbstring": "*",
+        "aws/aws-sdk-php": "^3.288",
         "bensampo/laravel-enum": "^6.4",
         "doctrine/dbal": "^3.6",
         "google/apiclient": "^2.15",
@@ -22,6 +23,7 @@
         "laravel/telescope": "^4.16",
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.2",
+        "league/flysystem-aws-s3-v3": "^3.0",
         "maatwebsite/excel": "^3.1",
         "mews/captcha": "^3.3",
         "nwidart/laravel-modules": "^10.0",

@@ -18,9 +18,10 @@ class ProjectWebSeeder extends Seeder
             ->create()->each(function (ProjectWeb $projectWeb) {
                 Project::factory(1)
                     ->create([
-                        'type_id' => $projectWeb->id,
-                        'type_type' => ProjectWeb::class,
-                        'project_base_id' => ProjectBase::Web,
+                        'target_id' => $projectWeb->id,
+                        'target_type' => ProjectWeb::class,
+                        'base_id' => ProjectBase::Web,
+                        'type_id' => rand(1, 7),
                     ]);
             });
     }

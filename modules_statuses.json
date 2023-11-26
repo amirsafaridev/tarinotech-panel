@@ -17,5 +17,7 @@
     "Payment": true,
     "Dashboard": true,
     "Login": true,
-    "Auth": true
+    "Auth": true,
+    "Support": true,
+    "FreeDay": true
 }

@@ -42,12 +42,6 @@
 
                     <x-admin.select-user title="کارفرما"/>
 
-                    <x-admin.select-model identify="status_id"
-                                          title="وضعیت پروژه"
-                                          key="id"
-                                          value="title"
-                                          :items="$statuses"
-                    />
                 </div>
             </div>
 
@@ -158,12 +152,24 @@
                     <div class="row">
                         <div class="col-12 col-md-6">
                             <x-admin.select-model
-                                    identify="project_type_id"
+                                    identify="type_id"
                                     title="نوع پروژه"
-                                    :items="$projectTypes"
+                                    :items="$types"
+                                    :has-choice-option="false"
                                     key="id"
                                     value="title"/>
                         </div>
+
+                        <div class="col-12 col-md-6">
+                            <x-admin.select-simple identify="status_id"
+                                                  title="وضعیت پروژه"
+
+                            />
+                        </div>
+
+                    </div>
+
+                    <div class="row">
                         <div class="col-12 col-md-6">
                             <x-admin.select-model
                                     identify="package_id"
@@ -172,21 +178,19 @@
                                     key="id"
                                     value="title"/>
                         </div>
-                    </div>
-
-                    <div class="row">
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="agreement_at"
                                            title="تاریخ قرارداد"
                                            :is-date-picker="true"
                             />
                         </div>
-                        <div class="col-12 col-md-6">
-                            <x-admin.input identify="field_activity" title="زمینه فعالیت"/>
-                        </div>
                     </div>
 
                     <div class="row">
+                        <div class="col-12 col-md-6">
+                            <x-admin.input identify="field_activity" title="زمینه فعالیت"/>
+                        </div>
+
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="pages" title="تعداد صفحات داخلی"/>
                         </div>
@@ -208,11 +212,8 @@
                         </div>
                     </div>
 
-                    <div class="d-flex align-items-end gap-2 mt-3">
-                        <div class="flex-grow-1">
-                            <x-admin.input identify="price" title="قیمت (ریال)"/>
-                        </div>
-                        <button type="button" id="make_installments" class="btn btn-primary mb-2">ایجاد فاکتور ها</button>
+                    <div class="mt-4">
+                        <x-admin.input identify="price" title="قیمت (ریال)"/>
                     </div>
 
                     <x-admin.textarea identify="similar_sites" title="سایت های مشابه"
@@ -234,9 +235,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-12" id="factor_item_container">
-
-        </div>
     </form>
 @endsection
 @section('script')
@@ -247,173 +245,10 @@
     ]])
     @include('admin.partial.request')
     @include('admin.partial.script.global')
+    @include('admin.project.web.part.script')
     <script>
         $(document).ready(function () {
             activeParentUl('{{ route('admin.project.web.index') }}');
-
-            $('#user_id').select2();
-            $('#domains_required').select2();
-            $('#languages').select2();
-            $('#facilities').select2();
-
-            $('#have_domain').change(function () {
-                stateDomainContainer($(this).is(':checked'));
-            });
-
-            $('#have_host').change(function () {
-                stateHostContainer($(this).is(':checked'));
-            });
-
-
-            jalaliDatepicker.startWatch();
-
-            const deadlineAt = $('#deadline_at');
-
-            const workingDays = $('#working_days');
-            const alertWorkingDays = $('#alert_working_days');
-            const alertDaysCalcMessage = $('#alert_working_days .message');
-            let debounceTimer;
-
-            const price = $('#price');
-            const makeInstallments = $('#make_installments');
-            const factorItemContainer = $('#factor_item_container');
-            makeInstallments.click(function () {
-                postAjax('{{ route('admin.ajax.factor.make-installments') }}', {
-                    days: deadlineAt.val(),
-                    price: price.val()
-                })
-                    .then(function (response) {
-                        factorItemContainer.html(response.html);
-                        updatePriceInputs();
-                    })
-                    .catch(function (response) {
-                        console.log(response);
-                    });
-            });
-
-            factorItemContainer.on('click', '.btn-remove', function () {
-                const self = $(this);
-                swal({
-                    title: "حذف",
-                    text: "آیا مطمئن هستید که میخواهید این مورد را حذف کنید؟",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#ff0f3b",
-                    confirmButtonText: "حذف",
-                    cancelButtonText: "صرفه نظر",
-                    closeOnConfirm: true
-                }, function () {
-                    self.closest('.card-factor-item').remove();
-                });
-            });
-
-            workingDays.on('keyup', function () {
-                const self = $(this);
-                if (!self.val()) {
-                    return;
-                }
-                clearTimeout(debounceTimer);
-                alertDaysCalcMessage.html('<span class="fal fa-spinner fa-spin"></span>');
-                debounceTimer = setTimeout(function () {
-                    postAjax('{{ route('admin.ajax.calendar.calc.day.work') }}', {
-                        days: self.val()
-                    })
-                        .then(function (response) {
-                            let totalWorkDays = response.total_work_days;
-                            let totalFreeDays = response.total_free_days;
-                            let finalDateJalali = response.final_date_jalali;
-                            let finalDate = response.final_date_jalali;
-                            let updatedMessage = `تعداد روز های محاسبه شده ${totalWorkDays} می باشد و تعداد روز های تعطیل محاسبه شده ${totalFreeDays} می باشد. تاریخ تحویل ${finalDateJalali} می باشد`;
-                            alertDaysCalcMessage.html(updatedMessage);
-                            deadlineAt.val(finalDate);
-                        })
-                        .catch(function (response) {
-                            console.log(response);
-                        });
-                }, 2000);
-            });
-            makeInputNumber(workingDays);
-            makeInputPrice(price);
         })
-
-
-        const domainContainer = $('#domain_container');
-
-        function stateDomainContainer(status) {
-            if (status) {
-                domainContainer.removeClass('d-none');
-            } else {
-                domainContainer.addClass('d-none');
-            }
-        }
-
-        const hostContainer = $('#host_container');
-
-        function stateHostContainer(status) {
-            if (status) {
-                hostContainer.removeClass('d-none');
-            } else {
-                hostContainer.addClass('d-none');
-            }
-        }
-
-        function priceInputMaker(input) {
-            input.off('click');
-            input.off('input');
-            input.off('change');
-            makeInputPrice(input);
-        }
-
-        function updatePriceInputs() {
-
-            $('input.offer-input').each(function () {
-                const input = $(this);
-                priceInputMaker(input);
-                input.on("input", function () {
-                    updateTotalPrice(input);
-                });
-            });
-
-            $('input.price-input').each(function () {
-                const input = $(this);
-                priceInputMaker(input);
-
-                input.on("input", function () {
-                    const priceInput = $(this);
-                    const value = parseInt(priceInput.val().replace(/,/g, ''), 10) || 0;
-
-                    const taxInput = priceInput.parent().parent().parent().find('.tax-input');
-
-                    if (value <= 0) {
-                        taxInput.val(0);
-                    } else {
-                        let taxCalc = Math.round(value * 0.09);
-                        taxInput.val(numberWithCommas(taxCalc))
-                    }
-                    updateTotalPrice(input);
-                })
-            })
-        }
-
-        function updateTotalPrice(card) {
-            const cardItem = card.parent().parent().parent().parent().parent();
-            const h4FinalPrice = cardItem.find('.factor-item-price');
-
-            let totalPrice = 0;
-            let totalSub = 0;
-
-            cardItem.find('.calc').each(function () {
-
-                const inputInProcess = $(this);
-                let price = parseInt(inputInProcess.val().replace(/,/g, ''), 10) || 0;
-
-                if (inputInProcess.hasClass('offer-input')) {
-                    totalSub += price;
-                } else {
-                    totalPrice += price;
-                }
-            });
-            h4FinalPrice.text(numberWithCommas(totalPrice - totalSub));
-        }
     </script>
 @endsection

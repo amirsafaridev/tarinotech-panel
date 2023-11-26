@@ -124,7 +124,7 @@ class ProjectTypeController extends Controller
     protected function itemProvider(Request $request): array
     {
         $item['title'] = $request->input('title');
-        $item['project_base_id'] = $request->input('project_base_id');
+        $item['base_id'] = $request->input('base_id');
         $item['note'] = $request->input('note');
 
         return $item;

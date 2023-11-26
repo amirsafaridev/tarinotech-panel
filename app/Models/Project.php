@@ -27,10 +27,11 @@ class Project extends Model
         'admin_id',
         'user_id',
         'price',
-        'project_status_id',
-        'project_base_id',
-        'type_type',
+        'status_id',
+        'base_id',
         'type_id',
+        'target_type',
+        'target_id',
         'agreement_at',
         'deadline_at',
         'note',
@@ -41,19 +42,24 @@ class Project extends Model
         'agreement_at' => 'date',
     ];
 
-    public function base(): BelongsTo
-    {
-        return $this->belongsTo(ProjectBase::class, 'project_base_id');
-    }
-
-    public function type(): MorphTo
+    public function target(): MorphTo
     {
         return $this->morphTo();
     }
 
+    public function base(): BelongsTo
+    {
+        return $this->belongsTo(ProjectBase::class, 'base_id');
+    }
+
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(ProjectType::class, 'type_id');
+    }
+
     public function status(): BelongsTo
     {
-        return $this->belongsTo(ProjectStatus::class, 'project_status_id');
+        return $this->belongsTo(ProjectStatus::class, 'status_id');
     }
 
     public function user(): BelongsTo

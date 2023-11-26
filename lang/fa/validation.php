@@ -272,5 +272,6 @@ return [
         'financial_cycle_value' => 'قیمت',
         'added_at' => 'تاریخ ایجاد',
         'blog_category_id' => 'دسته بندی بلاگ',
+        'base_id' => 'پایه',
     ],
 ];

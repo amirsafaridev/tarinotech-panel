@@ -56,7 +56,7 @@
                                         <td>{{ $project->id }}</td>
                                         <td>{{ $project->title }}</td>
                                         <td>{{ $project->domain }}</td>
-                                        <td>{{ $project->type->package->title }}</td>
+                                        <td>{{ $project->target->package->title }}</td>
                                         <td>{{ number_format($project->price) }}</td>
                                         <td>{{ $project->status->title }}</td>
                                         <td>{{ verta($project->deadline_at)->format(formatJalaliDate()) }}</td>

@@ -16,4 +16,6 @@ final class FactorStatus extends Enum implements LocalizedEnum
     const OnHold = 4;
 
     const Lock = 5;
+
+    const Draft = 6;
 }

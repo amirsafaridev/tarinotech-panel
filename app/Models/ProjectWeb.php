@@ -13,8 +13,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class ProjectWeb extends Model
 {
-    use HasFactory;
     use Filterable;
+    use HasFactory;
     use LogsActivity;
 
     protected $fillable = [
@@ -41,7 +41,7 @@ class ProjectWeb extends Model
 
     public function project(): MorphOne
     {
-        return $this->morphOne(Project::class, 'type');
+        return $this->morphOne(Project::class, 'target');
     }
 
     public function package(): BelongsTo

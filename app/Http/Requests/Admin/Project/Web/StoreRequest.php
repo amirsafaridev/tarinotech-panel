@@ -22,14 +22,16 @@ class StoreRequest extends FormRequest
         return [
             'title' => 'required|max:255',
             'domain_primary' => 'required|max:255',
+
             'user_id' => 'required|exists:users,id',
+            'type_id' => 'required|exists:project_types,id',
             'status_id' => 'required|exists:project_statuses,id',
+
             'price' => 'required|integer',
             'deadline_at' => 'required|jdate',
 
             'field_activity' => 'required|max:255',
             'package_id' => 'required|exists:packages,id',
-            'project_type_id' => 'required|exists:project_types,id',
             'pages' => 'required|integer',
             'agreement_at' => 'required|jdate',
             'working_days' => 'required|integer',

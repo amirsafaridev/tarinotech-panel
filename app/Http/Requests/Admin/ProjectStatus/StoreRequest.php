@@ -21,7 +21,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'title' => 'required|max:255',
-            'project_base_id' => 'required|exists:project_bases,id',
+            'type_id' => 'required|exists:project_types,id',
         ];
     }
 }

@@ -13,6 +13,7 @@ use App\Http\Requests\Admin\Project\Ads\StoreRequest;
 use App\Http\Requests\Admin\Project\Ads\UpdateRequest;
 use App\Models\Project;
 use App\Models\ProjectAds;
+use App\Models\ProjectStatus;
 use DB;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,8 +27,8 @@ class AdsProjectController extends Controller
         $title = 'پروژه ها - گوگل ادز';
 
         $projects = Project::query()
-            ->with(['status', 'type', 'user', 'admin'])
-            ->whereHasMorph('type', [ProjectAds::class])
+            ->with(['status', 'target', 'user', 'admin'])
+            ->whereHasMorph('target', [ProjectAds::class])
             ->whereHas('user', function (Builder $q) {
                 $q->filter([
                     UserSearchFilter::class,
@@ -91,7 +92,11 @@ class AdsProjectController extends Controller
         $title = 'پروژه گوگل ادز - ویرایش';
         $routeUpdate = route('admin.project.ads.update', $project->id);
 
-        return view('admin.project.ads.edit', compact('title', 'routeUpdate', 'project'));
+        $statuses = ProjectStatus::query()
+            ->where('type_id', $project->type_id)
+            ->get();
+
+        return view('admin.project.ads.edit', compact('title', 'routeUpdate', 'project', 'statuses'));
     }
 
     public function update(UpdateRequest $request, $projectId)
@@ -170,8 +175,8 @@ class AdsProjectController extends Controller
     private function getOrFailProject($projectId)
     {
         return Project::query()
-            ->whereHasMorph('type', [ProjectAds::class])
-            ->with('type')
+            ->whereHasMorph('target', [ProjectAds::class])
+            ->with('target')
             ->findOrFail($projectId);
     }
 }

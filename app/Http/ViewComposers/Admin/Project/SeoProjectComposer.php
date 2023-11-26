@@ -5,6 +5,7 @@ namespace App\Http\ViewComposers\Admin\Project;
 use App\Enums\Database\Project\ProjectBase;
 use App\Models\ProjectStatus;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
 
 class SeoProjectComposer
 {
@@ -17,7 +18,9 @@ class SeoProjectComposer
     {
 
         $statuses = ProjectStatus::query()
-            ->where('project_base_id', ProjectBase::Seo)
+            ->whereHas('type', function (Builder $q) {
+                return $q->where('base_id', ProjectBase::Seo);
+            })
             ->get();
 
         $view->with(compact('statuses'));

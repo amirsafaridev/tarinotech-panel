@@ -16,6 +16,12 @@ return new class extends Migration
             $table->string('title');
             $table->timestamps();
         });
+
+        DB::table('transaction_categories')->insert([
+            'title' => 'ندارد',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 
     /**

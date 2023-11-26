@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('field_activity')->nullable();
             $table->unsignedInteger('package_id');
-            $table->unsignedTinyInteger('project_type_id');
             $table->unsignedTinyInteger('pages')->default(0);
 
             $table->json('domains');
@@ -31,10 +30,6 @@ return new class extends Migration
             $table->foreign('package_id')
                 ->references('id')
                 ->on('packages');
-
-            $table->foreign('project_type_id')
-                ->references('id')
-                ->on('project_types');
         });
     }
 

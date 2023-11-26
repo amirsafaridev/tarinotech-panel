@@ -55,9 +55,9 @@
                                         <td>{{ verta($project->deadline_at)->format(formatJalaliDate()) }}</td>
                                         <td>{{ verta($project->created_at)->format(formatJalaliDate()) }}</td>
                                         <td>
-                                            <a target="_blank" class="btn btn-warning btn-sm" href="{{ route('admin.project.'.getRouteProjectType($project->project_base_id).'.edit',$project->id) }}">ویرایش</a>
+                                            <a target="_blank" class="btn btn-warning btn-sm" href="{{ route('admin.project.'.getRouteProjectType($project->base_id).'.edit',$project->id) }}">ویرایش</a>
                                             <a target="_blank" class="btn btn-success btn-sm" href="{{ route('admin.project.facility.index',$project->id) }}">امکانات جانبی</a>
-                                            <a target="_blank" class="btn btn-info btn-sm" href="{{ route('admin.project.'.getRouteProjectType($project->project_base_id).'.show',$project->id) }}">نمایش</a>
+                                            <a target="_blank" class="btn btn-info btn-sm" href="{{ route('admin.project.'.getRouteProjectType($project->base_id).'.show',$project->id) }}">نمایش</a>
                                         </td>
                                     </tr>
                                 @endforeach

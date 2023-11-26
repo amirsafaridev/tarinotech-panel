@@ -25,8 +25,8 @@ class ProjectController extends Controller
         $title = 'پروژه ها';
 
         $projects = Project::query()
-            ->with(['status', 'type', 'user', 'admin', 'base'])
-            ->whereHasMorph('type', [ProjectAds::class, ProjectWeb::class, ProjectSeo::class])
+            ->with(['status', 'target', 'user', 'admin', 'base'])
+            ->whereHasMorph('target', [ProjectAds::class, ProjectWeb::class, ProjectSeo::class])
             ->whereHas('user', function (Builder $q) {
                 $q->filter([
                     UserSearchFilter::class,
