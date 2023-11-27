@@ -33,7 +33,7 @@
 
 </head>
 
-<body class="app sidebar-mini rtl dark-mode">
+<body class="app sidebar-mini rtl @if(app()->isLocal()) dark-mode @endif">
 
 <div id="global-loader">
     <img src="{{ asset('res-admin/assets/images/loader.svg') }}" class="loader-img" alt="DevMeet">
