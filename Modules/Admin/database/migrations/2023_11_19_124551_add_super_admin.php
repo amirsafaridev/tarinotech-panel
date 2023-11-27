@@ -32,8 +32,8 @@ return new class extends Migration
                 'updated_at' => now(),
             ]);
 
-        Admin::where('id', 1)->syncRoles(1);
-        Admin::where('id', 2)->syncRoles(1);
+        Admin::query()->find(1)->syncRoles(1);
+        Admin::query()->find(2)->syncRoles(1);
     }
 
     /**
