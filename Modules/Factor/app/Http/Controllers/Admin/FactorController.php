@@ -5,27 +5,34 @@ namespace Modules\Factor\app\Http\Controllers\Admin;
 use App\Domin\Jobs\FactorItemCreateJob;
 use App\Domin\Jobs\FactorItemUpdateJob;
 use App\Enums\Database\Factor\FactorStatus;
-use App\Filters\Admin\Share\IDFilter;
-use App\Filters\Admin\Share\TitleFilter;
+use App\Enums\General\BtnType;
+use App\Foundation\ValueObjects\Datatable\ColumnOption;
+use App\Foundation\ValueObjects\Datatable\DatatableBase;
+use App\Foundation\ValueObjects\Datatable\ExternalFilter;
 use App\Foundation\ValueObjects\Requests\FactorItemValues;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Traits\HasDatatable;
 use App\Traits\HasJsonCommonResponse;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
+use Modules\Factor\app\Filters\Factor\AdminFilter;
 use Modules\Factor\app\Filters\Factor\PriceFilter;
-use Modules\Factor\app\Filters\Factor\SortFilter;
+use Modules\Factor\app\Filters\Factor\ProjectFilter;
+use Modules\Factor\app\Filters\Factor\StatusFilter;
 use Modules\Factor\app\Http\Requests\Admin\Factor\StoreRequest;
 use Modules\Factor\app\Http\Requests\Admin\Factor\UpdateRequest;
 use Modules\Factor\app\Models\Factor;
 use Modules\Factor\app\Models\FactorItem;
 use Modules\Factor\app\Models\TransactionCategory;
 use Modules\User\app\Enums\PersonType;
+use Yajra\DataTables\Facades\DataTables;
 
 class FactorController extends Controller
 {
+    use HasDatatable;
     use HasJsonCommonResponse;
 
     const INDEX_TITLE = 'فاکتور ها';
@@ -40,24 +47,11 @@ class FactorController extends Controller
     {
         $title = self::INDEX_TITLE;
 
-        $factors = Factor::query()
-            ->with(['project.user', 'admin'])
-            ->filter([
-                IDFilter::class,
-                TitleFilter::class,
-                PriceFilter::class,
-                SortFilter::class,
-            ])
-            ->paginate(12);
+        $routeData = $this->getDataRoute();
 
-        $sortItems = [
-            'id-desc' => 'شناسه (نزولی)',
-            'id-asc' => 'شناسه (صعودی)',
-            'final_price-desc' => 'قیمت (نزولی)',
-            'final_price-asc' => 'قیمت (صعودی)',
-        ];
+        $dataTable = $this->getDataTable();
 
-        return view('factor::admin.index', compact('title', 'factors', 'sortItems'));
+        return view('factor::admin.index', compact('title', 'routeData', 'dataTable'));
     }
 
     public function create()
@@ -183,26 +177,26 @@ class FactorController extends Controller
 
     protected function prepareItemData(Request $request): array
     {
-        $item['project_id'] = $request->input('project_id');
-        $item['title'] = $request->input('title');
+        $factorData['project_id'] = $request->input('project_id');
+        $factorData['title'] = $request->input('title');
 
-        $item['expired_at'] = Helper::toGregorian($request->input('expired_at'));
-        $item['status'] = FactorStatus::Pending;
+        $factorData['expired_at'] = Helper::toGregorian($request->input('expired_at'));
+        $factorData['status'] = FactorStatus::Pending;
 
-        $item['gateway_data'] = [];
-        $item['admin_id'] = auth()->id();
+        $factorData['gateway_data'] = [];
+        $factorData['admin_id'] = auth()->id();
 
-        $item['is_official'] = false;
+        $factorData['is_official'] = false;
 
-        $project = Project::with('user')->find($item['project_id']);
+        $project = Project::with('user')->find($factorData['project_id']);
         if ($project) {
             $user = $project->user;
             if ($user && ($user->person_type === PersonType::Legal || $user->official_bill)) {
-                $item['is_official'] = true;
+                $factorData['is_official'] = true;
             }
         }
 
-        return $item;
+        return $factorData;
     }
 
     private function setItemValues(Factor $factor, array $item): FactorItemValues
@@ -213,5 +207,104 @@ class FactorController extends Controller
             ->setTransactionCategoryId($item['transaction_category_id'])
             ->setPrice($item['price'])
             ->setDiscount($item['discount']);
+    }
+
+    public function getDataRoute(): string
+    {
+        return route('admin.factor.data');
+    }
+
+    public function getDataTable(): array
+    {
+        return (new DatatableBase())
+            ->addColumn(
+                ColumnOption::new()->setName('id')->setAs('شناسه')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('title')->setAs('عنوان')
+            )
+            ->addColumn(
+                ColumnOption::new()
+                    ->setName('admin.fullname')->setAs('کارشناس')
+                    ->setSearchable(false)
+                    ->setSortable(false)
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('project.title')
+                    ->setAs('پروژه')
+                    ->setSortable(false)
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('final_price')->setAs('مبلغ (ریال)')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('status')->setAs('وضعیت')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('expired_at')->setAs('مهلت پرداخت')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('created_at')->setAs('ایجاد')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('action')
+                    ->setAs('عملیات')
+                    ->removeAction()
+            )
+            ->addExternalFilter(ExternalFilter::new()->setKey('project'))
+            ->addExternalFilter(ExternalFilter::new()->setKey('admin'))
+            ->addExternalFilter(ExternalFilter::new()->setKey('price_from')->isPrice())
+            ->addExternalFilter(ExternalFilter::new()->setKey('price_to')->isPrice())
+            ->addExternalFilter(ExternalFilter::new()->setKey('status'))
+            ->render();
+    }
+
+    public function data()
+    {
+        try {
+            $factors = Factor::query()
+                ->select([
+                    'id',
+                    'title',
+                    'admin_id',
+                    'project_id',
+                    'final_price',
+                    'status',
+                    'expired_at',
+                    'created_at',
+                ])
+                ->filter([
+                    PriceFilter::class,
+                    StatusFilter::class,
+                    ProjectFilter::class,
+                    AdminFilter::class,
+                ])
+                ->with([
+                    'admin' => function ($query) {
+                        $query->select('admins.id', 'admins.first_name', 'admins.last_name');
+                    },
+                    'project' => function ($query) {
+                        $query->select('projects.id', 'projects.title', 'projects.domain');
+                    },
+                ]);
+
+            return DataTables::eloquent($factors)
+                ->editColumn('status', function ($factor) {
+                    return factorStatusRender($factor->status);
+                })
+                ->editColumn('final_price', function ($factor) {
+                    return number_format($factor->final_price);
+                })
+                ->editColumn('created_at', function ($factor) {
+                    return $factor->created_at->toJalali()->format(formatJalaliDateTime());
+                })
+                ->addColumn('action', function ($factor) {
+                    return Helper::btnMaker(BtnType::Warning, route('admin.factor.edit', $factor->id), trans('panel.action.edit'));
+                })
+                ->rawColumns(['action', 'status'])
+                ->make();
+        } catch (Exception $exception) {
+            return $this->exceptionResponse($exception);
+        }
     }
 }

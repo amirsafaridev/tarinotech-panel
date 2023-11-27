@@ -5,6 +5,7 @@ namespace Modules\User\app\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Project;
 use App\Traits\Filterable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -76,6 +77,8 @@ class User extends Authenticatable
         'dob' => 'datetime',
     ];
 
+    protected $appends = ['fullname'];
+
     public function address(): HasOne
     {
         return $this->hasOne(Address::class);
@@ -104,6 +107,13 @@ class User extends Authenticatable
     public function latestLogin(): MorphOne
     {
         return $this->morphOne(Login::class, 'user')->latest('login_at');
+    }
+
+    public function fullname(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->first_name.' '.$this->last_name
+        );
     }
 
     public function getActivitylogOptions(): LogOptions

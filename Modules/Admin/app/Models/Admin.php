@@ -84,15 +84,17 @@ class Admin extends Authenticatable
         'end_last_contract' => 'datetime',
     ];
 
+    protected $appends = ['fullname'];
+
     public function routeNotificationForSms($driver, $notification = null)
     {
         return $this->mobile;
     }
 
-    public function fullName(): Attribute
+    protected function fullname(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->first_name.' '.$this->last_name
+            get: fn () => $this->first_name.' '.$this->last_name,
         );
     }
 

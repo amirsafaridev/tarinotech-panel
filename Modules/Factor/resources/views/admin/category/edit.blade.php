@@ -11,22 +11,22 @@
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">انواع واریزی - ویرایش</h1>
+        <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.transaction-category.index') }}">انواع واریزی</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.factor.category.index') }}">انواع واریزی</a></li>
                 <li class="breadcrumb-item active">ویرایش</li>
             </ol>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+        <div class="col-xl-4 col-lg-4 col-md-4 col-12">
             <div class="card">
                 <div class="card-body pb-3">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ $routeUpdate }}">
+                    <form class="request-form forms-sample" method="post" action="{{ route('admin.factor.category.update',$transactionCategory->id) }}">
                         @csrf
                         @method('PATCH')
 
@@ -37,7 +37,7 @@
                         <x-admin.button-delete/>
                     </form>
 
-                    <form id="deleteItem" action="{{ $routeDestroy }}" method="post" class="form-inline">
+                    <form id="deleteItem" action="{{ route('admin.factor.category.destroy',$transactionCategory->id) }}" method="post" class="form-inline">
                         @csrf
                         @method('DELETE')
                     </form>
@@ -55,7 +55,7 @@
     @include('admin.partial.request')
     <script>
         $(document).ready(function (){
-            activeParentUl('{{ route('admin.transaction-category.index') }}');
+            activeParentUl('{{ route('admin.factor.category.index') }}');
         })
     </script>
 @endsection

@@ -8,7 +8,6 @@ use App\Http\Controllers\Admin\Report\GoalGroupController as GoalGroupController
 use App\Http\Controllers\Admin\Report\LoginController;
 use App\Http\Controllers\Admin\SampleMessageController;
 use App\Http\Controllers\Admin\SettingController;
-use App\Http\Controllers\Admin\TransactionCategoryController;
 use Illuminate\Support\Facades\Route;
 use Modules\Admin\app\Http\Controllers\Admin\GoalReportController as GoalControllerReport;
 
@@ -54,16 +53,6 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::get('/facility/{facility}/edit', 'edit')->name('facility.edit');
         Route::patch('/facility/{facility}/update', 'update')->name('facility.update');
         Route::delete('/facility/{facility}/destroy', 'destroy')->name('facility.destroy');
-    });
-
-    Route::controller(TransactionCategoryController::class)->group(function () {
-        Route::get('/transaction-category', 'index')->name('transaction-category.index');
-        Route::get('/transaction-category/data', 'data')->name('transaction-category.data');
-        Route::get('/transaction-category/create', 'create')->name('transaction-category.create');
-        Route::post('/transaction-category/store', 'store')->name('transaction-category.store');
-        Route::get('/transaction-category/{transactionCategory}/edit', 'edit')->name('transaction-category.edit');
-        Route::patch('/transaction-category/{transactionCategory}/update', 'update')->name('transaction-category.update');
-        Route::delete('/transaction-category/{transactionCategory}/destroy', 'destroy')->name('transaction-category.destroy');
     });
 
     Route::controller(SampleMessageController::class)->group(function () {

@@ -6,6 +6,8 @@ class ExternalFilter
 {
     public string $key;
 
+    private string $type = 'string';
+
     public static function new(): ExternalFilter
     {
         return new self();
@@ -23,10 +25,25 @@ class ExternalFilter
         return $this;
     }
 
+    public function isNumeric(): ExternalFilter
+    {
+        $this->type = 'numeric';
+
+        return $this;
+    }
+
+    public function isPrice(): ExternalFilter
+    {
+        $this->type = 'price';
+
+        return $this;
+    }
+
     public function make(): array
     {
         return [
             'key' => $this->key,
+            'type' => $this->type,
         ];
     }
 }

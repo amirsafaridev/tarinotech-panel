@@ -99,6 +99,7 @@ return [
         FactorStatus::Expired => 'منقضی شده',
         FactorStatus::Lock => 'در حال پرداخت',
         FactorStatus::OnHold => 'نگه داشته شده',
+        FactorStatus::Draft => 'پیش نویس',
     ],
 
     SeoAgreementDuration::class => [

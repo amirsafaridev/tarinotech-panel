@@ -1,6 +1,9 @@
 <div class="form-group mb-3">
     <label for="{{ str_replace('[]', '', $identify) }}" class="form-label">{{ $title }}</label>
-    <select class="form-control" name="{{ $identify }}" id="{{ str_replace('[]', '', $identify) }}" @if ($multiple) multiple @endif>
+    <select class="form-control @if ($isSmall) form-control-sm @endif"
+            name="{{ $identify }}"
+            id="{{ str_replace('[]', '', $identify) }}"
+            @if ($multiple) multiple @endif>
         @if ($withOption)
             <option value="">انتخاب گزینه</option>
         @endif

@@ -6,6 +6,7 @@ use Modules\Role\app\Http\Controllers\Admin\RoleController;
 
 Route::group(['guard' => 'admin'], function () {
     Route::get('/', [RoleController::class, 'index'])->name('index');
+    Route::get('/data', [RoleController::class, 'data'])->name('data');
     Route::get('/create', [RoleController::class, 'create'])->name('create');
     Route::get('/{role}', [RoleController::class, 'edit'])->name('edit')
         ->whereNumber('role');
