@@ -27,7 +27,6 @@ class ProjectWebFactory extends Factory
         return [
             'field_activity' => 'زمینه کاری',
             'package_id' => rand(1, 3),
-            'project_type_id' => rand(1, 2),
             'pages' => $this->faker->numberBetween(1, 10),
             'domains' => $this->makeDomain(),
             'host' => $this->makeHost(),

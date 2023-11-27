@@ -34,8 +34,4 @@ return [
     'sample_message_edit' => 'Sample Message Edit',
     'sample_message_destroy' => 'Sample Message Destroy',
     'setting_index' => 'Setting Index',
-    'transaction_category_index' => 'Transaction Category Index',
-    'transaction_category_create' => 'Transaction Category Create',
-    'transaction_category_edit' => 'Transaction Category Edit',
-    'transaction_category_destroy' => 'Transaction Category Destroy',
 ];
