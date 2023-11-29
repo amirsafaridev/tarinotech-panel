@@ -32,6 +32,7 @@ class UpdateRequest extends FormRequest
             ],
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
+            'job_title' => 'max:255',
             'mobile' => ['required', 'size:11', new IRMobile()],
             'mobile_company' => ['size:11', new IRMobile()],
             'number_company' => 'numeric',

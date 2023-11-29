@@ -2,7 +2,7 @@
     $editMode = isset($admin);
     $email = $admin->email ?? '';
     $mobile = $admin->mobile ?? '';
-     $hasAccess = $admin->has_access ?? false;
+    $isBlock = $admin->is_block ?? false;
 @endphp
 <div class="card">
     <div class="card-header">
@@ -33,9 +33,9 @@
         @endif
 
         @if($editMode)
-            <x-admin.checkbox identify="has_access"
+            <x-admin.checkbox identify="is_block"
                               description="قطع دسترسی"
-                              :old="$hasAccess"/>
+                              :old="$isBlock"/>
         @endif
     </div>
 </div>

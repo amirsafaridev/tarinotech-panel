@@ -122,7 +122,7 @@ class AdminController extends Controller
         try {
             DB::beginTransaction();
             $item = $this->prepareItemData($request, true);
-            $item['has_access'] = $request->has('has_access');
+            $item['is_block'] = $request->has('is_block');
             $admin->update($item);
             $admin->syncRoles($request->input('role'));
             DB::commit();
@@ -166,6 +166,7 @@ class AdminController extends Controller
     {
         $adminData['first_name'] = $request->input('first_name');
         $adminData['last_name'] = $request->input('last_name');
+        $adminData['job_title'] = $request->input('job_title');
 
         $dob = $request->input('dob');
         $adminData['dob'] = empty($dob) ? null : Helper::toGregorian($dob);
@@ -225,22 +226,26 @@ class AdminController extends Controller
     public function getDataTable(): array
     {
         return (new DatatableBase())
+            ->addColumn(ColumnOption::new()->setName('id')->setAs('شناسه'))
+            ->addColumn(ColumnOption::new()->setName('email')->setAs('ایمیل'))
+            ->addColumn(ColumnOption::new()->setName('first_name')->setAs('نام'))
+            ->addColumn(ColumnOption::new()->setName('last_name')->setAs('نام خانوادگی'))
+            ->addColumn(ColumnOption::new()->setName('job_title')->setAs('سمت شغلی'))
             ->addColumn(
-                ColumnOption::new()->setName('id')->setAs('شناسه')
-            )->addColumn(
-                ColumnOption::new()->setName('email')->setAs('ایمیل')
-            )->addColumn(
-                ColumnOption::new()->setName('first_name')->setAs('نام')
-            )->addColumn(
-                ColumnOption::new()->setName('last_name')->setAs('نام خانوادگی')
-            )->addColumn(
-                ColumnOption::new()->setName('roles')->setAs('نقش ها')->setSortable(false)->setSearchable(false)
-            )->addColumn(
-                ColumnOption::new()->setName('latest_login')->setAs('آخرین ورود')->setSortable(false)->setSearchable(false)
-            )->addColumn(
-                ColumnOption::new()->setName('created_at')->setAs('تاریخ ایجاد')
-            )->addColumn(
-                ColumnOption::new()->setName('action')->setAs('عملیات')->removeAction()
-            )->render();
+                ColumnOption::new()
+                    ->setName('roles')
+                    ->setAs('نقش ها')
+                    ->setSortable(false)
+                    ->setSearchable(false)
+            )
+            ->addColumn(
+                ColumnOption::new()
+                    ->setName('latest_login')
+                    ->setAs('آخرین ورود')
+                    ->setSortable(false)
+                    ->setSearchable(false))
+            ->addColumn(ColumnOption::new()->setName('created_at')->setAs('تاریخ ایجاد'))
+            ->addColumn(ColumnOption::new()->setName('action')->setAs('عملیات')->removeAction())
+            ->render();
     }
 }

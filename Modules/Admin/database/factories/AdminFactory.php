@@ -19,23 +19,26 @@ class AdminFactory extends Factory
      */
     public function definition(): array
     {
+        $jobTitles = [
+            'مدیر پروژه',
+            'برنامه نویس',
+            'مهندس نرم‌افزار',
+            'مدیر فروش',
+            'متخصص بازاریابی',
+            'مدیر منابع انسانی',
+            'متخصص امور مالی',
+            'مدیر عامل',
+        ];
+
         return [
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
+            'job_title' => $this->faker->randomElement($jobTitles),
             'mobile' => $this->faker->numerify('09#########'),
             'mobile_company' => $this->faker->numerify('09#########'),
             'number_company' => $this->faker->numerify('021######'),
             'email' => $this->faker->unique()->email,
             'password' => bcrypt('12345678'),
-            'has_access' => true,
-            'avatar' => null,
-            'dob' => $this->faker->date,
-            'start_cooperation' => $this->faker->date,
-            'start_last_contract' => $this->faker->date,
-            'end_last_contract' => $this->faker->date,
-            'resume' => 'Resume',
-            'description' => 'Description',
-
         ];
     }
 }

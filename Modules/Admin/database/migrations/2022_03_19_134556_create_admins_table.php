@@ -30,11 +30,12 @@ return new class extends Migration
             $table->char('mobile', 11)->index();
             $table->string('email')->unique();
             $table->string('password');
-            $table->boolean('has_access')->default(true);
+            $table->boolean('is_block')->default(false);
             /**
              * User Information
              */
             $table->string('avatar')->nullable();
+            $table->string('job_title')->nullable();
             $table->date('dob')->nullable();
             $table->date('start_cooperation')->nullable();
             $table->date('start_last_contract')->nullable();

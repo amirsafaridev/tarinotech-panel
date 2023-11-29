@@ -35,12 +35,13 @@ class Admin extends Authenticatable
      */
     protected $fillable = [
         'avatar',
+        'job_title',
         'first_name',
         'last_name',
         'email',
         'mobile',
         'password',
-        'has_access',
+        'is_block',
         'dob',
         'start_cooperation',
         'start_last_contract',

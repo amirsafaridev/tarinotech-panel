@@ -2,6 +2,7 @@
     $avatar = $admin->avatar ?? null;
     $firstName = $admin->first_name ?? null;
     $lastName = $admin->last_name ?? null;
+    $jobTitle = $admin->job_title ?? null;
     $tel = $admin->tel ?? null;
     $postalCode = $admin->postal_code ?? null;
     $nationalCode = $admin->national_code ?? null;
@@ -36,6 +37,10 @@
         <x-admin.input identify="last_name"
                        title="نام خانوادگی"
                        :old="$lastName"/>
+
+        <x-admin.input identify="job_title"
+                   title="سمت شغلی"
+                   :old="$jobTitle"/>
 
         <x-admin.input identify="tel"
                        title="شماره تماس"
