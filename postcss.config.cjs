@@ -6,8 +6,10 @@ module.exports = {
         purgecss({
             content: [
                 './Modules/**/*.php',
+                './app/**/*.php',
                 './resources/views/**/*.php',
                 './public/res-admin/assets/**/*.js',
+
             ],
             css: [
                 './public/res-admin/assets/css/style.css',
