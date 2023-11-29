@@ -17,11 +17,15 @@
 
 </head>
 
-<body class="app sidebar-mini rtl dark-mode">
+<body class="app sidebar-mini rtl @if(app()->isLocal()) dark-mode @endif">
 
 <div class="login-img">
     <div id="global-loader">
-        <img src="{{ asset('res-admin/assets/images/loader.svg') }}" class="loader-img" alt="Loader">
+        <div class="u-loading">
+            <div class="u-loading__symbol">
+                <img src="{{ asset('res-admin/assets/images/loader.png') }}" class="loader-img" alt="{{ config('app.name') }}">
+            </div>
+        </div>
     </div>
     <div class="page">
         <div class="">

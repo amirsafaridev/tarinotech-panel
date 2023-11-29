@@ -3,7 +3,7 @@
 
     // PAGE LOADING
     $(window).on("load", function (e) {
-        //$("#global-loader").fadeOut("slow");
+        $("#global-loader").fadeOut("slow");
     })
 
     // COLOR THEME
