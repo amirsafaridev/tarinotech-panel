@@ -5,7 +5,7 @@ use Modules\User\app\Http\Controllers\Admin\PresenterController;
 use Modules\User\app\Http\Controllers\Admin\UserController;
 
 Route::group(['guard' => 'admin', 'prefix' => 'user', 'as' => 'user.'], function () {
-    Route::get('/', [UserController::class, 'index'])->name('index');
+    Route::get('/index', [UserController::class, 'index'])->name('index');
     Route::get('/data', [UserController::class, 'data'])->name('data');
     Route::get('/create', [UserController::class, 'create'])->name('create');
     Route::get('/{user}', [UserController::class, 'edit'])->name('edit');

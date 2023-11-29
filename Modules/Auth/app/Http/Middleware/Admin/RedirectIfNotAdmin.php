@@ -4,6 +4,7 @@ namespace Modules\Auth\app\Http\Middleware\Admin;
 
 use Closure;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use function route;
@@ -13,13 +14,10 @@ class RedirectIfNotAdmin
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $guard
-     * @return mixed
      *
-     * @throws \Illuminate\Auth\AuthenticationException
+     * @throws AuthenticationException
      */
-    public function handle($request, Closure $next, $guard = 'admin')
+    public function handle(Request $request, Closure $next, string $guard = 'admin'): mixed
     {
         if (Auth::guard($guard)->check()) {
             Auth::shouldUse($guard);

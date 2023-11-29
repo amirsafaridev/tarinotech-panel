@@ -21,7 +21,7 @@
                             <td>{{ $project->base->title }}</td>
                             <td>{{ $project->domain }}</td>
                             <td>
-                                <a target="_blank" class="btn btn-info btn-sm" href="{{ route('admin.project.'.getRouteProjectType($project->project_base_id).'.show',$project->id) }}">نمایش</a>
+                                <a target="_blank" class="btn btn-info btn-sm" href="{{ route('admin.project.'.getRouteProjectType($project->base_id).'.show',$project->id) }}">نمایش</a>
 
                             </td>
                         </tr>
