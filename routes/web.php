@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\DeployController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +14,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', [HomeController::class, 'index']);
 Route::get('/test', [TestController::class, 'index']);
 Route::get('/test/send-email', [TestController::class, 'sendEmail']);
 Route::get('/test/aws-upload', [TestController::class, 'awsUpload']);
