@@ -273,5 +273,6 @@ return [
         'added_at' => 'تاریخ ایجاد',
         'blog_category_id' => 'دسته بندی بلاگ',
         'base_id' => 'پایه',
+        'type_id' => 'نوع پروژه',
     ],
 ];

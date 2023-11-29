@@ -35,7 +35,7 @@
                                               :items="$projectTypes"
                                               key="id"
                                               value="title"
-                                              :old="$projectStatus->project_type_id"/>
+                                              :old="$projectStatus->type_id"/>
 
                         <x-admin.input identify="title" title="عنوان" :old="$projectStatus->title"/>
 
