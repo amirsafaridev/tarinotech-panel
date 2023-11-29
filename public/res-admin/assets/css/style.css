@@ -42156,15 +42156,19 @@ div.dataTables_wrapper div.dataTables_filter input {
 #global-loader {
     position: fixed;
     z-index: 50000;
-    background: white;
     left: 0;
     top: 0;
-    right: 0;
-    bottom: 0;
     height: 100%;
     width: 100%;
     margin: 0 auto;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+.dark-mode #global-loader{
+    background-color: #1a1a3c;
 }
 
 ul {
@@ -46741,16 +46745,6 @@ img {
 
 img {
     max-width: 100%;
-}
-
-.loader-img {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    top: 43%;
-    left: 0;
-    margin: 0 auto;
-    text-align: center;
 }
 
 .login-img {
@@ -70036,4 +70030,73 @@ textarea.form-control {
 .select2-container--default .select2-search--dropdown .select2-search__field{
     color:white;
 }
+
+
+.u-loading {
+    width: 128px;
+    height: 128px;
+    display: block;
+    margin: 48px;
+
+}
+.u-loading__symbol {
+    background-color: #4caf50;
+    padding: 8px;
+    animation: loading 3s infinite;
+    border-radius: 5px;
+}
+.u-loading__symbol img {
+    display: block;
+    max-width: 100%;
+    animation: loading-icon 3s infinite;
+}
+
+@keyframes loading {
+    0% {
+        transform: perspective(250px) rotateX(0deg) rotateY(0deg);
+    }
+    15% {
+        background-color: #4caf50;
+    }
+    16% {
+        background-color: #b44646;
+    }
+    50% {
+        transform: perspective(250px) rotateX(180deg) rotateY(0deg);
+        background-color: #b44646;
+    }
+    65% {
+        background-color: #b44646;
+    }
+    66% {
+        background-color: #4caf50;
+    }
+    100% {
+        transform: perspective(250px) rotateX(180deg) rotateY(-180deg);
+    }
+}
+@keyframes loading-icon {
+    0% {
+        transform: perspective(250px) rotateX(0deg) rotateY(0deg);
+    }
+    15% {
+        transform: perspective(250px) rotateX(0deg) rotateY(0deg);
+    }
+    16% {
+        transform: perspective(250px) rotateX(180deg) rotateY(0deg);
+    }
+    50% {
+        transform: perspective(250px) rotateX(180deg) rotateY(0deg);
+    }
+    65% {
+        transform: perspective(250px) rotateX(180deg) rotateY(0deg);
+    }
+    66% {
+        transform: perspective(250px) rotateX(180deg) rotateY(180deg);
+    }
+    100% {
+        transform: perspective(250px) rotateX(180deg) rotateY(180deg);
+    }
+}
 /*# sourceMappingURL=style.css.map */
+
