@@ -70,4 +70,9 @@ class LoginController extends Controller
     {
         return array_merge($request->only($this->username(), 'password'), ['is_block' => false]);
     }
+
+    public function redirectPath()
+    {
+        return route('admin.home');
+    }
 }
