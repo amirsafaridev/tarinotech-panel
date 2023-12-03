@@ -11,6 +11,13 @@ class ProjectDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call([]);
+        $this->call([
+            ProjectBaseSeeder::class,
+            ProjectTypeSeeder::class,
+            ProjectStatusSeeder::class,
+            ProjectWebSeeder::class,
+            ProjectSeoSeeder::class,
+            ProjectAdsSeeder::class,
+        ]);
     }
 }

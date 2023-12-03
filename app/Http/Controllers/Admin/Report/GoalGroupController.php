@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Admin\Report;
 
 use App\Exports\Admin\Report\Goal\GoalGroup;
 use App\Http\Controllers\Controller;
-use App\Models\Project;
 use App\Models\SaleGoal;
 use Exception;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Facades\Excel;
+use Modules\Project\app\Models\Project;
 
 class GoalGroupController extends Controller
 {

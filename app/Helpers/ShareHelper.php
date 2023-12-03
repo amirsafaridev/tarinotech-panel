@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\Database\Project\ProjectBase;
+use Modules\Project\app\Enums\ProjectBase;
 
 if (! function_exists('isValidDateFormat')) {
     /**

@@ -2,8 +2,8 @@
 
 namespace App\Service\Json\SeoProject;
 
-use App\Enums\Database\Project\SeoHostLocation;
 use InvalidArgumentException;
+use Modules\Project\app\Enums\SeoHostLocation;
 
 class HostTransformer
 {

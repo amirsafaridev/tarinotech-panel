@@ -2,7 +2,6 @@
 
 namespace Modules\Admin\app\Models;
 
-use App\Models\Project;
 use App\Models\SaleGoal;
 use App\Notifications\Admin\Auth\ResetPassword;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -16,6 +15,7 @@ use Illuminate\Notifications\Notifiable;
 use Modules\Auth\app\Models\Login;
 use Modules\Auth\app\Models\OtpCode;
 use Modules\Log\app\Enums\LogNames;
+use Modules\Project\app\Models\Project;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;

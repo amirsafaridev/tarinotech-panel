@@ -2,10 +2,10 @@
 
 namespace App\Http\ViewComposers\Admin\Project;
 
-use App\Enums\Database\Project\ProjectBase;
 use App\Models\Package;
-use App\Models\ProjectType;
 use Illuminate\Contracts\View\View;
+use Modules\Project\app\Enums\ProjectBase;
+use Modules\Project\app\Models\ProjectType;
 
 class WebProjectComposer
 {

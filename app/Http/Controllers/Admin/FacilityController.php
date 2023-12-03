@@ -8,9 +8,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Facility\StoreRequest;
 use App\Http\Requests\Admin\Facility\UpdateRequest;
 use App\Models\Facility;
-use App\Models\ProjectBase;
 use Exception;
 use Illuminate\Http\Request;
+use Modules\Project\app\Models\ProjectBase;
 use Yajra\DataTables\Facades\DataTables;
 
 class FacilityController extends Controller

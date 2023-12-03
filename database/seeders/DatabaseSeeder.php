@@ -9,6 +9,7 @@ use Modules\Blog\database\seeders\BlogDatabaseSeeder;
 use Modules\BlogCategory\database\seeders\BlogCategoryDatabaseSeeder;
 use Modules\Factor\database\seeders\FactorDatabaseSeeder;
 use Modules\FreeDay\database\seeders\FreeDayDatabaseSeeder;
+use Modules\Project\database\seeders\ProjectDatabaseSeeder;
 use Modules\User\database\seeders\UserDatabaseSeeder;
 
 class DatabaseSeeder extends Seeder
@@ -23,12 +24,7 @@ class DatabaseSeeder extends Seeder
             AdminDatabaseSeeder::class, //DONE
             UserDatabaseSeeder::class, //DONE
             PackageSeeder::class,
-            ProjectBaseSeeder::class,
-            ProjectTypeSeeder::class,
-            ProjectStatusSeeder::class,
-            ProjectWebSeeder::class,
-            ProjectSeoSeeder::class,
-            ProjectAdsSeeder::class,
+            ProjectDatabaseSeeder::class, //DONE
             SettingSeeder::class,
             AdditionalFeatureSeeder::class,
             FactorDatabaseSeeder::class, //DONE

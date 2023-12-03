@@ -7,16 +7,16 @@ use App\Enums\Database\Facility\PriceType;
 use App\Enums\Database\Facility\WorkCycle;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\ProjectType\StoreRequest;
-use App\Http\Requests\Admin\ProjectType\UpdateRequest;
 use App\Models\Facility;
-use App\Models\Project;
-use App\Models\ProjectBase;
 use App\Models\ProjectFacility;
-use App\Models\ProjectType;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Modules\Project\app\Http\Requests\Admin\Type\StoreRequest;
+use Modules\Project\app\Http\Requests\Admin\Type\UpdateRequest;
+use Modules\Project\app\Models\Project;
+use Modules\Project\app\Models\ProjectBase;
+use Modules\Project\app\Models\ProjectType;
 
 class ProjectFacilityController extends Controller
 {

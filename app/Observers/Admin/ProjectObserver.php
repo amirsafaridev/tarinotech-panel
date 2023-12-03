@@ -3,9 +3,9 @@
 namespace App\Observers\Admin;
 
 use App\Enums\Database\Factor\FactorStatus;
-use App\Enums\Database\Project\ProjectBase;
-use App\Models\Project;
 use Modules\Factor\app\Models\Factor;
+use Modules\Project\app\Enums\ProjectBase;
+use Modules\Project\app\Models\Project;
 
 class ProjectObserver
 {

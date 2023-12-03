@@ -4,12 +4,12 @@ namespace Modules\Admin\app\Http\Controllers\Admin;
 
 use App\Exports\Admin\Report\Goal\GoalPerson;
 use App\Http\Controllers\Controller;
-use App\Models\Project;
 use App\Models\SaleGoal;
 use Exception;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Facades\Excel;
 use Modules\Admin\app\Models\Admin;
+use Modules\Project\app\Models\Project;
 
 class GoalReportController extends Controller
 {

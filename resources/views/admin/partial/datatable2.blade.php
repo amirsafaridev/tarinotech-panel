@@ -116,4 +116,7 @@
         ],
         "order": [[0, "desc"]],
     });
+    $('.datatable-apply').click(function (){
+        dataTable.ajax.reload();
+    });
 </script>

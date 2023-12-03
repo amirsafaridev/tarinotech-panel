@@ -2,10 +2,10 @@
 
 namespace App\Http\ViewComposers\Admin\Project;
 
-use App\Enums\Database\Project\ProjectBase;
-use App\Models\ProjectStatus;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
+use Modules\Project\app\Enums\ProjectBase;
+use Modules\Project\app\Models\ProjectStatus;
 
 class SeoProjectComposer
 {

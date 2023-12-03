@@ -35,15 +35,15 @@
                 @php
                     $typeProject;
                     switch ($factor->project->project_base_id){
-                        case \App\Enums\Database\Project\ProjectBase::Web:{
+                        case \Modules\Project\app\Enums\ProjectBase::Web:{
                             $typeProject = 'web';
                             break;
                         }
-                        case \App\Enums\Database\Project\ProjectBase::Seo:{
+                        case \Modules\Project\app\Enums\ProjectBase::Seo:{
                             $typeProject = 'seo';
                             break;
                         }
-                        case \App\Enums\Database\Project\ProjectBase::Ads:{
+                        case \Modules\Project\app\Enums\ProjectBase::Ads:{
                             $typeProject = 'ads';
                             break;
                         }

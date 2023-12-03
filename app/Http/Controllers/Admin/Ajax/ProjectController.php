@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin\Ajax;
 
 use App\Http\Controllers\Controller;
-use App\Models\Project;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Modules\Project\app\Models\Project;
 use View;
 
 class ProjectController extends Controller

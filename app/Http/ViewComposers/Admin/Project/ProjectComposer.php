@@ -2,9 +2,9 @@
 
 namespace App\Http\ViewComposers\Admin\Project;
 
-use App\Models\ProjectBase;
-use App\Models\ProjectStatus;
 use Illuminate\Contracts\View\View;
+use Modules\Project\app\Models\ProjectBase;
+use Modules\Project\app\Models\ProjectStatus;
 
 class ProjectComposer
 {
