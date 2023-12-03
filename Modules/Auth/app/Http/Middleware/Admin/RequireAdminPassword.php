@@ -6,8 +6,6 @@ use Closure;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Routing\UrlGenerator;
 
-use function config;
-
 class RequireAdminPassword
 {
     /**

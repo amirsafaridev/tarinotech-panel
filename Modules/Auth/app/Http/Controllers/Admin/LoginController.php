@@ -9,10 +9,6 @@ use Illuminate\Support\Facades\Auth;
 use Modules\Admin\app\Models\Admin;
 use Modules\Auth\app\Models\Login;
 
-use function app;
-use function redirect;
-use function view;
-
 class LoginController extends Controller
 {
     use AuthenticatesUsers;

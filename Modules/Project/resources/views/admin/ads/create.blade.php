@@ -10,11 +10,10 @@
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">پروژه گوگل ادز - ایجاد</h1>
+        <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a
-                            href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.project.index') }}">پروژه ها</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.project.ads.index') }}">گوگل ادز</a></li>
                 <li class="breadcrumb-item active">ایجاد</li>
@@ -22,7 +21,7 @@
         </div>
     </div>
 
-    <form class="request-form row forms-sample" method="post" action="{{ $routeStore }}">
+    <form class="request-form row forms-sample" method="post" action="{{ route('admin.project.ads.store') }}">
         <div class="col-xl-6 col-lg-6 col-md-6 col-12">
             @include('admin.partial.message')
             @csrf
@@ -41,11 +40,17 @@
 
                     <x-admin.select-user title="کارفرما"/>
 
-                    <x-admin.select-model identify="status_id"
-                                          title="وضعیت پروژه"
-                                          key="id"
-                                          value="title"
-                                          :items="$statuses"
+                    <x-admin.select-model
+                            identify="type_id"
+                            title="نوع پروژه"
+                            :items="$types"
+                            :has-choice-option="false"
+                            key="id"
+                            value="title"/>
+
+                    <x-admin.select-simple identify="status_id"
+                                           title="وضعیت پروژه"
+
                     />
                 </div>
             </div>
@@ -112,34 +117,12 @@
     ]])
     @include('admin.partial.request')
     @include('admin.partial.script.global')
+    @include('project::admin.ads.part.script')
     <script>
         $(document).ready(function () {
             activeParentUl('{{ route('admin.project.ads.index') }}');
             $('#user_id').select2();
-
-            $('#host_location').change(function () {
-                if ($(this).val() === 'IN_COMPANY') {
-                    stateHostContainer(false);
-                } else {
-                    stateHostContainer(true);
-                }
-            });
-
             jalaliDatepicker.startWatch();
-
-            makeInputPrice($('#price'));
-            makeInputPrice($('#price_monthly'));
-            makeInputPrice($('#keywords_count'));
         })
-
-        const hostContainer = $('#host_container');
-
-        function stateHostContainer(status) {
-            if (status) {
-                hostContainer.removeClass('d-none');
-            } else {
-                hostContainer.addClass('d-none');
-            }
-        }
     </script>
 @endsection

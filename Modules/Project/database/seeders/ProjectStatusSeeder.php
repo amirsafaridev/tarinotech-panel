@@ -7,8 +7,6 @@ use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Models\ProjectStatus;
 use Modules\Project\app\Models\ProjectType;
 
-use function now;
-
 class ProjectStatusSeeder extends Seeder
 {
     /**

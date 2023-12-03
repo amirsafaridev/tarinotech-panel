@@ -10,11 +10,6 @@ use Exception;
 use Modules\Admin\app\Http\Requests\Admin\GoalSaveRequest;
 use Modules\Admin\app\Models\Admin;
 
-use function report;
-use function response;
-use function trans;
-use function view;
-
 class GoalController extends Controller
 {
     use HasJsonCommonResponse;

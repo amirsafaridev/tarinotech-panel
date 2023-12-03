@@ -13,8 +13,6 @@ use Modules\Project\app\Enums\WebFacility;
 use Modules\Project\app\Enums\WebHostLocation;
 use Modules\Project\app\Models\ProjectWeb;
 
-use function resolve;
-
 /**
  * @extends Factory
  */

@@ -5,8 +5,6 @@ namespace Modules\Admin\database\factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Admin\app\Models\Admin;
 
-use function bcrypt;
-
 /**
  * @extends Factory
  */

@@ -14,14 +14,6 @@ use Modules\Project\app\Models\ProjectStatus;
 use Modules\Project\app\Models\ProjectType;
 use Yajra\DataTables\Facades\DataTables;
 
-use function formatJalaliDateTime;
-use function redirect;
-use function report;
-use function response;
-use function route;
-use function trans;
-use function view;
-
 class StatusController extends Controller
 {
     public function index()

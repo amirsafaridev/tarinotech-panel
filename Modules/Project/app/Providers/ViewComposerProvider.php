@@ -27,6 +27,17 @@ class ViewComposerProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->getIndexComposer();
+
+        $this->getWebComposer();
+
+        $this->getSeoComposer();
+
+        $this->getAdsComposer();
+    }
+
+    private function getIndexComposer(): void
+    {
         view()->composer(['project::admin.index'], function ($view) {
             $types = ProjectType::query()
                 ->with('base')
@@ -38,7 +49,33 @@ class ViewComposerProvider extends ServiceProvider
 
             $view->with(compact('types', 'statuses'));
         });
+    }
 
+    private function getAdsComposer(): void
+    {
+        view()->composer([
+            'project::admin.ads.index',
+            'project::admin.ads.create',
+            'project::admin.ads.edit',
+        ], function ($view) {
+            $types = ProjectType::query()
+                ->where('base_id', ProjectBase::Ads)
+                ->with(['base', 'statuses'])
+                ->get();
+
+            $statuses = ProjectStatus::query()
+                ->whereHas('type', function ($q) {
+                    $q->where('base_id', ProjectBase::Ads);
+                })
+                ->with('type')
+                ->get();
+
+            $view->with(compact('types', 'statuses'));
+        });
+    }
+
+    private function getWebComposer(): void
+    {
         view()->composer([
             'project::admin.web.index',
             'project::admin.web.create',
@@ -61,7 +98,10 @@ class ViewComposerProvider extends ServiceProvider
 
             $view->with(compact('types', 'statuses', 'packages'));
         });
+    }
 
+    private function getSeoComposer(): void
+    {
         view()->composer([
             'project::admin.seo.index',
             'project::admin.seo.create',

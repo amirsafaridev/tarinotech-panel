@@ -6,8 +6,6 @@ use Illuminate\Database\Seeder;
 use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Models\ProjectType;
 
-use function now;
-
 class ProjectTypeSeeder extends Seeder
 {
     /**

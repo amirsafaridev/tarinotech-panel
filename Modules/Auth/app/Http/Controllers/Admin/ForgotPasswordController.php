@@ -12,13 +12,6 @@ use Modules\Auth\app\Models\OtpCode;
 use Modules\Auth\app\Notifications\Admin\OtpCodeEmail;
 use Modules\Auth\app\Notifications\Admin\OtpCodeSms;
 
-use function back;
-use function config;
-use function now;
-use function to_route;
-use function trans;
-use function view;
-
 class ForgotPasswordController extends Controller
 {
     use HasJsonCommonResponse;

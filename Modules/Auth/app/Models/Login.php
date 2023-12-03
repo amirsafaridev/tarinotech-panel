@@ -12,9 +12,6 @@ use Modules\Log\app\Enums\LogNames;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-use function now;
-use function request;
-
 class Login extends Model
 {
     use HasFactory;

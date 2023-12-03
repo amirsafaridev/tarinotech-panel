@@ -2,70 +2,57 @@
 
 namespace Modules\Project\app\Http\Controllers\Admin;
 
-use App\Filters\Admin\Project\DomainFilter;
-use App\Filters\Admin\Project\SortFilter;
-use App\Filters\Admin\Project\StatusFilter;
-use App\Filters\Admin\Share\IDFilter;
-use App\Filters\Admin\User\UserSearchFilter;
+use App\Enums\General\BtnType;
+use App\Filters\Admin\Admin\AdminFilter;
+use App\Foundation\ValueObjects\Datatable\ColumnOption;
+use App\Foundation\ValueObjects\Datatable\DatatableBase;
+use App\Foundation\ValueObjects\Datatable\ExternalFilter;
+use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
+use App\Traits\HasDatatable;
+use App\Traits\HasJsonCommonResponse;
 use DB;
 use Exception;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
-use Modules\Admin\app\Models\Admin;
 use Modules\Project\app\Enums\ProjectBase;
+use Modules\Project\app\Filters\StatusFilter;
+use Modules\Project\app\Filters\TypeFilter;
 use Modules\Project\app\Http\Requests\Admin\Ads\StoreRequest;
 use Modules\Project\app\Http\Requests\Admin\Ads\UpdateRequest;
 use Modules\Project\app\Models\Project;
 use Modules\Project\app\Models\ProjectAds;
-use Modules\Project\app\Models\ProjectStatus;
-
-use function auth;
-use function redirect;
-use function report;
-use function response;
-use function route;
-use function trans;
-use function view;
+use Yajra\DataTables\Facades\DataTables;
 
 class AdsController extends Controller
 {
+    use HasDatatable;
+    use HasJsonCommonResponse;
+
+    const INDEX_TITLE = 'پروژه های ادز';
+
+    const CREATE_TITLE = 'پروژه های ادز - ایجاد';
+
+    const EDIT_TITLE = 'پروژه های ادز - ویرایش';
+
+    const SHOW_TITLE = 'پروژه های ادز - نمایش';
+
     public function index()
     {
-        $title = 'پروژه ها - گوگل ادز';
+        $title = self::INDEX_TITLE;
 
-        $projects = Project::query()
-            ->with(['status', 'target', 'user', 'admin'])
-            ->whereHasMorph('target', [ProjectAds::class])
-            ->whereHas('user', function (Builder $q) {
-                $q->filter([
-                    UserSearchFilter::class,
-                ]);
-            })
-            ->filter([
-                IDFilter::class,
-                DomainFilter::class,
-                StatusFilter::class,
-                SortFilter::class,
-            ])
-            ->paginate(12);
+        $routeData = $this->getDataRoute();
 
-        $sortItems = [
-            'id-desc' => 'شناسه (نزولی)',
-            'id-asc' => 'شناسه (صعودی)',
-            'price-desc' => 'قیمت (نزولی)',
-            'price-asc' => 'قیمت (صعودی)',
-        ];
+        $dataTable = $this->getDataTable();
 
-        return view('admin.project.ads.index', compact('title', 'projects', 'sortItems'));
+        return view('project::admin.ads.index', compact('title', 'routeData', 'dataTable'));
     }
 
     public function create()
     {
-        $title = 'پروژه  گوگل ادز - ایجاد';
-        $routeStore = route('admin.project.ads.store');
+        $title = self::CREATE_TITLE;
 
-        return view('admin.project.ads.create', compact('title', 'routeStore'));
+        return view('project::admin.ads.create', compact('title'));
     }
 
     public function store(StoreRequest $request)
@@ -73,23 +60,16 @@ class AdsController extends Controller
         try {
             DB::beginTransaction();
 
-            $projectAds = ProjectAds::query()->create($this->initialAdsProjectData($request));
+            $projectAds = ProjectAds::query()->create($this->initialAdsData($request));
             $projectAds->project()->create($this->initialProjectData($request));
 
             DB::commit();
 
-            return response()->json([
-                'result' => 'success',
-                'message' => trans('panel.success_store'),
-            ]);
-        } catch (Exception $e) {
+            return $this->successResponse();
+        } catch (Exception $exception) {
             DB::rollBack();
-            report($e);
 
-            return response()->json([
-                'result' => 'exception',
-                'message' => $e->getMessage(),
-            ], 500);
+            return $this->exceptionResponse($exception);
         }
     }
 
@@ -97,14 +77,9 @@ class AdsController extends Controller
     {
         $project = $this->getOrFailProject($projectId);
 
-        $title = 'پروژه گوگل ادز - ویرایش';
-        $routeUpdate = route('admin.project.ads.update', $project->id);
+        $title = self::EDIT_TITLE;
 
-        $statuses = ProjectStatus::query()
-            ->where('type_id', $project->type_id)
-            ->get();
-
-        return view('admin.project.ads.edit', compact('title', 'routeUpdate', 'project', 'statuses'));
+        return view('project::admin.ads.edit', compact('title', 'project'));
     }
 
     public function update(UpdateRequest $request, $projectId)
@@ -114,21 +89,14 @@ class AdsController extends Controller
 
             DB::beginTransaction();
             $project->update($this->initialProjectData($request));
-            $project->type->update($this->initialAdsProjectData($request));
+            $project->target->update($this->initialAdsData($request));
             DB::commit();
 
-            return response()->json([
-                'result' => 'success',
-                'message' => trans('panel.success_update'),
-            ]);
-        } catch (Exception $e) {
+            return $this->successUpdateResponse();
+        } catch (Exception $exception) {
             DB::rollBack();
-            report($e);
 
-            return response()->json([
-                'result' => 'exception',
-                'message' => trans('panel.error_update'),
-            ], 500);
+            return $this->exceptionResponse($exception);
         }
     }
 
@@ -136,43 +104,58 @@ class AdsController extends Controller
     {
         $project = $this->getOrFailProject($projectId);
 
-        $title = 'پروژه گوگل ادز - نمایش';
+        $title = self::SHOW_TITLE;
 
-        return view('admin.project.ads.show', compact('title', 'project'));
+        return view('project::admin.ads.show', compact('title', 'project'));
     }
 
-    public function destroy(Admin $admin)
+    public function destroy($projectId)
     {
         try {
-            DB::beginTransaction();
-            $admin->update(['email' => uniqid($admin->email).'_']);
-            $admin->delete();
-            DB::commit();
+            $project = $this->getOrFailProject($projectId);
+            $project->delete();
 
-            return redirect(route('admin.admin.index'))->with('success', trans('panel.success_delete'));
-        } catch (Exception $e) {
+            return $this->successDestroyBack(route('admin.project.seo.index'));
+        } catch (Exception $exception) {
             DB::rollBack();
-            report($e);
 
-            return redirect(route('admin.admin.index'))->with('danger', trans('panel.error_delete'));
+            return $this->exceptionBack($exception);
         }
     }
 
     private function initialProjectData(Request $request): array
     {
-        return [
+        $agreementAt = $request->input('agreement_at');
+        $deadlineAt = $request->input('deadline_at');
+
+        $data = [
             'title' => $request->input('title'),
             'domain' => $request->input('domain_primary'),
             'admin_id' => auth()->id(),
             'user_id' => $request->input('user_id'),
-            'price' => 0,
-            'project_status_id' => $request->input('status_id'),
+            'status_id' => $request->input('status_id'),
+            'base_id' => ProjectBase::Ads,
+            'price' => $request->input('price', 0),
+            'type_id' => $request->input('type_id'),
             'note' => $request->input('note'),
-            'project_base_id' => ProjectBase::Ads,
         ];
+
+        if (! empty($agreementAt)) {
+            $data['agreement_at'] = Helper::toGregorian($agreementAt);
+        } else {
+            $data['agreement_at'] = null;
+        }
+
+        if (! empty($deadlineAt)) {
+            $data['deadline_at'] = Helper::toGregorian($deadlineAt);
+        } else {
+            $data['deadline_at'] = null;
+        }
+
+        return $data;
     }
 
-    private function initialAdsProjectData(Request $req): array
+    private function initialAdsData(Request $req): array
     {
         return [
             'field_activity' => $req->input('field_activity'),
@@ -186,5 +169,100 @@ class AdsController extends Controller
             ->whereHasMorph('target', [ProjectAds::class])
             ->with('target')
             ->findOrFail($projectId);
+    }
+
+    public function getDataRoute(): string
+    {
+        return route('admin.project.ads.data');
+    }
+
+    public function getDataTable(): array
+    {
+        return (new DatatableBase())
+            ->addColumn(
+                ColumnOption::new()->setName('id')->setAs('شناسه')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('title')->setAs('عنوان')
+            )
+            ->addColumn(
+                ColumnOption::new()
+                    ->setName('admin.fullname')
+                    ->setSearchable(false)
+                    ->setSortable(false)
+                    ->setAs('نام کارشناس')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('type.title')
+                    ->setSortable(false)
+                    ->setAs('نوع')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('status.title')
+                    ->setSortable(false)
+                    ->setAs('وضعیت')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('domain')->setAs('دامنه')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('created_at')->setAs('ایجاد')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('action')
+                    ->setAs('عملیات')
+                    ->removeAction()
+            )
+            ->addExternalFilter(ExternalFilter::new()->setKey('admin'))
+            ->addExternalFilter(ExternalFilter::new()->setKey('type'))
+            ->addExternalFilter(ExternalFilter::new()->setKey('status'))
+            ->render();
+    }
+
+    public function data()
+    {
+        try {
+            $projects = Project::query()
+                ->select([
+                    'id',
+                    'title',
+                    'domain',
+                    'type_id',
+                    'status_id',
+                    'target_type',
+                    'target_id',
+                    'admin_id',
+                    'created_at',
+                ])
+                ->whereHasMorph('target', [ProjectAds::class])
+                ->with([
+                    'type.base',
+                    'status.type',
+                    'target',
+                    'admin' => function (BelongsTo $query) {
+                        $query->select('admins.id', 'admins.first_name', 'admins.last_name');
+                    },
+                ])
+                ->filter([
+                    AdminFilter::class,
+                    TypeFilter::class,
+                    StatusFilter::class,
+                ]);
+
+            return DataTables::eloquent($projects)
+                ->editColumn('created_at', function (Project $project) {
+                    return $project->created_at->toJalali()->format('Y/m/d');
+                })
+                ->addColumn('action', function ($project) {
+                    $actions = Helper::btnMaker(BtnType::Warning, route('admin.project.ads.edit', $project->id), trans('panel.action.edit'));
+                    $actions .= Helper::btnMaker(BtnType::Info, route('admin.project.ads.show', $project->id), trans('panel.action.show'));
+
+                    return $actions;
+                })
+                ->rawColumns(['action'])
+                ->make();
+        } catch (Exception $exception) {
+            return $this->exceptionResponse($exception);
+        }
     }
 }

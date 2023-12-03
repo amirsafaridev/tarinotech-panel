@@ -5,8 +5,6 @@ namespace Modules\Project\database\factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Project\app\Models\Project;
 
-use function now;
-
 /**
  * @extends Factory
  */

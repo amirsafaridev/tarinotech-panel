@@ -7,8 +7,6 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-use function route;
-
 class RedirectIfNotAdmin
 {
     /**

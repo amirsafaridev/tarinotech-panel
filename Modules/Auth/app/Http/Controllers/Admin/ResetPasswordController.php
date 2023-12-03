@@ -10,15 +10,6 @@ use Modules\Admin\app\Models\Admin;
 use Modules\Auth\app\Http\Requests\Admin\ResetPasswordRequest;
 use Modules\Auth\app\Models\OtpCode;
 
-use function bcrypt;
-use function now;
-use function redirect;
-use function report;
-use function route;
-use function to_route;
-use function trans;
-use function view;
-
 class ResetPasswordController extends Controller
 {
     const INDEX_TITLE = 'پورتال تارینوتک - بازنشانی گذرواژه';

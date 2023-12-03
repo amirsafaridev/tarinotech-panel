@@ -5,8 +5,6 @@ namespace Modules\FreeDay\database\seeders;
 use Illuminate\Database\Seeder;
 use Modules\FreeDay\app\Models\FreeDay;
 
-use function now;
-
 class FreeDaySeeder extends Seeder
 {
     /**
