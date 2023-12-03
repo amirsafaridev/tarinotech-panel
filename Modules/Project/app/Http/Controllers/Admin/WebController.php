@@ -21,7 +21,6 @@ use DB;
 use Exception;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
-use Modules\Admin\app\Models\Admin;
 use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Filters\StatusFilter;
 use Modules\Project\app\Filters\TypeFilter;
@@ -57,7 +56,7 @@ class WebController extends Controller
 
     public function create()
     {
-        $title = 'پروژه سایت - ایجاد';
+        $title = self::CREATE_TITLE;
 
         return view('project::admin.web.create', compact('title'));
     }
@@ -67,23 +66,17 @@ class WebController extends Controller
         try {
             DB::beginTransaction();
 
-            $projectWeb = ProjectWeb::query()->create($this->initialWebProjectData($request));
+            $projectWeb = ProjectWeb::query()->create($this->initialWebData($request));
             $projectWeb->project()->create($this->initialProjectData($request));
 
             DB::commit();
 
-            return response()->json([
-                'result' => 'success',
-                'message' => trans('panel.success_store'),
-            ]);
-        } catch (Exception $e) {
-            DB::rollBack();
-            report($e);
+            return $this->successResponse();
 
-            return response()->json([
-                'result' => 'exception',
-                'message' => $e->getMessage(),
-            ], 500);
+        } catch (Exception $exception) {
+            DB::rollBack();
+
+            return $this->exceptionResponse($exception);
         }
     }
 
@@ -91,35 +84,26 @@ class WebController extends Controller
     {
         $project = $this->getOrFailProject($projectId);
 
-        $title = 'پروژه سایت - ویرایش';
-        $routeUpdate = route('admin.project.web.update', $project->id);
+        $title = self::EDIT_TITLE;
 
-        return view('admin.project.web.edit', compact('title', 'routeUpdate', 'project'));
+        return view('project::admin.web.edit', compact('title', 'project'));
     }
 
     public function update(UpdateRequest $request, $projectId)
     {
         try {
-
             $project = $this->getOrFailProject($projectId);
 
             DB::beginTransaction();
             $project->update($this->initialProjectData($request));
-            $project->type->update($this->initialWebProjectData($request));
+            $project->target->update($this->initialWebData($request));
             DB::commit();
 
-            return response()->json([
-                'result' => 'success',
-                'message' => trans('panel.success_update'),
-            ]);
-        } catch (Exception $e) {
+            return $this->successUpdateResponse();
+        } catch (Exception $exception) {
             DB::rollBack();
-            report($e);
 
-            return response()->json([
-                'result' => 'exception',
-                'message' => $e->getMessage(),
-            ], 500);
+            return $this->exceptionResponse($exception);
         }
     }
 
@@ -127,25 +111,22 @@ class WebController extends Controller
     {
         $project = $this->getOrFailProject($projectId);
 
-        $title = 'پروژه سایت - نمایش';
+        $title = self::SHOW_TITLE;
 
-        return view('admin.project.web.show', compact('title', 'project'));
+        return view('project::admin.web.show', compact('title', 'project'));
     }
 
-    public function destroy(Admin $admin)
+    public function destroy($projectId)
     {
         try {
-            DB::beginTransaction();
-            $admin->update(['email' => uniqid($admin->email).'_']);
-            $admin->delete();
-            DB::commit();
+            $project = $this->getOrFailProject($projectId);
+            $project->delete();
 
-            return redirect(route('admin.project.web.index'))->with('success', trans('panel.success_delete'));
-        } catch (Exception $e) {
+            return $this->successDestroyBack(route('admin.project.web.index'));
+        } catch (Exception $exception) {
             DB::rollBack();
-            report($e);
 
-            return redirect(route('admin.project.web.index'))->with('danger', trans('panel.error_delete'));
+            return $this->exceptionBack($exception);
         }
     }
 
@@ -217,11 +198,11 @@ class WebController extends Controller
             'domain' => $request->input('domain_primary'),
             'admin_id' => auth()->id(),
             'user_id' => $request->input('user_id'),
-            'price' => $request->input('price'),
             'status_id' => $request->input('status_id'),
+            'base_id' => ProjectBase::Web,
+            'price' => $request->input('price'),
             'type_id' => $request->input('type_id'),
             'note' => $request->input('note'),
-            'base_id' => ProjectBase::Web,
         ];
 
         if (! empty($agreementAt)) {
@@ -239,7 +220,7 @@ class WebController extends Controller
         return $data;
     }
 
-    private function initialWebProjectData(Request $request): array
+    private function initialWebData(Request $request): array
     {
         $domain = $this->getDomain($request);
         $host = $this->getHost($request);
@@ -249,15 +230,13 @@ class WebController extends Controller
         return [
             'field_activity' => $request->input('field_activity'),
             'package_id' => $request->input('package_id'),
-            'type_id' => $request->input('type_id'),
             'pages' => $request->input('pages'),
-            'working_days' => $request->input('working_days'),
             'domains' => $domain->toArray(),
             'host' => $host->toArray(),
             'language' => $language->toArray(),
             'sample' => $sample->toArray(),
             'facilities' => $request->input('facilities', []),
-            'project_type_id' => 1,
+            'working_days' => $request->input('working_days'),
         ];
     }
 
@@ -369,7 +348,7 @@ class WebController extends Controller
                     return number_format($project->price);
                 })
                 ->addColumn('action', function ($project) {
-                    $actions = Helper::btnMaker(BtnType::Warning, route('admin.project.web.edit', $project->id), trans('panel.action.manage'));
+                    $actions = Helper::btnMaker(BtnType::Warning, route('admin.project.web.edit', $project->id), trans('panel.action.edit'));
                     $actions .= Helper::btnMaker(BtnType::Info, route('admin.project.web.show', $project->id), trans('panel.action.show'));
 
                     return $actions;

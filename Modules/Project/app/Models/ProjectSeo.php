@@ -34,7 +34,7 @@ class ProjectSeo extends Model
 
     public function project(): MorphOne
     {
-        return $this->morphOne(Project::class, 'type');
+        return $this->morphOne(Project::class, 'target');
     }
 
     public function getActivitylogOptions(): LogOptions

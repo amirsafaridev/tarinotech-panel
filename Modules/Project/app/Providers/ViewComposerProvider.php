@@ -39,10 +39,14 @@ class ViewComposerProvider extends ServiceProvider
             $view->with(compact('types', 'statuses'));
         });
 
-        view()->composer(['project::admin.web.index', 'project::admin.web.create'], function ($view) {
+        view()->composer([
+            'project::admin.web.index',
+            'project::admin.web.create',
+            'project::admin.web.edit',
+        ], function ($view) {
             $types = ProjectType::query()
                 ->where('base_id', ProjectBase::Web)
-                ->with('base')
+                ->with(['base', 'statuses'])
                 ->get();
 
             $statuses = ProjectStatus::query()
@@ -56,6 +60,26 @@ class ViewComposerProvider extends ServiceProvider
                 ->get();
 
             $view->with(compact('types', 'statuses', 'packages'));
+        });
+
+        view()->composer([
+            'project::admin.seo.index',
+            'project::admin.seo.create',
+            'project::admin.seo.edit',
+        ], function ($view) {
+            $types = ProjectType::query()
+                ->where('base_id', ProjectBase::Seo)
+                ->with(['base', 'statuses'])
+                ->get();
+
+            $statuses = ProjectStatus::query()
+                ->whereHas('type', function ($q) {
+                    $q->where('base_id', ProjectBase::Seo);
+                })
+                ->with('type')
+                ->get();
+
+            $view->with(compact('types', 'statuses'));
         });
     }
 }

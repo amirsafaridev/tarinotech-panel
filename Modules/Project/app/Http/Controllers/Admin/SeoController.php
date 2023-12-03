@@ -2,72 +2,58 @@
 
 namespace Modules\Project\app\Http\Controllers\Admin;
 
-use App\Filters\Admin\Project\DomainFilter;
-use App\Filters\Admin\Project\SortFilter;
+use App\Enums\General\BtnType;
+use App\Filters\Admin\Admin\AdminFilter;
 use App\Filters\Admin\Project\StatusFilter;
-use App\Filters\Admin\Share\IDFilter;
-use App\Filters\Admin\User\UserSearchFilter;
+use App\Foundation\ValueObjects\Datatable\ColumnOption;
+use App\Foundation\ValueObjects\Datatable\DatatableBase;
+use App\Foundation\ValueObjects\Datatable\ExternalFilter;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Service\Json\SeoProject\HostTransformer;
+use App\Traits\HasDatatable;
+use App\Traits\HasJsonCommonResponse;
 use DB;
 use Exception;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
-use Modules\Admin\app\Models\Admin;
 use Modules\Project\app\Enums\ProjectBase;
+use Modules\Project\app\Filters\TypeFilter;
 use Modules\Project\app\Http\Requests\Admin\Seo\StoreRequest;
 use Modules\Project\app\Http\Requests\Admin\Seo\UpdateRequest;
 use Modules\Project\app\Models\Project;
 use Modules\Project\app\Models\ProjectSeo;
-
-use function auth;
-use function redirect;
-use function report;
-use function resolve;
-use function response;
-use function route;
-use function trans;
-use function view;
+use Yajra\DataTables\Facades\DataTables;
 
 class SeoController extends Controller
 {
+    use HasDatatable;
+    use HasJsonCommonResponse;
+
+    const INDEX_TITLE = 'پروژه های سئو';
+
+    const CREATE_TITLE = 'پروژه های سئو - ایجاد';
+
+    const EDIT_TITLE = 'پروژه های سئو - ویرایش';
+
+    const SHOW_TITLE = 'پروژه های سئو - نمایش';
+
     public function index()
     {
-        $title = 'پروژه ها - سئو';
+        $title = self::INDEX_TITLE;
 
-        $projects = Project::query()
-            ->with(['status', 'target', 'user', 'admin'])
-            ->whereHasMorph('target', [ProjectSeo::class])
-            ->whereHas('user', function (Builder $q) {
-                $q->filter([
-                    UserSearchFilter::class,
-                ]);
-            })
-            ->filter([
-                IDFilter::class,
-                DomainFilter::class,
-                StatusFilter::class,
-                SortFilter::class,
-            ])
-            ->paginate(12);
+        $routeData = $this->getDataRoute();
 
-        $sortItems = [
-            'id-desc' => 'شناسه (نزولی)',
-            'id-asc' => 'شناسه (صعودی)',
-            'price-desc' => 'قیمت (نزولی)',
-            'price-asc' => 'قیمت (صعودی)',
-        ];
+        $dataTable = $this->getDataTable();
 
-        return view('admin.project.seo.index', compact('title', 'projects', 'sortItems'));
+        return view('project::admin.seo.index', compact('title', 'routeData', 'dataTable'));
     }
 
     public function create()
     {
-        $title = 'پروژه سئو - ایجاد';
-        $routeStore = route('admin.project.seo.store');
+        $title = self::CREATE_TITLE;
 
-        return view('admin.project.seo.create', compact('title', 'routeStore'));
+        return view('project::admin.seo.create', compact('title'));
     }
 
     public function store(StoreRequest $request)
@@ -75,23 +61,18 @@ class SeoController extends Controller
         try {
             DB::beginTransaction();
 
-            $projectSeo = ProjectSeo::query()->create($this->initialSeoProjectData($request));
-            $projectSeo->project()->create($this->initialProjectData($request));
+            $projectWeb = ProjectSeo::query()->create($this->initialSeoData($request));
+            $projectWeb->project()->create($this->initialProjectData($request));
 
             DB::commit();
 
-            return response()->json([
-                'result' => 'success',
-                'message' => trans('panel.success_store'),
-            ]);
-        } catch (Exception $e) {
+            return $this->successResponse();
+        } catch (Exception $exception) {
             DB::rollBack();
-            report($e);
 
-            return response()->json([
-                'result' => 'exception',
-                'message' => $e->getMessage(),
-            ], 500);
+            return $exception->getMessage();
+
+            return $this->exceptionResponse($exception);
         }
     }
 
@@ -99,10 +80,9 @@ class SeoController extends Controller
     {
         $project = $this->getOrFailProject($projectId);
 
-        $title = 'پروژه سئو - ویرایش';
-        $routeUpdate = route('admin.project.seo.update', $project->id);
+        $title = self::EDIT_TITLE;
 
-        return view('admin.project.seo.edit', compact('title', 'routeUpdate', 'project'));
+        return view('project::admin.seo.edit', compact('title', 'project'));
     }
 
     public function update(UpdateRequest $request, $projectId)
@@ -112,21 +92,14 @@ class SeoController extends Controller
 
             DB::beginTransaction();
             $project->update($this->initialProjectData($request));
-            $project->type->update($this->initialSeoProjectData($request));
+            $project->target->update($this->initialSeoData($request));
             DB::commit();
 
-            return response()->json([
-                'result' => 'success',
-                'message' => trans('panel.success_update'),
-            ]);
-        } catch (Exception $e) {
+            return $this->successUpdateResponse();
+        } catch (Exception $exception) {
             DB::rollBack();
-            report($e);
 
-            return response()->json([
-                'result' => 'exception',
-                'message' => trans('panel.error_update'),
-            ], 500);
+            return $this->exceptionResponse($exception);
         }
     }
 
@@ -134,46 +107,58 @@ class SeoController extends Controller
     {
         $project = $this->getOrFailProject($projectId);
 
-        $title = 'پروژه سئو - نمایش';
+        $title = self::SHOW_TITLE;
 
-        return view('admin.project.seo.show', compact('title', 'project'));
+        return view('project::admin.seo.show', compact('title', 'project'));
     }
 
-    public function destroy(Admin $admin)
+    public function destroy($projectId)
     {
         try {
-            DB::beginTransaction();
-            $admin->update(['email' => uniqid($admin->email).'_']);
-            $admin->delete();
-            DB::commit();
+            $project = $this->getOrFailProject($projectId);
+            $project->delete();
 
-            return redirect(route('admin.admin.index'))->with('success', trans('panel.success_delete'));
-        } catch (Exception $e) {
+            return $this->successDestroyBack(route('admin.project.seo.index'));
+        } catch (Exception $exception) {
             DB::rollBack();
-            report($e);
 
-            return redirect(route('admin.admin.index'))->with('danger', trans('panel.error_delete'));
+            return $this->exceptionBack($exception);
         }
     }
 
     private function initialProjectData(Request $request): array
     {
         $agreementAt = $request->input('agreement_at');
+        $deadlineAt = $request->input('deadline_at');
 
-        return [
+        $data = [
             'title' => $request->input('title'),
             'domain' => $request->input('domain_primary'),
             'admin_id' => auth()->id(),
             'user_id' => $request->input('user_id'),
+            'status_id' => $request->input('status_id'),
+            'base_id' => ProjectBase::Web,
             'price' => $request->input('price'),
-            'project_status_id' => $request->input('status_id'),
+            'type_id' => $request->input('type_id'),
             'note' => $request->input('note'),
-            'project_base_id' => ProjectBase::Seo,
-            'agreement_at' => Helper::toGregorian($agreementAt),
         ];
+
+        if (! empty($agreementAt)) {
+            $data['agreement_at'] = Helper::toGregorian($agreementAt);
+        } else {
+            $data['agreement_at'] = null;
+        }
+
+        if (! empty($deadlineAt)) {
+            $data['deadline_at'] = Helper::toGregorian($deadlineAt);
+        } else {
+            $data['deadline_at'] = null;
+        }
+
+        return $data;
     }
 
-    private function initialSeoProjectData(Request $req): array
+    private function initialSeoData(Request $req): array
     {
 
         $host = $this->getHost($req);
@@ -206,5 +191,116 @@ class SeoController extends Controller
             ->whereHasMorph('target', [ProjectSeo::class])
             ->with('target')
             ->findOrFail($projectId);
+    }
+
+    public function getDataRoute(): string
+    {
+        return route('admin.project.seo.data');
+    }
+
+    public function getDataTable(): array
+    {
+        return (new DatatableBase())
+            ->addColumn(
+                ColumnOption::new()->setName('id')->setAs('شناسه')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('title')->setAs('عنوان')
+            )
+            ->addColumn(
+                ColumnOption::new()
+                    ->setName('admin.fullname')
+                    ->setSearchable(false)
+                    ->setSortable(false)
+                    ->setAs('نام کارشناس')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('target.price_monthly')
+                    ->setSortable(false)
+                    ->setAs('پرداخت ماهیانه')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('type.title')
+                    ->setSortable(false)
+                    ->setAs('نوع')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('status.title')
+                    ->setSortable(false)
+                    ->setAs('وضعیت')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('price')->setAs('قیمت')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('domain')->setAs('دامنه')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('created_at')->setAs('ایجاد')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('action')
+                    ->setAs('عملیات')
+                    ->removeAction()
+            )
+            ->addExternalFilter(ExternalFilter::new()->setKey('admin'))
+            ->addExternalFilter(ExternalFilter::new()->setKey('type'))
+            ->addExternalFilter(ExternalFilter::new()->setKey('status'))
+            ->addExternalFilter(ExternalFilter::new()->setKey('package_id'))
+            ->render();
+    }
+
+    public function data()
+    {
+        try {
+            $projects = Project::query()
+                ->select([
+                    'id',
+                    'title',
+                    'price',
+                    'domain',
+                    'type_id',
+                    'status_id',
+                    'target_type',
+                    'target_id',
+                    'admin_id',
+                    'created_at',
+                ])
+                ->whereHasMorph('target', [ProjectSeo::class])
+                ->with([
+                    'type.base',
+                    'status.type',
+                    'target',
+                    'admin' => function (BelongsTo $query) {
+                        $query->select('admins.id', 'admins.first_name', 'admins.last_name');
+                    },
+                ])
+                ->filter([
+                    AdminFilter::class,
+                    TypeFilter::class,
+                    StatusFilter::class,
+                ]);
+
+            return DataTables::eloquent($projects)
+                ->editColumn('created_at', function (Project $project) {
+                    return $project->created_at->toJalali()->format('Y/m/d');
+                })
+                ->editColumn('price', function (Project $project) {
+                    return number_format($project->price);
+                })
+                ->editColumn('target.price_monthly', function (Project $project) {
+                    return number_format($project->target->price_monthly);
+                })
+                ->addColumn('action', function ($project) {
+                    $actions = Helper::btnMaker(BtnType::Warning, route('admin.project.seo.edit', $project->id), trans('panel.action.edit'));
+                    $actions .= Helper::btnMaker(BtnType::Info, route('admin.project.seo.show', $project->id), trans('panel.action.show'));
+
+                    return $actions;
+                })
+                ->rawColumns(['action'])
+                ->make();
+        } catch (Exception $exception) {
+            return $this->exceptionResponse($exception);
+        }
     }
 }

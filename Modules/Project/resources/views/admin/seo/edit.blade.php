@@ -10,11 +10,10 @@
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">پروژه سئو - ویرایش</h1>
+        <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a
-                            href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.project.index') }}">پروژه ها</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.project.seo.index') }}">سئو</a></li>
                 <li class="breadcrumb-item active">ویرایش</li>
@@ -22,7 +21,7 @@
         </div>
     </div>
 
-    <form class="request-form row forms-sample" method="post" action="{{ $routeUpdate }}">
+    <form class="request-form row forms-sample" method="post" action="{{ route('admin.project.seo.update',$project->id) }}">
         <div class="col-xl-6 col-lg-6 col-md-6 col-12">
             @include('admin.partial.message')
             @csrf
@@ -40,6 +39,14 @@
                     <x-admin.input identify="title" title="نام پروژه" :old="$project->title"/>
 
                     <x-admin.select-user title="کارفرما" :old="$project->user_id"/>
+
+                    <x-admin.select-model
+                            identify="type_id"
+                            title="نوع پروژه"
+                            :items="$types"
+                            :has-choice-option="false"
+                            key="id"
+                            value="title"/>
 
                     <x-admin.select-model identify="status_id"
                                           title="وضعیت پروژه"
@@ -83,13 +90,13 @@
                                 title="هاست"
                                 :with-option="false"
                                 :enum-class="\Modules\Project\app\Enums\SeoHostLocation::class"
-                                :old="$project->type->host['host_location']"/>
+                                :old="$project->target->host['host_location']"/>
                     </div>
 
                     <div class="d-none" id="host_container">
                         <x-admin.input identify="host_provider"
                                        title="هاستینگ (از چه سایتی خریداری شده؟)"
-                                       :old="$project->type->host['host_provider']"/>
+                                       :old="$project->target->host['host_provider']"/>
                     </div>
                 </div>
             </div>
@@ -106,20 +113,20 @@
                     <x-admin.input
                             identify="amount_content"
                             title="میزان تولید محتوا"
-                            :old="$project->type->amount_content"
+                            :old="$project->target->amount_content"
                     />
 
                     <x-admin.input
                             identify="keywords_count"
                             title="تعداد کلمات سئو شدنی"
-                            :old="$project->type->keywords_count"
+                            :old="$project->target->keywords_count"
                     />
 
                     <x-admin.textarea
                             identify="keywords"
                             description="در هر خط یک کلمه کلیدی با اولویت وارد کنید."
                             title="لیست کلمات قراردادی"
-                            :old="$project->type->keywords"
+                            :old="$project->target->keywords"
                     />
 
                 </div>
@@ -149,7 +156,7 @@
                                     title="مدت قرارداد"
                                     :with-option="false"
                                     :enum-class="\Modules\Project\app\Enums\SeoAgreementDuration::class"
-                                    :old="$project->type->agreement_duration"/>
+                                    :old="$project->target->agreement_duration"/>
                         </div>
 
 
@@ -159,7 +166,7 @@
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="field_activity"
                                            title="زمینه فعالیت"
-                                           :old="$project->type->field_activity"/>
+                                           :old="$project->target->field_activity"/>
                         </div>
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="price"
@@ -173,13 +180,13 @@
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="price_monthly"
                                            title="پرداختی ماهیانه (ریال)"
-                                           :old="number_format($project->type->price_monthly)"/>
+                                           :old="number_format($project->target->price_monthly)"/>
                         </div>
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="due_date_payments"
                                            description="چندم هر ماه"
                                            title="تاریخ سررسید پرداخت ها"
-                                           :old="$project->type->due_date_payments"/>
+                                           :old="$project->target->due_date_payments"/>
                         </div>
 
                     </div>
@@ -191,7 +198,7 @@
                                     title="طراحی سایت پروژه"
                                     :with-option="false"
                                     :enum-class="\Modules\Project\app\Enums\ProjectDesignBy::class"
-                                    :old="$project->type->designed_by"/>
+                                    :old="$project->target->designed_by"/>
                         </div>
                     </div>
 
@@ -199,7 +206,7 @@
                                       title="اطلاعات بیشتر (یادداشت)"
                                       :old="$project->note"/>
 
-                    <x-admin.button-submit/>
+                    <x-admin.button-submit title="ویرایش"/>
 
                 </div>
             </div>
@@ -213,34 +220,10 @@
     ]])
     @include('admin.partial.request')
     @include('admin.partial.script.global')
+    @include('project::admin.seo.part.script')
     <script>
         $(document).ready(function () {
             activeParentUl('{{ route('admin.project.seo.index') }}');
-
-            $('#user_id').select2();
-
-            $('#host_location').change(function () {
-                if ($(this).val() === 'IN_COMPANY') {
-                    stateHostContainer(false);
-                } else {
-                    stateHostContainer(true);
-                }
-            }).trigger('change');
-
-            jalaliDatepicker.startWatch();
-            makeInputPrice($('#price'));
-            makeInputPrice($('#price_monthly'));
-            makeInputPrice($('#keywords_count'));
         })
-
-        const hostContainer = $('#host_container');
-
-        function stateHostContainer(status) {
-            if (status) {
-                hostContainer.removeClass('d-none');
-            } else {
-                hostContainer.addClass('d-none');
-            }
-        }
     </script>
 @endsection

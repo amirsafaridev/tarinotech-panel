@@ -10,7 +10,7 @@
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">پروژه وب سایت - ویرایش</h1>
+        <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a
@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <form class="request-form row forms-sample" method="post" action="{{ $routeUpdate }}">
+    <form class="request-form row forms-sample" method="post" action="{{ route('admin.project.web.edit',$project->id) }}">
         <div class="col-xl-6 col-lg-6 col-md-6 col-12">
             @include('admin.partial.message')
             @csrf
@@ -42,16 +42,8 @@
                                    title="نام پروژه"
                                    :old="$project->title"/>
 
-                    <x-admin.select-user title="کارفرما" :old="$project->user_id"/>
-
-
-                    <x-admin.select-model identify="status_id"
-                                          title="وضعیت پروژه"
-                                          key="id"
-                                          value="title"
-                                          :items="$statuses"
-                                          :old="$project->project_status_id"
-                    />
+                    <x-admin.select-user title="کارفرما"
+                                         :old="$project->user_id"/>
                 </div>
             </div>
 
@@ -66,23 +58,23 @@
                 <div class="card-body">
                     <x-admin.checkbox identify="have_domain"
                                       description="دامنه دارد؟"
-                                      :old="$project->type->domains['have_domain']"/>
+                                      :old="$project->target->domains['have_domain']"/>
 
                     <div class="row d-none" id="domain_container">
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="domain_provider_website"
                                            title="ادرس سایت ارائه دهنده دامنه"
-                                           :old="$project->type->domains['domain_provider_website']"/>
+                                           :old="$project->target->domains['domain_provider_website']"/>
                         </div>
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="domain_username"
                                            title="نام کاربری دامنه"
-                                           :old="$project->type->domains['domain_username']"/>
+                                           :old="$project->target->domains['domain_username']"/>
                         </div>
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="domain_password"
                                            title="رمزعبور دامنه"
-                                           :old="$project->type->domains['domain_password'] ? Crypt::decrypt($project->type->domains['domain_password']) : ''"/>
+                                           :old="$project->target->domains['domain_password'] ? Crypt::decrypt($project->target->domains['domain_password']) : ''"/>
                         </div>
                     </div>
                     <x-admin.input identify="domain_primary"
@@ -94,10 +86,10 @@
                             :multiple="true"
                             :with-option="false"
                             :enum-class="\Modules\Project\app\Enums\WebDomain::class"
-                            :old="$project->type->domains['domains_required']"/>
+                            :old="$project->target->domains['domains_required']"/>
 
                     <x-admin.input identify="other_domain" title="نام دامنه دیگر را وارد کنید"
-                                   :old="$project->type->domains['other_domain']"/>
+                                   :old="$project->target->domains['other_domain']"/>
                 </div>
             </div>
 
@@ -112,23 +104,23 @@
                 <div class="card-body">
                     <x-admin.checkbox identify="have_host"
                                       description="هاست دارد؟"
-                                      :old="$project->type->host['have_host']"/>
+                                      :old="$project->target->host['have_host']"/>
 
                     <div class="row d-none" id="host_container">
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="host_provider"
                                            title="هاستینگ (از چه سایتی خریداری شده؟)"
-                                           :old="$project->type->host['host_provider']"/>
+                                           :old="$project->target->host['host_provider']"/>
                         </div>
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="host_username"
                                            title="نام کاربری"
-                                           :old="$project->type->host['host_username']"/>
+                                           :old="$project->target->host['host_username']"/>
                         </div>
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="host_password"
                                            title="رمز"
-                                           :old="$project->type->host['host_password'] ? Crypt::decrypt($project->type->host['host_password']) : ''"/>
+                                           :old="$project->target->host['host_password'] ? Crypt::decrypt($project->target->host['host_password']) : ''"/>
                         </div>
                     </div>
 
@@ -139,12 +131,12 @@
                                 description="اگر مخاطبان پروژه خارج از کشور هستند و یا برای کارفرما لوکیشن هاست اهمیت دارد"
                                 :with-option="false"
                                 :enum-class="\Modules\Project\app\Enums\WebHostLocation::class"
-                                :old="$project->type->host['host_location']"/>
+                                :old="$project->target->host['host_location']"/>
                     </div>
 
                     <x-admin.checkbox identify="host_most_visit"
                                       description="آیا پروژه نیاز به هاست پربازدید دارد؟"
-                                      :old="$project->type->host['host_most_visit']"/>
+                                      :old="$project->target->host['host_most_visit']"/>
 
                 </div>
             </div>
@@ -163,7 +155,7 @@
                             title="زبان اصلی"
                             :with-option="false"
                             :enum-class="\Modules\Project\app\Enums\WebLanguage::class"
-                            :old="$project->type->language['primary_language']"/>
+                            :old="$project->target->language['primary_language']"/>
 
                     <x-admin.select-enum
                             identify="languages[]"
@@ -171,7 +163,7 @@
                             :multiple="true"
                             :with-option="false"
                             :enum-class="\Modules\Project\app\Enums\WebLanguage::class"
-                            :old="$project->type->language['languages']"/>
+                            :old="$project->target->language['languages']"/>
                 </div>
             </div>
 
@@ -187,13 +179,25 @@
                     <div class="row">
                         <div class="col-12 col-md-6">
                             <x-admin.select-model
-                                    identify="project_type_id"
+                                    identify="type_id"
                                     title="نوع پروژه"
-                                    :items="$projectTypes"
+                                    :items="$types"
+                                    :old="$project->type_id"
+                                    :has-choice-option="false"
                                     key="id"
-                                    value="title"
-                                    :old="$project->type->project_type_id"/>
+                                    value="title"/>
                         </div>
+                        <div class="col-12 col-md-6">
+                            <x-admin.select-simple identify="status_id"
+                                                   title="وضعیت پروژه"
+
+                            />
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
                         <div class="col-12 col-md-6">
                             <x-admin.select-model
                                     identify="package_id"
@@ -201,34 +205,32 @@
                                     :items="$packages"
                                     key="id"
                                     value="title"
-                                    :old="$project->type->package_id"/>
+                                    :old="$project->target->package_id"/>
                         </div>
-                    </div>
-
-                    <div class="row">
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="agreement_at"
                                            title="تاریخ قرارداد"
                                            :old="verta($project->agreement_at)->format('Y/m/d')"
                                            :is-date-picker="true"/>
                         </div>
-                        <div class="col-12 col-md-6">
-                            <x-admin.input identify="field_activity"
-                                           title="زمینه فعالیت"
-                                           :old="$project->type->field_activity"/>
-                        </div>
+
                     </div>
 
                     <div class="row">
                         <div class="col-12 col-md-6">
+                            <x-admin.input identify="field_activity"
+                                           title="زمینه فعالیت"
+                                           :old="$project->target->field_activity"/>
+                        </div>
+                        <div class="col-12 col-md-6">
                             <x-admin.input identify="pages"
                                            title="تعداد صفحات داخلی"
-                                           :old="$project->type->pages"/>
+                                           :old="$project->target->pages"/>
                         </div>
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="working_days"
                                            title="مدت زمان (روز کاری)"
-                                           :old="$project->type->working_days"/>
+                                           :old="$project->target->working_days"/>
                         </div>
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="deadline_at"
@@ -251,18 +253,18 @@
                     <x-admin.textarea identify="similar_sites"
                                       title="سایت های مشابه"
                                       description="از نظر موضوعی و زمینه فعالیت مانند رقبا"
-                                      :old="implode(PHP_EOL,$project->type->sample['similar_sites'])"/>
+                                      :old="implode(PHP_EOL,$project->target->sample['similar_sites'])"/>
 
                     <x-admin.textarea identify="favorite_sites"
                                       title="سایت های مورد پسند"
-                                      :old="implode(PHP_EOL,$project->type->sample['favorite_sites'])"/>
+                                      :old="implode(PHP_EOL,$project->target->sample['favorite_sites'])"/>
 
                     <x-admin.select-enum identify="facilities[]"
                                          title="امکانات بیشتر"
                                          :multiple="true"
                                          :with-option="false"
                                          :enum-class="\Modules\Project\app\Enums\WebFacility::class"
-                                         :old="$project->type->facilities"/>
+                                         :old="$project->target->facilities"/>
 
                     <x-admin.textarea identify="note"
                                       title="اطلاعات بیشتر (یادداشت)"
@@ -282,82 +284,11 @@
     ]])
     @include('admin.partial.request')
     @include('admin.partial.script.global')
+    @include('project::admin.web.part.script')
+
     <script>
         $(document).ready(function () {
             activeParentUl('{{ route('admin.project.web.index') }}');
-
-            $('#user_id').select2();
-            $('#domains_required').select2();
-            $('#languages').select2();
-            $('#facilities').select2();
-
-            $('#have_domain').change(function () {
-                stateDomainContainer($(this).is(':checked'));
-            });
-
-            $('#have_host').change(function () {
-                stateHostContainer($(this).is(':checked'));
-            });
-
-            jalaliDatepicker.startWatch();
-
-            const deadlineAt = $('#deadline_at');
-
-            const workingDays = $('#working_days');
-            const alertWorkingDays = $('#alert_working_days');
-            const alertDaysCalcMessage = $('#alert_working_days .message');
-            let debounceTimer;
-
-            workingDays.on('keyup', function () {
-                const self = $(this);
-                if (!self.val()) {
-                    return;
-                }
-                clearTimeout(debounceTimer);
-                alertDaysCalcMessage.html('<span class="fal fa-spinner fa-spin"></span>');
-                debounceTimer = setTimeout(function () {
-                    postAjax('{{ route('admin.ajax.calendar.calc.day.work') }}', {
-                        days: self.val()
-                    })
-                        .then(function (response) {
-                            let totalWorkDays = response.total_work_days;
-                            let totalFreeDays = response.total_free_days;
-                            let finalDateJalali = response.final_date_jalali;
-                            let finalDate = response.final_date;
-                            let updatedMessage = `تعداد روز های محاسبه شده ${totalWorkDays} می باشد و تعداد روز های تعطیل محاسبه شده ${totalFreeDays} می باشد. تاریخ تحویل ${finalDateJalali} می باشد`;
-                            alertDaysCalcMessage.html(updatedMessage);
-                            deadlineAt.val(finalDate);
-                        })
-                        .catch(function (response) {
-                            console.log(response);
-                        });
-                }, 2000);
-            });
-            makeInputNumber(workingDays);
-            makeInputPrice($('#price'));
         })
-
-
-        const domainContainer = $('#domain_container');
-        stateDomainContainer({{ $project->type->domains['have_domain'] }});
-
-        function stateDomainContainer(status) {
-            if (status) {
-                domainContainer.removeClass('d-none');
-            } else {
-                domainContainer.addClass('d-none');
-            }
-        }
-
-        const hostContainer = $('#host_container');
-        stateHostContainer({{ $project->type->host['have_host'] }});
-
-        function stateHostContainer(status) {
-            if (status) {
-                hostContainer.removeClass('d-none');
-            } else {
-                hostContainer.addClass('d-none');
-            }
-        }
     </script>
 @endsection

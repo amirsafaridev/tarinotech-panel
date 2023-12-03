@@ -35,6 +35,10 @@
             setStateDomain($(this).is(':checked'));
         });
 
+        @if(isset($project))
+        setStateDomain({{ $project->target->domains['have_domain'] }});
+        @endif
+
         function setStateDomain(status) {
             if (status) {
                 domainContainer.removeClass('d-none');
@@ -51,6 +55,10 @@
         haveHost.change(function () {
             setStateHost($(this).is(':checked'));
         });
+
+        @if(isset($project))
+        setStateHost({{ $project->target->host['have_host'] }});
+        @endif
 
         function setStateHost(status) {
             if (status) {
@@ -83,6 +91,11 @@
             }
         });
         typeIdSelect.trigger('change');
+        setTimeout(()=>{
+            @if(isset($project))
+                statusIdSelect.val(parseInt('{{ $project->status_id }}'));
+            @endif
+        },200)
     }
 
     function workingDaysCalcSetup() {
@@ -121,7 +134,7 @@
             const updatedMessage = `تعداد روز های محاسبه شده ${totalWorkDays} می باشد و تعداد روز های تعطیل محاسبه شده ${totalFreeDays} می باشد. تاریخ تحویل ${finalDateJalali} می باشد`;
             displayMessage(updatedMessage);
 
-            deadlineAt.val(response.final_date);
+            deadlineAt.val(finalDateJalali);
         }
 
         function handleAjaxError(response) {

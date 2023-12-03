@@ -8,10 +8,8 @@ class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -33,7 +31,6 @@ class UpdateRequest extends FormRequest
 
             'field_activity' => 'required|max:255',
             'package_id' => 'required|exists:packages,id',
-            'project_type_id' => 'required|exists:project_types,id',
             'pages' => 'required|integer',
             'agreement_at' => 'required|jdate',
             'working_days' => 'required|integer',

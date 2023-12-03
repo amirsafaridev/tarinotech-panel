@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Observers\Admin;
+namespace Modules\Project\app\Observers;
 
 use App\Enums\Database\Factor\FactorStatus;
 use Modules\Factor\app\Models\Factor;
 use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Models\Project;
+
+use function calcPercentOfPrice;
+use function config;
 
 class ProjectObserver
 {
