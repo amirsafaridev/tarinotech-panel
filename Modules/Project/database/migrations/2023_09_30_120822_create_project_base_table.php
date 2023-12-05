@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('title');
             $table->timestamps();
         });
+
+        $this->addBaseProject();
     }
 
     /**
@@ -24,5 +26,18 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('project_bases');
+    }
+
+    private function addBaseProject(): void
+    {
+        $types = ['طراحی سایت', 'سئو', 'تبلیغات ادورز'];
+        foreach ($types as $type) {
+            $items[] = [
+                'title' => $type,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+        DB::table('project_bases')->insert($items);
     }
 };
