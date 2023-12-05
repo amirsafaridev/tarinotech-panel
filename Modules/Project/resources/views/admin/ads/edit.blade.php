@@ -10,7 +10,7 @@
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">پروژه گوگل ادز - ویرایش</h1>
+        <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <form class="request-form row forms-sample" method="post" action="{{ $routeUpdate }}">
+    <form class="request-form row forms-sample" method="post" action="{{ route('admin.project.ads.update',$project->id) }}">
         <div class="col-xl-6 col-lg-6 col-md-6 col-12">
             @include('admin.partial.message')
             @csrf
@@ -39,12 +39,17 @@
 
                     <x-admin.select-user title="کارفرما" :old="$project->user_id"/>
 
-                    <x-admin.select-model identify="status_id"
-                                          title="وضعیت پروژه"
-                                          key="id"
-                                          value="title"
-                                          :items="$statuses"
-                                          :old="$project->project_status_id"
+                    <x-admin.select-model
+                            identify="type_id"
+                            title="نوع پروژه"
+                            :items="$types"
+                            :has-choice-option="false"
+                            key="id"
+                            value="title"/>
+
+                    <x-admin.select-simple identify="status_id"
+                                           title="وضعیت پروژه"
+
                     />
                 </div>
             </div>
@@ -83,7 +88,7 @@
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="field_activity"
                                            title="زمینه فعالیت"
-                                           :old="$project->type->field_activity"/>
+                                           :old="$project->target->field_activity"/>
                         </div>
                     </div>
 
@@ -94,7 +99,7 @@
                                     title="طراحی سایت پروژه"
                                     :with-option="false"
                                     :enum-class="\Modules\Project\app\Enums\ProjectDesignBy::class"
-                                    :old="$project->type->designed_by"/>
+                                    :old="$project->target->designed_by"/>
                         </div>
                     </div>
 
@@ -102,7 +107,7 @@
                                       title="اطلاعات بیشتر (یادداشت)"
                                       :old="$project->note"/>
 
-                    <x-admin.button-submit/>
+                    <x-admin.button-submit title="ویرایش"/>
 
                 </div>
             </div>
@@ -116,35 +121,11 @@
     ]])
     @include('admin.partial.request')
     @include('admin.partial.script.global')
+    @include('project::admin.ads.part.script')
+
     <script>
         $(document).ready(function () {
             activeParentUl('{{ route('admin.project.ads.index') }}');
-
-            $('#user_id').select2();
-
-            $('#host_location').change(function (){
-                if($(this).val() === 'IN_COMPANY'){
-                    stateHostContainer(false);
-                }
-                else{
-                    stateHostContainer(true);
-                }
-            });
-
-            jalaliDatepicker.startWatch();
-            makeInputPrice($('#price'));
-            makeInputPrice($('#price_monthly'));
-            makeInputPrice($('#keywords_count'));
         })
-
-        const hostContainer = $('#host_container');
-        function stateHostContainer(status){
-            if(status){
-                hostContainer.removeClass('d-none');
-            }
-            else{
-                hostContainer.addClass('d-none');
-            }
-        }
     </script>
 @endsection

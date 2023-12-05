@@ -121,8 +121,6 @@
     <script>
         $(document).ready(function () {
             activeParentUl('{{ route('admin.project.ads.index') }}');
-            $('#user_id').select2();
-            jalaliDatepicker.startWatch();
         })
     </script>
 @endsection
