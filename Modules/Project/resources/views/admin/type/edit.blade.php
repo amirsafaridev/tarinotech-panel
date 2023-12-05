@@ -11,12 +11,12 @@
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">انواع پروژه ها - ویرایش</h1>
+        <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.project.type.index') }}">انواع پروژه ها</a></li>
-                <li class="breadcrumb-item active">ویرایش نوع</li>
+                <li class="breadcrumb-item active">ویرایش</li>
             </ol>
         </div>
     </div>
@@ -26,13 +26,13 @@
             <div class="card">
                 <div class="card-body pb-3">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ $routeUpdate }}">
+                    <form class="request-form forms-sample" method="post" action="{{ route('admin.project.type.update',$projectType->id) }}">
                         @csrf
                         @method('PATCH')
 
                         <x-admin.select-model class="multiple" identify="base_id"
                                               title="انتخاب نوع پروژه"
-                                              :items="$projectBases"
+                                              :items="$bases"
                                               key="id"
                                               value="title"
                                               :old="$projectType->base_id"/>
@@ -44,7 +44,7 @@
 
                     </form>
 
-                    <form id="deleteItem" action="{{ $routeDestroy }}" method="post" class="form-inline">
+                    <form id="deleteItem" action="{{ route('admin.project.type.destroy',$projectType->id) }}" method="post" class="form-inline">
                         @csrf
                         @method('DELETE')
                     </form>

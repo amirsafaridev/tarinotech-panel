@@ -3,109 +3,76 @@
 namespace Modules\Project\app\Http\Controllers\Admin;
 
 use App\Enums\General\BtnType;
+use App\Foundation\ValueObjects\Datatable\ColumnOption;
+use App\Foundation\ValueObjects\Datatable\DatatableBase;
 use App\Helpers\Helper;
-use App\Http\Controllers\Admin\DB;
 use App\Http\Controllers\Controller;
+use App\Traits\HasDatatable;
+use App\Traits\HasJsonCommonResponse;
 use Exception;
 use Illuminate\Http\Request;
 use Modules\Project\app\Http\Requests\Admin\Type\StoreRequest;
 use Modules\Project\app\Http\Requests\Admin\Type\UpdateRequest;
-use Modules\Project\app\Models\ProjectBase;
 use Modules\Project\app\Models\ProjectType;
 use Yajra\DataTables\Facades\DataTables;
 
 class TypeController extends Controller
 {
+    use HasDatatable;
+    use HasJsonCommonResponse;
+
+    const INDEX_TITLE = 'نوع پروژه ها';
+
+    const CREATE_TITLE = 'نوع پروژه ها - ایجاد';
+
+    const EDIT_TITLE = 'نوع پروژه ها - ویرایش';
+
     public function index()
     {
-        $title = 'پروژه ها';
-        $routeData = route('admin.project.type.data');
-        $selects = ['id', 'title', 'base.title', 'created_at'];
+        $title = self::INDEX_TITLE;
 
-        return view('admin.project_type.index', compact('title', 'routeData', 'selects'));
-    }
+        $routeData = $this->getDataRoute();
 
-    public function data()
-    {
+        $dataTable = $this->getDataTable();
 
-        try {
-            $roles = ProjectType::query()
-                ->select('project_types.*')
-                ->with('base');
-
-            return DataTables::of($roles)
-                ->editColumn('created_at', function ($role) {
-                    return $role->created_at->toJalali()->format(formatJalaliDateTime());
-                })
-                ->addColumn('action', function ($role) {
-                    return Helper::btnMaker(BtnType::Warning, route('admin.project.type.edit', $role->id), trans('panel.action.edit'));
-                })
-                ->make();
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
+        return view('project::admin.type.index', compact('title', 'routeData', 'dataTable'));
     }
 
     public function create()
     {
-        $title = 'انواع پزوژه ها - ایجاد';
-        $routeStore = route('admin.project.type.store');
-        $projectBases = ProjectBase::query()->get();
+        $title = self::CREATE_TITLE;
 
-        return view('admin.project_type.create', compact('title', 'routeStore', 'projectBases'));
+        return view('project::admin.type.create', compact('title'));
     }
 
     public function store(StoreRequest $request)
     {
         try {
+            ProjectType::create($this->prepareItemData($request));
 
-            $item = $this->itemProvider($request);
-            ProjectType::create($item);
+            return $this->successResponse();
 
-            return response()->json([
-                'result' => 'success',
-                'message' => trans('panel.success_store'),
-            ]);
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
 
-            report($e);
-
-            return response()->json([
-                'result' => 'exception',
-                'message' => trans('panel.error_store'),
-            ], 500);
+            return $this->exceptionResponse($exception);
         }
     }
 
     public function edit(ProjectType $projectType)
     {
-        $title = 'انواع پزوژه ها - ویرایش';
-        $routeUpdate = route('admin.project.type.update', $projectType->id);
-        $routeDestroy = route('admin.project.type.destroy', $projectType->id);
-        $projectBases = ProjectBase::query()->get();
+        $title = self::EDIT_TITLE;
 
-        return view('admin.project_type.edit', compact('title', 'routeUpdate', 'routeDestroy', 'projectType', 'projectBases'));
+        return view('project::admin.type.edit', compact('title', 'projectType'));
     }
 
     public function update(UpdateRequest $request, ProjectType $projectType)
     {
         try {
+            $projectType->update($this->prepareItemData($request));
 
-            $item = $this->itemProvider($request);
-            $projectType->update($item);
-
-            return response()->json([
-                'result' => 'success',
-                'message' => trans('panel.success_update'),
-            ]);
-        } catch (Exception $e) {
-            DB::rollBack();
-            report($e);
-
-            return response()->json([
-                'result' => 'exception',
-                'message' => trans('panel.error_update'),
-            ], 500);
+            return $this->successUpdateResponse();
+        } catch (Exception $exception) {
+            return $this->exceptionResponse($exception);
         }
     }
 
@@ -114,20 +81,63 @@ class TypeController extends Controller
         try {
             $projectType->delete();
 
-            return redirect(route('admin.project.type.index'))->with('success', trans('panel.success_delete'));
-        } catch (Exception $e) {
-            report($e);
+            return $this->successDestroyBack(route('admin.project.type.index'));
 
-            return redirect(route('admin.project.type.index'))->with('danger', trans('panel.error_delete'));
+        } catch (Exception $exception) {
+            return $this->exceptionBack($exception);
         }
     }
 
-    protected function itemProvider(Request $request): array
+    protected function prepareItemData(Request $request): array
     {
         $item['title'] = $request->input('title');
         $item['base_id'] = $request->input('base_id');
         $item['note'] = $request->input('note');
 
         return $item;
+    }
+
+    public function getDataRoute(): string
+    {
+        return route('admin.project.type.data');
+    }
+
+    public function getDataTable(): array
+    {
+        return (new DatatableBase())
+            ->addColumn(
+                ColumnOption::new()->setName('id')->setAs('شناسه')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('base.title')->setAs('نوع')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('title')->setAs('عنوان')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('action')
+                    ->setAs('عملیات')
+                    ->removeAction()
+            )
+            ->render();
+    }
+
+    public function data()
+    {
+        try {
+            $projectTypes = ProjectType::query()
+                ->with('base');
+
+            return DataTables::eloquent($projectTypes)
+                ->editColumn('created_at', function ($projectType) {
+                    return $projectType->created_at->toJalali()->format(formatJalaliDate());
+                })
+                ->addColumn('action', function ($projectType) {
+                    return Helper::btnMaker(BtnType::Warning, route('admin.project.type.edit', $projectType->id), trans('panel.action.edit'));
+                })
+                ->make();
+        } catch (Exception $exception) {
+            return $this->exceptionResponse($exception);
+        }
     }
 }

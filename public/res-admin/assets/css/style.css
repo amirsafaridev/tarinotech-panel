@@ -70040,7 +70040,7 @@ textarea.form-control {
 
 }
 .u-loading__symbol {
-    background-color: #4caf50;
+    background-color: #fbab1d;
     padding: 8px;
     animation: loading 3s infinite;
     border-radius: 5px;
@@ -70056,20 +70056,20 @@ textarea.form-control {
         transform: perspective(250px) rotateX(0deg) rotateY(0deg);
     }
     15% {
-        background-color: #4caf50;
+        background-color: #371975;
     }
     16% {
-        background-color: #b44646;
+        background-color: #fbab1d;
     }
     50% {
         transform: perspective(250px) rotateX(180deg) rotateY(0deg);
-        background-color: #b44646;
+        background-color: #371975;
     }
     65% {
-        background-color: #b44646;
+        background-color: #fbab1d;
     }
     66% {
-        background-color: #4caf50;
+        background-color: #371975;
     }
     100% {
         transform: perspective(250px) rotateX(180deg) rotateY(-180deg);

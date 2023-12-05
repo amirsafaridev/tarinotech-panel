@@ -5,6 +5,7 @@ namespace Modules\Project\app\Providers;
 use App\Models\Package;
 use Illuminate\Support\ServiceProvider;
 use Modules\Project\app\Enums\ProjectBase;
+use Modules\Project\app\Models\ProjectBase as ProjectBaseModel;
 use Modules\Project\app\Models\ProjectStatus;
 use Modules\Project\app\Models\ProjectType;
 
@@ -34,6 +35,10 @@ class ViewComposerProvider extends ServiceProvider
         $this->getSeoComposer();
 
         $this->getAdsComposer();
+
+        $this->getBaseComposer();
+
+        $this->getStatusComposer();
     }
 
     private function getIndexComposer(): void
@@ -120,6 +125,34 @@ class ViewComposerProvider extends ServiceProvider
                 ->get();
 
             $view->with(compact('types', 'statuses'));
+        });
+    }
+
+    private function getBaseComposer()
+    {
+        view()->composer([
+            'project::admin.type.create',
+            'project::admin.type.edit',
+        ], function ($view) {
+
+            $bases = ProjectBaseModel::query()
+                ->get();
+
+            $view->with(compact('bases'));
+        });
+    }
+
+    private function getStatusComposer()
+    {
+        view()->composer([
+            'project::admin.status.create',
+            'project::admin.status.edit',
+        ], function ($view) {
+            $types = ProjectType::query()
+                ->with('base')
+                ->get();
+
+            $view->with(compact('types'));
         });
     }
 }
