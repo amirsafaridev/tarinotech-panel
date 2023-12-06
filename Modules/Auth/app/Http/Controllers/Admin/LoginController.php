@@ -30,7 +30,7 @@ class LoginController extends Controller
         $title = self::INDEX_TITLE;
 
         if (app()->isLocal()) {
-            Auth::guard('admin')->loginUsingId(1);
+            //Auth::guard('admin')->loginUsingId(1);
         }
 
         return view('auth::admin.login', compact('title'));
@@ -67,7 +67,7 @@ class LoginController extends Controller
         return array_merge($request->only($this->username(), 'password'), ['is_block' => false]);
     }
 
-    public function redirectPath()
+    public function redirectTo()
     {
         return route('admin.dashboard');
     }
