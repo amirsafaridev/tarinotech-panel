@@ -18,9 +18,12 @@
     <div class="row">
         <div class="col-xl-12 col-lg-12">
             <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title">{{ $title }}</h3>
+                    <a class="btn btn-success" href="{{ route('admin.admin.job-title.create') }}">ایجاد</a>
+                </div>
                 <div class="card-body">
                     @include('admin.partial.message')
-                    @include('admin::admin.part.filter')
                     <div class="table-responsive">
                         <table id="data-table" class="table">
                             <thead>
@@ -51,14 +54,4 @@
 @section('script')
     @include('admin.partial.loader.script',['load'=>[\App\Enums\Assets\ScriptLoader::DataTable()]])
     @include('admin.partial.datatable2')
-    <script>
-        $(document).ready(function (){
-            @foreach ($dataTable['externalFilters'] as $filter)
-            const {{ $filter['key'] }} = $('#{{$filter['key']}}');
-            {{$filter['key']}}.change(function (){
-                dataTable.ajax.reload();
-            });
-            @endforeach
-        })
-    </script>
 @endsection

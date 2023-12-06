@@ -3,6 +3,7 @@
 namespace Modules\Admin\app\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Modules\Admin\app\Models\JobTitle;
 use Spatie\Permission\Models\Role;
 
 class ViewComposerProvider extends ServiceProvider
@@ -26,7 +27,13 @@ class ViewComposerProvider extends ServiceProvider
     {
         view()->composer(['admin::admin.create', 'admin::admin.edit'], function ($view) {
             $roles = Role::query()->get();
-            $view->with('roles', $roles);
+            $jobTitles = JobTitle::query()->get();
+            $view->with(compact('roles', 'jobTitles'));
+        });
+
+        view()->composer(['admin::admin.index'], function ($view) {
+            $jobTitles = JobTitle::query()->get();
+            $view->with(compact('jobTitles'));
         });
     }
 }

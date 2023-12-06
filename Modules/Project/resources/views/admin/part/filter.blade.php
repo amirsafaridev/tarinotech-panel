@@ -1,4 +1,4 @@
-<form class="row mb-4" action="{{ route('admin.factor.index') }}">
+<div class="row">
 
     <div class="col-12 col-md-3 col-xl-2">
         <x-admin.input
@@ -31,4 +31,4 @@
         <button type="button" class="btn btn-primary mb-4 datatable-apply">اعمال</button>
     </div>
 
-</form>
+</div>

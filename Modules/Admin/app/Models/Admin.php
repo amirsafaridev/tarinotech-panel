@@ -4,8 +4,10 @@ namespace Modules\Admin\app\Models;
 
 use App\Models\SaleGoal;
 use App\Notifications\Admin\Auth\ResetPassword;
+use App\Traits\Filterable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
@@ -22,6 +24,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class Admin extends Authenticatable
 {
+    use Filterable;
     use HasFactory;
     use HasRoles;
     use LogsActivity;
@@ -35,7 +38,7 @@ class Admin extends Authenticatable
      */
     protected $fillable = [
         'avatar',
-        'job_title',
+        'job_title_id',
         'first_name',
         'last_name',
         'email',
@@ -108,6 +111,11 @@ class Admin extends Authenticatable
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPassword($token));
+    }
+
+    public function jobTitle(): BelongsTo
+    {
+        return $this->belongsTo(JobTitle::class);
     }
 
     public function logins(): MorphMany

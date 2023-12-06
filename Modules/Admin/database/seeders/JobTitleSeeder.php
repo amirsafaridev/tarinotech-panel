@@ -3,17 +3,16 @@
 namespace Modules\Admin\database\seeders;
 
 use Illuminate\Database\Seeder;
+use Modules\Admin\database\factories\JobTitleFactory;
 
-class AdminDatabaseSeeder extends Seeder
+class JobTitleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $this->call([
-            JobTitleSeeder::class,
-            AdminSeeder::class,
-        ]);
+        JobTitleFactory::new()->count(10)
+            ->create();
     }
 }

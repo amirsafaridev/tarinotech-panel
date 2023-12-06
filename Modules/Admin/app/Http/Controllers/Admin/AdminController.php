@@ -3,8 +3,10 @@
 namespace Modules\Admin\app\Http\Controllers\Admin;
 
 use App\Enums\General\BtnType;
+use App\Filters\Admin\Admin\JobTitleFilter;
 use App\Foundation\ValueObjects\Datatable\ColumnOption;
 use App\Foundation\ValueObjects\Datatable\DatatableBase;
+use App\Foundation\ValueObjects\Datatable\ExternalFilter;
 use App\Helpers\Helper;
 use App\Helpers\Uploader\PhotoUploader;
 use App\Http\Controllers\Controller;
@@ -46,39 +48,6 @@ class AdminController extends Controller
         return view('admin::admin.index', compact('title', 'routeData', 'dataTable'));
     }
 
-    public function data()
-    {
-        try {
-            $admins = Admin::query()
-                ->with(['roles', 'latestLogin'])
-                ->withCount('logins');
-
-            return DataTables::eloquent($admins)
-                ->editColumn('created_at', function (Admin $admin) {
-                    return $admin->created_at->toJalali()->format(formatJalaliDateTime());
-                })
-                ->editColumn('latest_login', function (Admin $admin) {
-                    return $admin->latestLogin ?
-                        $admin->latestLogin->login_at->toJalali()->format('h:i Y-m-d') :
-                        trans('panel.admin.not_login');
-                })
-                ->editColumn('roles', function (Admin $admin) {
-                    return $admin->roles ? $admin->roles->pluck('name')->implode(', ') :
-                        trans('panel.admin.not_role');
-                })
-                ->addColumn('action', function (Admin $admin) {
-                    $actions = Helper::btnMaker(BtnType::Warning, route('admin.admin.edit', $admin->id), trans('panel.action.edit'));
-                    $actions .= Helper::btnMaker(BtnType::Info, route('admin.admin.password', $admin->id), trans('panel.action.change_password'));
-                    $actions .= Helper::btnMaker(BtnType::Success, route('admin.admin.show', $admin->id), trans('panel.action.info'));
-
-                    return $actions;
-                })
-                ->make();
-        } catch (Exception $exception) {
-            return $this->exceptionResponse($exception);
-        }
-    }
-
     public function create()
     {
         $title = self::CREATE_TITLE;
@@ -97,7 +66,7 @@ class AdminController extends Controller
             $admin->syncRoles($request->input('role'));
             DB::commit();
 
-            $admin->notify(new SendPasswordByEmail($password));
+            //$admin->notify(new SendPasswordByEmail($password));
 
             return $this->successResponse();
 
@@ -166,7 +135,7 @@ class AdminController extends Controller
     {
         $adminData['first_name'] = $request->input('first_name');
         $adminData['last_name'] = $request->input('last_name');
-        $adminData['job_title'] = $request->input('job_title');
+        $adminData['job_title_id'] = $request->input('job_title_id');
 
         $dob = $request->input('dob');
         $adminData['dob'] = empty($dob) ? null : Helper::toGregorian($dob);
@@ -230,7 +199,11 @@ class AdminController extends Controller
             ->addColumn(ColumnOption::new()->setName('email')->setAs('ایمیل'))
             ->addColumn(ColumnOption::new()->setName('first_name')->setAs('نام'))
             ->addColumn(ColumnOption::new()->setName('last_name')->setAs('نام خانوادگی'))
-            ->addColumn(ColumnOption::new()->setName('job_title')->setAs('سمت شغلی'))
+            ->addColumn(ColumnOption::new()
+                ->setName('job_title.title')
+                ->setSearchable(false)
+                ->setSortable(false)
+                ->setAs('سمت شغلی'))
             ->addColumn(
                 ColumnOption::new()
                     ->setName('roles')
@@ -246,6 +219,46 @@ class AdminController extends Controller
                     ->setSearchable(false))
             ->addColumn(ColumnOption::new()->setName('created_at')->setAs('تاریخ ایجاد'))
             ->addColumn(ColumnOption::new()->setName('action')->setAs('عملیات')->removeAction())
+            ->addExternalFilter(ExternalFilter::new()->setKey('job_title'))
             ->render();
+    }
+
+    public function data()
+    {
+        try {
+            $admins = Admin::query()
+                ->with(['roles', 'latestLogin', 'jobTitle'])
+                ->filter([
+                    JobTitleFilter::class,
+                ])
+                ->withCount('logins');
+
+            return DataTables::eloquent($admins)
+                ->editColumn('created_at', function (Admin $admin) {
+                    return $admin->created_at->toJalali()->format(formatJalaliDate());
+                })
+                ->editColumn('latest_login', function (Admin $admin) {
+                    return $admin->latestLogin ?
+                        $admin->latestLogin->login_at->toJalali()->format('h:i Y-m-d') :
+                        trans('panel.admin.not_login');
+                })
+                ->editColumn('job_title.title', function (Admin $admin) {
+                    return $admin->jobTitle->title ?? 'ندارد';
+                })
+                ->editColumn('roles', function (Admin $admin) {
+                    return $admin->roles ? $admin->roles->pluck('name')->implode(', ') :
+                        trans('panel.admin.not_role');
+                })
+                ->addColumn('action', function (Admin $admin) {
+                    $actions = Helper::btnMaker(BtnType::Warning, route('admin.admin.edit', $admin->id), trans('panel.action.edit'));
+                    $actions .= Helper::btnMaker(BtnType::Info, route('admin.admin.password', $admin->id), trans('panel.action.change_password'));
+                    $actions .= Helper::btnMaker(BtnType::Success, route('admin.admin.show', $admin->id), trans('panel.action.info'));
+
+                    return $actions;
+                })
+                ->make();
+        } catch (Exception $exception) {
+            return $this->exceptionResponse($exception);
+        }
     }
 }

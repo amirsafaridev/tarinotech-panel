@@ -274,5 +274,6 @@ return [
         'blog_category_id' => 'دسته بندی بلاگ',
         'base_id' => 'پایه',
         'type_id' => 'نوع پروژه',
+        'job_title_id' => 'عنوان شغلی',
     ],
 ];
