@@ -16,7 +16,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.package.index') }}">لیست پکیج ها</a></li>
-                <li class="breadcrumb-item active">ویرایش پکیج</li>
+                <li class="breadcrumb-item active">ویرایش</li>
             </ol>
         </div>
     </div>
@@ -26,7 +26,7 @@
             <div class="card">
                 <div class="card-body pb-3">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ $routeUpdate }}">
+                    <form class="request-form forms-sample" method="post" action="{{ route('admin.package.update',$package->id) }}">
                         @csrf
                         @method('PATCH')
 
@@ -39,7 +39,7 @@
 
                     </form>
 
-                    <form id="deleteItem" action="{{ $routeDestroy }}" method="post" class="form-inline">
+                    <form id="deleteItem" action="{{ route('admin.package.destroy',$package->id) }}" method="post" class="form-inline">
                         @csrf
                         @method('DELETE')
                     </form>

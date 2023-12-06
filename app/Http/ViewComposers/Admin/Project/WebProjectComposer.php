@@ -2,8 +2,8 @@
 
 namespace App\Http\ViewComposers\Admin\Project;
 
-use App\Models\Package;
 use Illuminate\Contracts\View\View;
+use Modules\Package\app\Models\Package;
 use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Models\ProjectType;
 

@@ -3,7 +3,6 @@
 @section('head')
     @include('admin.partial.loader.style',['load'=>[
        \App\Enums\Assets\StyleLoader::Toast(),
-       \App\Enums\Assets\StyleLoader::Datepicker(),
    ]])
 @endsection
 @section('content')
@@ -13,23 +12,22 @@
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.admin.job-title.index') }}">عنوان شغلی</a></li>
-                <li class="breadcrumb-item active">ایجاد</li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.free-day.index') }}">تقویم تعطیلات</a></li>
+                <li class="breadcrumb-item active">بارگذاری</li>
             </ol>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-xl-4 col-lg-4 col-md-4 col-12">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-12">
             <div class="card">
                 <div class="card-body pb-4">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ route('admin.admin.job-title.store') }}">
+                    <form class="request-form forms-sample" method="post" action="{{ route('admin.free-day.import.store') }}">
                         @csrf
+                        <x-admin.input identify="file" type="file" title="فایل Excel"/>
 
-                        <x-admin.input identify="title" title="عنوان"/>
-
-                        <x-admin.button-submit/>
+                        <x-admin.button-submit title="بارگذاری"/>
                     </form>
                 </div>
             </div>
@@ -40,7 +38,7 @@
     @include('admin.partial.request')
     <script>
         $(document).ready(function () {
-            activeParentUl('{{ route('admin.admin.job-title.index') }}');
+            activeParentUl('{{ route('admin.free-day.index') }}');
         })
     </script>
 @endsection

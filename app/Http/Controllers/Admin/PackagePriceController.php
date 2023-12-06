@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PackagePrice\UpdateRequest;
-use App\Models\Package;
 use App\Models\PackagePrice;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
+use Modules\Package\app\Models\Package;
 
 class PackagePriceController extends Controller
 {

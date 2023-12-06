@@ -22,7 +22,7 @@
                     <div class="card-title">{{ $title }}</div>
                     <div>
                         <a class="btn btn-primary" href="{{ route('admin.free-day.create') }}">ایجاد</a>
-                        <a class="btn btn-success" href="{{ route('admin.free-day.create') }}">Excel</a>
+                        <a class="btn btn-success" href="{{ route('admin.free-day.import.index') }}">Excel</a>
                     </div>
                 </div>
                 <div class="card-body">

@@ -9,6 +9,7 @@ use Modules\Blog\database\seeders\BlogDatabaseSeeder;
 use Modules\BlogCategory\database\seeders\BlogCategoryDatabaseSeeder;
 use Modules\Factor\database\seeders\FactorDatabaseSeeder;
 use Modules\FreeDay\database\seeders\FreeDayDatabaseSeeder;
+use Modules\Package\database\seeders\PackageSeeder;
 use Modules\Project\database\seeders\ProjectDatabaseSeeder;
 use Modules\User\database\seeders\UserDatabaseSeeder;
 

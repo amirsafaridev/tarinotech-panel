@@ -46,7 +46,7 @@ class FreeDayController extends Controller
 
             return DataTables::eloquent($freeDays)
                 ->editColumn('free_at', function (FreeDay $freeDay) {
-                    return verta($freeDay->free_at)->format(formatJalaliMonth());
+                    return verta($freeDay->free_at)->format(formatJalaliDate());
                 })
                 ->editColumn('created_at', function (FreeDay $freeDay) {
                     return $freeDay->created_at->toJalali()->format(formatJalaliDateTime());

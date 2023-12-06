@@ -2,8 +2,8 @@
 
 namespace Modules\Project\app\Providers;
 
-use App\Models\Package;
 use Illuminate\Support\ServiceProvider;
+use Modules\Package\app\Models\Package;
 use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Models\ProjectBase as ProjectBaseModel;
 use Modules\Project\app\Models\ProjectStatus;

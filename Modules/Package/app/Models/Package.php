@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace Modules\Package\app\Models;
 
+use App\Models\PackagePrice;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
