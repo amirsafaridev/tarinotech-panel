@@ -69,6 +69,6 @@ class LoginController extends Controller
 
     public function redirectPath()
     {
-        return route('admin.home');
+        return route('admin.dashboard');
     }
 }
