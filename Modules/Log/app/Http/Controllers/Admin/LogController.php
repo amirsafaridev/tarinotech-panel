@@ -50,7 +50,8 @@ class LogController extends Controller
             }, function (Builder $query) {
                 return $query->orderByDesc('id');
             })
-            ->paginate(10);
+            ->paginate(10)
+            ->setPath(route('admin.log.index'));
 
         return view('log::admin.index', compact('title', 'logs', 'sortItems'));
     }
