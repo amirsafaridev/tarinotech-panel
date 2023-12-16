@@ -3,17 +3,18 @@
 namespace Modules\User\app\Imports;
 
 use App\Helpers\Helper;
-use App\Rules\IRMobile;
-use BenSampo\Enum\Rules\EnumValue;
+use Illuminate\Support\Facades\Crypt;
+use Maatwebsite\Excel\Concerns\OnEachRow;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use Modules\User\app\Enums\PersonType;
+use Maatwebsite\Excel\Row;
 use Modules\User\app\Enums\UserType;
 use Modules\User\app\Models\User;
 
-class UserImport implements ToModel, WithMultipleSheets, WithStartRow, WithValidation
+class UserImport implements OnEachRow, SkipsEmptyRows, ToModel, WithMultipleSheets, WithStartRow, WithValidation
 {
     public function model(array $row): User
     {
@@ -52,20 +53,53 @@ class UserImport implements ToModel, WithMultipleSheets, WithStartRow, WithValid
     public function rules(): array
     {
         return [
-            '*.12' => ['required', 'unique:users,mobile', new IRMobile()],
-            '*.0' => 'required|max:255',
-            '*.1' => 'required|max:255',
-            '*.10' => ['required', new EnumValue(PersonType::class, false)],
+            '0' => 'required',
+            '1' => 'required',
+            '10' => 'required',
+            '11' => 'required',
+            '12' => 'required',
+            '15' => 'required',
+            '18' => 'required',
+            '19' => 'required',
         ];
     }
 
     public function customValidationMessages(): array
     {
         return [
-            '*.12.require' => 'موبایل اجباری است',
-            '*.12.unique' => 'شماره همراه تکراری می باشد.',
-            '*.0.required' => 'فیلد نام اجباری است.',
-            '*.1.required' => 'فیلد نام خانوادگی اجباری است.',
+            '12.require' => 'موبایل اجباری است',
+            '12.unique' => 'شماره همراه تکراری می باشد.',
+            '0.required' => 'فیلد نام اجباری است.',
+            '1.required' => 'فیلد نام خانوادگی اجباری است.',
         ];
+    }
+
+    public function onRow(Row $row)
+    {
+        $row = $row->toArray();
+
+        $user = User::query()
+            ->where('mobile', $row[12])
+            ->firstOrFail();
+
+        $user->address()->create([
+            'address' => $row[13],
+            'postal_code' => $row[14],
+        ]);
+
+        $user->company()->create([
+            'name' => $row[15],
+            'identify' => $row[16],
+            'register_id' => $row[17],
+            'type' => $row[18],
+        ]);
+
+        if ($row[19] == '1') {
+            $user->irnic()->create([
+                'status' => $row[19],
+                'identify' => $row[20],
+                'password' => $row[21] ? Crypt::encrypt($row[21]) : '',
+            ]);
+        }
     }
 }
