@@ -290,7 +290,7 @@ class UserController extends Controller
             ->addColumn(
                 ColumnOption::new()
                     ->setName('is_block')
-                    ->setAs('مسدود شده')
+                    ->setAs('وضعیت')
             )
             ->addColumn(
                 ColumnOption::new()

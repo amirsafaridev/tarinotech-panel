@@ -18,6 +18,10 @@
     <div class="row">
         <div class="col-xl-12 col-lg-12">
             <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title">{{ $title }}</h3>
+                    <a class="btn btn-success btn-sm" href="{{ route('admin.user.import.index') }}">Excel</a>
+                </div>
                 <div class="card-body">
                     @include('admin.partial.message')
                     <div class="table-responsive">

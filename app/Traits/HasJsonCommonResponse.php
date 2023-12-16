@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -28,9 +29,14 @@ trait HasJsonCommonResponse
     {
         report($exception);
 
+        $message = trans('panel.error');
+        if (App::isLocal()) {
+            $message = $exception->getMessage();
+        }
+
         return response()->json([
             'result' => 'exception',
-            'message' => trans('panel.error'),
+            'message' => $message,
         ], 500);
     }
 

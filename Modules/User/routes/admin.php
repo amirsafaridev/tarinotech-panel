@@ -3,9 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use Modules\User\app\Http\Controllers\Admin\PresenterController;
 use Modules\User\app\Http\Controllers\Admin\UserController;
+use Modules\User\app\Http\Controllers\Admin\UserImportController;
 
 Route::group(['guard' => 'admin', 'prefix' => 'user', 'as' => 'user.'], function () {
     Route::get('/index', [UserController::class, 'index'])->name('index');
+
+    /* Import */
+    Route::get('/import', [UserImportController::class, 'index'])->name('import.index');
+    Route::post('/import', [UserImportController::class, 'import'])->name('import.store');
+
     Route::get('/data', [UserController::class, 'data'])->name('data');
     Route::get('/create', [UserController::class, 'create'])->name('create');
     Route::get('/{user}', [UserController::class, 'edit'])->name('edit');
