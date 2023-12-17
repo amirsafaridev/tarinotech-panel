@@ -34,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
 
             $_SERVER['SERVER_NAME'] = 'https://portal.tarinotech.com';
             $_SERVER['HTTP_HOST'] = 'https://portal.tarinotech.com';
+            dd('x');
         }
         Paginator::useBootstrapFour();
     }
