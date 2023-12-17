@@ -27,6 +27,8 @@ class LoginController extends Controller
 
     public function index()
     {
+        echo config('app.url');
+        echo session('url.intended');
         $title = self::INDEX_TITLE;
 
         if (app()->isLocal()) {
