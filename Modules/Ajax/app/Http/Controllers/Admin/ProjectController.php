@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Ajax;
+namespace Modules\Ajax\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Modules\Project\app\Models\Project;
 use View;
+
+use function response;
 
 class ProjectController extends Controller
 {
@@ -18,10 +20,10 @@ class ProjectController extends Controller
 
         $projectId = $request->get('projectId');
         $project = Project::query()
-            ->with('user')
+            ->with(['user', 'base'])
             ->findOrFail($projectId);
 
-        $projectViewItem = (string) View::make('admin.project.rows.single-factor', compact('project'));
+        $projectViewItem = (string) View::make('ajax::rows.project', compact('project'));
 
         return response()->json([
             'html' => $projectViewItem,
@@ -33,13 +35,21 @@ class ProjectController extends Controller
     {
         $searchTerm = $request->input('term');
         $results = Project::query()
+            ->select(['id', 'domain', 'title', 'base_id'])
+            ->with('base')
             ->where('title', 'like', '%'.$searchTerm.'%')
             ->orWhere('domain', 'like', '%'.$searchTerm.'%')
             ->when(! $searchTerm, function (Builder $q) {
                 $q->limit(10);
             })
             ->orderByDesc('id')
-            ->get();
+            ->get()
+            ->map(function (Project $item) {
+                $data = $item;
+                $data['title'] = $item->title.' ('.$item->base->title.')';
+
+                return $data;
+            });
 
         return response()->json($results);
     }

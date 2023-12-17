@@ -1,15 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Ajax;
+namespace Modules\Ajax\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Ajax\CalcWorkDayRequest;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Modules\Ajax\app\Http\Requests\CalcWorkDayRequest;
+
+use function App\Http\Controllers\Admin\Ajax\str_contains;
+use function isJalaliDate;
+use function now;
+use function response;
+use function verta;
 
 class CalendarController extends Controller
 {
-    public function calculateWorkDaysWithFreeDays(CalcWorkDayRequest $request)
+    public function calcFreeDays(CalcWorkDayRequest $request)
     {
         try {
             $currentDate = now();

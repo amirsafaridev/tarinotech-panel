@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin\Ajax;
+namespace Modules\Ajax\app\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MakeInstallmentsRequest extends FormRequest
+class CalcWorkDayRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,14 +20,8 @@ class MakeInstallmentsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'price' => 'required|integer|min:1',
+            'days' => 'required|integer|min:1',
+            'start_date' => 'nullable|date_format:Y/m/d',
         ];
-    }
-
-    protected function prepareForValidation()
-    {
-        $this->merge([
-            'price' => str_replace(',', '', $this->input('price')),
-        ]);
     }
 }

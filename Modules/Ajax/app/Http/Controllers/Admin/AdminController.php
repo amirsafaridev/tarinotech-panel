@@ -1,17 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Ajax;
+namespace Modules\Ajax\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\User\app\Models\User;
+use Modules\Admin\app\Models\Admin;
 
-class UserController extends Controller
+use function response;
+
+class AdminController extends Controller
 {
     public function remoteSelect(Request $request)
     {
         $searchTerm = $request->input('term');
-        $results = User::query()
+        $results = Admin::query()
             ->where('first_name', 'like', '%'.$searchTerm.'%')
             ->orWhere('last_name', 'like', '%'.$searchTerm.'%')
             ->orWhere('email', 'like', '%'.$searchTerm.'%')

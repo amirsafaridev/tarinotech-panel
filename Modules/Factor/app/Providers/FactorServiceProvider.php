@@ -30,6 +30,7 @@ class FactorServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
+        $this->app->register(ViewComposerProvider::class);
     }
 
     /**

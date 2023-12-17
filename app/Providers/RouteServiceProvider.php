@@ -41,7 +41,6 @@ class RouteServiceProvider extends ServiceProvider
                     base_path('routes/admin.php'),
                     base_path('routes/admin-modules/project.php'),
                     base_path('routes/admin-modules/package.php'),
-                    base_path('routes/admin-modules/ajax.php'),
                 ]);
         });
     }

@@ -34,15 +34,14 @@
                     <div class="forms-sample">
                         @csrf
 
-                        <div class="mb-3">
-                            <label for="project_id" class="form-label">انتخاب پروژه</label>
-                            <select class="form-control" name="project_id" id="project_id">
-                                <option selected="selected"
-                                        value="{{ $factor->project->id }}">{{ $factor->project->title }} -
-                                    ({{ $factor->project->domain }})
-                                </option>
-                            </select>
-                        </div>
+                        <x-admin.select-model
+                                title="انتخاب پروژه"
+                                identify="project_id"
+                                key="id"
+                                value="optionTitle"
+                                :items="$projects"
+                                :old="$factor->project_id"
+                        />
 
                         <div id="project_info"></div>
 
@@ -91,125 +90,5 @@
     ]])
     @include('admin.partial.request')
     @include('admin.partial.script.global')
-    <script>
-        $(document).ready(function () {
-            activeParentUl('{{ route('admin.factor.index') }}');
-            const projectId = $('#project_id');
-            const projectInfo = $('#project_info');
-            //makeSelect2Remote(projectId,'{{ route('admin.ajax.project.remote-select') }}',['domain']);
-            /*projectId.change(function (){
-                const value = $(this).val();
-                postAjax('{{ route('admin.ajax.project.single') }}', {
-                    projectId : value
-                })
-                    .then(function (response) {
-                        projectInfo.html(response.html)
-                    })
-                    .catch(function (response) {
-                        showToast(response);
-                        console.log(response);
-                    });
-            });*/
-
-            jalaliDatepicker.startWatch();
-
-            const factorItemContainer = $('#factor_item_container');
-            let itemCount = {{ $factor->items->count() }};
-            $('#btn_add_item').click(function () {
-                getAjax('{{ route('admin.factor.item.view') }}')
-                    .then(function (response) {
-                        let dataResource = response.html;
-                        dataResource = dataResource.replace(/__INDEX__/g, itemCount);
-                        factorItemContainer.append(dataResource);
-                        itemCount++;
-                        updatePriceInputs();
-                    })
-                    .catch(function (response) {
-                        showToast(response);
-                        console.log(response);
-                    });
-            })
-
-            factorItemContainer.on('click', '.btn-remove', function () {
-                const self = $(this);
-                swal({
-                    title: "حذف",
-                    text: "آیا مطمئن هستید که میخواهید این مورد را حذف کنید؟",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#ff0f3b",
-                    confirmButtonText: "حذف",
-                    cancelButtonText: "صرفه نظر",
-                    closeOnConfirm: true
-                }, function () {
-                    self.closest('.card-factor-item').remove();
-                    itemCount--;
-                });
-            });
-
-            /* Edit */
-            //projectId.trigger('change');
-            updatePriceInputs();
-        })
-
-        function priceInputMaker(input) {
-            input.off('click');
-            input.off('input');
-            input.off('change');
-            makeInputPrice(input);
-        }
-
-        function updateTotalPrice(card) {
-            const cardItem = card.parent().parent().parent().parent().parent();
-            const h4FinalPrice = cardItem.find('.factor-item-price');
-
-            let totalPrice = 0;
-            let totalSub = 0;
-
-            cardItem.find('.calc').each(function () {
-
-                const inputInProcess = $(this);
-                let price = parseInt(inputInProcess.val().replace(/,/g, ''), 10) || 0;
-
-                if (inputInProcess.hasClass('offer-input')) {
-                    totalSub += price;
-                } else {
-                    totalPrice += price;
-                }
-            });
-            h4FinalPrice.text(numberWithCommas(totalPrice - totalSub));
-        }
-
-        function updatePriceInputs() {
-
-            $('input.offer-input').each(function () {
-                const input = $(this);
-                priceInputMaker(input);
-                input.on("input", function () {
-                    updateTotalPrice(input);
-                });
-            });
-
-            $('input.price-input').each(function () {
-                const input = $(this);
-                priceInputMaker(input);
-
-                input.on("input", function () {
-                    const priceInput = $(this);
-                    const value = parseInt(priceInput.val().replace(/,/g, ''), 10) || 0;
-
-                    const taxInput = priceInput.parent().parent().parent().find('.tax-input');
-
-                    if (value <= 0) {
-                        taxInput.val(0);
-                    } else {
-                        let taxCalc = Math.round(value * 0.09);
-                        taxInput.val(numberWithCommas(taxCalc))
-                    }
-                    updateTotalPrice(input);
-                })
-            })
-
-        }
-    </script>
+    @include('factor::admin.part.script')
 @endsection
