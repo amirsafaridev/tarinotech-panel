@@ -28,11 +28,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        URL::forceRootUrl(config('app.url'));
         if (App::isProduction()) {
+            URL::forceRootUrl('https://portal.tarinotech.com');
             URL::forceScheme('https');
         }
-
         Paginator::useBootstrapFour();
     }
 }
