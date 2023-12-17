@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Modules\Package\app\Models\Package;
 use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Models\ProjectBase as ProjectBaseModel;
+use Modules\Project\app\Models\ProjectOption;
 use Modules\Project\app\Models\ProjectStatus;
 use Modules\Project\app\Models\ProjectType;
 
@@ -39,6 +40,8 @@ class ViewComposerProvider extends ServiceProvider
         $this->getBaseComposer();
 
         $this->getStatusComposer();
+
+        $this->getOptionComposer();
     }
 
     private function getIndexComposer(): void
@@ -101,7 +104,11 @@ class ViewComposerProvider extends ServiceProvider
             $packages = Package::query()
                 ->get();
 
-            $view->with(compact('types', 'statuses', 'packages'));
+            $options = ProjectOption::query()
+                ->where('base_id', ProjectBase::Web)
+                ->get();
+
+            $view->with(compact('types', 'statuses', 'packages', 'options'));
         });
     }
 
@@ -153,6 +160,20 @@ class ViewComposerProvider extends ServiceProvider
                 ->get();
 
             $view->with(compact('types'));
+        });
+    }
+
+    private function getOptionComposer()
+    {
+        view()->composer([
+            'project::admin.option.create',
+            'project::admin.option.edit',
+        ], function ($view) {
+
+            $bases = ProjectBaseModel::query()
+                ->get();
+
+            $view->with(compact('bases'));
         });
     }
 }

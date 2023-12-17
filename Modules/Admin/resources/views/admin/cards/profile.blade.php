@@ -42,6 +42,7 @@
                               title="سمت شغلی"
                               value="title"
                               key="id"
+                              :old="$jobTitleId"
                               :items="$jobTitles"/>
 
         <x-admin.input identify="tel"

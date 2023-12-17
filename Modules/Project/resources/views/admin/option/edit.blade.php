@@ -15,7 +15,7 @@
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.project.type.index') }}">انواع پروژه ها</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.project.option.index') }}">امکانات</a></li>
                 <li class="breadcrumb-item active">ویرایش</li>
             </ol>
         </div>
@@ -26,7 +26,7 @@
             <div class="card">
                 <div class="card-body pb-3">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ route('admin.project.type.update',$projectType->id) }}">
+                    <form class="request-form forms-sample" method="post" action="{{ route('admin.project.option.update',$projectOption->id) }}">
                         @csrf
                         @method('PATCH')
 
@@ -35,16 +35,17 @@
                                               :items="$bases"
                                               key="id"
                                               value="title"
-                                              :old="$projectType->base_id"/>
+                                              :old="$projectOption->base_id"/>
 
-                        <x-admin.input identify="title" title="عنوان" :old="$projectType->title"/>
+                        <x-admin.input identify="title" title="عنوان" :old="$projectOption->title"/>
 
                         <x-admin.button-submit title="{{ trans('panel.update') }}"/>
+
                         <x-admin.button-delete/>
 
                     </form>
 
-                    <form id="deleteItem" action="{{ route('admin.project.type.destroy',$projectType->id) }}" method="post" class="form-inline">
+                    <form id="deleteItem" action="{{ route('admin.project.option.destroy',$projectOption->id) }}" method="post" class="form-inline">
                         @csrf
                         @method('DELETE')
                     </form>
@@ -62,7 +63,7 @@
     @include('admin.partial.request')
     <script>
         $(document).ready(function (){
-            activeParentUl('{{ route('admin.project.type.index') }}');
+            activeParentUl('{{ route('admin.project.option.index') }}');
         });
     </script>
 @endsection

@@ -2,7 +2,7 @@
     const domainsRequired = $('#domains_required');
     const userId = $('#user_id');
     const languages = $('#languages');
-    const facilities = $('#facilities');
+    const selectOptions = $('#options');
     const price = $('#price');
 
     $(document).ready(function () {
@@ -24,7 +24,7 @@
         domainsRequired.select2();
         userId.select2();
         languages.select2();
-        facilities.select2();
+        selectOptions.select2();
     }
 
     function domainSetup() {

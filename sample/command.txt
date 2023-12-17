@@ -1,0 +1,3 @@
+php artisan module:seed --class=ProjectOptionSeeder Project
+php artisan module:make-migration  create_options_table Project
+php artisan module:make-migration  create_project_option_sets_table Project

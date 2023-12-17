@@ -259,12 +259,16 @@
                                       title="سایت های مورد پسند"
                                       :old="implode(PHP_EOL,$project->target->sample['favorite_sites'])"/>
 
-                    <x-admin.select-enum identify="facilities[]"
-                                         title="امکانات بیشتر"
-                                         :multiple="true"
-                                         :with-option="false"
-                                         :enum-class="\Modules\Project\app\Enums\WebFacility::class"
-                                         :old="$project->target->facilities"/>
+                    <x-admin.select-model
+                            identify="options[]"
+                            title="امکانات بیشتر"
+                            key="id"
+                            value="title"
+                            :multiple="true"
+                            :with-option="false"
+                            :items="$options"
+                            :old="$project->target->options->pluck('id')->toArray()"
+                    />
 
                     <x-admin.textarea identify="note"
                                       title="اطلاعات بیشتر (یادداشت)"

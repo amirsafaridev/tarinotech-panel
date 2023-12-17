@@ -88,6 +88,7 @@
                         <li><a href="{{ route('admin.project.web.index') }}" class="slide-item">وب سایت</a></li>
                         <li><a href="{{ route('admin.project.seo.index') }}" class="slide-item">سئو</a></li>
                         <li><a href="{{ route('admin.project.ads.index') }}" class="slide-item">ادوردز</a></li>
+                        <li><a href="{{ route('admin.project.option.index') }}" class="slide-item">امکانات</a></li>
                     </ul>
                 </li>
 

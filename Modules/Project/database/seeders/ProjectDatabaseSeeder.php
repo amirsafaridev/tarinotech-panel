@@ -18,6 +18,7 @@ class ProjectDatabaseSeeder extends Seeder
             ProjectWebSeeder::class,
             ProjectSeoSeeder::class,
             ProjectAdsSeeder::class,
+            ProjectOptionSeeder::class,
         ]);
     }
 }

@@ -221,12 +221,14 @@
 
                     <x-admin.textarea identify="favorite_sites" title="سایت های مورد پسند"/>
 
-                    <x-admin.select-enum
-                            identify="facilities[]"
+                    <x-admin.select-model
+                            identify="options[]"
                             title="امکانات بیشتر"
+                            key="id"
+                            value="title"
                             :multiple="true"
                             :with-option="false"
-                            :enum-class="\Modules\Project\app\Enums\WebFacility::class"/>
+                            :items="$options"/>
 
                     <x-admin.textarea identify="note" title="اطلاعات بیشتر (یادداشت)"/>
 

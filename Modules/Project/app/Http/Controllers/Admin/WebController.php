@@ -68,6 +68,7 @@ class WebController extends Controller
 
             $projectWeb = ProjectWeb::query()->create($this->initialWebData($request));
             $projectWeb->project()->create($this->initialProjectData($request));
+            $projectWeb->options()->attach($request->input('options'));
 
             DB::commit();
 
@@ -96,7 +97,13 @@ class WebController extends Controller
 
             DB::beginTransaction();
             $project->update($this->initialProjectData($request));
-            $project->target->update($this->initialWebData($request));
+
+            /**
+             * @var $projectWeb ProjectWeb
+             */
+            $projectWeb = $project->target;
+            $projectWeb->update($this->initialWebData($request));
+            $projectWeb->options()->attach($request->input('options'));
             DB::commit();
 
             return $this->successUpdateResponse();
@@ -235,7 +242,6 @@ class WebController extends Controller
             'host' => $host->toArray(),
             'language' => $language->toArray(),
             'sample' => $sample->toArray(),
-            'facilities' => $request->input('facilities', []),
             'working_days' => $request->input('working_days'),
         ];
     }
@@ -244,7 +250,7 @@ class WebController extends Controller
     {
         return Project::query()
             ->whereHasMorph('target', [ProjectWeb::class])
-            ->with('target')
+            ->with('target.options')
             ->findOrFail($projectId);
     }
 
