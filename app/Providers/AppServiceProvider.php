@@ -32,9 +32,9 @@ class AppServiceProvider extends ServiceProvider
             URL::forceRootUrl('https://portal.tarinotech.com');
             URL::forceScheme('https');
 
-            $_SERVER['SERVER_NAME'] = 'https://portal.tarinotech.com';
-            $_SERVER['HTTP_HOST'] = 'https://portal.tarinotech.com';
-            dd('x');
+            $_SERVER['SERVER_NAME'] = 'portal.tarinotech.com';
+            $_SERVER['HTTP_HOST'] = 'portal.tarinotech.com';
+
         }
         Paginator::useBootstrapFour();
     }
