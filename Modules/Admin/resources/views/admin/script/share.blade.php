@@ -18,7 +18,7 @@
     makeInputPrice($('#promissory'));
     applyShabaMask($('#shaba_number'));
     applyTelMask($('#tel'));
-    applyNationalNumberMask($('#national_code'));
+    //applyNationalNumberMask($('#national_code'));
     applyCartNumberMask($('#cart_number'));
     applyMobileMask($('#mobile'));
     applyMobileMask($('#mobile_company'));

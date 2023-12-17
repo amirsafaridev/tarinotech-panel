@@ -8,6 +8,7 @@
     $nationalCode = $admin->national_code ?? null;
     $shabaNumber = $admin->shaba_number ?? null;
     $cartNumber = $admin->cart_number ?? null;
+    $isForeignNational = $admin->is_foreign_national ?? null;
     $dob = isset($admin->dob) ? $admin->dob->toJalali()->format('Y/m/d') : null;
     $resume = $admin->resume ?? null;
 @endphp
@@ -57,9 +58,8 @@
                        title="کد ملی"
                        :old="$nationalCode"/>
 
-        <x-admin.input identify="shaba_number"
-                       title="شبا"
-                       :old="$shabaNumber"/>
+
+
 
         <x-admin.input identify="cart_number"
                        title="شماره کارت"
@@ -73,6 +73,10 @@
         <x-admin.textarea identify="resume"
                           title="رزومه"
                           :old="$resume"/>
+
+            <x-admin.checkbox identify="is_foreign_national"
+                              description="اتباع خارجه"
+                              :old="$isForeignNational"/>
 
     </div>
 </div>

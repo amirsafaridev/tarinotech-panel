@@ -61,12 +61,77 @@
                                 <td><a href="{{ route('admin.admin.edit',$admin->id) }}">{{ $admin->id }}</a></td>
                             </tr>
                             <tr>
-                                <td>پست الکترونیک</td>
-                                <td><a href="mailto:{{ $admin->email }}">{{ $admin->email }}</a></td>
+                                <td>نام</td>
+                                <td>{{ $admin->first_name }}</td>
                             </tr>
+                            <tr>
+                                <td>نام خانوادگی</td>
+                                <td>{{ $admin->last_name }}</td>
+                            </tr>
+
+                            <tr>
+                                <td>سمت شغلی</td>
+                                <td>{{ $admin->jobTitle->title }}</td>
+                            </tr>
+
                             <tr>
                                 <td>شماره همراه</td>
                                 <td><a href="tel:{{ $admin->mobile }}">{{ $admin->mobile }}</a></td>
+                            </tr>
+
+                            <tr>
+                                <td>شماره تماس</td>
+                                <td><a href="tel:{{ $admin->tel }}">{{ $admin->tel }}</a></td>
+                            </tr>
+
+                            <tr>
+                                <td>پست الکترونیک</td>
+                                <td><a href="mailto:{{ $admin->email }}">{{ $admin->email }}</a></td>
+                            </tr>
+
+                            <tr>
+                                <td>کد پستی</td>
+                                <td>{{ $admin->postal_code }}</td>
+                            </tr>
+
+                            <tr>
+                                <td>کد ملی</td>
+                                <td>{{ $admin->national_code }}</td>
+                            </tr>
+
+                            <tr>
+                                <td>محل انجام کار</td>
+                                <td>{{ \App\Enums\Database\Admin\WorkLocation::getDescription($admin->work_location) }}</td>
+                            </tr>
+
+                            <tr>
+                                <td>نوع بیمه</td>
+                                <td>{{ \App\Enums\Database\Admin\TypeInsurance::getDescription($admin->type_insurance) }}</td>
+                            </tr>
+
+                            <tr>
+                                <td>قرارداد دارد؟</td>
+                                <td>@include('admin.partial.bool_badge',['value'=>$admin->has_contract])</td>
+                            </tr>
+
+                            <tr>
+                                <td>اتباع خارجه</td>
+                                <td>@include('admin.partial.bool_badge',['value'=>$admin->is_foreign_national])</td>
+                            </tr>
+
+                            <tr>
+                                <td>سفته</td>
+                                <td>{{ $admin->promissory }}</td>
+                            </tr>
+
+                            <tr>
+                                <td>شبا</td>
+                                <td>{{ $admin->shaba_number }}</td>
+                            </tr>
+
+                            <tr>
+                                <td>شماره کارت</td>
+                                <td>{{ $admin->cart_number }}</td>
                             </tr>
 
                             <tr>
@@ -87,14 +152,6 @@
                                 </td>
                             </tr>
 
-                            <tr>
-                                <td>نام</td>
-                                <td>{{ $admin->first_name }}</td>
-                            </tr>
-                            <tr>
-                                <td>نام خانوادگی</td>
-                                <td>{{ $admin->last_name }}</td>
-                            </tr>
 
                             @if($admin->dob)
                                 <tr>

@@ -90,6 +90,19 @@
                     }
                 },
                 @endif
+                @if($column['name'] == 'has_contract')
+                {
+                    "targets": parseInt({{$loop->index}}),
+                    "data": "{{ $column['name'] }}",
+                    "render": function (data, type, row, meta) {
+                        if (data === 0) {
+                            return '<span class="badge bg-danger">ندارد</span>';
+                        } else {
+                            return '<span class="badge bg-success">دارد</span>';
+                        }
+                    }
+                },
+                @endif
                 @if($column['name'] == 'in_home')
                 {
                     "targets": parseInt({{$loop->index}}),

@@ -5,7 +5,7 @@
                 identify="job_title"
                 title="سمت شغلی"
                 key="id"
-                value="title"
+                value="optionTitle"
                 :items="$jobTitles"
                 />
     </div>

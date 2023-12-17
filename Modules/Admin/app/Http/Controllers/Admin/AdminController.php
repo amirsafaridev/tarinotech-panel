@@ -2,6 +2,7 @@
 
 namespace Modules\Admin\app\Http\Controllers\Admin;
 
+use App\Enums\Database\Admin\TypeInsurance;
 use App\Enums\General\BtnType;
 use App\Filters\Admin\Admin\JobTitleFilter;
 use App\Foundation\ValueObjects\Datatable\ColumnOption;
@@ -79,7 +80,7 @@ class AdminController extends Controller
 
     public function edit(Admin $admin)
     {
-        $admin->load('roles');
+        $admin->load(['roles', 'jobTitle']);
 
         $title = self::EDIT_TITLE;
 
@@ -168,6 +169,7 @@ class AdminController extends Controller
         $adminData['national_code'] = $request->input('national_code');
         $adminData['shaba_number'] = $request->input('shaba_number');
         $adminData['cart_number'] = $request->input('cart_number');
+        $adminData['is_foreign_national'] = $request->has('is_foreign_national');
 
         if (! $editMode) {
             $adminData['email'] = $request->input('email');
@@ -196,28 +198,13 @@ class AdminController extends Controller
     {
         return (new DatatableBase())
             ->addColumn(ColumnOption::new()->setName('id')->setAs('شناسه'))
-            ->addColumn(ColumnOption::new()->setName('email')->setAs('ایمیل'))
             ->addColumn(ColumnOption::new()->setName('first_name')->setAs('نام'))
             ->addColumn(ColumnOption::new()->setName('last_name')->setAs('نام خانوادگی'))
-            ->addColumn(ColumnOption::new()
-                ->setName('job_title.title')
-                ->setSearchable(false)
-                ->setSortable(false)
-                ->setAs('سمت شغلی'))
-            ->addColumn(
-                ColumnOption::new()
-                    ->setName('roles')
-                    ->setAs('نقش ها')
-                    ->setSortable(false)
-                    ->setSearchable(false)
-            )
-            ->addColumn(
-                ColumnOption::new()
-                    ->setName('latest_login')
-                    ->setAs('آخرین ورود')
-                    ->setSortable(false)
-                    ->setSearchable(false))
-            ->addColumn(ColumnOption::new()->setName('created_at')->setAs('تاریخ ایجاد'))
+            ->addColumn(ColumnOption::new()->setName('has_contract')->setAs('قرارداد'))
+            ->addColumn(ColumnOption::new()->setName('end_last_contract')->setAs('پایان قرارداد'))
+            ->addColumn(ColumnOption::new()->setName('type_insurance')->setAs('نوع بیمه'))
+            ->addColumn(ColumnOption::new()->setName('promissory')->setAs('سفته'))
+            ->addColumn(ColumnOption::new()->setName('is_block')->setAs('دسترسی'))
             ->addColumn(ColumnOption::new()->setName('action')->setAs('عملیات')->removeAction())
             ->addExternalFilter(ExternalFilter::new()->setKey('job_title'))
             ->render();
@@ -227,27 +214,24 @@ class AdminController extends Controller
     {
         try {
             $admins = Admin::query()
-                ->with(['roles', 'latestLogin', 'jobTitle'])
                 ->filter([
                     JobTitleFilter::class,
                 ])
                 ->withCount('logins');
 
             return DataTables::eloquent($admins)
-                ->editColumn('created_at', function (Admin $admin) {
-                    return $admin->created_at->toJalali()->format(formatJalaliDate());
+                ->editColumn('type_insurance', function (Admin $admin) {
+                    return TypeInsurance::getDescription($admin->type_insurance);
                 })
-                ->editColumn('latest_login', function (Admin $admin) {
-                    return $admin->latestLogin ?
-                        $admin->latestLogin->login_at->toJalali()->format('h:i Y-m-d') :
-                        trans('panel.admin.not_login');
+                ->editColumn('promissory', function (Admin $admin) {
+                    return number_format($admin->promissory);
                 })
-                ->editColumn('job_title.title', function (Admin $admin) {
-                    return $admin->jobTitle->title ?? 'ندارد';
-                })
-                ->editColumn('roles', function (Admin $admin) {
-                    return $admin->roles ? $admin->roles->pluck('name')->implode(', ') :
-                        trans('panel.admin.not_role');
+                ->editColumn('end_last_contract', function (Admin $admin) {
+                    if (! $admin->end_last_contract) {
+                        return 'ثبت نشده';
+                    }
+
+                    return $admin->end_last_contract->toJalali()->format(formatJalaliDate());
                 })
                 ->addColumn('action', function (Admin $admin) {
                     $actions = Helper::btnMaker(BtnType::Warning, route('admin.admin.edit', $admin->id), trans('panel.action.edit'));

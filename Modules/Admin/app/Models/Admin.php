@@ -63,6 +63,7 @@ class Admin extends Authenticatable
         'national_code',
         'shaba_number',
         'cart_number',
+        'is_foreign_national',
 
     ];
 
