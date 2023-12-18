@@ -29,7 +29,7 @@ class SelectUser extends Component
     public function render(): View|Closure|string
     {
         $users = User::query()
-            ->select(['id', 'mobile', 'first_name', 'last_name'])
+            ->select(['id', 'mobile', 'first_name', 'last_name', 'national_id'])
             ->where('user_type', UserType::Primary)
             ->get();
 

@@ -21,7 +21,7 @@ class CalcWorkDayRequest extends FormRequest
     {
         return [
             'days' => 'required|integer|min:1',
-            'start_date' => 'nullable|date_format:Y/m/d',
+            'start_date' => 'required|date_format:Y/m/d',
         ];
     }
 }

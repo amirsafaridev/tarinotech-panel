@@ -10,7 +10,7 @@
                     $isSelected = !empty($old) && $user->id == $old;
                     $fullName = $user->first_name . ' ' . $user->last_name;
                 @endphp
-                <option {{ $isSelected ? 'selected' : '' }} value="{{ $user->id }}">{{ $user->mobile }} - ( {{ $fullName }} )</option>
+                <option {{ $isSelected ? 'selected' : '' }} value="{{ $user->id }}">{{ $user->national_id }} - ( {{ $fullName }} )</option>
             @endforeach
         @endif
     </select>

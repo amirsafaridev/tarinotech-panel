@@ -4,6 +4,7 @@
     const languages = $('#languages');
     const selectOptions = $('#options');
     const price = $('#price');
+    const agreementAt = $('#agreement_at');
 
     $(document).ready(function () {
         jalaliDatepicker.startWatch();
@@ -117,8 +118,8 @@
             displayMessage('<span class="fal fa-spinner fa-spin"></span>');
 
             debounceTimer = setTimeout(function () {
-                const ajaxUrl = '{{ route('admin.ajax.calendar.calc.day.work') }}';
-                const postData = { days: inputValue };
+                const ajaxUrl = '{{ route('admin.ajax.calendar.calc') }}';
+                const postData = { days: inputValue,start_date:agreementAt.val() };
 
                 postAjax(ajaxUrl, postData)
                     .then(handleResponse)

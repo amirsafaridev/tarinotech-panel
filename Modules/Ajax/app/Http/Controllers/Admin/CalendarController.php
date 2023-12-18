@@ -4,57 +4,47 @@ namespace Modules\Ajax\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Exception;
+use Hekmatinasser\Verta\Verta;
 use Illuminate\Support\Facades\DB;
 use Modules\Ajax\app\Http\Requests\CalcWorkDayRequest;
 
-use function App\Http\Controllers\Admin\Ajax\str_contains;
-use function isJalaliDate;
 use function now;
 use function response;
-use function verta;
 
 class CalendarController extends Controller
 {
     public function calcFreeDays(CalcWorkDayRequest $request)
     {
         try {
-            $currentDate = now();
             $totalWorkDays = 0;
             $totalFreeDays = 0;
-            $totalFridays = 0;
 
-            if ($request->filled('start_date') && isJalaliDate($request->input('start_date'))) {
-                $currentDate = verta($request->input('start_date'))->toCarbon();
-            }
+            $currentDate = Verta::parse($request->input('start_date'))->toCarbon();
 
             if ($currentDate->greaterThan(now())) {
                 throw new Exception('Invalid start date provided');
             }
 
-            $endDate = now()->addDays($request->get('days'));
+            $endDate = $currentDate->copy()->addDays($request->get('days'));
 
             $freeDays = DB::table('free_days')->get();
 
             while ($currentDate->lte($endDate)) {
                 $totalWorkDays++;
-                $totalFreeDays += $freeDays->filter(function ($item) use ($currentDate) {
-                    return str_contains($item->free_at, $currentDate->format('-m-d'));
-                })->count();
 
-                if ($currentDate->isFriday()) {
-                    $totalFridays++;
+                $exist = $freeDays->where('free_at', $currentDate->format('Y-m-d'))->first();
+                if ($exist) {
+                    $totalFreeDays++;
                 }
                 $currentDate = $currentDate->addDay();
             }
 
-            $addFreeDays = $totalFreeDays + $totalFridays;
-
-            $finalDate = $currentDate->addDays($addFreeDays);
+            $finalDate = $currentDate->addDays($totalFreeDays);
 
             return response()->json([
                 'success' => true,
                 'total_work_days' => $totalWorkDays,
-                'total_free_days' => $addFreeDays,
+                'total_free_days' => $totalFreeDays,
                 'final_date' => $finalDate->format('Y-m-d'),
                 'final_date_jalali' => $finalDate->toJalali()->format('Y/m/d'),
                 'message' => 'محاسبه شد.',
