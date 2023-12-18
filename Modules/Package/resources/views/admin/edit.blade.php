@@ -30,6 +30,13 @@
                         @csrf
                         @method('PATCH')
 
+                        <x-admin.select-model identify="base_id"
+                                              :items="$bases"
+                                              key="id"
+                                              value="title"
+                                              :old="$package->base_id"/>
+
+
                         <x-admin.input identify="title" title="عنوان" :old="$package->title"/>
 
                         <x-admin.input identify="price" title="قیمت" :old="$package->finalPrice?->price"/>

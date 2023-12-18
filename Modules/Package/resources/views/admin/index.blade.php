@@ -29,6 +29,7 @@
                             <thead>
                             <tr>
                                 <th>شناسه</th>
+                                <th>نوع</th>
                                 <th>عنوان</th>
                                 <th>قیمت</th>
                                 <th>تاریخ شروع</th>
@@ -41,6 +42,7 @@
                                 @foreach($packages as $package)
                                     <tr>
                                         <td>{{ $package->id }}</td>
+                                        <td>{{ $package->base->title }}</td>
                                         <td>{{ $package->title }}</td>
 
                                         @if($package->finalPrice)

@@ -26,7 +26,7 @@ class PackageController extends Controller
         $title = self::INDEX_TITLE;
 
         $packages = Package::query()
-            ->with('finalPrice')
+            ->with(['finalPrice', 'base'])
             ->get();
 
         return view('package::admin.index', compact('title', 'packages'));
@@ -115,6 +115,7 @@ class PackageController extends Controller
     protected function prepareItemData(Request $request): array
     {
         $item['title'] = $request->input('title');
+        $item['base_id'] = $request->input('base_id');
 
         return $item;
     }

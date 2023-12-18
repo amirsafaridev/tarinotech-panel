@@ -5,9 +5,11 @@ namespace Modules\Package\app\Models;
 use App\Models\PackagePrice;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Modules\Log\app\Enums\LogNames;
+use Modules\Project\app\Models\ProjectBase;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -18,11 +20,17 @@ class Package extends Model
 
     protected $fillable = [
         'title',
+        'base_id',
     ];
 
     public function prices(): HasMany
     {
         return $this->hasMany(PackagePrice::class);
+    }
+
+    public function base(): BelongsTo
+    {
+        return $this->belongsTo(ProjectBase::class);
     }
 
     public function finalPrice(): HasOne

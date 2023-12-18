@@ -20,6 +20,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'base_id' => 'required|exists:project_bases,id',
             'title' => 'required|max:255',
             'price' => 'required|numeric',
         ];
