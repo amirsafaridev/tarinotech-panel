@@ -299,7 +299,10 @@ class FactorController extends Controller
                     return $factor->created_at->toJalali()->format(formatJalaliDateTime());
                 })
                 ->addColumn('action', function ($factor) {
-                    return Helper::btnMaker(BtnType::Warning, route('admin.factor.edit', $factor->id), trans('panel.action.edit'));
+                    $action = Helper::btnMaker(BtnType::Warning, route('admin.factor.edit', $factor->id), trans('panel.action.edit'));
+                    $action .= Helper::btnMaker(BtnType::Info, route('admin.factor.show', $factor->id), trans('panel.action.show'));
+
+                    return $action;
                 })
                 ->rawColumns(['action', 'status'])
                 ->make();

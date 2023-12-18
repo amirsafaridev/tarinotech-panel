@@ -143,11 +143,6 @@
     @include('admin.partial.script.global')
     @include('admin.partial.script.mask')
 
-    @include('admin.partial.ckeditor')
     @include('user::admin.user.script.share')
 
-    <script>
-        $(document).ready(function () {
-        })
-    </script>
 @endsection

@@ -17,7 +17,7 @@ Route::group(['guard' => 'admin', 'prefix' => 'user', 'as' => 'user.'], function
     Route::get('/{user}', [UserController::class, 'edit'])->name('edit');
     Route::get('/{user}/show', [UserController::class, 'show'])->name('show');
 
-    Route::post('/', [UserController::class, 'store'])->name('store');
+    Route::post('/index', [UserController::class, 'store'])->name('store');
     Route::patch('/{user}', [UserController::class, 'update'])->name('update');
     Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
 
