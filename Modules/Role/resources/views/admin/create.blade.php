@@ -35,7 +35,7 @@
                                                    title="دسترسی ها"
                                                    :items="$permissions"
                                                    key="id"
-                                                   value="name"
+                                                   value="title"
                                                    multiple="multiple"/>
 
                         <div class="d-flex align-items-center gap-10 my-3">

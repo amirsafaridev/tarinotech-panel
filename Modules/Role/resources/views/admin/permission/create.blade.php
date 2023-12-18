@@ -12,32 +12,23 @@
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.blog.index') }}">بلاگ ها</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.permission.index') }}">پرمیشن ها</a></li>
                 <li class="breadcrumb-item active">ایجاد</li>
             </ol>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+        <div class="col-xl-4 col-lg-6 col-md-6 col-12">
             <div class="card">
                 <div class="card-body pb-4">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ route('admin.blog.store') }}">
+                    <form class="request-form forms-sample" method="post" action="{{ route('admin.permission.store') }}">
                         @csrf
-                        <x-admin.select-model identify="blog_category_id" title="دسته بندی" :items="$categories" value="title" key="id"/>
 
-                        <x-admin.input identify="photo" title="تصویر" type="file"/>
+                        <x-admin.input identify="name" title="نام"/>
 
                         <x-admin.input identify="title" title="عنوان"/>
-
-                        <x-admin.textarea identify="body" title="محتوا"/>
-
-                        <x-admin.input identify="meta_description" title="متا - توضیحات"/>
-
-                        <x-admin.input identify="meta_keywords" title="متا - کلمات کلیدی"/>
-
-                        <x-admin.checkbox identify="is_publish" :checked="true" description="منتشر شود" />
 
                         <x-admin.button-submit/>
                     </form>
@@ -47,14 +38,10 @@
     </div>
 @endsection
 @section('script')
-    @include('admin.partial.loader.script',['load'=>[
-        \App\Enums\Assets\ScriptLoader::CKEditor(),
-    ]])
     @include('admin.partial.request')
-    @include('admin.partial.ckeditor')
     <script>
         $(document).ready(function () {
-            CKEDITOR.replace( 'body');
+            activeParentUl('{{ route('admin.permission.index') }}');
         })
     </script>
 @endsection

@@ -7,7 +7,7 @@
                     $itemKey = $item->{$key};
                     $isSelected = !empty($old) && $itemKey == $old;
                 @endphp
-                <option {{ $isSelected ? 'selected' : '' }} value="{{ $itemKey }}">{{ trans('permission.'.$item->{$value}) }}</option>
+                <option {{ $isSelected ? 'selected' : '' }} value="{{ $itemKey }}">{{ $item->{$value} }}</option>
             @endforeach
         @endif
     </select>

@@ -12,8 +12,8 @@ use App\Traits\HasJsonCommonResponse;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
-use Modules\Role\app\Http\Requests\Admin\StoreRequest;
-use Modules\Role\app\Http\Requests\Admin\UpdateRequest;
+use Modules\Role\app\Http\Requests\Admin\Role\StoreRequest;
+use Modules\Role\app\Http\Requests\Admin\Role\UpdateRequest;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
