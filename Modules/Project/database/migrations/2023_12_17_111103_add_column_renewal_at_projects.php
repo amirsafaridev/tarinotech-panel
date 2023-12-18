@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('project_webs', function (Blueprint $table) {
-            $table->dropColumn('facilities');
+        Schema::table('projects', function (Blueprint $table) {
+            $table->after('deadline_at', function (Blueprint $table) {
+                $table->date('renewal_at')->nullable();
+            });
         });
 
     }
@@ -22,10 +24,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('project_webs', function (Blueprint $table) {
-            $table->after('sample', function (Blueprint $table) {
-                $table->json('facilities');
-            });
+        Schema::table('projects', function (Blueprint $table) {
+            $table->dropColumn('renewal_at');
         });
     }
 };

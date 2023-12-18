@@ -114,7 +114,7 @@
                                     <x-admin.input identify="irnic_identify" title=" شناسه ایرنیک" :old="$user->irnic->identify" />
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <x-admin.input identify="irnic_password" title="رمزعبور ایرنیک" :old="$user->irnic->password" />
+                                    <x-admin.input identify="irnic_password" title="رمز عبور ایرنیک" :old="$user->irnic->password" />
                                 </div>
                             </div>
                         </div>

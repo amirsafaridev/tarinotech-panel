@@ -66,6 +66,11 @@ return [
         WebLanguage::FA => 'فارسی',
         WebLanguage::EN => 'انگلیسی',
         WebLanguage::AR => 'عربی',
+        WebLanguage::ES => 'اسپانیایی',
+        WebLanguage::PT => 'پرتغالی',
+        WebLanguage::FR => 'فرانسوی',
+        WebLanguage::RU => 'روسی',
+        WebLanguage::DE => 'آلمانی',
     ],
 
     WebFacility::class => [

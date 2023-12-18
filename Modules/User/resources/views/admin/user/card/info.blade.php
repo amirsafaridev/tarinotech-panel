@@ -149,7 +149,7 @@
                             <td>{{ $user->irnic->identify }}</td>
                         </tr>
                         <tr>
-                            <td>رمزعبور ایرنیک</td>
+                            <td>رمز عبور ایرنیک</td>
                             <td>{{ $user->irnic->password }}</td>
                         </tr>
                     @endif

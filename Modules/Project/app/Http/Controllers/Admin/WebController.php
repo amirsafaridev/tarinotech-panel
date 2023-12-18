@@ -16,6 +16,7 @@ use App\Service\Json\WebProject\LanguageTransformer;
 use App\Service\Json\WebProject\SampleTransformer;
 use App\Traits\HasDatatable;
 use App\Traits\HasJsonCommonResponse;
+use Carbon\Carbon;
 use Crypt;
 use DB;
 use Exception;
@@ -67,7 +68,14 @@ class WebController extends Controller
             DB::beginTransaction();
 
             $projectWeb = ProjectWeb::query()->create($this->initialWebData($request));
-            $projectWeb->project()->create($this->initialProjectData($request));
+
+            $projectParams = $this->initialProjectData($request);
+            $agreementAt = $projectParams['agreement_at'];
+            if ($agreementAt) {
+                $projectParams['renewal_at'] = Carbon::parse($agreementAt)->addYear()
+                    ->format('Y-m-d');
+            }
+            $projectWeb->project()->create($projectParams);
             $projectWeb->options()->attach($request->input('options'));
 
             DB::commit();

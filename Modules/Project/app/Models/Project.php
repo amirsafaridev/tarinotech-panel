@@ -34,12 +34,14 @@ class Project extends Model
         'target_id',
         'agreement_at',
         'deadline_at',
+        'renewal_at',
         'note',
     ];
 
     protected $casts = [
         'deadline_at' => 'date',
         'agreement_at' => 'date',
+        'renewal_at' => 'date',
     ];
 
     public function target(): MorphTo

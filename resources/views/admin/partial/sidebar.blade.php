@@ -85,6 +85,7 @@
 
                     <ul class="slide-menu">
                         <li><a href="{{ route('admin.project.index') }}" class="slide-item">لیست پروژه ها</a></li>
+                        <li><a href="{{ route('admin.project.renewal.index') }}" class="slide-item">لیست تمدید ها</a></li>
                         <li><a href="{{ route('admin.project.web.index') }}" class="slide-item">وب سایت</a></li>
                         <li><a href="{{ route('admin.project.seo.index') }}" class="slide-item">سئو</a></li>
                         <li><a href="{{ route('admin.project.ads.index') }}" class="slide-item">ادوردز</a></li>

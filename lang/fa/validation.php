@@ -100,7 +100,7 @@ return [
     'not_in' => ':attribute انتخاب شده، معتبر نیست.',
     'not_regex' => 'فرمت :attribute معتبر نیست.',
     'numeric' => ':attribute باید عدد یا رشته‌ای از اعداد باشد.',
-    'password' => 'رمزعبور اشتباه است.',
+    'password' => 'رمز عبور اشتباه است.',
     'present' => 'فیلد :attribute باید در پارامترهای ارسالی وجود داشته باشد.',
     'prohibited' => 'فیلد :attribute ممنوع است.',
     'prohibited_if' => 'The :attribute field is prohibited when :other is :value.',
@@ -148,6 +148,7 @@ return [
     'jdate_before_equal' => ':attribute باید قبل یا برابر از :date باشد.',
     'jdatetime_before' => ':attribute باید قبل از :date باشد.',
     'jdatetime_before_equal' => ':attribute باید قبل یا برابر از :date باشد.',
+    'captcha' => 'کد امنیتی صحیح نیست!',
 
     'attributes' => [
         'password' => 'گذرواژه',
@@ -201,7 +202,7 @@ return [
         'company_type' => 'نوع شرکت',
 
         'irnic_identify' => 'شناسه ایرنیک',
-        'irnic_password' => 'رمزعبور ایرنیک',
+        'irnic_password' => 'رمز عبور ایرنیک',
 
         'tel' => 'تلفن (ثابت)',
 
@@ -275,5 +276,6 @@ return [
         'base_id' => 'پایه',
         'type_id' => 'نوع پروژه',
         'job_title_id' => 'عنوان شغلی',
+        'start_date' => 'تاریخ شروع',
     ],
 ];

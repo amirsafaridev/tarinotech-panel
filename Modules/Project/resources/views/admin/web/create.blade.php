@@ -64,7 +64,7 @@
                             <x-admin.input identify="domain_username" title="نام کاربری دامنه"/>
                         </div>
                         <div class="col-12 col-md-6">
-                            <x-admin.input identify="domain_password" title="رمزعبور دامنه"/>
+                            <x-admin.input identify="domain_password" title="رمز عبور دامنه"/>
                         </div>
                     </div>
                     <x-admin.input identify="domain_primary" title="نام دامنه اصلی"/>
@@ -118,7 +118,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">اطلاعات ربان</h3>
+                    <h3 class="card-title">اطلاعات زبان</h3>
                     <div class="card-options">
                         <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i
                                     class="fal fa-chevron-up"></i></a>
