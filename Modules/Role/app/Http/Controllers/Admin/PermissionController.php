@@ -104,6 +104,7 @@ class PermissionController extends Controller
 
     public function sync()
     {
+        Permission::query()->where('id', '>', 0)->delete();
         $countCreated = resolve(PermissionService::class)->sync();
 
         return back()->with('success', sprintf('تعداد پرمیشن های جدید %s می باشد.', $countCreated));
