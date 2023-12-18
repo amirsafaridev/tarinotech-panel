@@ -58,8 +58,9 @@
                        title="کد ملی"
                        :old="$nationalCode"/>
 
-
-
+        <x-admin.input identify="shaba_number"
+                       title="شبا"
+                       :old="$shabaNumber"/>
 
         <x-admin.input identify="cart_number"
                        title="شماره کارت"
