@@ -25,7 +25,7 @@ class PasswordController extends Controller
     {
         try {
             $admin->update([
-                'password' => bcrypt('password'),
+                'password' => bcrypt($request->input('password')),
             ]);
 
             return response()->json([
