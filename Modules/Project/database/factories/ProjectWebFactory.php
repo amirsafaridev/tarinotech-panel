@@ -9,7 +9,6 @@ use App\Service\Json\WebProject\SampleTransformer;
 use Crypt;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Project\app\Enums\WebDomain;
-use Modules\Project\app\Enums\WebFacility;
 use Modules\Project\app\Enums\WebHostLocation;
 use Modules\Project\app\Models\ProjectWeb;
 
@@ -35,7 +34,6 @@ class ProjectWebFactory extends Factory
             'host' => $this->makeHost(),
             'language' => $this->makeLanguage(),
             'sample' => $this->sample(),
-            'facilities' => $this->faker->randomElements(WebFacility::getKeys()),
             'working_days' => $this->faker->numberBetween(30, 360),
         ];
     }

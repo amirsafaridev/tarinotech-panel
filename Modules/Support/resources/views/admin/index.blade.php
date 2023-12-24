@@ -2,6 +2,208 @@
 @section('title') {{ $title }} @endsection
 @section('head')
     @include('admin.partial.loader.style',['load'=>[\App\Enums\Assets\StyleLoader::DataTable()]])
+    <style>
+        .aw-chat-height{
+            max-height: 800px;
+        }
+        .aw-chat{
+            overflow-y: scroll;
+            padding-left: 10px;
+        }
+        .aw-chat-item{
+           margin-bottom: 10px;
+            background-color: white;
+            overflow: hidden;
+            border-radius: 10px;
+            border: 1px solid #eeeeee;
+        }
+
+        .dark-mode .aw-chat-item{
+            background-color: #2a2a4a;
+            border: 1px solid #242442;
+        }
+        .aw-chat-item .aw-chat-header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px 14px;
+            transition: all 0.2s ease-in-out;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .dark-mode .aw-chat-header{
+            border-bottom: 1px solid #201e4e;
+        }
+
+        .aw-chat-item .aw-chat-header:hover{
+            background-color: #e4e5ff;
+        }
+        .dark-mode .aw-chat-item .aw-chat-header:hover{
+            background-color: #211f53;
+        }
+        .aw-chat-item .aw-chat-header .aw-project{
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .aw-chat-item .aw-chat-header .aw-project h4{
+            margin: 0;
+            padding: 0;
+            font-weight: 500;
+            color: #282f53;
+        }
+        .dark-mode .aw-chat-item .aw-chat-header .aw-project h4{
+            color: #dedefd;
+        }
+
+        .aw-chat-item .aw-chat-header .aw-time-notify{
+            display: flex;
+            flex-direction: column;
+            align-items: end;
+            gap: 8px;
+        }
+        .aw-chat-item .aw-chat-header .aw-time-notify .notify{
+            width: 25px;
+            height: 25px;
+            background-color: #c11a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 25px;
+            font-size: 12px;
+            line-height: 0;
+            color: white;
+        }
+
+
+        .aw-chat-item  .aw-chat-user{
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 14px;
+        }
+        .aw-chat-item  .aw-chat-user .aw-user{
+            display: flex;
+            gap: 5px;
+            flex-grow: 1;
+            flex-wrap: wrap;
+        }
+        .aw-chat-item  .aw-chat-user .aw-user img{
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+        .aw-chat-item  .aw-chat-user .aw-action{
+            flex-shrink: 0;
+        }
+        .aw-chat-item  .aw-chat-user .aw-action button{
+            border-radius: 50%;
+            border: 0;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .aw-chat-item  .aw-chat-user .aw-action button.aw-action-success{
+            background-color: #1b9783;
+            color: white;
+        }
+
+
+        .aw-message{
+            height: 600px;
+            overflow-y: scroll;
+            padding-left: 20px;
+
+        }
+        .aw-message .aw-message-item{
+            margin-bottom: 20px;
+        }
+        .aw-message .aw-message-item img{
+            border-radius: 50%;
+        }
+        .aw-message .aw-message-item .aw-message-item-text{
+            background-color: #f9f9f9;
+            padding: 10px 14px;
+            border-radius: 5px;
+            width: 90%;
+        }
+        .dark-mode .aw-message .aw-message-item .aw-message-item-text{
+            background-color: #2d2d4e;
+        }
+        .aw-message .aw-message-item .aw-message-item-text p{
+            margin: 0;
+            padding: 0;
+        }
+        .aw-message .aw-message-item .aw-message-item-text .date{
+            font-size: 12px;
+        }
+
+        .aw-message .aw-message-item .aw-message-item-text .attachment button{
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            appearance: none;
+            border: 0;
+            padding: 5px;
+            width: 30px;
+            border-radius: 5px;
+            background-color: #6c5ffc;
+            color: white;
+        }
+        .aw-message .aw-message-item .action button{
+            border: 0;
+            width: 25px;
+            height: 25px;
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+        }
+
+        .dark-mode .aw-message .aw-message-item .action button{
+            background-color:#2d2d4e;
+        }
+        .hr-message{
+            background-color: #959595;
+            margin: 20px -25px;
+        }
+        .aw-message-action textarea{
+            width: 100%;
+            resize: none;
+            padding: 10px 10px 40px 10px;
+            height: 150px;
+            border: 0;
+        }
+
+        .dark-mode .aw-message-action textarea{
+            background-color:#2d2d4e;
+            color: white;
+        }
+
+        .aw-message-action .action button{
+            padding: 5px;
+            width: 50px;
+            border-radius: 5px;
+        }
+
+        .aw-message-action .attachment{
+            padding: 8px 10px;
+            background-color: white;
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        }
+        .dark-mode .aw-message-action .attachment{
+            background-color:#2d2d4e;
+            box-shadow: rgb(34, 34, 62) 0px 2px 8px 0px;
+        }
+
+    </style>
 @endsection
 @section('content')
 
@@ -16,445 +218,122 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-5">
+        <div class="col-md-7">
             <div class="card">
-                <div class="main-content-app pt-0">
-                    <div class="main-content-body main-content-body-chat h-100">
-                        <div class="main-chat-header pt-3 d-block d-sm-flex">
-                            <div class="main-img-user online">
-                                <img alt="avatar" src="../assets/images/users/1.jpg">
-                            </div>
-                            <div class="main-chat-msg-name mt-2">
-                                <h6>Saul Goodmate</h6>
-                                <span class="dot-label bg-success"></span>
-                                <small class="me-3">online</small>
-                            </div>
-                            <nav class="nav">
-                                <div class="">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Search ...">
-                                        <span class="input-group-text btn bg-white text-muted border-start-0">
-                    <i class="fe fe-search"></i>
-                  </span>
-                                    </div>
-                                </div>
-                                <div class="dropdown">
-                                    <a class="nav-link" href="" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fe fe-more-horizontal"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <a class="dropdown-item" href="javascript:void(0)">
-                                            <i class="fe fe-phone-call me-1"></i> Phone Call </a>
-                                        <a class="dropdown-item" href="javascript:void(0)">
-                                            <i class="fe fe-video me-1"></i> Video Call </a>
-                                        <a class="dropdown-item" href="javascript:void(0)">
-                                            <i class="fe fe-user-plus me-1"></i> Add Contact </a>
-                                        <a class="dropdown-item" href="javascript:void(0)">
-                                            <i class="fe fe-trash-2 me-1"></i> Delete </a>
-                                    </div>
-                                </div>
-                            </nav>
+                <div class="card-body">
+                    <div class="d-flex flex-column">
+                        <div>
+                            <h5 class="card-title">پروژه طراحی سایت نگین</h5>
+                            <h6 class="card-subtitle mb-0 text-muted">example.com</h6>
                         </div>
-                        <!-- main-chat-header -->
-                        <div class="main-chat-body flex-2" id="ChatBody">
-                            <div class="content-inner">
-                                <label class="main-chat-time">
-                                    <span>2 days ago</span>
-                                </label>
-                                <div class="media flex-row-reverse chat-right">
-                                    <div class="main-img-user online">
-                                        <img alt="avatar" src="../assets/images/users/21.jpg">
-                                    </div>
-                                    <div class="media-body">
-                                        <div class="main-msg-wrapper"> Nulla consequat massa quis enim. Donec pede justo, fringilla vel... </div>
-                                        <div class="main-msg-wrapper"> rhoncus ut, imperdiet a, venenatis vitae, justo... </div>
-                                        <div>
-                                            <span>9:48 am</span>
-                                            <a href="">
-                                                <i class="icon ion-android-more-horizontal"></i>
-                                            </a>
+                        <hr class="hr-message">
+                        <div class="aw-message">
+                            @for($i=1;$i<=10;$i++)
+                                <div class="d-flex  @if($i%2) justify-content-end @else justify-content-start @endif">
+                                    <div class="d-flex gap-2 align-items-start aw-message-item  @if($i%2) flex-row-reverse @endif">
+                                        <img class="flex-shrink-0 w-7" src="{{ asset('uploads/user.png') }}" alt="">
+                                        <div class="aw-message-item-text">
+                                            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. </p>
+                                            <spac class="date">1400/02/03 14:20</spac>
+                                            <div class="attachment">
+                                                <button type="button" href="">
+                                                    <span class="fal fa-file"></span>
+                                                </button>
+                                                <button type="button" href="">
+                                                    <span class="fal fa-images"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-column gap-2 action">
+                                            <button  type="button">
+                                                <span class="fal fa-edit text-warning"></span>
+                                            </button>
+                                            <button  type="button">
+                                                <span class="fal fa-trash text-danger"></span>
+                                            </button>
+                                            <button  type="button">
+                                                <span class="fal fa-reply text-info"></span>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="media chat-left">
-                                    <div class="main-img-user online">
-                                        <img alt="avatar" src="../assets/images/users/1.jpg">
-                                    </div>
-                                    <div class="media-body">
-                                        <div class="main-msg-wrapper"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. </div>
-                                        <div>
-                                            <span>9:32 am</span>
-                                            <a href="">
-                                                <i class="icon ion-android-more-horizontal"></i>
-                                            </a>
+                            @endfor
+                        </div>
+                        <hr class="hr-message">
+                        <div class="aw-message-action">
+                            <div>
+                                <textarea placeholder="پیام خود ار بنویسید"></textarea>
+                                <div class="attachment">
+                                    <div class="d-flex justify-content-between align-items-center item">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="fal fa-file text-primary"></span>
+                                            <span class="mt-1 font-weight-bold">File Name</span>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="mt-1 font-weight-bold">10Kb</span>
+                                            <button class="btn btn-sm btn-outline-danger">
+                                                <span class="fal fa-trash"></span>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="media flex-row-reverse chat-right">
-                                    <div class="main-img-user online">
-                                        <img alt="avatar" src="../assets/images/users/21.jpg">
-                                    </div>
-                                    <div class="media-body">
-                                        <div class="main-msg-wrapper"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor </div>
-                                        <div class="main-msg-wrapper">
-                    <span class="text-dark">
-                      <span>
-                        <i class="fa fa-image fs-14 text-muted pe-2"></i>
-                      </span>
-                      <span class="fs-14 mt-1"> Image_attachment.jpg </span>
-                      <i class="fe fe-download mt-3 text-muted ps-2"></i>
-                    </span>
-                                        </div>
-                                        <div>
-                                            <span>11:22 am</span>
-                                            <a href="">
-                                                <i class="icon ion-android-more-horizontal"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <label class="main-chat-time">
-                                    <span>Yesterday</span>
-                                </label>
-                                <div class="media chat-left">
-                                    <div class="main-img-user online">
-                                        <img alt="avatar" src="../assets/images/users/1.jpg">
-                                    </div>
-                                    <div class="media-body">
-                                        <div class="main-msg-wrapper"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. </div>
-                                        <div>
-                                            <span>9:32 am</span>
-                                            <a href="">
-                                                <i class="icon ion-android-more-horizontal"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="media flex-row-reverse chat-right">
-                                    <div class="main-img-user online">
-                                        <img alt="avatar" src="../assets/images/users/21.jpg">
-                                    </div>
-                                    <div class="media-body">
-                                        <div class="main-msg-wrapper"> Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. </div>
-                                        <div class="main-msg-wrapper"> Nullam dictum felis eu pede mollis pretium </div>
-                                        <div>
-                                            <span>9:48 am</span>
-                                            <a href="">
-                                                <i class="icon ion-android-more-horizontal"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <label class="main-chat-time">
-                                    <span>Today</span>
-                                </label>
-                                <div class="media chat-left">
-                                    <div class="main-img-user online">
-                                        <img alt="avatar" src="../assets/images/users/1.jpg">
-                                    </div>
-                                    <div class="media-body">
-                                        <div class="main-msg-wrapper"> Maecenas tempus, tellus eget condimentum rhoncus </div>
-                                        <div class="main-msg-wrapper">
-                                            <img alt="avatar" class="w-10 h-10" src="../assets/images/media/3.jpg">
-                                            <img alt="avatar" class="w-10 h-10" src="../assets/images/media/4.jpg">
-                                            <img alt="avatar" class="w-10 h-10" src="../assets/images/media/5.jpg">
-                                        </div>
-                                        <div>
-                                            <span>10:12 am</span>
-                                            <a href="">
-                                                <i class="icon ion-android-more-horizontal"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="media flex-row-reverse chat-right">
-                                    <div class="main-img-user online">
-                                        <img alt="avatar" src="../assets/images/users/21.jpg">
-                                    </div>
-                                    <div class="media-body">
-                                        <div class="main-msg-wrapper"> Maecenas tempus, tellus eget condimentum rhoncus </div>
-                                        <div class="main-msg-wrapper"> Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. </div>
-                                        <div>
-                                            <span>09:40 am</span>
-                                            <a href="">
-                                                <i class="icon ion-android-more-horizontal"></i>
-                                            </a>
-                                        </div>
-                                    </div>
+                                <div class="action mt-2">
+                                    <button class="btn btn-pill btn-icon btn-gray">
+                                        <span class="fal mt-1 fa-message"></span>
+                                    </button>
+                                    <button class="btn btn-pill btn-icon btn-danger">
+                                        <span class="fal mt-1 fa-microphone"></span>
+                                    </button>
+                                    <button class="btn btn-pill btn-icon btn-info">
+                                        <span class="fal mt-1 fa-paperclip"></span>
+                                    </button>
+                                    <button class="btn btn-pill btn-icon btn-success">
+                                        <span class="fal mt-1 fa-send fa-rotate-180"></span>
+                                    </button>
                                 </div>
                             </div>
-                        </div>
-                        <div class="main-chat-footer">
-                            <input class="form-control" placeholder="Type your message here..." type="text">
-                            <a class="nav-link" data-bs-toggle="tooltip" href="" title="Attach a File">
-                                <i class="fe fe-paperclip"></i>
-                            </a>
-                            <button type="button" class="btn btn-icon  btn-primary brround">
-                                <i class="fa fa-paper-plane-o"></i>
-                            </button>
-                            <nav class="nav"></nav>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
-            <div class="card">
-                <div class="main-content-app pt-0 main-chat-2">
-                    <div class="main-content-left main-content-left-chat">
-                        <div class="card-body d-flex">
-                            <div class="main-img-user online">
-                                <img alt="avatar" src="../assets/images/users/21.jpg">
-                            </div>
-                            <div class="main-chat-msg-name">
-                                <h6>Percy Kewshun</h6>
-                                <span class="dot-label bg-success"></span>
-                                <small class="me-3">Available</small>
-                            </div>
-                            <nav class="nav ms-auto">
-                                <div class="dropdown">
-                                    <a class="nav-link text-muted fs-20" href="" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fe fe-more-horizontal"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <a class="dropdown-item" href="javascript:void(0)">
-                                            <i class="fe fe-user me-1"></i> Profile </a>
-                                        <a class="dropdown-item" href="javascript:void(0)">
-                                            <i class="fe fe-edit me-1"></i> Edit </a>
-                                        <a class="dropdown-item" href="javascript:void(0)">
-                                            <i class="fe fe-users me-1"></i> New Group </a>
-                                        <a class="dropdown-item" href="javascript:void(0)">
-                                            <i class="fe fe-settings me-1"></i> Settings </a>
-                                        <a class="dropdown-item" href="javascript:void(0)">
-                                            <i class="fe fe-trash-2 me-1"></i> Delete </a>
-                                    </div>
-                                </div>
-                            </nav>
-                        </div>
-                        <!-- main-chat-header -->
-                        <div class="card-body ">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search ...">
-                                <span class="input-group-text btn btn-primary">Search</span>
-                            </div>
-                            <div class="main-chat-contacts-wrapper d-none d-sm-block">
-                                <div class="lSSlideOuter main-chat-contacts-slider">
-                                    <div class="main-chat-contacts-slider lSSlideWrapper usingCss">
-                                        <div class="main-chat-contacts lightSlider lsGrab lSSlide ps-0" id="chatActiveContacts" style="width: 464px; height: 59px; padding-bottom: 0%;">
-                                            <div class="lslide active">
-                      <span class="avatar avatar-md bradius cover-image" data-bs-image-src="../assets/images/users/5.jpg" style="background: url(&quot;../assets/images/users/5.jpg&quot;) center center;">
-                        <span class="avatar-status bg-secondary"></span>
-                      </span>
-                                                <small>Ariana</small>
-                                            </div>
-                                            <div class="lslide">
-                      <span class="avatar avatar-md bradius cover-image" data-bs-image-src="../assets/images/users/9.jpg" style="background: url(&quot;../assets/images/users/9.jpg&quot;) center center;">
-                        <span class="avatar-status bg-red"></span>
-                      </span>
-                                                <small>Monino</small>
-                                            </div>
-                                            <div class="lslide">
-                      <span class="avatar avatar-md bradius cover-image" data-bs-image-src="../assets/images/users/6.jpg" style="background: url(&quot;../assets/images/users/6.jpg&quot;) center center;">
-                        <span class="avatar-status bg-green"></span>
-                      </span>
-                                                <small>Reynante</small>
-                                            </div>
-                                            <div class="lslide">
-                      <span class="avatar avatar-md bradius cover-image" data-bs-image-src="../assets/images/users/7.jpg" style="background: url(&quot;../assets/images/users/7.jpg&quot;) center center;">
-                        <span class="avatar-status bg-yellow"></span>
-                      </span>
-                                                <small>Labares</small>
-                                            </div>
-                                            <div class="lslide">
-                      <span class="avatar avatar-md bradius cover-image" data-bs-image-src="../assets/images/users/5.jpg" style="background: url(&quot;../assets/images/users/5.jpg&quot;) center center;">
-                        <span class="avatar-status bg-secondary"></span>
-                      </span>
-                                                <small>Rolando</small>
-                                            </div>
-                                            <div class="lslide">
-                      <span class="avatar avatar-md bradius cover-image" data-bs-image-src="../assets/images/users/9.jpg" style="background: url(&quot;../assets/images/users/9.jpg&quot;) center center;">
-                        <span class="avatar-status bg-red"></span>
-                      </span>
-                                                <small>Paloso</small>
-                                            </div>
-                                            <div class="lslide">
-                      <span class="avatar avatar-md bradius cover-image" data-bs-image-src="../assets/images/users/6.jpg" style="background: url(&quot;../assets/images/users/6.jpg&quot;) center center;">
-                        <span class="avatar-status bg-green"></span>
-                      </span>
-                                                <small>Maricel</small>
-                                            </div>
-                                            <div class="lslide">
-                      <span class="avatar avatar-md bradius cover-image" data-bs-image-src="../assets/images/users/7.jpg" style="background: url(&quot;../assets/images/users/7.jpg&quot;) center center;">
-                        <span class="avatar-status bg-yellow"></span>
-                      </span>
-                                                <small>Villalon</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- main-active-contacts -->
-                            </div>
-                        </div>
-                        <div class="main-chat-list flex-2 ">
-                            <div class="main-chat-list tab-pane">
-                                <a class="media new border-top-0" href="javascript:void(0)">
-                                    <div class="main-img-user online">
-                                        <img alt="" src="../assets/images/users/5.jpg">
-                                    </div>
-                                    <div class="media-body">
-                                        <div class="media-contact-name">
-                                            <span>Raymart Santiago</span>
-                                            <span>10 min</span>
-                                        </div>
-                                        <p> Hey! there I'm available </p>
-                                    </div>
-                                </a>
-                                <a class="media new" href="javascript:void(0)">
-                                    <div class="main-img-user">
-                                        <img alt="" src="../assets/images/users/6.jpg">
-                                        <span>3</span>
-                                    </div>
-                                    <div class="media-body">
-                                        <div class="media-contact-name">
-                                            <span>Ariana Monino</span>
-                                            <span>30 min</span>
-                                        </div>
-                                        <p>Good Morning</p>
-                                    </div>
-                                </a>
-                                <a class="media selected" href="javascript:void(0)">
-                                    <div class="main-img-user online">
-                                        <img alt="" src="../assets/images/users/9.jpg">
-                                    </div>
-                                    <div class="media-body">
-                                        <div class="media-contact-name">
-                                            <span>Reynante Labares</span>
-                                            <span>9.40 am</span>
-                                        </div>
-                                        <p> Nice to meet you </p>
-                                    </div>
-                                </a>
-                                <a class="media new" href="javascript:void(0)">
-                                    <span class="avatar avatar-md brround bg-danger-transparent text-danger">J</span>
-                                    <div class="media-body">
-                                        <div class="media-contact-name">
-                                            <span>Joyce Chua</span>
-                                            <span>11.20 am</span>
-                                        </div>
-                                        <p> Hi, How are you? </p>
-                                    </div>
-                                </a>
-                                <a class="media new" href="javascript:void(0)">
-                                    <div class="main-img-user">
-                                        <img alt="" src="../assets/images/users/4.jpg">
-                                    </div>
-                                    <div class="media-body">
-                                        <div class="media-contact-name">
-                                            <span>Rolando Paloso</span>
-                                            <span>1.38 pm</span>
-                                        </div>
-                                        <p> Hey! there I'm available </p>
-                                    </div>
-                                </a>
-                                <a class="media new" href="javascript:void(0)">
-                                    <div class="main-img-user">
-                                        <div class="avatar avatar-md brround bg-primary-transparent text-primary">D</div>
-                                        <span>1</span>
-                                    </div>
-                                    <div class="media-body">
-                                        <div class="media-contact-name">
-                                            <span>Dexter dela Cruz</span>
-                                            <span>4.08 pm</span>
-                                        </div>
-                                        <p>Typing...</p>
-                                    </div>
-                                </a>
-                                <a class="media new" href="javascript:void(0)">
-                                    <div class="main-img-user">
-                                        <img alt="" src="../assets/images/users/21.jpg">
-                                    </div>
-                                    <div class="media-body">
-                                        <div class="media-contact-name">
-                                            <span>Maricel Villalon</span>
-                                            <span>8.09 pm</span>
-                                        </div>
-                                        <p> Hey! there I'm available </p>
-                                    </div>
-                                </a>
-                                <a class="media new" href="javascript:void(0)">
-                                    <span class="avatar avatar-md brround bg-success-transparent text-success">M</span>
-                                    <div class="media-body">
-                                        <div class="media-contact-name">
-                                            <span>Maryjane Pechon</span>
-                                            <span>1 day ago</span>
-                                        </div>
-                                        <p>I have some work</p>
-                                    </div>
-                                </a>
-                                <a class="media new" href="javascript:void(0)">
-                                    <div class="main-img-user">
-                                        <img alt="" src="../assets/images/users/5.jpg">
-                                    </div>
-                                    <div class="media-body">
-                                        <div class="media-contact-name">
-                                            <span>Lovely Dela Cruz</span>
-                                            <span>3 days ago</span>
-                                        </div>
-                                        <p>I have some work</p>
-                                    </div>
-                                </a>
-                                <a class="media new" href="javascript:void(0)">
-                                    <div class="avatar avatar-md brround bg-secondary-transparent">
-                                        <i class="fe fe-user text-secondary"></i>
-                                    </div>
-                                    <div class="media-body">
-                                        <div class="media-contact-name">
-                                            <span>Daniel Padilla</span>
-                                            <span>5 days ago</span>
-                                        </div>
-                                        <p>I have some work</p>
-                                    </div>
-                                </a>
-                                <a class="media new" href="javascript:void(0)">
-                                    <div class="main-img-user">
-                                        <img alt="" src="../assets/images/users/3.jpg">
-                                    </div>
-                                    <div class="media-body">
-                                        <div class="media-contact-name">
-                                            <span>John Pratts</span>
-                                            <span>20/06/2021</span>
-                                        </div>
-                                        <p>I have some work</p>
-                                    </div>
-                                </a>
-                                <a class="media new" href="javascript:void(0)">
-                                    <div class="main-img-user">
-                                        <img alt="" src="../assets/images/users/7.jpg">
-                                    </div>
-                                    <div class="media-body">
-                                        <div class="media-contact-name">
-                                            <span>Socrates Itumay</span>
-                                            <span>18/07/2021</span>
-                                        </div>
-                                        <p> Hey! there I'm available </p>
-                                    </div>
-                                </a>
-                                <a class="media new border-bottom-0" href="javascript:void(0)">
-                                    <div class="main-img-user">
-                                        <img alt="" src="../assets/images/users/6.jpg">
-                                    </div>
-                                    <div class="media-body">
-                                        <div class="media-contact-name">
-                                            <span>Samuel Lerin</span>
-                                            <span>29/07/2021</span>
-                                        </div>
-                                        <p> Hey! there I'm available </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <!-- main-chat-list -->
+        <div class="col-md-5">
+            <div class="aw-chat aw-chat-height">
+                <div class="d-flex justify-content-between align-items-center gap-2">
+                    <div class="flex-grow-1">
+                        <x-admin.input identify="search" placeholder="جستجو"/>
                     </div>
+                    <a href="" class="btn btn-success">ایجاد گروه</a>
+                </div>
+                <div class="">
+                    @for($i=0;$i<10;$i++)
+                        <div class="aw-chat-item">
+                            <div class="aw-chat-header">
+                                <div class="aw-project">
+                                    <h4>پروژه طراحی سایت نگین</h4>
+                                    <span>example.com</span>
+                                </div>
+                                <div class="aw-time-notify">
+                                    <span  class="notify">1</span>
+                                    <span>1400/05/03 14:18</span>
+                                </div>
+                            </div>
+
+                            <div class="aw-chat-user">
+                                <div class="aw-user">
+                                    @for($j=0;$j<rand(2,10);$j++)
+                                        <img src="{{ asset('uploads/user.png') }}"/>
+                                    @endfor
+                                </div>
+                                <div class="aw-action">
+                                    <button class="aw-action-success">
+                                        <span class="fal fa-plus"></span>
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    @endfor
                 </div>
             </div>
         </div>

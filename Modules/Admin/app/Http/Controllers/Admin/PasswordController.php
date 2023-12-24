@@ -28,19 +28,10 @@ class PasswordController extends Controller
                 'password' => bcrypt($request->input('password')),
             ]);
 
-            return response()->json([
-                'result' => 'success',
-                'back' => route('admin.admin.index'),
-                'message' => trans('panel.success_update'),
-            ]);
-        } catch (Exception $e) {
+            return $this->successResponse();
+        } catch (Exception $exception) {
 
-            report($e);
-
-            return response()->json([
-                'result' => 'exception',
-                'message' => trans('panel.error_update'),
-            ], 500);
+            return $this->exceptionResponse($exception);
         }
     }
 }
