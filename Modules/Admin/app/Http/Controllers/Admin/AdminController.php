@@ -19,7 +19,6 @@ use Illuminate\Http\Request;
 use Modules\Admin\app\Http\Requests\Admin\StoreRequest;
 use Modules\Admin\app\Http\Requests\Admin\UpdateRequest;
 use Modules\Admin\app\Models\Admin;
-use Modules\Admin\app\Notifications\Admin\SendPasswordByEmail;
 use Str;
 use Yajra\DataTables\Facades\DataTables;
 

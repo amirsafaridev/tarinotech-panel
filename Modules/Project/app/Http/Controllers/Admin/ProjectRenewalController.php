@@ -3,18 +3,13 @@
 namespace Modules\Project\app\Http\Controllers\Admin;
 
 use App\Enums\General\BtnType;
-use App\Filters\Admin\Admin\AdminFilter;
 use App\Foundation\ValueObjects\Datatable\ColumnOption;
 use App\Foundation\ValueObjects\Datatable\DatatableBase;
-use App\Foundation\ValueObjects\Datatable\ExternalFilter;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Traits\HasDatatable;
 use App\Traits\HasJsonCommonResponse;
 use Exception;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Modules\Project\app\Filters\StatusFilter;
-use Modules\Project\app\Filters\TypeFilter;
 use Modules\Project\app\Models\Project;
 use Yajra\DataTables\Facades\DataTables;
 

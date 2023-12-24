@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace Modules\Support\app\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ChatMessageAttachment extends Model
+class ChatMessage extends Model
 {
     use HasFactory;
 }

@@ -104,7 +104,7 @@
                     </a>
 
                     <ul class="slide-menu">
-                        <li><a href="{{ route('admin.support.index') }}" class="slide-item">لیست پشتیبانی ها</a></li>
+                        <li><a href="{{ route('admin.support.index') }}" class="slide-item">لیست</a></li>
                     </ul>
                 </li>
 

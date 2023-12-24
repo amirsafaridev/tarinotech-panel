@@ -33,7 +33,7 @@
 
 </head>
 
-<body class="app sidebar-mini rtl @if(app()->isLocal()) dark1-mode @endif">
+<body class="app sidebar-mini rtl @if(app()->isLocal()) dark-mode @endif">
 
 <div id="global-loader">
     <div class="u-loading">

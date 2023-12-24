@@ -1,19 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Role\app\Http\Controllers\Admin\PermissionController;
-use Modules\Role\app\Http\Controllers\Admin\RoleController;
+use Modules\Support\app\Http\Controllers\Admin\GroupController;
 use Modules\Support\app\Http\Controllers\Admin\SupportController;
 
 Route::group(['guard' => 'admin'], function () {
     Route::get('/', [SupportController::class, 'index'])->name('index');
-    /*Route::get('/create', [RoleController::class, 'create'])->name('create');
-    Route::get('/{role}', [RoleController::class, 'edit'])->name('edit')
-        ->whereNumber('role');
-    Route::post('/', [RoleController::class, 'store'])->name('store');
-    Route::patch('/{role}', [RoleController::class, 'update'])->name('update');
-    Route::delete('/{role}', [RoleController::class, 'destroy'])->name('destroy');
 
-    Route::get('/permission/sync', [PermissionController::class, 'sync'])->name('permission.sync');*/
-
+    Route::group(['as' => 'group.', 'prefix' => 'group'], function () {
+        Route::get('/create', [GroupController::class, 'create'])->name('create');
+        Route::get('/{chat}', [GroupController::class, 'edit'])->name('edit');
+        Route::post('/', [GroupController::class, 'store'])->name('store');
+        Route::patch('/{chat}', [GroupController::class, 'update'])->name('update');
+        Route::delete('/{chat}', [GroupController::class, 'destroy'])->name('destroy');
+    });
 });
