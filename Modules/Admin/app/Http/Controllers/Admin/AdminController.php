@@ -133,6 +133,7 @@ class AdminController extends Controller
      */
     protected function prepareItemData(Request $request, bool $editMode = false): array
     {
+        $adminData['email'] = $request->input('email');
         $adminData['first_name'] = $request->input('first_name');
         $adminData['last_name'] = $request->input('last_name');
         $adminData['job_title_id'] = $request->input('job_title_id');
@@ -171,7 +172,6 @@ class AdminController extends Controller
         $adminData['is_foreign_national'] = $request->has('is_foreign_national');
 
         if (! $editMode) {
-            $adminData['email'] = $request->input('email');
             $adminData['password'] = bcrypt($request->input('password'));
         }
 
