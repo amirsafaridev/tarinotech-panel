@@ -12,12 +12,13 @@
         applyTypeInput();
         select2Setup();
         typeStatusSetup();
+        typePackageSetup();
         domainSetup();
         hostSetup();
         workingDaysCalcSetup();
     })
 
-    function applyTypeInput(){
+    function applyTypeInput() {
         makeInputPrice(price);
     }
 
@@ -70,33 +71,61 @@
         }
     }
 
+    const typeId = $('#type_id')
+
     function typeStatusSetup() {
         const jsonTypeWithStatuses = @json( $types);
-        const typeIdSelect = $('#type_id')
-        const statusIdSelect = $('#status_id')
+        const statusId = $('#status_id');
 
-        typeIdSelect.change(function () {
+        typeId.change(function () {
             const id = parseInt($(this).val());
             const type = jsonTypeWithStatuses.find(function (item) {
                 return item.id === id;
             })
             if (type) {
-                statusIdSelect.empty();
+                statusId.empty();
                 type.statuses.forEach(function (status) {
                     const option = $('<option>', {
                         value: status.id,
                         text: status.title
                     });
-                    statusIdSelect.append(option);
+                    statusId.append(option);
                 });
             }
         });
-        typeIdSelect.trigger('change');
-        setTimeout(()=>{
+
+        typeId.trigger('change');
+        setTimeout(() => {
             @if(isset($project))
-                statusIdSelect.val(parseInt('{{ $project->status_id }}'));
+            statusId.val(parseInt('{{ $project->status_id }}'));
             @endif
-        },200)
+        }, 200)
+    }
+
+    function typePackageSetup() {
+        const jsonTypeWithPackages = @json( $packages);
+        const packageId = $('#package_id');
+
+        typeId.change(function () {
+            const id = parseInt($(this).val());
+            const packages = jsonTypeWithPackages.filter(function (item) {
+                return item.type_id === id;
+            })
+            packageId.empty();
+            packages.forEach(function (status) {
+                const option = $('<option>', {
+                    value: status.id,
+                    text: status.title
+                });
+                packageId.append(option);
+            });
+        });
+        typeId.trigger('change');
+        setTimeout(() => {
+            @if(isset($project))
+            packageId.val(parseInt('{{ $project->target->package_id }}'));
+            @endif
+        }, 200)
     }
 
     function workingDaysCalcSetup() {
@@ -119,7 +148,7 @@
 
             debounceTimer = setTimeout(function () {
                 const ajaxUrl = '{{ route('admin.ajax.calendar.calc') }}';
-                const postData = { days: inputValue,start_date:agreementAt.val() };
+                const postData = {days: inputValue, start_date: agreementAt.val()};
 
                 postAjax(ajaxUrl, postData)
                     .then(handleResponse)
@@ -145,6 +174,7 @@
         function displayMessage(message) {
             alertMessageContainer.html(message);
         }
+
         makeInputNumber(workingDaysInput);
     }
 

@@ -3,7 +3,7 @@
 namespace Modules\Package\app\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Modules\Project\app\Models\ProjectBase as ProjectBaseModel;
+use Modules\Project\app\Models\ProjectType;
 
 class ViewComposerProvider extends ServiceProvider
 {
@@ -28,10 +28,11 @@ class ViewComposerProvider extends ServiceProvider
             'package::admin.create',
             'package::admin.edit',
         ], function ($view) {
-            $bases = ProjectBaseModel::query()
+            $types = ProjectType::query()
+                ->with('base')
                 ->get();
 
-            $view->with(compact('bases'));
+            $view->with(compact('types'));
         });
     }
 }

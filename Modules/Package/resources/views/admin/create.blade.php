@@ -26,7 +26,10 @@
                     <form class="request-form forms-sample" method="post" action="{{ route('admin.package.store') }}">
                         @csrf
 
-                        <x-admin.select-model identify="base_id" :items="$bases" key="id" value="title"/>
+                        <x-admin.select-model identify="type_id"
+                                              :items="$types"
+                                              key="id"
+                                              value="path"/>
 
                         <x-admin.input identify="title" title="عنوان"/>
 

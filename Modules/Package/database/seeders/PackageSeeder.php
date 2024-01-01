@@ -21,7 +21,7 @@ class PackageSeeder extends Seeder
         foreach ($packages as $package) {
             $dataToInsert[] = [
                 'title' => $package,
-                'base_id' => rand(1, 3),
+                'type_id' => rand(1, 8),
                 'created_at' => now(),
                 'updated_at' => now(),
             ];

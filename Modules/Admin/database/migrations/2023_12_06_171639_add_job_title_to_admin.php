@@ -29,7 +29,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('admins', function (Blueprint $table) {
-            $table->dropForeign('job_title_id');
+            $table->dropForeign('admins_job_title_id_foreign');
             $table->dropColumn('job_title_id');
             $table->after('avatar', function (Blueprint $table) {
                 $table->string('job_title')->nullable();

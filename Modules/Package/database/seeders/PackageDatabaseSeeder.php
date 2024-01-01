@@ -11,6 +11,8 @@ class PackageDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call([]);
+        $this->call([
+            PackageSeeder::class,
+        ]);
     }
 }

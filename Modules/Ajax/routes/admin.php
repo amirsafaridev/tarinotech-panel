@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Ajax\app\Http\Controllers\Admin\AdminController;
 use Modules\Ajax\app\Http\Controllers\Admin\CalendarController;
+use Modules\Ajax\app\Http\Controllers\Admin\PackageController;
 use Modules\Ajax\app\Http\Controllers\Admin\ProjectController;
 use Modules\Ajax\app\Http\Controllers\Admin\UserController;
 
@@ -15,5 +16,7 @@ Route::group(['guard' => 'admin'], function () {
 
     Route::get('/user/remote-select', [UserController::class, 'remoteSelect'])->name('user.remote-select');
     Route::get('/admin/remote-select', [AdminController::class, 'remoteSelect'])->name('admin.remote-select');
+
+    Route::get('/package/by-type', [PackageController::class, 'byType'])->name('package.by-type');
 
 });

@@ -42,7 +42,7 @@
                                 @foreach($packages as $package)
                                     <tr>
                                         <td>{{ $package->id }}</td>
-                                        <td>{{ $package->base->title }}</td>
+                                        <td>{{ $package->type->path }}</td>
                                         <td>{{ $package->title }}</td>
 
                                         @if($package->finalPrice)

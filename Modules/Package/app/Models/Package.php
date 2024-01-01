@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Modules\Log\app\Enums\LogNames;
-use Modules\Project\app\Models\ProjectBase;
+use Modules\Project\app\Models\ProjectType;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -20,7 +20,7 @@ class Package extends Model
 
     protected $fillable = [
         'title',
-        'base_id',
+        'type_id',
     ];
 
     public function prices(): HasMany
@@ -28,9 +28,9 @@ class Package extends Model
         return $this->hasMany(PackagePrice::class);
     }
 
-    public function base(): BelongsTo
+    public function type(): BelongsTo
     {
-        return $this->belongsTo(ProjectBase::class);
+        return $this->belongsTo(ProjectType::class, 'type_id');
     }
 
     public function finalPrice(): HasOne
