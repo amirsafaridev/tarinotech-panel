@@ -21,3 +21,4 @@ yarn-error.log
 /public/uploads/acf/*
 /public/uploads/avatar/*
 /public/uploads/user/*
+/public/uploads/chat/*
