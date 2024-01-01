@@ -4,6 +4,7 @@ namespace Modules\Factor\app\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Modules\Project\app\Models\Project;
+use Modules\Project\app\Models\ProjectType;
 
 class ViewComposerProvider extends ServiceProvider
 {
@@ -37,7 +38,11 @@ class ViewComposerProvider extends ServiceProvider
                     return $data;
                 });
 
-            $view->with(compact('projects'));
+            $types = ProjectType::query()
+                ->with('base')
+                ->get();
+
+            $view->with(compact('projects', 'types'));
         });
     }
 }

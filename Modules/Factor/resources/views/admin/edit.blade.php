@@ -33,6 +33,7 @@
                     @include('admin.partial.message')
                     <div class="forms-sample">
                         @csrf
+                        <x-admin.input identify="title" title="عنوان فاکتور" :old="$factor->title"/>
 
                         <x-admin.select-model
                                 title="انتخاب پروژه"
@@ -43,9 +44,40 @@
                                 :old="$factor->project_id"
                         />
 
-                        <div id="project_info"></div>
+                        <div id="project_info" class="mb-3"></div>
 
-                        <x-admin.input identify="title" title="عنوان فاکتور" :old="$factor->title"/>
+                        @if(is_null($factor->project_id) && $factor->meta)
+
+                            <x-admin.checkbox identify="custom_customer"
+                                              description="ثبت دستی مشتری"
+                                              :old="(bool)$factor->meta"/>
+
+                            <div id="custom_customer_container" style="display: none" class="p-2 mb-2">
+                                <x-admin.select-model
+                                        identify="type_id"
+                                        title="نوع پروژه"
+                                        key="id"
+                                        value="title"
+                                        :items="$types"
+                                        :has-choice-option="false"
+                                        :old="$factor->meta->type_id"
+                                        />
+
+                                <x-admin.input identify="project_title"
+                                               title="عنوان پروژه"
+                                               :old="$factor->meta->project_title"/>
+
+                                <x-admin.input identify="customer_fullname"
+                                               title="نام و نام خانوادگی"
+                                               :old="$factor->meta->customer_fullname"/>
+
+                                <x-admin.input identify="customer_mobile"
+                                               title="شماره موبایل"
+                                               :old="$factor->meta->customer_mobile"/>
+                            </div>
+                        @endif
+
+
 
                         <x-admin.select-enum identify="status" title="وضعیت"
                                              :enum-class="\App\Enums\Database\Factor\FactorStatus::class"

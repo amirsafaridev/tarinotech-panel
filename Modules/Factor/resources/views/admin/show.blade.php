@@ -74,22 +74,15 @@
 
     <div class="row hide-in-print">
         <div class="col-12 col-md-6 mb-3">
-            <div class="card">
-                <div class="card-header">
-                    <span class="bold">اطلاعات فاکتور</span>
-                </div>
-                <div class="card-body">
-                    @include('factor::admin.part.info',['factor' => $factor])
-                </div>
-            </div>
+            @include('factor::admin.part.card-info',['factor' => $factor])
         </div>
-        @if($factor->items->isNotEmpty())
-            <div class="col-12 col-md-6 mb-3">
-                @foreach($factor->items as $item)
-                    @include('factor::admin.part.info-item',['item' => $item])
-                @endforeach
-            </div>
-        @endif
+
+        <div class="col-12 col-md-6 mb-3">
+            @include('factor::admin.part.card-project',['factor' => $factor])
+            @if($factor->items->isNotEmpty())
+                @include('factor::admin.part.card-items',['items' => $factor->items])
+            @endif
+        </div>
     </div>
 
     <div class="row">
@@ -101,8 +94,9 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="print-main-table">
-                            <tbody>
+                        @if($factor->project)
+                            <table class="print-main-table">
+                                <tbody>
                                 <tr class="header-row-bg">
                                     <td colspan="4">
                                         <p class="text-center p-title">صورت حساب الکترونیکی فروش خدمات شرکت برخط نگاران</p>
@@ -288,12 +282,12 @@
                                         </table>
                                     </td>
                                 </tr>
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        @endif
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 

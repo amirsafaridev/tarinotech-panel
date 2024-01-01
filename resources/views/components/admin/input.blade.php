@@ -7,7 +7,7 @@
            name="{{ $identify }}"
            id="{{ $identify }}"
            @if ($placeholder)  placeholder="{{ $placeholder }}" @endif
-           @if ($old)  value="{{ $old }}" @endif
+           @if (!is_null($old))  value="{{ $old }}" @endif
            @if ($disabled) disabled @endif
            @if ($readOnly) readonly @endif
            @if ($isDatePicker) data-jdp @endif

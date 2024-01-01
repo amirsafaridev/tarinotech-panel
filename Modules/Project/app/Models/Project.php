@@ -6,10 +6,12 @@ use App\Traits\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Admin\app\Models\Admin;
 use Modules\Log\app\Enums\LogNames;
+use Modules\Support\app\Models\Chat;
 use Modules\User\app\Models\User;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -72,6 +74,11 @@ class Project extends Model
     public function admin(): BelongsTo
     {
         return $this->belongsTo(Admin::class, 'admin_id');
+    }
+
+    public function chats(): HasMany
+    {
+        return $this->hasMany(Chat::class, 'project_id');
     }
 
     public function getActivitylogOptions(): LogOptions

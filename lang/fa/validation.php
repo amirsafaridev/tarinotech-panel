@@ -277,5 +277,10 @@ return [
         'type_id' => 'نوع پروژه',
         'job_title_id' => 'عنوان شغلی',
         'start_date' => 'تاریخ شروع',
+        'have_customer' => 'مشتری دارد',
+        'customer_fullname' => 'نام کامل مشتری',
+        'customer_mobile' => 'موبایل مشتری',
+        'project_title' => 'عنوان پروژه',
+        'status' => 'وضعیت',
     ],
 ];

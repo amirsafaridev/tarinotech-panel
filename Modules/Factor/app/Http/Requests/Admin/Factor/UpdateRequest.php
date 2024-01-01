@@ -3,6 +3,7 @@
 namespace Modules\Factor\app\Http\Requests\Admin\Factor;
 
 use App\Enums\Database\Factor\FactorStatus;
+use App\Rules\IRMobile;
 use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -22,7 +23,7 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'project_id' => 'required|integer|exists:projects,id',
+            'project_id' => $this->getProjectIdRule(),
             'title' => 'required|max:255',
             'expired_at' => 'required|jdate',
             'item' => 'required|array',
@@ -33,6 +34,12 @@ class UpdateRequest extends FormRequest
             'item.*.tax' => 'required|integer',
             'item.*.discount' => 'required|integer',
             'item.*.action' => 'required|in:update,store',
+
+            /* Meta Validation */
+            'type_id' => 'required_if:custom_customer,yes|exists:project_types,id',
+            'project_title' => 'required_if:custom_customer,yes|max:255',
+            'customer_fullname' => 'required_if:custom_customer,yes|max:255',
+            'customer_mobile' => ['required_if:custom_customer,yes', 'max:255', new IRMobile()],
         ];
     }
 
@@ -48,8 +55,13 @@ class UpdateRequest extends FormRequest
             }
         }
 
-        $this->merge(['item' => $items]);
-        $this->merge(['status' => (int) $this->input('status')]);
+        $this->merge([
+            'item' => $items,
+            'custom_customer' => $this->input('custom_customer') === 'on' ? 'yes' : 'no',
+            'project_id' => $this->input('project_id') !== '' ? $this->input('project_id') : null,
+            'status' => (int) $this->input('status'),
+        ]);
+
     }
 
     public function messages(): array
@@ -61,6 +73,26 @@ class UpdateRequest extends FormRequest
             'item.*.price.required' => 'ایتم فاکتور مبلغ الزامی است.',
             'item.*.tax.required' => 'ایتم فاکتور مالیات الزامی است.',
             'item.*.discount.required' => 'ایتم فاکتور تخفیف الزامی است.',
+
+            /* Project */
+            'project_id.required_if' => 'پروژه الزامی است',
+
+            /* Meta */
+            'type_id.required_if' => 'نوع پروژه الزامی است',
+            'project_title.required_if' => 'نام پروژه الزامی است',
+            'customer_fullname.required_if' => 'نام مشتری الزارمی است',
+            'customer_mobile.required_if' => 'شماره موبایل مشتری الزامی است',
         ];
+    }
+
+    private function getProjectIdRule(): string
+    {
+        $rule = 'required_if:custom_customer,no';
+
+        if ($this->input('custom_customer') == 'no') {
+            $rule .= '|exists:projects,id';
+        }
+
+        return $rule;
     }
 }

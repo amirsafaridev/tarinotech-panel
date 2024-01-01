@@ -9,15 +9,32 @@
     const swalConfirmButtonText = "حذف";
     const swalCancelButtonText = "صرفه نظر";
 
+    const customCustomerContainer = $('#custom_customer_container');
+    const customCustomer = $('#custom_customer');
+
     $(document).ready(function () {
         activeParentUl('{{ route('admin.factor.index') }}');
         jalaliDatepicker.startWatch();
 
         select2Setup();
         projectLoader();
+
         factorItemSetup();
         factorItemInputType();
+
+        setupCustomCustomer();
     })
+
+    function setupCustomCustomer() {
+        customCustomer.change(function () {
+            if ($(this).is(':checked')) {
+                customCustomerContainer.fadeIn();
+            } else {
+                customCustomerContainer.fadeOut();
+            }
+        });
+        customCustomer.trigger('change');
+    }
 
     function select2Setup() {
         projectId.select2();
@@ -77,7 +94,7 @@
         });
     }
 
-    function factorItemInputType(){
+    function factorItemInputType() {
         $('input.offer-input').each(function () {
             const input = $(this);
             priceInputMaker(input);

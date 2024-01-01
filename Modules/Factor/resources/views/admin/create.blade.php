@@ -33,6 +33,7 @@
                     @include('admin.partial.message')
                     <div class="forms-sample">
                         @csrf
+                        <x-admin.input identify="title" title="عنوان فاکتور"/>
 
                         <x-admin.select-model
                                 title="انتخاب پروژه"
@@ -44,7 +45,23 @@
 
                         <div id="project_info"></div>
 
-                        <x-admin.input identify="title" title="عنوان فاکتور"/>
+                        <x-admin.checkbox identify="custom_customer" description="ثبت دستی مشتری"/>
+
+                        <div id="custom_customer_container" style="display: none" class="p-2 mb-2">
+                            <x-admin.select-model
+                                    identify="type_id"
+                                    title="نوع پروژه"
+                                    :items="$types"
+                                    :has-choice-option="false"
+                                    key="id"
+                                    value="title"/>
+
+                            <x-admin.input identify="project_title" title="عنوان پروژه"/>
+
+                            <x-admin.input identify="customer_fullname" title="نام و نام خانوادگی"/>
+
+                            <x-admin.input identify="customer_mobile" title="شماره موبایل"/>
+                        </div>
 
                         <x-admin.input identify="expired_at"
                                        title="تاریخ انقضاء"

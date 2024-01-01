@@ -98,42 +98,15 @@
             </div>
         </div>
         <div class="col-md-5">
-            <div class="aw-chat aw-chat-height">
-                <div class="d-flex justify-content-between align-items-center gap-2">
+            <div class="aw-chat aw-chat-height" id="chat-container">
+                <div class="d-flex justify-content-between align-items-center gap-2 mb-3">
                     <div class="flex-grow-1">
                         <x-admin.input identify="search" placeholder="جستجو"/>
                     </div>
                     <a href="{{ route('admin.support.group.create') }}" class="btn btn-success">ایجاد گروه</a>
                 </div>
-                <div class="">
-                    @for($i=0;$i<10;$i++)
-                        <div class="aw-chat-item">
-                            <div class="aw-chat-header">
-                                <div class="aw-project">
-                                    <h4>پروژه طراحی سایت نگین</h4>
-                                    <span>example.com</span>
-                                </div>
-                                <div class="aw-time-notify">
-                                    <span class="notify">1</span>
-                                    <span>1400/05/03 14:18</span>
-                                </div>
-                            </div>
+                <div class="" id="chat-group-container">
 
-                            <div class="aw-chat-user">
-                                <div class="aw-user">
-                                    @for($j=0;$j<rand(2,10);$j++)
-                                        <img src="{{ asset('uploads/user.png') }}"/>
-                                    @endfor
-                                </div>
-                                <div class="aw-action">
-                                    <button class="aw-action-success">
-                                        <span class="fal fa-plus"></span>
-                                    </button>
-
-                                </div>
-                            </div>
-                        </div>
-                    @endfor
                 </div>
             </div>
         </div>
@@ -142,4 +115,5 @@
 @endsection
 @section('script')
     @include('admin.partial.loader.script',['load'=>[\App\Enums\Assets\ScriptLoader::DataTable()]])
+    @include('support::admin.part.script')
 @endsection

@@ -5,6 +5,7 @@ namespace App\View\Components\Admin;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+
 use function view;
 
 class Checkbox extends Component
@@ -16,6 +17,7 @@ class Checkbox extends Component
         public string $description,
         public string $identify,
         public bool $checked = false,
+        public bool $readonly = false,
         public ?string $old = null,
     ) {
 

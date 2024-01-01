@@ -26,42 +26,24 @@
             <div class="card">
                 <div class="card-body pb-3">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ route('admin.blog.update',$blog->id) }}">
+                    <form class="request-form forms-sample" method="post" action="{{ route('admin.support.group.update',$chat->id) }}">
                         @csrf
                         @method('PATCH')
 
-                        <x-admin.input identify="id" :old="$blog->id" type="hidden"/>
-
-                        <x-admin.select-model identify="blog_category_id"
-                                              title="دسته بندی"
-                                              value="title"
-                                              key="id"
-                                              :items="$categories"
-                                              :old="$blog->blog_category_id"/>
-
-                        @if($blog->photo)
-                            <img class="img img-fluid rounded-2" src="{{ asset($blog->photo) }}" alt="{{ $blog->title }}">
+                        @if($chat->photo)
+                            <img class="img img-fluid rounded-2" src="{{ asset($chat->photo) }}" alt="{{ $chat->title }}">
                         @endif
                         <x-admin.input identify="photo" title="تصویر" type="file"/>
 
-                        <x-admin.input identify="title" title="عنوان" :old="$blog->title"/>
+                        <x-admin.input identify="title" title="عنوان" :old="$chat->title"/>
 
-                        <x-admin.input identify="slug" title="اسلاگ" :old="$blog->slug"/>
-
-                        <x-admin.textarea identify="body" title="محتوا" :old="$blog->body"/>
-
-                        <x-admin.input identify="meta_description" title="متا - توضیحات" :old="$blog->meta_description"/>
-
-                        <x-admin.input identify="meta_keywords" title="متا - کلمات کلیدی" :old="$blog->meta_keywords"/>
-
-                        <x-admin.checkbox identify="is_publish" :old="$blog->is_publish" description="منتشر شود" />
 
                         <x-admin.button-submit title="{{ trans('panel.update') }}"/>
 
                         <x-admin.button-delete/>
                     </form>
 
-                    <form id="deleteItem" action="{{ route('admin.blog.destroy',$blog->id) }}" method="post" class="form-inline">
+                    <form id="deleteItem" action="{{ route('admin.blog.destroy',$chat->id) }}" method="post" class="form-inline">
                         @csrf
                         @method('DELETE')
                     </form>

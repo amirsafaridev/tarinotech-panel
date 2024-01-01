@@ -127,6 +127,25 @@ if (! function_exists('getRouteProjectType')) {
 if (! function_exists('facilityCalculator')) {
     function facilityCalculator(int $price, int $work, int $financial): string
     {
+        return '';
+    }
+}
 
+if (! function_exists('compressHtml')) {
+    function compressHtml($html): array|string|null
+    {
+        $search = [
+            '/>[^\S ]+/s',  // remove whitespaces after tags
+            '/[^\S ]+</s',  // remove whitespaces before tags
+            '/(\s)+/s',       // shorten multiple whitespace sequences
+        ];
+
+        $replace = [
+            '>',
+            '<',
+            '\\1',
+        ];
+
+        return preg_replace($search, $replace, $html);
     }
 }

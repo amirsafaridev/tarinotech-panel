@@ -25,7 +25,7 @@ class ViewComposerProvider extends ServiceProvider
      */
     public function boot()
     {
-        view()->composer(['support::admin.group.create'], function ($view) {
+        view()->composer(['support::admin.group.create', 'support::admin.group.edit'], function ($view) {
             $projects = Project::query()
                 ->select(['id', 'domain', 'title', 'base_id'])
                 ->with('base')

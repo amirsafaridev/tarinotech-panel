@@ -74,6 +74,11 @@ class FactorController extends Controller
                 );
 
             }
+
+            if ($request->input('custom_customer') == 'yes') {
+                $factor->meta()->create($this->prepareMeta($request));
+            }
+
             DB::commit();
 
             $this->updateFinalPrice($factor);
@@ -100,7 +105,7 @@ class FactorController extends Controller
 
     public function edit(Factor $factor)
     {
-        $factor->load(['items', 'project']);
+        $factor->load(['items', 'project', 'meta']);
 
         $title = self::EDIT_TITLE;
         $categories = TransactionCategory::query()->get();
@@ -139,6 +144,10 @@ class FactorController extends Controller
             $updatedAttributes['status'] = $request->input('status');
             $factor->update($updatedAttributes);
 
+            if ($request->input('custom_customer') == 'yes' && ! $factor->project_id) {
+                $factor->meta()->update($this->prepareMeta($request));
+            }
+
             DB::commit();
 
             $this->updateFinalPrice($factor);
@@ -155,7 +164,7 @@ class FactorController extends Controller
     {
         $title = self::SHOW_TITLE;
 
-        $factor->load(['items.category', 'project.user', 'admin']);
+        $factor->load(['items.category', 'project.user', 'admin', 'meta.type']);
 
         return view('factor::admin.show', compact('title', 'factor'));
     }
@@ -177,7 +186,6 @@ class FactorController extends Controller
 
     protected function prepareItemData(Request $request): array
     {
-        $factorData['project_id'] = $request->input('project_id');
         $factorData['title'] = $request->input('title');
 
         $factorData['expired_at'] = Helper::toGregorian($request->input('expired_at'));
@@ -188,15 +196,34 @@ class FactorController extends Controller
 
         $factorData['is_official'] = false;
 
-        $project = Project::with('user')->find($factorData['project_id']);
-        if ($project) {
+        $customCustomer = $request->input('custom_customer');
+        $projectId = $request->input('project_id');
+
+        if ($customCustomer == 'no') {
+            $factorData['project_id'] = $projectId;
+
+            $project = Project::query()
+                ->with('user')
+                ->has('user')
+                ->findOrFail($factorData['project_id']);
+
             $user = $project->user;
-            if ($user && ($user->person_type === PersonType::Legal || $user->official_bill)) {
+            if ($user->person_type === PersonType::Legal || $user->official_bill) {
                 $factorData['is_official'] = true;
             }
         }
 
         return $factorData;
+    }
+
+    protected function prepareMeta(Request $request): array
+    {
+        $factorMetaData['customer_fullname'] = $request->input('customer_fullname');
+        $factorMetaData['customer_mobile'] = $request->input('customer_mobile');
+        $factorMetaData['project_title'] = $request->input('project_title');
+        $factorMetaData['type_id'] = $request->input('type_id');
+
+        return $factorMetaData;
     }
 
     private function setItemValues(Factor $factor, array $item): FactorItemValues
@@ -289,16 +316,22 @@ class FactorController extends Controller
                 ]);
 
             return DataTables::eloquent($factors)
-                ->editColumn('status', function ($factor) {
+                ->editColumn('status', function (Factor $factor) {
                     return factorStatusRender($factor->status);
                 })
-                ->editColumn('final_price', function ($factor) {
+                ->editColumn('final_price', function (Factor $factor) {
                     return number_format($factor->final_price);
                 })
-                ->editColumn('created_at', function ($factor) {
+                ->editColumn('project.title', function (Factor $factor) {
+                    return $factor->project_id ? $factor->project->title : 'پروژه ندارد';
+                })
+                ->editColumn('created_at', function (Factor $factor) {
                     return $factor->created_at->toJalali()->format(formatJalaliDateTime());
                 })
-                ->addColumn('action', function ($factor) {
+                ->editColumn('expired_at', function (Factor $factor) {
+                    return $factor->expired_at?->toJalali()->format(formatJalaliDateTime());
+                })
+                ->addColumn('action', function (Factor $factor) {
                     $action = Helper::btnMaker(BtnType::Warning, route('admin.factor.edit', $factor->id), trans('panel.action.edit'));
                     $action .= Helper::btnMaker(BtnType::Info, route('admin.factor.show', $factor->id), trans('panel.action.show'));
 

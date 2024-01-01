@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Admin\app\Models\Admin;
@@ -61,6 +62,11 @@ class Factor extends Model
     public function admin(): BelongsTo
     {
         return $this->belongsTo(Admin::class, 'admin_id');
+    }
+
+    public function meta(): HasOne
+    {
+        return $this->hasOne(FactorMeta::class);
     }
 
     public function identifiable(): string

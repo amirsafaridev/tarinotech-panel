@@ -24,7 +24,7 @@
             <div class="card">
                 <div class="card-body pb-4">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ route('admin.blog.store') }}">
+                    <form class="request-form forms-sample" method="post" action="{{ route('admin.support.group.store') }}">
                         @csrf
 
                         <x-admin.select-model

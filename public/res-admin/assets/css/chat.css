@@ -91,7 +91,7 @@
 .aw-chat-item  .aw-chat-user .aw-action{
     flex-shrink: 0;
 }
-.aw-chat-item  .aw-chat-user .aw-action button{
+.aw-chat-item  .aw-chat-user .aw-action a{
     border-radius: 50%;
     border: 0;
     appearance: none;
@@ -102,7 +102,7 @@
     align-items: center;
 }
 
-.aw-chat-item  .aw-chat-user .aw-action button.aw-action-success{
+.aw-chat-item  .aw-chat-user .aw-action a.aw-action-success{
     background-color: #1b9783;
     color: white;
 }

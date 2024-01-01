@@ -8,6 +8,7 @@ Route::group(['guard' => 'admin'], function () {
     Route::get('/', [SupportController::class, 'index'])->name('index');
 
     Route::group(['as' => 'group.', 'prefix' => 'group'], function () {
+        Route::get('/', [GroupController::class, 'index'])->name('index');
         Route::get('/create', [GroupController::class, 'create'])->name('create');
         Route::get('/{chat}', [GroupController::class, 'edit'])->name('edit');
         Route::post('/', [GroupController::class, 'store'])->name('store');
