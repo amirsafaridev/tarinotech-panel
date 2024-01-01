@@ -30,6 +30,8 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapApiRoutes();
 
         $this->mapAdminRoutes();
+
+        $this->mapWebRoutes();
     }
 
     /**
@@ -58,5 +60,19 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware(['web', 'admin.auth'])
             ->as('admin.factor.')
             ->group(module_path('Factor', '/routes/admin.php'));
+    }
+
+    /**
+     * Define the "web" routes for the application.
+     *
+     * These routes are typically stateless.
+     */
+    protected function mapWebRoutes(): void
+    {
+        Route::prefix('/factor')
+            ->namespace($this->moduleNamespace)
+            ->middleware(['web'])
+            ->as('factor.')
+            ->group(module_path('Factor', '/routes/web.php'));
     }
 }

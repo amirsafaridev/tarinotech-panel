@@ -15,6 +15,10 @@
                     <td>{{ $factor->title }}</td>
                 </tr>
                 <tr>
+                    <td>لینک پرداخت</td>
+                    <td>{{ route('factor.payment.index',$factor->identify) }}</td>
+                </tr>
+                <tr>
                     <td>کارشناس</td>
                     <td>
                         <a href="{{ route('admin.admin.show',$factor->admin_id) }}">{{ $factor->admin->first_name }} {{ $factor->admin->last_name }}</a>
