@@ -29,8 +29,14 @@
         customCustomer.change(function () {
             if ($(this).is(':checked')) {
                 customCustomerContainer.fadeIn();
+                projectId.val("");
+                projectId.prop('disabled', true);
+                projectId.prop('readonly', true);
+                projectId.trigger("change")
             } else {
                 customCustomerContainer.fadeOut();
+                projectId.prop('disabled', false);
+                projectId.prop('readonly', false);
             }
         });
         customCustomer.trigger('change');
@@ -41,8 +47,16 @@
     }
 
     function projectLoader() {
+
+        customCustomer.prop('disabled', true);
         projectId.change(function () {
             const value = $(this).val();
+            if(value === ''){
+                customCustomer.prop('disabled', false);
+                projectInfo.html('');
+                return;
+            }
+
             postAjax('{{ route('admin.ajax.project.single') }}', {
                 projectId: value
             })

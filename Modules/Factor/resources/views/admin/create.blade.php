@@ -43,7 +43,7 @@
                             :items="$projects"
                         />
 
-                        <div id="project_info"></div>
+                        <div id="project_info" class="mb-3"></div>
 
                         <x-admin.checkbox identify="custom_customer" description="ثبت دستی مشتری"/>
 
