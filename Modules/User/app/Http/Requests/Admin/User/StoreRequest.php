@@ -43,6 +43,9 @@ class StoreRequest extends FormRequest
             'irnic_status' => ['required', new EnumValue(IrnicStatus::class, false)],
             'avatar' => 'nullable|mimes:jpg,png,jpeg|max:5024',
             'national_photo' => 'nullable|mimes:jpg,png,jpeg|max:5024',
+
+            'knowledge_way_id' => 'required|integer|exists:knowledge_ways,id',
+            'knowledge_way' => 'max:255',
         ];
         if ($this->input('person_type') === PersonType::Legal) {
             $rules = [

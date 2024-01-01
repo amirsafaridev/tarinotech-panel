@@ -13,6 +13,8 @@ class LogNames extends Enum implements LocalizedEnum
 
     const ADDRESS = 'address';
 
+    const KNOW_LEDGE_WAY = 'know_ledge_way';
+
     const ADMIN = 'admin';
 
     const COMPANY = 'company';

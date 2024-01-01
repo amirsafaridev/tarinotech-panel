@@ -186,6 +186,9 @@ class UserController extends Controller
         $userData['email'] = $req->input('email');
         $userData['person_type'] = $req->input('person_type');
 
+        $userData['knowledge_way_id'] = $req->input('knowledge_way_id');
+        $userData['knowledge_way'] = $req->input('knowledge_way');
+
         /** Not required in edit mode */
         if ($req->input('mobile')) {
             $userData['mobile'] = $req->input('mobile');

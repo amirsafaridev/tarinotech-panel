@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\User\app\Http\Controllers\Admin\KnowledgeWayController;
 use Modules\User\app\Http\Controllers\Admin\PresenterController;
 use Modules\User\app\Http\Controllers\Admin\UserController;
 use Modules\User\app\Http\Controllers\Admin\UserImportController;
@@ -34,3 +35,14 @@ Route::group(['guard' => 'admin', 'prefix' => 'presenter', 'as' => 'presenter.']
     Route::patch('/{user}', [PresenterController::class, 'update'])->name('update');
     Route::delete('/{user}', [PresenterController::class, 'destroy'])->name('destroy');
 })->middleware('ensure.presenter');
+
+Route::group(['guard' => 'admin', 'prefix' => 'knowledge-way', 'as' => 'knowledge-way.'], function () {
+    Route::get('/', [KnowledgeWayController::class, 'index'])->name('index');
+    Route::get('/data', [KnowledgeWayController::class, 'data'])->name('data');
+    Route::get('/create', [KnowledgeWayController::class, 'create'])->name('create');
+    Route::get('/{knowledgeWay}', [KnowledgeWayController::class, 'edit'])->name('edit');
+
+    Route::post('/', [KnowledgeWayController::class, 'store'])->name('store');
+    Route::patch('/{knowledgeWay}', [KnowledgeWayController::class, 'update'])->name('update');
+    Route::delete('/{knowledgeWay}', [KnowledgeWayController::class, 'destroy'])->name('destroy');
+});

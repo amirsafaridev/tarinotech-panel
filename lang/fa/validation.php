@@ -282,5 +282,7 @@ return [
         'customer_mobile' => 'موبایل مشتری',
         'project_title' => 'عنوان پروژه',
         'status' => 'وضعیت',
+        'knowledge_way_id' => 'طریقه آشنایی',
+        'knowledge_way' => 'طریقه آشنایی متنی',
     ],
 ];

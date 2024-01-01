@@ -69,6 +69,19 @@
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <x-admin.select-model identify="knowledge_way_id"
+                                                      title="طربفه آشنایی"
+                                                      value="title"
+                                                      key="id"
+                                                      :items="$knowledgeWays"/>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <x-admin.input identify="knowledge_way" title="طریق آشنایی (متنی)" />
+                            </div>
+                        </div>
+
                         <x-admin.select-enum identify="person_type" title="نوع شخص" :enum-class="\Modules\User\app\Enums\PersonType::class"/>
 
                         <div id="company_container" class="d-none">

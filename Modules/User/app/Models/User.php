@@ -54,6 +54,9 @@ class User extends Authenticatable
         'is_block',
         'user_type',
         'remember_token',
+
+        'knowledge_way_id',
+        'knowledge_way',
     ];
 
     /**
@@ -92,6 +95,11 @@ class User extends Authenticatable
     public function company(): HasOne
     {
         return $this->hasOne(Company::class);
+    }
+
+    public function knowledgeWay(): HasOne
+    {
+        return $this->hasOne(KnowledgeWay::class);
     }
 
     public function projects(): HasMany

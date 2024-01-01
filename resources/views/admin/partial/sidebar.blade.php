@@ -70,6 +70,7 @@
                         <li><a href="{{ route('admin.user.index') }}" class="slide-item">لیست</a></li>
                         <li><a href="{{ route('admin.user.create') }}" class="slide-item">ایجاد</a></li>
                         <li><a href="{{ route('admin.presenter.index') }}" class="slide-item">نمایندگان</a></li>
+                        <li><a href="{{ route('admin.knowledge-way.index') }}" class="slide-item">راه های آشنایی</a></li>
                     </ul>
                 </li>
 
