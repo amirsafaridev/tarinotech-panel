@@ -38,6 +38,8 @@ class Project extends Model
         'deadline_at',
         'renewal_at',
         'note',
+        'business_domain_id',
+        'business_domain',
     ];
 
     protected $casts = [
@@ -64,6 +66,11 @@ class Project extends Model
     public function status(): BelongsTo
     {
         return $this->belongsTo(ProjectStatus::class, 'status_id');
+    }
+
+    public function businessDomain(): BelongsTo
+    {
+        return $this->belongsTo(BusinessDomain::class, 'business_domain_id');
     }
 
     public function user(): BelongsTo

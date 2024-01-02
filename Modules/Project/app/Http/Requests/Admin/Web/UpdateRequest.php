@@ -36,6 +36,10 @@ class UpdateRequest extends FormRequest
             'working_days' => 'required|integer',
             'facilities' => 'array',
 
+            /* Business */
+            'business_domain_id' => 'required|exists:business_domains,id',
+            'business_domain' => 'string|max:255',
+
             /* Domain */
             'domain_provider_website' => 'required_if:have_domain,on',
             'domain_username' => 'required_if:have_domain,on',

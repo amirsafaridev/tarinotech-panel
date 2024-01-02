@@ -284,5 +284,7 @@ return [
         'status' => 'وضعیت',
         'knowledge_way_id' => 'طریقه آشنایی',
         'knowledge_way' => 'طریقه آشنایی متنی',
+        'business_domain_id' => 'زمینه کاری',
+        'business_domain' => 'زمینه کاری متنی',
     ],
 ];

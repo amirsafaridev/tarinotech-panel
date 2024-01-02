@@ -12,6 +12,7 @@ class ProjectDatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            BusinessDomainSeeder::class,
             ProjectStatusSeeder::class,
             ProjectWebSeeder::class,
             ProjectSeoSeeder::class,

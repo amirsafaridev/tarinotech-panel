@@ -5,6 +5,7 @@ namespace Modules\Project\app\Providers;
 use Illuminate\Support\ServiceProvider;
 use Modules\Package\app\Models\Package;
 use Modules\Project\app\Enums\ProjectBase;
+use Modules\Project\app\Models\BusinessDomain;
 use Modules\Project\app\Models\ProjectBase as ProjectBaseModel;
 use Modules\Project\app\Models\ProjectOption;
 use Modules\Project\app\Models\ProjectStatus;
@@ -104,11 +105,14 @@ class ViewComposerProvider extends ServiceProvider
             $packages = Package::query()
                 ->get();
 
+            $businessDomains = BusinessDomain::query()
+                ->get();
+
             $options = ProjectOption::query()
                 ->where('base_id', ProjectBase::Web)
                 ->get();
 
-            $view->with(compact('types', 'statuses', 'packages', 'options'));
+            $view->with(compact('types', 'statuses', 'packages', 'options', 'businessDomains'));
         });
     }
 

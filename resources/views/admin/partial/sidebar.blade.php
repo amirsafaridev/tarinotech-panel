@@ -95,6 +95,7 @@
                         <li><a href="{{ route('admin.project.type.index') }}" class="slide-item">انواع پروژه ها</a></li>
                         <li><a href="{{ route('admin.project.status.index') }}" class="slide-item">وضعیت پروژه ها</a></li>
                         <li><a href="{{ route('admin.package.index') }}" class="slide-item">پکیج ها</a></li>
+                        <li><a href="{{ route('admin.project.business_domain.index') }}" class="slide-item">زمینه های کاری</a></li>
 
                     </ul>
                 </li>

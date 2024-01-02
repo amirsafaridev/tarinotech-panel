@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Project\app\Http\Controllers\Admin\AdsController;
+use Modules\Project\app\Http\Controllers\Admin\BusinessDomainController;
 use Modules\Project\app\Http\Controllers\Admin\OptionController;
 use Modules\Project\app\Http\Controllers\Admin\ProjectController;
 use Modules\Project\app\Http\Controllers\Admin\ProjectRenewalController;
@@ -20,6 +21,16 @@ Route::group(['guard' => 'admin'], function () {
         Route::post('/', [TypeController::class, 'store'])->name('store');
         Route::patch('/{project_type}', [TypeController::class, 'update'])->name('update');
         Route::delete('/{project_type}', [TypeController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::group(['as' => 'business_domain.', 'prefix' => 'business_domain'], function () {
+        Route::get('/', [BusinessDomainController::class, 'index'])->name('index');
+        Route::get('/data', [BusinessDomainController::class, 'data'])->name('data');
+        Route::get('/create', [BusinessDomainController::class, 'create'])->name('create');
+        Route::get('/{businessDomain}', [BusinessDomainController::class, 'edit'])->name('edit');
+        Route::post('/', [BusinessDomainController::class, 'store'])->name('store');
+        Route::patch('/{businessDomain}', [BusinessDomainController::class, 'update'])->name('update');
+        Route::delete('/{businessDomain}', [BusinessDomainController::class, 'destroy'])->name('destroy');
     });
 
     Route::group(['as' => 'option.', 'prefix' => 'option'], function () {

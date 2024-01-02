@@ -218,6 +218,24 @@
 
                     <div class="row">
                         <div class="col-12 col-md-6">
+                            <x-admin.select-model
+                                    identify="business_domain_id"
+                                    title="زمینه کاری"
+                                    :items="$businessDomains"
+                                    :old="$project->business_domain_id"
+                                    key="id"
+                                    value="title"/>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <x-admin.input identify="business_domain"
+                                           title="زمینه کاری (متنی)"
+                                           :old="$project->business_domain"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-md-6">
                             <x-admin.input identify="field_activity"
                                            title="زمینه فعالیت"
                                            :old="$project->target->field_activity"/>

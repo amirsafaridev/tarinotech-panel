@@ -53,6 +53,8 @@ class LogNames extends Enum implements LocalizedEnum
 
     const PROJECT_WEB = 'project_web';
 
+    const BUSINESS_DOMAIN = 'business_domain';
+
     const SALE_GOAL = 'sale_goal';
 
     const SAMPLE_MESSAGE = 'sample_message';

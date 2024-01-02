@@ -218,6 +218,8 @@ class WebController extends Controller
             'price' => $request->input('price'),
             'type_id' => $request->input('type_id'),
             'note' => $request->input('note'),
+            'business_domain_id' => $request->input('business_domain_id'),
+            'business_domain' => $request->input('business_domain'),
         ];
 
         if (! empty($agreementAt)) {
