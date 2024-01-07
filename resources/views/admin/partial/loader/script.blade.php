@@ -25,6 +25,10 @@
     <script type="text/javascript" src="{{asset('res-admin/assets/plugins/JalaliDatePicker/jalalidatepicker.min.js')}}"></script>
 @endif
 
+@if (in_array(\App\Enums\Assets\ScriptLoader::AjaxForm(),$load))
+    <script src="{{asset('res-admin/assets/plugins/jquery.form/jquery.form.min.js')}}"></script>
+@endif
+
 @if (in_array(\App\Enums\Assets\ScriptLoader::InputMask(),$load))
     <script type="text/javascript" src="{{asset('res-admin/assets/plugins/input-mask/jquery.mask.min.js')}}"></script>
 @endif

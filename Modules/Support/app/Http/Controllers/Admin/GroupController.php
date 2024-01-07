@@ -16,6 +16,7 @@ use Modules\Project\app\Models\Project;
 use Modules\Support\app\Http\Requests\Admin\StoreRequest;
 use Modules\Support\app\Http\Requests\Admin\UpdateRequest;
 use Modules\Support\app\Models\Chat;
+use Modules\Support\app\Models\ChatUser;
 use Modules\User\app\Models\User;
 use View;
 
@@ -31,14 +32,14 @@ class GroupController extends Controller
 
     public function index()
     {
-        sleep(2);
         $chatsPaginator = Chat::query()
-            ->select(['id', 'title', 'logo', 'updated_at', 'created_at'])
+            ->select(['id', 'title', 'logo', 'status', 'updated_at', 'created_at'])
             ->with([
                 'users.user:id,avatar,first_name,last_name',
                 'project:id,title,domain',
             ])
             ->where('type', ChatType::Group)
+            ->orderByDesc('updated_at')
             ->paginate(20);
 
         $chats = $chatsPaginator->items();
@@ -101,18 +102,35 @@ class GroupController extends Controller
     {
         $title = self::EDIT_TITLE;
 
-        return view('support::admin.group.edit', compact('title', 'chat'));
+        $chat->load('users');
+
+        $oldUsers = [];
+        if ($chat->users->isNotEmpty()) {
+            $oldUsers = $chat->users->pluck('user_id')->toArray();
+        }
+
+        return view('support::admin.group.edit', compact('title', 'chat', 'oldUsers'));
     }
 
     public function update(UpdateRequest $request, Chat $chat)
     {
         try {
-            $item = $this->prepareItemData($request);
-            $item['slug'] = $request->input('slug');
-            $chat->update($item);
+            DB::beginTransaction();
+
+            $chat->update($this->prepareItemData($request));
+
+            $projectId = $request->input('project_id');
+
+            $this->detachAllUser($chat);
+            $this->attachAdminUsers($chat, $request->get('admin_id'));
+            $this->attachProjectUser($chat, $projectId);
+            $this->attachPresenterUsers($chat, $projectId);
+
+            DB::commit();
 
             return $this->successUpdateResponse();
         } catch (Exception $exception) {
+            DB::rollBack();
 
             return $this->exceptionResponse($exception);
         }
@@ -123,7 +141,7 @@ class GroupController extends Controller
         try {
             $chat->delete();
 
-            return $this->successDestroyBack(route('admin.blog.index'));
+            return $this->successDestroyBack(route('admin.support.index'));
         } catch (Exception $exception) {
 
             return $this->exceptionBack($exception);
@@ -137,7 +155,7 @@ class GroupController extends Controller
     {
         $chatData['title'] = $req->input('title');
         $chatData['type'] = ChatType::Group;
-        $chatData['status'] = ChatStatus::Open;
+        $chatData['status'] = $req->input('status', ChatStatus::Open);
         $chatData['project_id'] = $req->input('project_id');
 
         if ($req->hasFile('logo')) {
@@ -187,5 +205,12 @@ class GroupController extends Controller
                 'user_type' => User::class,
             ]);
         }
+    }
+
+    private function detachAllUser(Chat $chat): void
+    {
+        ChatUser::query()
+            ->where('chat_id', $chat->id)
+            ->delete();
     }
 }

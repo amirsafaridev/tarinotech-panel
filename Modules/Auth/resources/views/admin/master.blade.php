@@ -14,7 +14,6 @@
 
     <title>@yield('title','Tarinotech App')</title>
     <link href="{{ asset('res-admin/assets/css/style.min.css') }}" rel="stylesheet" />
-
 </head>
 
 <body class="app sidebar-mini rtl @if(app()->isLocal()) dark-mode @endif">

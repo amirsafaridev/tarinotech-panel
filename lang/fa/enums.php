@@ -2,6 +2,7 @@
 
 use App\Enums\Database\Admin\TypeInsurance;
 use App\Enums\Database\Admin\WorkLocation;
+use App\Enums\Database\Chat\ChatStatus;
 use App\Enums\Database\Company\CompanyType;
 use App\Enums\Database\Facility\FinancialCycle;
 use App\Enums\Database\Facility\PriceType;
@@ -179,5 +180,10 @@ return [
         LogEvents::DELETED => 'حذف',
         LogEvents::UPDATED => 'به روز رسانی',
         LogEvents::RESTORED => 'بازگردانی',
+    ],
+
+    ChatStatus::class => [
+        ChatStatus::Open => 'باز',
+        ChatStatus::Close => 'بسته',
     ],
 ];

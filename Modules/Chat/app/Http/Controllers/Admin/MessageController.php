@@ -1,0 +1,114 @@
+<?php
+
+namespace Modules\Chat\app\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Traits\HasJsonCommonResponse;
+use DB;
+use Exception;
+use Modules\Admin\app\Models\Admin;
+use Modules\Chat\app\Http\Requests\Admin\Message\IndexRequest;
+use Modules\Chat\app\Http\Requests\Admin\Message\StoreRequest;
+use Modules\Support\app\Models\ChatMessage;
+use Modules\Support\app\Models\ChatMessageAttachment;
+use Modules\Support\app\Models\ChatUser;
+use View;
+
+class MessageController extends Controller
+{
+    use HasJsonCommonResponse;
+
+    public function index(IndexRequest $request)
+    {
+
+        $messagesPaginator = ChatMessage::query()
+            ->with(['user', 'attachments'])
+            ->where('chat_id', $request->input('chat_id'))
+            ->orderBy('updated_at')
+            ->paginate(100);
+
+        $messages = $messagesPaginator->items();
+
+        $messages = collect($messages)->map(function (ChatMessage $message) {
+            $data = $message;
+            $data['htmlRender'] = compressHtml(View::make('support::admin.part.row-message', ['message' => $message]));
+
+            return $data;
+        });
+
+        return [
+            'success' => true,
+            'messages' => $messages,
+            'pagination' => [
+                'total' => $messagesPaginator->total(),
+                'per_page' => $messagesPaginator->perPage(),
+                'current_page' => $messagesPaginator->currentPage(),
+                'last_page' => $messagesPaginator->lastPage(),
+                'from' => $messagesPaginator->firstItem(),
+                'to' => $messagesPaginator->lastItem(),
+            ],
+        ];
+    }
+
+    public function store(StoreRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            /* Create Message */
+            $message = ChatMessage::query()->create([
+                'chat_id' => $request->input('chat_id'),
+                'parent_id' => $request->input('parent_id'),
+                'content' => $request->input('message'),
+                'user_type' => Admin::class,
+                'user_id' => auth()->id(),
+            ]);
+
+            /* Connect Attachment */
+            if ($request->input('files')) {
+                ChatMessageAttachment::query()
+                    ->whereIn('id', $request->input('files'))
+                    ->update([
+                        'chat_message_id' => $message->id,
+                    ]);
+            }
+
+            /* Update Seen */
+            ChatUser::query()
+                ->where('user_id', auth()->id())
+                ->where('chat_id', $request->input('chat_id'))
+                ->update([
+                    'seen_at' => now(),
+                ]);
+            DB::commit();
+
+            $htmlRender = compressHtml(View::make('support::admin.part.row-message', ['message' => $message]));
+
+            return response()->json([
+                'htmlRender' => $htmlRender,
+                'result' => 'success',
+                'message' => trans('panel.success_store'),
+            ]);
+
+        } catch (Exception $exception) {
+            DB::rollBack();
+
+            return $this->exceptionResponse($exception);
+        }
+    }
+
+    public function edit()
+    {
+
+    }
+
+    public function update()
+    {
+
+    }
+
+    public function destroy()
+    {
+
+    }
+}

@@ -5,6 +5,7 @@ namespace App\View\Components\Admin;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+
 use function view;
 
 class Textarea extends Component
@@ -17,6 +18,7 @@ class Textarea extends Component
         public string $identify = '',
         public ?string $old = '',
         public ?string $description = '',
+        public ?string $placeholder = '',
         public string $rows = '8',
     ) {
         //

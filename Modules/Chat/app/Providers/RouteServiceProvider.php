@@ -29,7 +29,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->mapApiRoutes();
 
-        //$this->mapWebRoutes();
+        $this->mapAdminRoutes();
     }
 
     /**
@@ -37,11 +37,14 @@ class RouteServiceProvider extends ServiceProvider
      *
      * These routes all receive session state, CSRF protection, etc.
      */
-    protected function mapWebRoutes(): void
+    protected function mapAdminRoutes(): void
     {
-        Route::middleware('web')
+        $prefix = config('routes.admin-prefix');
+        Route::prefix($prefix.'/chat')
             ->namespace($this->moduleNamespace)
-            ->group(module_path('Chat', '/routes/web.php'));
+            ->middleware(['web', 'admin.auth'])
+            ->as('admin.chat.')
+            ->group(module_path('Chat', '/routes/admin.php'));
     }
 
     /**

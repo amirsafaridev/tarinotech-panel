@@ -286,5 +286,6 @@ return [
         'knowledge_way' => 'طریقه آشنایی متنی',
         'business_domain_id' => 'زمینه کاری',
         'business_domain' => 'زمینه کاری متنی',
+        'admin_id' => 'پرسنل',
     ],
 ];

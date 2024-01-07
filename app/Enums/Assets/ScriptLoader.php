@@ -15,6 +15,7 @@ use BenSampo\Enum\Enum;
  * @method static Datepicker()
  * @method static InputMask()
  * @method static Toast()
+ * @method static AjaxForm()
  */
 final class ScriptLoader extends Enum
 {
@@ -37,4 +38,6 @@ final class ScriptLoader extends Enum
     const InputMask = 9;
 
     const Toast = 10;
+
+    const AjaxForm = 11;
 }

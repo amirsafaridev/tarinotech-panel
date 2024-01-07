@@ -9,7 +9,7 @@
     <meta name="keywords" content="Tarinotech Platform">
     <meta name="robots" content="noindex">
     <meta name="robots" content="nofollow">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @include('favicon')
 
     <title>@yield('title','تارینوتک - پورتال')</title>

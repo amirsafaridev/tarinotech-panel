@@ -130,6 +130,20 @@ if (! function_exists('facilityCalculator')) {
         return '';
     }
 }
+if (! function_exists('formatFileSize')) {
+    function formatFileSize($sizeInBytes): string
+    {
+        $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+        $i = 0;
+        while ($sizeInBytes >= 1024 && $i < count($units) - 1) {
+            $sizeInBytes /= 1024;
+            $i++;
+        }
+
+        return round($sizeInBytes, 2).' '.$units[$i];
+    }
+}
 
 if (! function_exists('compressHtml')) {
     function compressHtml($html): array|string|null

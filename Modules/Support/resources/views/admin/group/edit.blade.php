@@ -5,6 +5,7 @@
         'load'=>[
             \App\Enums\Assets\StyleLoader::Toast(),
             \App\Enums\Assets\StyleLoader::Alert(),
+            \App\Enums\Assets\StyleLoader::Select2(),
         ]
     ])
 @endsection
@@ -15,7 +16,7 @@
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.blog.index') }}">بلاگ ها</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.support.index') }}">پشتیبانی</a></li>
                 <li class="breadcrumb-item active">ویرایش</li>
             </ol>
         </div>
@@ -30,20 +31,43 @@
                         @csrf
                         @method('PATCH')
 
-                        @if($chat->photo)
-                            <img class="img img-fluid rounded-2" src="{{ asset($chat->photo) }}" alt="{{ $chat->title }}">
+                        <x-admin.select-model
+                                title="انتخاب پروژه"
+                                identify="project_id"
+                                key="id"
+                                value="optionTitle"
+                                :old="$chat->project_id"
+                                :items="$projects"
+                        />
+
+                        <x-admin.select-model
+                                title="انتخاب پرسنل"
+                                identify="admin_id[]"
+                                value="optionTitle"
+                                key="id"
+                                :old="$oldUsers"
+                                :multiple="true"
+                                :items="$admins"
+                        />
+
+                        @if($chat->logo)
+                            <img class="img img-fluid rounded-2 w-20" src="{{ asset($chat->logo) }}" alt="{{ $chat->title }}">
                         @endif
-                        <x-admin.input identify="photo" title="تصویر" type="file"/>
+                        <x-admin.input identify="logo" title="تصویر" type="file"/>
 
                         <x-admin.input identify="title" title="عنوان" :old="$chat->title"/>
 
+                        <x-admin.select-enum  title="وضعیت گروه"
+                                              identify="status"
+                                              :old="$chat->status"
+                                              :enum-class="\App\Enums\Database\Chat\ChatStatus::class"/>
 
                         <x-admin.button-submit title="{{ trans('panel.update') }}"/>
 
                         <x-admin.button-delete/>
                     </form>
 
-                    <form id="deleteItem" action="{{ route('admin.blog.destroy',$chat->id) }}" method="post" class="form-inline">
+                    <form id="deleteItem" action="{{ route('admin.support.group.destroy',$chat->id) }}" method="post" class="form-inline">
                         @csrf
                         @method('DELETE')
                     </form>
@@ -54,16 +78,20 @@
 @endsection
 @section('script')
     @include('admin.partial.loader.script',['load'=>[
-    \App\Enums\Assets\ScriptLoader::Alert(),
-        \App\Enums\Assets\ScriptLoader::CKEditor(),
+        \App\Enums\Assets\ScriptLoader::Alert(),
+        \App\Enums\Assets\ScriptLoader::Select2(),
     ]])
     @include('admin.partial.request')
     @include('admin.partial.ckeditor')
 
+
     <script>
+        const projectId = $('#project_id');
+        const adminIds = $('#admin_id');
         $(document).ready(function () {
-            activeParentUl('{{ route('admin.blog.index') }}');
-            CKEDITOR.replace( 'body');
+            activeParentUl('{{ route('admin.support.index') }}');
+            projectId.select2();
+            adminIds.select2();
         })
     </script>
 @endsection
