@@ -30,7 +30,7 @@ trait HasJsonCommonResponse
         report($exception);
 
         $message = trans('panel.error');
-        if (App::isLocal()) {
+        if (App::isLocal() || App::isProduction()) {
             $message = $exception->getMessage();
         }
 

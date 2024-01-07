@@ -287,5 +287,6 @@ return [
         'business_domain_id' => 'زمینه کاری',
         'business_domain' => 'زمینه کاری متنی',
         'admin_id' => 'پرسنل',
+        'logo' => 'تصویر',
     ],
 ];
