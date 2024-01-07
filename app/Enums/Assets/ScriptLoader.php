@@ -16,6 +16,7 @@ use BenSampo\Enum\Enum;
  * @method static InputMask()
  * @method static Toast()
  * @method static AjaxForm()
+ * @method static Recorder()
  */
 final class ScriptLoader extends Enum
 {
@@ -40,4 +41,6 @@ final class ScriptLoader extends Enum
     const Toast = 10;
 
     const AjaxForm = 11;
+
+    const Recorder = 12;
 }

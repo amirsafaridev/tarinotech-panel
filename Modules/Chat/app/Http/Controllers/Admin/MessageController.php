@@ -22,7 +22,7 @@ class MessageController extends Controller
     {
 
         $messagesPaginator = ChatMessage::query()
-            ->with(['user', 'attachments'])
+            ->with(['user', 'attachments', 'replay'])
             ->where('chat_id', $request->input('chat_id'))
             ->orderBy('updated_at')
             ->paginate(100);

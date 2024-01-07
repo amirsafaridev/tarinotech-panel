@@ -32,7 +32,7 @@ class ChatMessage extends Model
         return $this->belongsTo(Chat::class, 'chat_id');
     }
 
-    public function parent(): BelongsTo
+    public function replay(): BelongsTo
     {
         return $this->belongsTo(ChatMessage::class, 'parent_id');
     }

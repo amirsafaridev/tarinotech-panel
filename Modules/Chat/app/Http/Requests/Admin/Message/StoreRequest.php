@@ -22,8 +22,16 @@ class StoreRequest extends FormRequest
         return [
             'message' => 'required',
             'chat_id' => 'required|integer|exists:chats,id',
+            'parent_id' => 'nullable|integer',
             'files' => 'nullable|array',
             'files.*' => 'integer',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        return $this->merge([
+            'parent_id' => is_numeric($this->input('parent_id')) ? $this->input('parent_id') : null,
+        ]);
     }
 }

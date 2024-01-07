@@ -6,37 +6,57 @@
             <span class="font-12">{{ $message->user->last_name }}</span>
         </div>
         <div class="aw-message-item-text">
-            <p>{{ $message->content }}</p>
-            <spac class="date">{{ $message->created_at->toJalali()->format(formatJalaliDateTime())  }}</spac>
 
-            @if($message->attachments->isNotEmpty())
-                <div class="d-flex flex-wrap mt-2 gap-2">
-                    @foreach($message->attachments as $attachment)
-                        @if(in_array($attachment->file_extension,['png','jpg','gif','jpeg']))
-                            <a target="_blank" href="{{ route('admin.chat.attachment.steam.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}" class="attachment">
-                                <div class="w-6 h-6 p-3" style="border-radius: 10px;padding:5px;background-color: rgba(255,255,255,0.06);background-image: url('{{ route('admin.chat.attachment.steam.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}');background-size: cover">
-                                </div>
-                            </a>
-                        @else
-                            <a target="_blank" href="{{ route('admin.chat.attachment.steam.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}" class="attachment">
-                                <span class="fal fa-file"></span>
-                            </a>
-                        @endif
-                    @endforeach
+            @if($message->replay)
+                <div class="replay" data-parent-id="{{ $message->parent_id }}">
+                    <p>{{ $message->replay->content }}</p>
                 </div>
             @endif
 
+            <p>{{ $message->content }}</p>
+            <span class="date mb-2 mt-1 block">{{ $message->created_at->toJalali()->format(formatJalaliDateTime())  }}</span>
+
+            @if($message->attachments->isNotEmpty())
+                @foreach($message->attachments as $attachment)
+                    @if(in_array($attachment->file_extension,['png','jpg','gif','jpeg']))
+                        <div class="d-flex justify-content-between w-full py-1">
+                            <a target="_blank" href="{{ route('admin.chat.attachment.steam.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}" class="attachment">
+                                <div class="w-4 h-4 p-3" style="border-radius: 10px;padding:5px;background-color: rgba(255,255,255,0.06);background-image: url('{{ route('admin.chat.attachment.steam.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}');background-size: cover">
+                                </div>
+                            </a>
+                            <div class="d-flex flex-column align-items-end font-12">
+                                <span>{{ $attachment->file_name }}</span>
+                                <span>{{ formatFileSize($attachment->file_size) }}</span>
+                            </div>
+                        </div>
+                    @elseif($attachment->file_extension === 'mp3')
+                        <div class="d-flex justify-content-between w-full py-1">
+                            <audio controls class="w-100">
+                                <source src="{{ route('admin.chat.attachment.steam.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}" type="audio/mp3">
+                                Your browser does not support the audio tag.
+                            </audio>
+                        </div>
+                    @else
+                        <a target="_blank" href="{{ route('admin.chat.attachment.steam.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}" class="attachment">
+                            <span class="fal fa-file"></span>
+                        </a>
+                    @endif
+                @endforeach
+            @endif
+
+            <div class="d-flex gap-2 action mt-2">
+                <button type="button">
+                    <span class="fal fa-pen text-warning"></span>
+                </button>
+                <button type="button">
+                    <span class="fal fa-trash text-danger"></span>
+                </button>
+                <button type="button" class="btn-replay" data-id="{{$message->id}}" data-message="{{str($message->content)->stripTags()->limit(50)}}">
+                    <span class="fal fa-reply text-info"></span>
+                </button>
+            </div>
+
         </div>
-        <div class="d-flex flex-column gap-2 action">
-            <button type="button">
-                <span class="fal fa-edit text-warning"></span>
-            </button>
-            <button type="button">
-                <span class="fal fa-trash text-danger"></span>
-            </button>
-            <button type="button">
-                <span class="fal fa-reply text-info"></span>
-            </button>
-        </div>
+
     </div>
 </div>

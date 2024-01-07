@@ -40,6 +40,12 @@
                             <form method="post" id="message-form" action="{{ route('admin.chat.message.store') }}">
                                 @csrf
                                 <x-admin.input identify="chat_id" type="hidden"/>
+                                <x-admin.input identify="parent_id" type="hidden"/>
+
+                                <div id="replay-container">
+
+                                </div>
+
                                 <x-admin.textarea identify="message" placeholder="پیام خود ار بنویسید" />
                                 <div class="attachment" id="attachment-container">
                                 </div>
@@ -50,7 +56,7 @@
                                     <button type="button" class="btn btn-pill btn-icon btn-gray">
                                         <span class="fal mt-1 fa-message"></span>
                                     </button>
-                                    <button type="button" class="btn btn-pill btn-icon btn-danger">
+                                    <button type="button" id="btn-microphone" class="btn btn-pill btn-icon btn-danger">
                                         <span class="fal mt-1 fa-microphone"></span>
                                     </button>
                                     <button type="submit" id="btn-message-send" class="btn btn-pill btn-icon btn-success">
@@ -84,6 +90,7 @@
         \App\Enums\Assets\ScriptLoader::DataTable(),
         \App\Enums\Assets\ScriptLoader::Toast(),
         \App\Enums\Assets\ScriptLoader::AjaxForm(),
+        \App\Enums\Assets\ScriptLoader::Recorder(),
     ]])
     @include('support::admin.part.script')
 @endsection

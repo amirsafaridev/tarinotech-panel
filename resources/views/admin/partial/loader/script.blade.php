@@ -33,6 +33,11 @@
     <script type="text/javascript" src="{{asset('res-admin/assets/plugins/input-mask/jquery.mask.min.js')}}"></script>
 @endif
 
+@if (in_array(\App\Enums\Assets\ScriptLoader::Recorder(),$load))
+    <script type="text/javascript" src="{{asset('res-admin/assets/plugins/recorderjs/recorder.js')}}"></script>
+    <script type="text/javascript" src="{{asset('res-admin/assets/plugins/recorderjs/lame.min.js.js')}}"></script>
+@endif
+
 @if (in_array(\App\Enums\Assets\ScriptLoader::CKEditor(),$load))
     <script type="text/javascript" src="{{asset('res-admin/assets/plugins/ckeditor/ckeditor.js')}}"></script>
 @endif

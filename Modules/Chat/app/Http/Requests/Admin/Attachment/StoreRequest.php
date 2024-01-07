@@ -20,7 +20,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => 'required|file|mimes:jpeg,png,gif,mp4,mov,avi,doc,docx,xls,xlsx,pdf,txt|max:10240',
+            'file' => 'required|file|mimes:jpeg,png,gif,mp4,mov,avi,doc,docx,xls,xlsx,pdf,mp3|max:10240',
         ];
     }
 }
