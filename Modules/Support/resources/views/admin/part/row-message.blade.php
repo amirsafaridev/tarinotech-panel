@@ -45,12 +45,15 @@
             @endif
 
             <div class="d-flex gap-2 action mt-2">
-                <button type="button" class="btn-edit" data-id="{{$message->id}}">
-                    <span class="fal fa-pen text-warning"></span>
-                </button>
-                <button type="button">
-                    <span class="fal fa-trash text-danger"></span>
-                </button>
+                @if($message->user_id === auth()->id())
+                    <button type="button" class="btn-edit" data-id="{{$message->id}}">
+                        <span class="fal fa-pen text-warning"></span>
+                    </button>
+                    <button type="button">
+                        <span class="fal fa-trash text-danger"></span>
+                    </button>
+                @endif
+
                 <button type="button" class="btn-replay" data-id="{{$message->id}}" data-message="{{str($message->content)->stripTags()->limit(50)}}">
                     <span class="fal fa-reply text-info"></span>
                 </button>
