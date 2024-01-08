@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Traits\HasJsonCommonResponse;
 use DB;
 use Exception;
+use Illuminate\Support\Facades\Storage;
+use Modules\Chat\app\Http\Requests\Admin\Attachment\DestroyRequest;
 use Modules\Chat\app\Http\Requests\Admin\Attachment\StoreRequest;
 use Modules\Support\app\Models\ChatMessageAttachment;
 use View;
@@ -60,8 +62,25 @@ class AttachmentController extends Controller
 
     }
 
-    public function destroy()
+    public function destroy(DestroyRequest $request)
     {
+        try {
+            $attachment = ChatMessageAttachment::query()
+                ->where('id', $request->input('file_id'))
+                ->firstOrFail();
 
+            Storage::disk('private')->delete($attachment->file_path);
+
+            $attachment->forceDelete();
+
+            return response()->json([
+                'result' => 'success',
+                'message' => trans('panel.success_delete'),
+            ]);
+
+        } catch (Exception $exception) {
+
+            return $this->exceptionResponse($exception);
+        }
     }
 }

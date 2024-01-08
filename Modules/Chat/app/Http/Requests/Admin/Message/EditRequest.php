@@ -1,0 +1,27 @@
+<?php
+
+namespace Modules\Chat\app\Http\Requests\Admin\Message;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class EditRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     */
+    public function rules(): array
+    {
+        return [
+            'chat_id' => 'required|integer',
+            'message_id' => 'required|integer',
+        ];
+    }
+}

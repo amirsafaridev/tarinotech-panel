@@ -83,7 +83,7 @@
             messageContainer.html('');
             messagePage = 1;
 
-            loadMessage(chatId);
+            loadMessage(chatId.val());
         })
     }
 
@@ -93,6 +93,7 @@
     const messageForm = $('#message-form');
 
     const btnMessageSend = $('#btn-message-send');
+    const btnCancelEdit = $('#btn-cancel-edit');
 
     const chatId = $('#chat_id');
     const parentId = $('#parent_id');
@@ -116,7 +117,15 @@
         setMessagesScrollPagination();
         setupReplay();
         setupReplayNavigate();
+        setupCancelEdit();
     })
+
+
+    function setupCancelEdit(){
+        btnCancelEdit.click(function (){
+            resetSend();
+        });
+    }
 
     function setupReplay() {
         messageContainer.on('click', '.btn-replay', function () {
@@ -134,13 +143,60 @@
         });
     }
 
-    function setupReplayNavigate(){
+    function setupReplayNavigate() {
         messageContainer.on('click', '.replay', function () {
             let container = document.getElementById('message-container');
             let targetElement = document.getElementById(`message-${$(this).data('parent-id')}`);
             container.scrollTop = targetElement.offsetTop - container.offsetTop;
         });
 
+    }
+
+    function validationErrorPars(response) {
+        let errors = '';
+        $.each(response.responseJSON.errors, function (key, value) {
+            errors += value + '<br>';
+        });
+        $.toast({
+            ...toastConfig,
+            heading: 'اعتبار سنجی',
+            text: errors,
+            icon: 'warning',
+        })
+    }
+
+    function loadMessage(chatId) {
+        messageContainer.append(loadingMotion);
+        $.ajax({
+            type: 'POST',
+            url: '{{ route('admin.chat.message.index') }}',
+            data: {
+                'page': messagePage,
+                'chat_id': chatId
+            },
+            dataType: 'json',
+            success: function (data) {
+                let htmlRows = '';
+                data.messages.forEach(function (item) {
+                    htmlRows += item.htmlRender;
+                });
+                messageContainer.prepend(htmlRows)
+                if (messagePage === 1) {
+                    messageContainer.scrollTop(messageContainer.prop("scrollHeight"));
+                }
+                if (messagePage < data.pagination.last_page) {
+                    messagePage++;
+                    activeMessageScroll();
+                }
+
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            },
+            complete: function () {
+                messageContainer.find('.loading').remove();
+            }
+        });
     }
 
     function sendMessage() {
@@ -169,22 +225,20 @@
                     allowToastClose: false,
                     icon: 'success'
                 });
-                messageContainer.append(response.htmlRender);
-                messageContainer.scrollTop(messageContainer.prop("scrollHeight"));
+
+                /* Reload Message On Update */
+                if(response.action === 'update'){
+                    $("#message-" + response.messageId).replaceWith(response.htmlRender);
+                }
+                else{
+                    messageContainer.append(response.htmlRender);
+                    messageContainer.scrollTop(messageContainer.prop("scrollHeight"));
+                }
 
                 btnMessageSend.html(icons.send);
                 btnMessageSend.prop('disabled', false);
 
-                /* Reset Attachment */
-                attachmentContainer.html('');
-
-                /* Reset Form */
-                messageForm[0].reset();
-
-                /* Reset Replay */
-                replayContainer.html('');
-                parentId.val('');
-
+                resetSend();
             },
             error: function (response) {
                 if (response.status === 422) {
@@ -197,51 +251,20 @@
         messageForm.ajaxForm(formOptions);
     }
 
-    function validationErrorPars(response) {
-        let errors = '';
-        $.each(response.responseJSON.errors, function (key, value) {
-            errors += value + '<br>';
-        });
-        $.toast({
-            ...toastConfig,
-            heading: 'اعتبار سنجی',
-            text: errors,
-            icon: 'warning',
-        })
-    }
+    function resetSend(){
+        /* Reset Attachment */
+        attachmentContainer.html('');
 
-    function loadMessage(chatId) {
-        messageContainer.append(loadingMotion);
-        $.ajax({
-            type: 'POST',
-            url: '{{ route('admin.chat.message.index') }}',
-            data: {
-                'page': messagePage,
-                'chat_id': chatId.val()
-            },
-            dataType: 'json',
-            success: function (data) {
-                let htmlRows = '';
-                data.messages.forEach(function (item) {
-                    htmlRows += item.htmlRender;
-                });
-                messageContainer.prepend(htmlRows)
-                if (messagePage === 1) {
-                    messageContainer.scrollTop(messageContainer.prop("scrollHeight"));
-                }
-                if (messagePage < data.pagination.last_page) {
-                    messagePage++;
-                    activeMessageScroll();
-                }
+        /* Reset Form */
+        messageForm[0].reset();
 
-            },
-            error: function (xhr, status, error) {
-                console.log(error);
-            },
-            complete: function () {
-                messageContainer.find('.loading').remove();
-            }
-        });
+        /* Reset If Edit Mode */
+        messageForm.prop('action','{{ route('admin.chat.message.store') }}');
+        btnCancelEdit.addClass('d-none');
+
+        /* Reset Replay */
+        replayContainer.html('');
+        parentId.val('');
     }
 
     function setMessagesScrollPagination() {
@@ -262,13 +285,88 @@
         }, 1000)
     }
 
+    /* Edit Modal Message */
+    $(document).ready(function () {
+        setupEditModal();
+    })
+
+    function setupEditModal() {
+        messageContainer.on('click', '.btn-edit', function () {
+            fetchMessageById($(this).data('id'));
+        })
+    }
+
+    function fetchMessageById(messageId) {
+
+        let formData = new FormData();
+        formData.append('message_id', messageId);
+        formData.append('chat_id', chatId.val());
+
+        $.ajax({
+            url: '{{ route('admin.chat.message.edit') }}',
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                attachmentContainer.html('');
+                attachmentContainer.append(response.attachmentHtmlRender);
+                messageForm.prop('action',response.updateUrl);
+                messageForm.find('textarea[name="message"]').val(response.message.content);
+                btnCancelEdit.removeClass('d-none');
+            },
+            error: function (xhr, status, error) {
+
+            }
+        });
+    }
+
     /* Attachment */
     const fileAttachment = $('#file-attachment');
     const attachmentContainer = $('#attachment-container');
 
     $(document).ready(function () {
         setupFile();
+        setupDeleteFile();
     })
+
+    function setupDeleteFile(){
+        attachmentContainer.on('click','.btn-delete-attachment',function (){
+            const messageId = $(this).data('chat-message-id');
+            const fileId = $(this).data('id');
+            deleteFile(messageId,fileId);
+        })
+    }
+
+    function deleteFile(messageId,fileId) {
+
+        let formData = new FormData();
+        formData.append('message_id', messageId);
+        formData.append('file_id', fileId);
+
+        $.ajax({
+            url: '{{ route('admin.chat.attachment.destroy') }}',
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                $(`#attachment-${fileId}`).remove();
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+                if (xhr.status === 422) {
+                    validationErrorPars(xhr)
+                }
+            }
+        });
+    }
 
     function setupFile() {
         fileAttachment.change(function () {
@@ -326,7 +424,7 @@
     let stateRecord = 'recording';
 
     $(document).ready(function () {
-      setupBtnMicrophone();
+        setupBtnMicrophone();
     });
 
     function setupBtnMicrophone() {
@@ -340,7 +438,7 @@
 
         function startRecording() {
             stateRecord = '';
-            navigator.mediaDevices.getUserMedia({ audio: true })
+            navigator.mediaDevices.getUserMedia({audio: true})
                 .then(function (stream) {
                     recorder = new Recorder(audioContext.createMediaStreamSource(stream), {
                         sampleRate: 16000,
@@ -375,7 +473,7 @@
 
     function sendAudioRecorder() {
         if (audioChunks.length > 0) {
-            let audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            let audioBlob = new Blob(audioChunks, {type: 'audio/wav'});
 
             let reader = new FileReader();
             reader.onload = function (event) {
@@ -432,9 +530,6 @@
             mp3DataChunks.push(new Int8Array(finalMp3Buffer));
         }
 
-        return new Blob(mp3DataChunks, { type: 'audio/mp3' });
+        return new Blob(mp3DataChunks, {type: 'audio/mp3'});
     }
-
-
-
 </script>

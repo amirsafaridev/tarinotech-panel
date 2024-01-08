@@ -46,7 +46,12 @@
 
                                 </div>
 
-                                <x-admin.textarea identify="message" placeholder="پیام خود ار بنویسید" />
+                                <div class="position-relative">
+                                    <span class="position-absolute top-100 start-50 translate-middle">
+                                        <button class="btn btn-sm btn-danger d-none" id="btn-cancel-edit" type="button">انصراف</button>
+                                    </span>
+                                    <x-admin.textarea identify="message" placeholder="پیام خود ار بنویسید" />
+                                </div>
                                 <div class="attachment" id="attachment-container">
                                 </div>
                                 <div>
@@ -83,7 +88,6 @@
             </div>
         </div>
     </div>
-
 @endsection
 @section('script')
     @include('admin.partial.loader.script',['load'=>[

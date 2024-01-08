@@ -7,8 +7,10 @@ use App\Traits\HasJsonCommonResponse;
 use DB;
 use Exception;
 use Modules\Admin\app\Models\Admin;
+use Modules\Chat\app\Http\Requests\Admin\Message\EditRequest;
 use Modules\Chat\app\Http\Requests\Admin\Message\IndexRequest;
 use Modules\Chat\app\Http\Requests\Admin\Message\StoreRequest;
+use Modules\Chat\app\Http\Requests\Admin\Message\UpdateRequest;
 use Modules\Support\app\Models\ChatMessage;
 use Modules\Support\app\Models\ChatMessageAttachment;
 use Modules\Support\app\Models\ChatUser;
@@ -17,6 +19,8 @@ use View;
 class MessageController extends Controller
 {
     use HasJsonCommonResponse;
+
+    const EDIT_TITLE = 'پیام - ویرایش';
 
     public function index(IndexRequest $request)
     {
@@ -87,6 +91,7 @@ class MessageController extends Controller
             return response()->json([
                 'htmlRender' => $htmlRender,
                 'result' => 'success',
+                'action' => 'store',
                 'message' => trans('panel.success_store'),
             ]);
 
@@ -97,14 +102,72 @@ class MessageController extends Controller
         }
     }
 
-    public function edit()
+    public function edit(EditRequest $request)
     {
+        try {
+            $message = ChatMessage::query()
+                ->with(['attachments', 'chat'])
+                ->where('id', $request->input('message_id'))
+                ->where('chat_id', $request->input('chat_id'))
+                ->firstOrFail();
 
+            $attachmentHtmlRender = '';
+            if ($message->attachments->isNotEmpty()) {
+                foreach ($message->attachments as $attachment) {
+                    $attachmentHtmlRender .= compressHtml(View::make('support::admin.part.row-file-attachment', ['file' => $attachment]));
+                }
+            }
+
+            return response()->json([
+                'message' => $message,
+                'attachmentHtmlRender' => $attachmentHtmlRender,
+                'updateUrl' => route('admin.chat.message.update', $message->id),
+                'result' => 'success',
+            ]);
+
+        } catch (Exception $exception) {
+
+            return $this->exceptionResponse($exception);
+        }
     }
 
-    public function update()
+    public function update(int $messageId, UpdateRequest $request)
     {
+        try {
 
+            /* Find Message */
+            $message = ChatMessage::query()
+                ->where('id', $messageId)
+                ->where('chat_id', $request->input('chat_id'))
+                ->firstOrFail();
+
+            $message->update([
+                'content' => $request->input('message'),
+            ]);
+
+            /* Connect Attachment */
+            if ($request->input('files')) {
+                ChatMessageAttachment::query()
+                    ->whereIn('id', $request->input('files'))
+                    ->update([
+                        'chat_message_id' => $message->id,
+                    ]);
+            }
+
+            $htmlRender = compressHtml(View::make('support::admin.part.row-message', ['message' => $message->load('attachments')]));
+
+            return response()->json([
+                'htmlRender' => $htmlRender,
+                'result' => 'success',
+                'action' => 'update',
+                'messageId' => $message->id,
+                'message' => trans('panel.success_update'),
+            ]);
+
+        } catch (Exception $exception) {
+
+            return $this->exceptionResponse($exception);
+        }
     }
 
     public function destroy()

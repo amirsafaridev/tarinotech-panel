@@ -5,6 +5,7 @@ use Modules\Chat\app\Http\Controllers\Admin\AttachmentController;
 use Modules\Chat\app\Http\Controllers\Admin\AttachmentStreamController;
 use Modules\Chat\app\Http\Controllers\Admin\MessageController;
 use Modules\Chat\app\Http\Middleware\ChatAccess;
+use Modules\Chat\app\Http\Middleware\MessageAccess;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,22 +24,32 @@ Route::group(['guard' => 'admin'], function () {
             ->middleware([ChatAccess::class])
             ->name('index');
 
-        Route::get('/{message}', [MessageController::class, 'edit'])->name('edit');
+        Route::post('/edit', [MessageController::class, 'edit'])
+            ->middleware([ChatAccess::class])
+            ->name('edit');
+
+        Route::post('/{messageId}/update', [MessageController::class, 'update'])
+            ->middleware([ChatAccess::class])
+            ->name('update');
 
         Route::post('/store', [MessageController::class, 'store'])
             ->middleware([ChatAccess::class])
             ->name('store');
 
-        Route::patch('/{message}', [MessageController::class, 'update'])->name('update');
         Route::delete('/{message}', [MessageController::class, 'destroy'])->name('destroy');
     });
 });
 
 Route::group(['guard' => 'admin'], function () {
     Route::group(['as' => 'attachment.', 'prefix' => 'attachment'], function () {
+
         Route::post('/', [AttachmentController::class, 'upload'])
             ->middleware([ChatAccess::class])
             ->name('upload');
+
+        Route::post('/destroy', [AttachmentController::class, 'destroy'])
+            ->middleware([MessageAccess::class])
+            ->name('destroy');
     });
 });
 
