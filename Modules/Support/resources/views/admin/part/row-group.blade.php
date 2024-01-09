@@ -24,7 +24,13 @@
         </div>
 
         <div class="aw-time-notify">
-            <span class="notify">1</span>
+            @if($chat->users->isNotEmpty())
+                @foreach($chat->users as $chatUser)
+                    @if($chatUser->user_id === auth()->id() && $chatUser->user_type === \Modules\Admin\app\Models\Admin::class)
+                        <span class="notify">{{ $chatUser->unread  }}</span>
+                    @endif
+                @endforeach
+            @endif
             <span>{{ $chat->updated_at->toJalali()->format(formatJalaliDateTime()) }}</span>
         </div>
     </div>

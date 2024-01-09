@@ -32,12 +32,18 @@ class GroupController extends Controller
 
     public function index()
     {
+        $search = request()->input('search');
+
         $chatsPaginator = Chat::query()
             ->select(['id', 'title', 'logo', 'status', 'updated_at', 'created_at'])
-            ->with([
-                'users.user:id,avatar,first_name,last_name',
-                'project:id,title,domain',
-            ])
+            ->with(['users.user', 'project'])
+            ->when(! empty($search), function ($q) use ($search) {
+                $q->whereHas('project', function ($q) use ($search) {
+                    return $q->where('title', 'like', "%{$search}%")
+                        ->where('domain', 'like', "%{$search}%");
+                });
+                $q->orWhere('title', 'like', "%{$search}%");
+            })
             ->where('type', ChatType::Group)
             ->orderByDesc('updated_at')
             ->paginate(20);
@@ -177,6 +183,7 @@ class GroupController extends Controller
             $chat->users()->create([
                 'user_id' => $adminId,
                 'user_type' => Admin::class,
+                'seen_at' => now(),
             ]);
         }
     }
@@ -190,6 +197,7 @@ class GroupController extends Controller
         $chat->users()->create([
             'user_id' => $projectUser->user_id,
             'user_type' => User::class,
+            'seen_at' => now(),
         ]);
     }
 

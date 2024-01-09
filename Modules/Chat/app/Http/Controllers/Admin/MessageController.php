@@ -7,6 +7,7 @@ use App\Traits\HasJsonCommonResponse;
 use DB;
 use Exception;
 use Modules\Admin\app\Models\Admin;
+use Modules\Chat\app\Http\Requests\Admin\Message\DestroyRequest;
 use Modules\Chat\app\Http\Requests\Admin\Message\EditRequest;
 use Modules\Chat\app\Http\Requests\Admin\Message\IndexRequest;
 use Modules\Chat\app\Http\Requests\Admin\Message\StoreRequest;
@@ -40,6 +41,16 @@ class MessageController extends Controller
             return $data;
         });
 
+        /* Update For Counter */
+        ChatUser::query()
+            ->where('chat_id', $request->input('chat_id'))
+            ->where('user_id', auth()->id())
+            ->where('user_type', Admin::class)
+            ->update([
+                'seen_at' => now(),
+                'unread' => 0,
+            ]);
+
         return [
             'success' => true,
             'messages' => $messages,
@@ -59,6 +70,14 @@ class MessageController extends Controller
         try {
             DB::beginTransaction();
 
+            /* Update Seen */
+            ChatUser::query()
+                ->where('user_id', auth()->id())
+                ->where('chat_id', $request->input('chat_id'))
+                ->update([
+                    'seen_at' => now(),
+                ]);
+
             /* Create Message */
             $message = ChatMessage::query()->create([
                 'chat_id' => $request->input('chat_id'),
@@ -77,13 +96,6 @@ class MessageController extends Controller
                     ]);
             }
 
-            /* Update Seen */
-            ChatUser::query()
-                ->where('user_id', auth()->id())
-                ->where('chat_id', $request->input('chat_id'))
-                ->update([
-                    'seen_at' => now(),
-                ]);
             DB::commit();
 
             $htmlRender = compressHtml(View::make('support::admin.part.row-message', ['message' => $message]));
@@ -170,8 +182,26 @@ class MessageController extends Controller
         }
     }
 
-    public function destroy()
+    public function destroy(DestroyRequest $request)
     {
+        try {
+            /* Find Message */
+            $message = ChatMessage::query()
+                ->where('id', $request->input('message_id'))
+                ->firstOrFail();
 
+            /* Delete Message */
+            $message->delete();
+
+            return response()->json([
+                'result' => 'success',
+                'action' => 'destroy',
+                'messageId' => $message->id,
+                'message' => trans('panel.success_delete'),
+            ]);
+        } catch (Exception $exception) {
+
+            return $this->exceptionResponse($exception);
+        }
     }
 }

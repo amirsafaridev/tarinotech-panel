@@ -28,15 +28,17 @@ Route::group(['guard' => 'admin'], function () {
             ->middleware([ChatAccess::class])
             ->name('edit');
 
-        Route::post('/{messageId}/update', [MessageController::class, 'update'])
-            ->middleware([ChatAccess::class])
-            ->name('update');
-
         Route::post('/store', [MessageController::class, 'store'])
             ->middleware([ChatAccess::class])
             ->name('store');
 
-        Route::delete('/{message}', [MessageController::class, 'destroy'])->name('destroy');
+        Route::post('/destroy', [MessageController::class, 'destroy'])
+            ->middleware([MessageAccess::class])
+            ->name('destroy');
+
+        Route::post('/{messageId}/update', [MessageController::class, 'update'])
+            ->middleware([ChatAccess::class])
+            ->name('update');
     });
 });
 

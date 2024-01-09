@@ -4,6 +4,7 @@
     @include('admin.partial.loader.style',['load'=>[
         \App\Enums\Assets\StyleLoader::DataTable(),
         \App\Enums\Assets\StyleLoader::Toast(),
+        \App\Enums\Assets\StyleLoader::Alert(),
     ]])
     <link rel="stylesheet" href="{{ asset('res-admin/assets/css/chat.css') }}">
 @endsection
@@ -95,6 +96,7 @@
         \App\Enums\Assets\ScriptLoader::Toast(),
         \App\Enums\Assets\ScriptLoader::AjaxForm(),
         \App\Enums\Assets\ScriptLoader::Recorder(),
+        \App\Enums\Assets\ScriptLoader::Alert(),
     ]])
     @include('support::admin.part.script')
 @endsection

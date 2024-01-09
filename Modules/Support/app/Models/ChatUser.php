@@ -10,11 +10,16 @@ class ChatUser extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'seen_at' => 'datetime',
+    ];
+
     protected $fillable = [
         'seen_at',
         'user_type',
         'chat_id',
         'user_id',
+        'unread',
     ];
 
     public function user(): MorphTo

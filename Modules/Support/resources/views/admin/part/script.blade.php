@@ -1,6 +1,7 @@
 <script>
     const chatGroupContainer = $('#chat-group-container');
     const chatContainer = $('#chat-container');
+    const chatGroupSearch = $('#search');
 
     const messageHeader = {
         container: $('#message-header-container'),
@@ -18,6 +19,7 @@
         fetchChatGroups();
         setScrollPagination();
         setupSelectChat();
+        setupGroupSearch();
         messageForm[0].reset();
     })
 
@@ -33,11 +35,35 @@
         });
     }
 
+    function setupDebounce(func, delay) {
+        let timerId;
+        return function () {
+            clearTimeout(timerId);
+            timerId = setTimeout(() => {
+                func.apply(this, arguments);
+            }, delay);
+        };
+    }
+
+    const debouncedSearch = setupDebounce(fetchChatGroups, 1000);
+
+    function setupGroupSearch(){
+        chatGroupSearch.on("input", function () {
+            chatGroupContainer.html('');
+            debouncedSearch();
+        });
+    }
+
     function fetchChatGroups() {
         chatGroupContainer.append(loadingMotion);
+
+        const filter = [
+            `page=${chatPage}`,
+            `search=${chatGroupSearch.val()}`
+        ];
         $.ajax({
             type: 'GET',
-            url: '{{ route('admin.support.group.index') }}' + '?page=' + chatPage,
+            url: '{{ route('admin.support.group.index') }}?' + filter.join('&'),
             dataType: 'json',
             success: function (data) {
                 let htmlRows = '';
@@ -121,8 +147,8 @@
     })
 
 
-    function setupCancelEdit(){
-        btnCancelEdit.click(function (){
+    function setupCancelEdit() {
+        btnCancelEdit.click(function () {
             resetSend();
         });
     }
@@ -227,10 +253,9 @@
                 });
 
                 /* Reload Message On Update */
-                if(response.action === 'update'){
+                if (response.action === 'update') {
                     $("#message-" + response.messageId).replaceWith(response.htmlRender);
-                }
-                else{
+                } else {
                     messageContainer.append(response.htmlRender);
                     messageContainer.scrollTop(messageContainer.prop("scrollHeight"));
                 }
@@ -251,7 +276,7 @@
         messageForm.ajaxForm(formOptions);
     }
 
-    function resetSend(){
+    function resetSend() {
         /* Reset Attachment */
         attachmentContainer.html('');
 
@@ -259,7 +284,7 @@
         messageForm[0].reset();
 
         /* Reset If Edit Mode */
-        messageForm.prop('action','{{ route('admin.chat.message.store') }}');
+        messageForm.prop('action', '{{ route('admin.chat.message.store') }}');
         btnCancelEdit.addClass('d-none');
 
         /* Reset Replay */
@@ -314,12 +339,64 @@
             success: function (response) {
                 attachmentContainer.html('');
                 attachmentContainer.append(response.attachmentHtmlRender);
-                messageForm.prop('action',response.updateUrl);
+                messageForm.prop('action', response.updateUrl);
                 messageForm.find('textarea[name="message"]').val(response.message.content);
                 btnCancelEdit.removeClass('d-none');
             },
             error: function (xhr, status, error) {
 
+            }
+        });
+    }
+
+    /* Delete Message */
+    $(document).ready(function () {
+        setupDeleteMessage();
+    })
+
+    function setupDeleteMessage() {
+
+        messageContainer.on('click', '.btn-delete', function () {
+            const messageId = $(this).data('id');
+            swal({
+                title: "حذف",
+                text: "آیا مطمئن هستید که میخواهید این مورد را حذف کنید؟",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#ff0f3b",
+                confirmButtonText: "حذف",
+                cancelButtonText: "صرفه نظر",
+                closeOnConfirm: false
+            }, function () {
+                deleteMessage(messageId);
+                swal.close();
+            });
+        })
+    }
+
+    function deleteMessage(messageId) {
+
+        let formData = new FormData();
+        formData.append('message_id', messageId);
+
+        $.ajax({
+            url: '{{ route('admin.chat.message.destroy') }}',
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                const messageId = response.messageId;
+                $(`#message-${messageId}`).remove();
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+                if (xhr.status === 422) {
+                    validationErrorPars(xhr)
+                }
             }
         });
     }
@@ -333,15 +410,15 @@
         setupDeleteFile();
     })
 
-    function setupDeleteFile(){
-        attachmentContainer.on('click','.btn-delete-attachment',function (){
+    function setupDeleteFile() {
+        attachmentContainer.on('click', '.btn-delete-attachment', function () {
             const messageId = $(this).data('chat-message-id');
             const fileId = $(this).data('id');
-            deleteFile(messageId,fileId);
+            deleteFile(messageId, fileId);
         })
     }
 
-    function deleteFile(messageId,fileId) {
+    function deleteFile(messageId, fileId) {
 
         let formData = new FormData();
         formData.append('message_id', messageId);

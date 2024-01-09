@@ -49,7 +49,7 @@
                     <button type="button" class="btn-edit" data-id="{{$message->id}}">
                         <span class="fal fa-pen text-warning"></span>
                     </button>
-                    <button type="button">
+                    <button type="button" class="btn-delete"  data-id="{{$message->id}}">
                         <span class="fal fa-trash text-danger"></span>
                     </button>
                 @endif
