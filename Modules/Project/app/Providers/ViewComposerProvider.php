@@ -43,6 +43,8 @@ class ViewComposerProvider extends ServiceProvider
         $this->getStatusComposer();
 
         $this->getOptionComposer();
+
+        $this->getFacilityComposer();
     }
 
     private function getIndexComposer(): void
@@ -172,6 +174,20 @@ class ViewComposerProvider extends ServiceProvider
         view()->composer([
             'project::admin.option.create',
             'project::admin.option.edit',
+        ], function ($view) {
+
+            $bases = ProjectBaseModel::query()
+                ->get();
+
+            $view->with(compact('bases'));
+        });
+    }
+
+    private function getFacilityComposer()
+    {
+        view()->composer([
+            'project::admin.facility.create',
+            'project::admin.facility.edit',
         ], function ($view) {
 
             $bases = ProjectBaseModel::query()

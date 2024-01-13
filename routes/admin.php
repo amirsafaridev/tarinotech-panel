@@ -9,7 +9,6 @@ use App\Http\Controllers\Admin\SettingController;
 use Illuminate\Support\Facades\Route;
 use Modules\Admin\app\Http\Controllers\Admin\GoalReportController as GoalControllerReport;
 use Modules\Dashboard\app\Http\Controllers\Admin\HomeController;
-use Modules\Project\app\Http\Controllers\Admin\FacilityController;
 
 /**
  * TODO
@@ -42,16 +41,6 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
     Route::controller(SettingController::class)->group(function () {
         Route::get('/setting', 'index')->name('setting.index');
         Route::patch('/setting', 'update')->name('setting.update');
-    });
-
-    Route::controller(FacilityController::class)->group(function () {
-        Route::get('/facility', 'index')->name('facility.index');
-        Route::get('/facility/data', 'data')->name('facility.data');
-        Route::get('/facility/create', 'create')->name('facility.create');
-        Route::post('/facility/store', 'store')->name('facility.store');
-        Route::get('/facility/{facility}/edit', 'edit')->name('facility.edit');
-        Route::patch('/facility/{facility}/update', 'update')->name('facility.update');
-        Route::delete('/facility/{facility}/destroy', 'destroy')->name('facility.destroy');
     });
 
     Route::controller(SampleMessageController::class)->group(function () {

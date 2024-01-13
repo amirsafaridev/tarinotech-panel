@@ -1,8 +1,9 @@
 <?php
 
-namespace Database\Factories;
+namespace Modules\Project\database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Project\app\Models\Facility;
 
 /**
  * @extends Factory
@@ -14,6 +15,8 @@ class FacilityFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    protected $model = Facility::class;
+
     public function definition(): array
     {
         $additionalFeatures = [
@@ -29,7 +32,7 @@ class FacilityFactory extends Factory
 
         return [
             'title' => $this->faker->randomElement($additionalFeatures),
-            'project_base_id' => rand(1, 3),
+            'base_id' => rand(1, 3),
         ];
     }
 }

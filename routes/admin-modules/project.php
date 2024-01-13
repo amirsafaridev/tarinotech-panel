@@ -5,7 +5,7 @@ use Modules\Project\app\Http\Controllers\Admin\ProjectFacilityController;
 
 Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], function () {
 
-    Route::controller(ProjectFacilityController::class)->group(function () {
+    /*Route::controller(ProjectFacilityController::class)->group(function () {
         Route::group(['prefix' => '/project/{project}/'], function () {
             Route::get('facility', 'index')->name('project.facility.index');
 
@@ -18,6 +18,6 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
             Route::patch('facility/{facility}/confirm', 'update')->name('project.facility.confirm');
             Route::delete('facility/{facility}', 'destroy')->name('project.facility.destroy');
         });
-    });
+    });*/
 
 });

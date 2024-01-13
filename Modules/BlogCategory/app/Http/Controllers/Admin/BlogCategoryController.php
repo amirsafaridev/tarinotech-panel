@@ -53,8 +53,8 @@ class BlogCategoryController extends Controller
             BlogCategory::query()->create($this->prepareItemData($request));
 
             return $this->successResponse();
-        } catch (Exception $e) {
-            return $this->exceptionResponse($e);
+        } catch (Exception $exception) {
+            return $this->exceptionResponse($exception);
         }
     }
 

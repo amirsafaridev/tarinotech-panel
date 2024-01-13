@@ -147,6 +147,10 @@
                             <li><a href="{{ route('admin.project.ads.index') }}" class="slide-item">ادوردز</a></li>
                         @endcan
 
+                        @can('ADMIN_FACILITY_INDEX')
+                            <li><a href="{{ route('admin.project.facility.index') }}" class="slide-item">امکانات جانبی</a></li>
+                        @endcan
+
                         @can('ADMIN_PROJECT_OPTION_INDEX')
                             <li><a href="{{ route('admin.project.option.index') }}" class="slide-item">امکانات</a></li>
                         @endcan
@@ -271,10 +275,6 @@
                     <ul class="slide-menu">
                         @can('ADMIN_SETTING_INDEX')
                             <li><a href="{{ route('admin.setting.index') }}" class="slide-item">تنظیمات پایه</a></li>
-                        @endcan
-
-                        @can('ADMIN_FACILITY_INDEX')
-                            <li><a href="{{ route('admin.facility.index') }}" class="slide-item">امکانات جانبی</a></li>
                         @endcan
 
                         @can('ADMIN_SAMPLE_MESSAGE_INDEX')

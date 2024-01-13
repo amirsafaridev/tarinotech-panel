@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Project\app\Http\Controllers\Admin\AdsController;
 use Modules\Project\app\Http\Controllers\Admin\BusinessDomainController;
+use Modules\Project\app\Http\Controllers\Admin\FacilityController;
 use Modules\Project\app\Http\Controllers\Admin\OptionController;
 use Modules\Project\app\Http\Controllers\Admin\ProjectController;
 use Modules\Project\app\Http\Controllers\Admin\ProjectRenewalController;
@@ -41,6 +42,16 @@ Route::group(['guard' => 'admin'], function () {
         Route::post('/', [OptionController::class, 'store'])->name('store');
         Route::patch('/{project_option}', [OptionController::class, 'update'])->name('update');
         Route::delete('/{project_option}', [OptionController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::group(['as' => 'facility.', 'prefix' => 'facility'], function () {
+        Route::get('/', [FacilityController::class, 'index'])->name('index');
+        Route::get('/data', [FacilityController::class, 'data'])->name('data');
+        Route::get('/create', [FacilityController::class, 'create'])->name('create');
+        Route::post('/', [FacilityController::class, 'store'])->name('store');
+        Route::get('/{facility}', [FacilityController::class, 'edit'])->name('edit');
+        Route::patch('/{facility}', [FacilityController::class, 'update'])->name('update');
+        Route::delete('/{facility}', [FacilityController::class, 'destroy'])->name('destroy');
     });
 
     Route::group(['as' => 'status.', 'prefix' => 'status'], function () {

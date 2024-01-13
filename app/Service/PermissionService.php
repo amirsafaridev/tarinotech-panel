@@ -28,6 +28,7 @@ class PermissionService
             $checkExist = $currentPermissions->where('name', $permissionName)->first();
             if (! $checkExist) {
                 Permission::query()->create([
+                    'guard_name' => 'admin',
                     'name' => $permissionName,
                     'title' => $permissionName,
                 ]);

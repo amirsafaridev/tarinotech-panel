@@ -8,11 +8,11 @@
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">امکانات جانبی - جدید</h1>
+        <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.facility.index') }}">امکانات جانبی</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.project.facility.index') }}">امکانات جانبی</a></li>
                 <li class="breadcrumb-item active">جدید</li>
             </ol>
         </div>
@@ -23,16 +23,17 @@
             <div class="card">
                 <div class="card-body pb-4">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ $routeStore }}">
+                    <form class="request-form forms-sample" method="post" action="{{ route('admin.project.facility.store') }}">
                         @csrf
                         <x-admin.select-model class="multiple"
                                               identify="project_base_id"
                                               title="انتخاب نوع پروژه"
                                               key="id"
                                               value="title"
-                                              :items="$projectBases"/>
+                                              :items="$bases"/>
 
                         <x-admin.input identify="title" title="عنوان"/>
+
                         <x-admin.button-submit/>
                     </form>
                 </div>
@@ -44,7 +45,7 @@
     @include('admin.partial.request')
     <script>
         $(document).ready(function (){
-            activeParentUl('{{ route('admin.facility.index') }}');
+            activeParentUl('{{ route('admin.project.facility.index') }}');
         })
     </script>
 @endsection

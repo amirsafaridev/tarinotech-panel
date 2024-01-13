@@ -23,7 +23,6 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            //RoleDatabaseSeeder::class, //DONE
             AdminDatabaseSeeder::class, //DONE
             UserDatabaseSeeder::class, //DONE
             ProjectBaseSeeder::class, // REQ
@@ -31,7 +30,6 @@ class DatabaseSeeder extends Seeder
             PackageDatabaseSeeder::class, //DONE
             ProjectDatabaseSeeder::class, //DONE
             SettingSeeder::class,
-            AdditionalFeatureSeeder::class,
             FactorDatabaseSeeder::class, //DONE
             SampleMessageSeeder::class,
             AutoMessageSeeder::class,

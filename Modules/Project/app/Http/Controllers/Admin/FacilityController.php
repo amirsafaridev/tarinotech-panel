@@ -3,113 +3,79 @@
 namespace Modules\Project\app\Http\Controllers\Admin;
 
 use App\Enums\General\BtnType;
+use App\Foundation\ValueObjects\Datatable\ColumnOption;
+use App\Foundation\ValueObjects\Datatable\DatatableBase;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Facility\StoreRequest;
 use App\Http\Requests\Admin\Facility\UpdateRequest;
+use App\Traits\HasDatatable;
+use App\Traits\HasJsonCommonResponse;
 use Exception;
 use Illuminate\Http\Request;
 use Modules\Project\app\Models\Facility;
-use Modules\Project\app\Models\ProjectBase;
 use Yajra\DataTables\Facades\DataTables;
 
-use function formatJalaliDateTime;
-use function redirect;
-use function report;
-use function response;
 use function route;
 use function trans;
 use function view;
 
 class FacilityController extends Controller
 {
+    use HasDatatable;
+    use HasJsonCommonResponse;
+
+    const INDEX_TITLE = 'امکانات جانبی';
+
+    const CREATE_TITLE = 'امکانات جانبی - ایجاد';
+
+    const EDIT_TITLE = 'امکانات جانبی - ویرایش';
+
     public function index()
     {
-        $title = 'امکانات جانبی';
-        $routeData = route('admin.facility.data');
-        $selects = ['id', 'title', 'base.title', 'created_at'];
+        $title = self::INDEX_TITLE;
 
-        return view('admin.facility.index', compact('title', 'routeData', 'selects'));
-    }
+        $routeData = $this->getDataRoute();
 
-    public function data()
-    {
-        try {
-            $facilities = Facility::query()
-                ->select('facilities.*')
-                ->with('base');
+        $dataTable = $this->getDataTable();
 
-            return DataTables::of($facilities)
-                ->editColumn('created_at', function (Facility $facility) {
-                    return $facility->created_at->toJalali()->format(formatJalaliDateTime());
-                })
-                ->addColumn('action', function (Facility $facility) {
-                    return Helper::btnMaker(BtnType::Warning, route('admin.facility.edit', $facility->id), trans('panel.action.edit'));
-                })
-                ->make();
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
+        return view('project::admin.facility.index', compact('title', 'routeData', 'dataTable'));
     }
 
     public function create()
     {
-        $title = 'امکانات جانبی - جدید';
-        $routeStore = route('admin.facility.store');
-        $projectBases = ProjectBase::query()->get();
+        $title = self::CREATE_TITLE;
 
-        return view('admin.facility.create', compact('title', 'routeStore', 'projectBases'));
+        return view('project::admin.facility.create', compact('title'));
     }
 
     public function store(StoreRequest $request)
     {
         try {
-            $item = $this->itemProvider($request);
-            Facility::create($item);
+            Facility::query()->create($this->prepareItemData($request));
 
-            return response()->json([
-                'result' => 'success',
-                'message' => trans('panel.success_store'),
-            ]);
-        } catch (Exception $e) {
-            report($e);
-
-            return response()->json([
-                'result' => 'exception',
-                'message' => trans('panel.error_store'),
-            ], 500);
+            return $this->successResponse();
+        } catch (Exception $exception) {
+            return $this->exceptionResponse($exception);
         }
     }
 
     public function edit(Facility $facility)
     {
-        $title = 'امکانات جانبی - ویرایش';
-        $routeUpdate = route('admin.facility.update', $facility->id);
-        $routeDestroy = route('admin.facility.destroy', $facility->id);
-        $projectBases = ProjectBase::query()->get();
+        $title = self::EDIT_TITLE;
 
-        return view('admin.facility.edit', compact('title', 'routeUpdate', 'routeDestroy', 'facility', 'projectBases'));
+        return view('project::admin.facility.edit', compact('title', 'facility'));
     }
 
     public function update(UpdateRequest $request, Facility $facility)
     {
         try {
+            $facility->update($this->prepareItemData($request));
 
-            $item = $this->itemProvider($request);
-            $facility->update($item);
+            return $this->successUpdateResponse();
+        } catch (Exception $exception) {
 
-            return response()->json([
-                'result' => 'success',
-                'message' => trans('panel.success_update'),
-            ]);
-        } catch (Exception $e) {
-
-            report($e);
-
-            return response()->json([
-                'result' => 'exception',
-                'message' => trans('panel.error_update'),
-            ], 500);
+            return $this->exceptionResponse($exception);
         }
     }
 
@@ -118,19 +84,60 @@ class FacilityController extends Controller
         try {
             $facility->delete();
 
-            return redirect(route('admin.facility.index'))->with('success', trans('panel.success_delete'));
-        } catch (Exception $e) {
-            report($e);
-
-            return redirect(route('admin.facility.index'))->with('danger', trans('panel.error_delete'));
+            return $this->successDestroyBack(route('admin.project.facility.index'));
+        } catch (Exception $exception) {
+            return $this->exceptionBack($exception);
         }
     }
 
-    protected function itemProvider(Request $request): array
+    protected function prepareItemData(Request $request): array
     {
         $item['title'] = $request->input('title');
         $item['project_base_id'] = $request->input('project_base_id');
 
         return $item;
+    }
+
+    public function getDataRoute(): string
+    {
+        return route('admin.project.facility.data');
+    }
+
+    public function getDataTable(): array
+    {
+        return (new DatatableBase())
+            ->addColumn(
+                ColumnOption::new()->setName('id')->setAs('شناسه')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('title')->setAs('عنوان')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('created_at')->setAs('ایجاد')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('action')
+                    ->setAs('عملیات')
+                    ->removeAction()
+            )
+            ->render();
+    }
+
+    public function data()
+    {
+        try {
+            $facilities = Facility::query();
+
+            return DataTables::eloquent($facilities)
+                ->editColumn('created_at', function (Facility $facility) {
+                    return $facility->created_at->toJalali()->format(formatJalaliDate());
+                })
+                ->addColumn('action', function (Facility $facility) {
+                    return Helper::btnMaker(BtnType::Warning, route('admin.project.facility.edit', $facility->id), trans('panel.action.edit'));
+                })
+                ->make();
+        } catch (Exception $exception) {
+            return $this->exceptionResponse($exception);
+        }
     }
 }
