@@ -147,7 +147,7 @@
                             <li><a href="{{ route('admin.project.ads.index') }}" class="slide-item">ادوردز</a></li>
                         @endcan
 
-                        @can('ADMIN_FACILITY_INDEX')
+                        @can('ADMIN_PROJECT_FACILITY_INDEX')
                             <li><a href="{{ route('admin.project.facility.index') }}" class="slide-item">امکانات جانبی</a></li>
                         @endcan
 
