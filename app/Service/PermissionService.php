@@ -21,7 +21,7 @@ class PermissionService
         foreach ($routes as $route) {
             $name = $route->getName();
 
-            if (! $name || ! str_starts_with($name, $prefix)) {
+            if (! $name || ! str_starts_with($name, $prefix) || $name === $prefix) {
                 continue;
             }
             $permissionName = $this->generatePermissionName($name);
