@@ -20,7 +20,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title">{{ $title }}</h3>
-                    <a class="btn btn-success btn-sm" href="{{ route('admin.presenter.create') }}">ایجاد</a>
+                    @can('ADMIN_PRESENTER_CREATE')
+                        <a class="btn btn-success btn-sm" href="{{ route('admin.presenter.create') }}">ایجاد</a>
+                    @endcan
                 </div>
                 <div class="card-body">
                     @include('admin.partial.message')

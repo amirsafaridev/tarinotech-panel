@@ -6,16 +6,16 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Stringable;
 
 class CheckPermission
 {
     public function handle(Request $request, Closure $next)
     {
 
-        return $next($request);
-
-        $permission = str($this->getName())->upper()->prepend('ADMIN_')->toString();
+        $permission = str($request->route()->getName())
+            ->upper()
+            ->replace(['.', '-'], '_')
+            ->toString();
 
         $allowPermissions = [
             'permission_sync',
@@ -24,29 +24,15 @@ class CheckPermission
             'ADMIN_ADMIN_PROFILE_PASSWORD',
             'ADMIN_ADMIN_PROFILE_PASSWORD_UPDATE',
             'ADMIN_ADMIN_PROFILE_LOGOUT',
+            'ADMIN_ROLE_EDIT', // Must Delete
+            'ADMIN_ROLE_UPDATE', // Must Delete
+            'ADMIN_ADMIN_EDIT', // Must Delete
+            'ADMIN_ADMIN_UPDATE', // Must Delete
         ];
         if (in_array($permission, $allowPermissions) || $request->user('admin')->hasPermissionTo($permission)) {
             return $next($request);
         }
 
         return $request->ajax() ? response('Unauthorized.', 401) : abort(401);
-    }
-
-    // Controller Method Detector
-    private function getName(): string
-    {
-        $action = request()->route()->getAction()['controller'];
-
-        return str($action)
-            ->whenContains('Website', function (Stringable $s) {
-                return $s->replace('Website\\', 'Website');
-            })
-            ->afterLast('\\')
-            ->snake()
-            ->replace('_controller', '')
-            ->replace('@', '_')
-            ->lower()
-            ->replace(['_data', '_update', '_store'], ['_index', '_edit', '_create'])
-            ->toString();
     }
 }

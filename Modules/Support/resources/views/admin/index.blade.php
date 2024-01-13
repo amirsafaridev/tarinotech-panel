@@ -81,7 +81,9 @@
                     <div class="flex-grow-1">
                         <x-admin.input identify="search" placeholder="جستجو"/>
                     </div>
-                    <a href="{{ route('admin.support.group.create') }}" class="btn btn-success">ایجاد گروه</a>
+                    @can('ADMIN_SUPPORT_GROUP_CREATE')
+                        <a href="{{ route('admin.support.group.create') }}" class="btn btn-success">ایجاد گروه</a>
+                    @endcan
                 </div>
                 <div class="" id="chat-group-container">
 

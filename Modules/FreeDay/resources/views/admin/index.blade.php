@@ -21,8 +21,12 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <div class="card-title">{{ $title }}</div>
                     <div>
-                        <a class="btn btn-primary" href="{{ route('admin.free-day.create') }}">ایجاد</a>
-                        <a class="btn btn-success" href="{{ route('admin.free-day.import.index') }}">Excel</a>
+                        @can('ADMIN_FREE_DAY_CREATE')
+                            <a class="btn btn-primary" href="{{ route('admin.free-day.create') }}">ایجاد</a>
+                        @endcan
+                        @can('ADMIN_FREE_DAY_IMPORT_INDEX')
+                            <a class="btn btn-success" href="{{ route('admin.free-day.import.index') }}">Excel</a>
+                        @endcan
                     </div>
                 </div>
                 <div class="card-body">

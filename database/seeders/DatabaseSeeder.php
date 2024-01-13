@@ -25,8 +25,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminDatabaseSeeder::class, //DONE
             UserDatabaseSeeder::class, //DONE
-            ProjectBaseSeeder::class, // REQ
-            ProjectTypeSeeder::class, // REQ
+            ProjectBaseSeeder::class, // DONE
+            ProjectTypeSeeder::class, // DONE
             PackageDatabaseSeeder::class, //DONE
             ProjectDatabaseSeeder::class, //DONE
             SettingSeeder::class,

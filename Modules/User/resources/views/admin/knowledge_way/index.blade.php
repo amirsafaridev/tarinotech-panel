@@ -20,7 +20,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <div class="card-title">{{ $title }}</div>
-                    <a class="btn btn-primary" href="{{ route('admin.knowledge-way.create') }}">ایجاد</a>
+                    @can('ADMIN_KNOWLEDGE_WAY_CREATE')
+                        <a class="btn btn-primary" href="{{ route('admin.knowledge-way.create') }}">ایجاد</a>
+                    @endcan
                 </div>
                 <div class="card-body">
                     @include('admin.partial.message')

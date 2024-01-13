@@ -22,8 +22,12 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title">{{ $title }}</h3>
                    <div>
-                       <a class="btn btn-success btn-sm" href="{{ route('admin.permission.create') }}">ایجاد</a>
-                       <a class="btn btn-info btn-sm" href="{{ route('admin.permission.sync') }}">به روز رسانی</a>
+                       @can('ADMIN_PERMISSION_CREATE')
+                           <a class="btn btn-success btn-sm" href="{{ route('admin.permission.create') }}">ایجاد</a>
+                       @endcan
+                       @can('ADMIN_PERMISSION_SYNC')
+                           <a class="btn btn-info btn-sm" href="{{ route('admin.permission.sync') }}">به روز رسانی</a>
+                       @endcan
                    </div>
                 </div>
                 <div class="card-body">

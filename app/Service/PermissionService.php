@@ -7,45 +7,29 @@ use Spatie\Permission\Models\Permission;
 
 class PermissionService
 {
-    public array $additionalPermissions = [
-        'SUPER_ADMIN',
-    ];
+    public array $additionalPermissions = ['SUPER_ADMIN'];
 
     public function sync(): int
     {
-        $routes = Route::getRoutes();
         $prefix = 'admin.';
-
-        $currentPermissions = Permission::get();
         $countCreated = 0;
-        foreach ($routes as $route) {
+
+        $currentPermissions = Permission::pluck('name');
+
+        foreach (Route::getRoutes() as $route) {
             $name = $route->getName();
 
-            if (! $name || ! str_starts_with($name, $prefix)) {
-                continue;
-            }
-            $permissionName = $this->generatePermissionName($name);
-            $checkExist = $currentPermissions->where('name', $permissionName)->first();
-            if (! $checkExist) {
-                Permission::query()->create([
-                    'guard_name' => 'admin',
-                    'name' => $permissionName,
-                    'title' => $permissionName,
-                ]);
+            if ($name && str_starts_with($name, $prefix) && ! $currentPermissions->contains($this->generatePermissionName($name))) {
+                $this->createPermission($this->generatePermissionName($name));
                 $countCreated++;
             }
         }
 
         foreach ($this->additionalPermissions as $additionalPermission) {
-            $checkExist = $currentPermissions->where('name', $additionalPermission)->first();
-
             $permissionName = $this->generatePermissionName($additionalPermission);
 
-            if (! $checkExist) {
-                Permission::query()->create([
-                    'name' => $permissionName,
-                    'title' => $permissionName,
-                ]);
+            if (! $currentPermissions->contains($permissionName)) {
+                $this->createPermission($permissionName);
                 $countCreated++;
             }
         }
@@ -53,8 +37,17 @@ class PermissionService
         return $countCreated;
     }
 
-    private function generatePermissionName($routeName): string
+    private function createPermission(string $permissionName): void
     {
-        return str($routeName)->replace(['-', '.'], '_')->upper();
+        Permission::create([
+            'guard_name' => 'admin',
+            'name' => $permissionName,
+            'title' => $permissionName,
+        ]);
+    }
+
+    private function generatePermissionName(string $routeName): string
+    {
+        return str_replace(['-', '.'], '_', strtoupper($routeName));
     }
 }
