@@ -31,12 +31,12 @@
                         @method('PATCH')
 
                         <x-admin.select-model class="multiple"
-                                              identify="project_base_id"
+                                              identify="base_id"
                                               title="انتخاب نوع پروژه"
                                               key="id"
                                               value="title"
                                               :items="$bases"
-                                              :old="$facility->project_base_id"/>
+                                              :old="$facility->base_id"/>
 
                         <x-admin.input identify="title" title="عنوان" :old="$facility->title"/>
 

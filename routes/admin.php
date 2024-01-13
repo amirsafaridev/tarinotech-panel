@@ -17,7 +17,8 @@ use Modules\Dashboard\app\Http\Controllers\Admin\HomeController;
  */
 Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], function () {
     /* this function for help to route ui dashboard */
-    Route::get('/admin', [HomeController::class, 'redirect'])->name('home');
+    Route::get('/', [HomeController::class, 'redirect']);
+    Route::get('/'.config('routes.admin-prefix'), [HomeController::class, 'redirect']);
 
     Route::controller(GroupGoalController::class)->group(function () {
         Route::get('/group-goal', 'index')->name('admin.group-goal');

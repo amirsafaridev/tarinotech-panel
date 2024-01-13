@@ -16,14 +16,14 @@ class Facility extends Model
 
     protected $fillable = [
         'title',
-        'project_base_id',
+        'base_id',
         'created_at',
         'updated_at',
     ];
 
     public function base(): BelongsTo
     {
-        return $this->belongsTo(ProjectBase::class, 'project_base_id');
+        return $this->belongsTo(ProjectBase::class, 'base_id');
     }
 
     public function getActivitylogOptions(): LogOptions

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin\Facility;
+namespace Modules\Project\app\Http\Requests\Admin\Facility;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,7 +21,7 @@ class UpdateRequest extends FormRequest
     {
         return [
             'title' => 'required|max:255',
-            'project_base_id' => 'required|exists:project_bases,id',
+            'base_id' => 'required|exists:project_bases,id',
         ];
     }
 }

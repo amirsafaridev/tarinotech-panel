@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin\ProjectFacility;
+namespace Modules\Project\app\Http\Requests\Admin\ProjectFacility;
 
 use App\Enums\Database\Facility\FinancialCycle;
 use App\Enums\Database\Facility\PriceType;

@@ -18,7 +18,6 @@ class CheckPermission
             ->toString();
 
         $allowPermissions = [
-            'permission_sync',
             'ADMIN_ADMIN_PROFILE_INDEX',
             'ADMIN_ADMIN_PROFILE_UPDATE',
             'ADMIN_ADMIN_PROFILE_PASSWORD',
@@ -28,6 +27,8 @@ class CheckPermission
             'ADMIN_ROLE_UPDATE', // Must Delete
             'ADMIN_ADMIN_EDIT', // Must Delete
             'ADMIN_ADMIN_UPDATE', // Must Delete
+            'ADMIN_PERMISSION_SYNC', // Must Delete
+            'ADMIN_PERMISSION_INDEX', // Must Delete
         ];
         if (in_array($permission, $allowPermissions) || $request->user('admin')->hasPermissionTo($permission)) {
             return $next($request);

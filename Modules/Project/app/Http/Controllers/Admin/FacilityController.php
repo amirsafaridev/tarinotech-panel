@@ -7,12 +7,12 @@ use App\Foundation\ValueObjects\Datatable\ColumnOption;
 use App\Foundation\ValueObjects\Datatable\DatatableBase;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Facility\StoreRequest;
-use App\Http\Requests\Admin\Facility\UpdateRequest;
 use App\Traits\HasDatatable;
 use App\Traits\HasJsonCommonResponse;
 use Exception;
 use Illuminate\Http\Request;
+use Modules\Project\app\Http\Requests\Admin\Facility\StoreRequest;
+use Modules\Project\app\Http\Requests\Admin\Facility\UpdateRequest;
 use Modules\Project\app\Models\Facility;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -93,7 +93,7 @@ class FacilityController extends Controller
     protected function prepareItemData(Request $request): array
     {
         $item['title'] = $request->input('title');
-        $item['project_base_id'] = $request->input('project_base_id');
+        $item['base_id'] = $request->input('base_id');
 
         return $item;
     }

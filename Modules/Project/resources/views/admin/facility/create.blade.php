@@ -26,7 +26,7 @@
                     <form class="request-form forms-sample" method="post" action="{{ route('admin.project.facility.store') }}">
                         @csrf
                         <x-admin.select-model class="multiple"
-                                              identify="project_base_id"
+                                              identify="base_id"
                                               title="انتخاب نوع پروژه"
                                               key="id"
                                               value="title"
