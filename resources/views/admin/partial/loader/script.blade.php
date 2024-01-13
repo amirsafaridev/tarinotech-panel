@@ -4,7 +4,7 @@
 
 @if (in_array(\App\Enums\Assets\ScriptLoader::MultiSelect(),$load))
     <script src="{{ asset('res-admin/assets/plugins/lou-multi-select/js/jquery.multi-select.js') }}"></script>
-    <script src="{{ asset('res-admin/assets/plugins/lou-multi-select/js/jquery.quicksearch.js') }}"></script>
+    <script src="{{ asset('res-admin/assets/plugins/multipleselect/jquery.quicksearch.js') }}"></script>
 @endif
 
 @if (in_array(\App\Enums\Assets\ScriptLoader::Alert(),$load))
