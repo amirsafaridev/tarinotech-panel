@@ -55,7 +55,7 @@ class ResetPasswordController extends Controller
 
             Auth::guard('admin')->loginUsingId($otp->user_id);
 
-            return redirect()->to(route('admin.dashboard'));
+            return redirect()->to(route('admin.dashboard.index'));
         } catch (Exception $exception) {
             DB::rollBack();
             report($exception);

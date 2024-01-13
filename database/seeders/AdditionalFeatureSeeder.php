@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Facility;
 use Illuminate\Database\Seeder;
+use Modules\Project\app\Models\Facility;
 
 class AdditionalFeatureSeeder extends Seeder
 {

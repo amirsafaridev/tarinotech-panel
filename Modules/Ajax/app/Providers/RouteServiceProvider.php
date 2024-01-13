@@ -55,7 +55,7 @@ class RouteServiceProvider extends ServiceProvider
         $prefix = config('routes.admin-prefix');
         Route::prefix($prefix.'/ajax')
             ->namespace($this->moduleNamespace)
-            ->middleware(['web', 'admin.auth'])
+            ->middleware(['web', 'admin.auth', 'acl'])
             ->as('admin.ajax.')
             ->group(module_path('Ajax', '/routes/admin.php'));
     }

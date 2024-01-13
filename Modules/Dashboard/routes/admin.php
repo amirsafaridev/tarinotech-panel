@@ -1,8 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Modules\Dashboard\app\Http\Controllers\DashboardController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,6 +11,8 @@ use Modules\Dashboard\app\Http\Controllers\DashboardController;
 |
 */
 
-Route::group([], function () {
-    Route::resource('dashboard', DashboardController::class)->names('dashboard');
+use Modules\Dashboard\app\Http\Controllers\Admin\HomeController;
+
+Route::group(['guard' => 'admin'], function () {
+    Route::get('/', [HomeController::class, 'index'])->name('index');
 });

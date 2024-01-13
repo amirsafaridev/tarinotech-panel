@@ -2,7 +2,6 @@
 
 namespace Modules\Project\app\Models;
 
-use App\Models\Facility;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

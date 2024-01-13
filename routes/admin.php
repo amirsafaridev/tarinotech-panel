@@ -1,15 +1,15 @@
 <?php
 
 use App\Http\Controllers\Admin\AutoMessageController;
-use App\Http\Controllers\Admin\FacilityController;
 use App\Http\Controllers\Admin\GroupGoalController;
-use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\Report\GoalGroupController as GoalGroupControllerReport;
 use App\Http\Controllers\Admin\Report\LoginController;
 use App\Http\Controllers\Admin\SampleMessageController;
 use App\Http\Controllers\Admin\SettingController;
 use Illuminate\Support\Facades\Route;
 use Modules\Admin\app\Http\Controllers\Admin\GoalReportController as GoalControllerReport;
+use Modules\Dashboard\app\Http\Controllers\Admin\HomeController;
+use Modules\Project\app\Http\Controllers\Admin\FacilityController;
 
 /**
  * TODO
@@ -18,8 +18,7 @@ use Modules\Admin\app\Http\Controllers\Admin\GoalReportController as GoalControl
  */
 Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], function () {
     /* this function for help to route ui dashboard */
-    Route::get('/', [HomeController::class, 'redirect'])->name('home');
-    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
+    Route::get('/admin', [HomeController::class, 'redirect'])->name('home');
 
     Route::controller(GroupGoalController::class)->group(function () {
         Route::get('/group-goal', 'index')->name('admin.group-goal');

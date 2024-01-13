@@ -15,7 +15,7 @@
         <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.role.index') }}">نقش ها</a></li>
                 <li class="breadcrumb-item active">ویرایش</li>
             </ol>
@@ -33,7 +33,16 @@
 
                         <x-admin.input identify="name" :title="trans('fields.role.name')" type="text" :old="$role->name" />
 
-                        <x-admin.select-permission class="multiple" identify="permissions[]" :title="trans('fields.role.permissions')" :items="$permissions" key="id" value="name"/>
+                        <div class="form-group">
+                            <label for="permissions" class="form-label">مجوزها</label>
+                            <select class="form-control" name="permissions[]" id="permissions" multiple="multiple">
+                                @if ($permissions->isNotEmpty())
+                                    @foreach ($permissions as $item)
+                                        <option @if(in_array($item->id,$permissionSelected)) selected="selected" @endif value="{{ $item->name }}">{{ $item->name }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
 
                         <div class="d-flex align-items-center gap-10 my-3">
                             <button id="btn-select" class="btn btn-sm btn-outline-info" type="button">{{ trans('fields.role.select_all') }}</button>
@@ -59,6 +68,7 @@
         'load'=>[
             \App\Enums\Assets\ScriptLoader::MultiSelect(),
             \App\Enums\Assets\ScriptLoader::Alert(),
+            \App\Enums\Assets\ScriptLoader::Select2(),
         ],
     ])
     @include('admin.partial.request')

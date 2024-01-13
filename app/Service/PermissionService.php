@@ -7,6 +7,10 @@ use Spatie\Permission\Models\Permission;
 
 class PermissionService
 {
+    public array $additionalPermissions = [
+        'SUPER_ADMIN',
+    ];
+
     public function sync(): int
     {
         $routes = Route::getRoutes();
@@ -31,11 +35,25 @@ class PermissionService
             }
         }
 
+        foreach ($this->additionalPermissions as $additionalPermission) {
+            $checkExist = $currentPermissions->where('name', $additionalPermission)->first();
+
+            $permissionName = $this->generatePermissionName($additionalPermission);
+
+            if (! $checkExist) {
+                Permission::query()->create([
+                    'name' => $permissionName,
+                    'title' => $permissionName,
+                ]);
+                $countCreated++;
+            }
+        }
+
         return $countCreated;
     }
 
     private function generatePermissionName($routeName): string
     {
-        return strtoupper(str_replace(['.', '-'], ['_'], $routeName));
+        return str($routeName)->replace(['-', '.'], '_')->upper();
     }
 }

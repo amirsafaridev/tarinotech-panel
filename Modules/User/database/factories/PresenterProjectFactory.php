@@ -5,7 +5,7 @@ namespace Modules\User\database\factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PresenterProject>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Modules\Admin\app\Models\PresenterProject>
  */
 class PresenterProjectFactory extends Factory
 {

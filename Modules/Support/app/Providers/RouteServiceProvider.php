@@ -55,7 +55,7 @@ class RouteServiceProvider extends ServiceProvider
         $prefix = config('routes.admin-prefix');
         Route::prefix($prefix.'/support')
             ->namespace($this->moduleNamespace)
-            ->middleware(['web', 'admin.auth'])
+            ->middleware(['web', 'admin.auth', 'acl'])
             ->as('admin.support.')
             ->group(module_path('Support', '/routes/admin.php'));
     }

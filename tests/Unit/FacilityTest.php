@@ -5,8 +5,8 @@ namespace Tests\Unit;
 use App\Enums\Database\Facility\FinancialCycle;
 use App\Enums\Database\Facility\PriceType;
 use App\Enums\Database\Facility\WorkCycle;
-use App\Models\ProjectFacility;
 use App\Service\FacilityCalculate;
+use Modules\Project\app\Models\ProjectFacility;
 use PHPUnit\Framework\TestCase;
 
 class FacilityTest extends TestCase

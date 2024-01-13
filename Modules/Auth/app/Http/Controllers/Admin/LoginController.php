@@ -41,7 +41,7 @@ class LoginController extends Controller
         $this->guard()->logout();
         $request->session()->invalidate();
 
-        return $this->loggedOut($request) ?: redirect()->route('admin.dashboard');
+        return $this->loggedOut($request) ?: redirect()->route('admin.dashboard.index');
     }
 
     protected function validateLogin(Request $request)
@@ -69,6 +69,6 @@ class LoginController extends Controller
 
     public function redirectTo()
     {
-        return route('admin.dashboard');
+        return route('admin.dashboard.index');
     }
 }

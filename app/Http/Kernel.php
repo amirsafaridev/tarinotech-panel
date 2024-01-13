@@ -83,6 +83,7 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'ensure.presenter' => IsPresenterUser::class,
+        'acl' => CheckPermission::class,
     ];
 
     /**

@@ -107,6 +107,6 @@ class ProfileController extends Controller
         auth()->logout();
         $request->session()->invalidate();
 
-        return redirect()->route('admin.dashboard');
+        return redirect()->route('admin.dashboard.index');
     }
 }

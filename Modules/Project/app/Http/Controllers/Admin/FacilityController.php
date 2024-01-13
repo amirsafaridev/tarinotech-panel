@@ -1,17 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace Modules\Project\app\Http\Controllers\Admin;
 
 use App\Enums\General\BtnType;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Facility\StoreRequest;
 use App\Http\Requests\Admin\Facility\UpdateRequest;
-use App\Models\Facility;
 use Exception;
 use Illuminate\Http\Request;
+use Modules\Project\app\Models\Facility;
 use Modules\Project\app\Models\ProjectBase;
 use Yajra\DataTables\Facades\DataTables;
+
+use function formatJalaliDateTime;
+use function redirect;
+use function report;
+use function response;
+use function route;
+use function trans;
+use function view;
 
 class FacilityController extends Controller
 {

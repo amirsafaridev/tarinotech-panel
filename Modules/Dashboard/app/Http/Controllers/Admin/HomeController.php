@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace Modules\Dashboard\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
@@ -19,11 +19,11 @@ class HomeController extends Controller
 
         $title = trans('panel.dashboard.title');
 
-        return view('admin.home.index', compact('title', 'data'));
+        return view('dashboard::admin.index', compact('title', 'data'));
     }
 
     public function redirect()
     {
-        return Redirect::route('admin.dashboard');
+        return Redirect::route('admin.dashboard.index');
     }
 }

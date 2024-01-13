@@ -1,16 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace Modules\Package\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PackagePrice\UpdateRequest;
-use App\Models\PackagePrice;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
 use Modules\Package\app\Models\Package;
+use Modules\Package\app\Models\PackagePrice;
 
-class PackagePriceController extends Controller
+use function redirect;
+use function report;
+use function response;
+use function route;
+use function trans;
+use function view;
+
+class PriceController extends Controller
 {
     public function edit(Package $package, PackagePrice $packagePrice)
     {

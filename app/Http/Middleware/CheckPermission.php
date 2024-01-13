@@ -4,7 +4,6 @@
 
 namespace App\Http\Middleware;
 
-use App;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Stringable;
@@ -13,12 +12,16 @@ class CheckPermission
 {
     public function handle(Request $request, Closure $next)
     {
-        if (! App::isLocal()) {
-            return $next($request);
-        }
-        $permission = $this->getName();
+
+        $permission = str($this->getName())->upper()->prepend('ADMIN_')->toString();
+
         $allowPermissions = [
             'permission_sync',
+            'ADMIN_ADMIN_PROFILE_INDEX',
+            'ADMIN_ADMIN_PROFILE_UPDATE',
+            'ADMIN_ADMIN_PROFILE_PASSWORD',
+            'ADMIN_ADMIN_PROFILE_PASSWORD_UPDATE',
+            'ADMIN_ADMIN_PROFILE_LOGOUT',
         ];
         if (in_array($permission, $allowPermissions) || $request->user('admin')->hasPermissionTo($permission)) {
             return $next($request);

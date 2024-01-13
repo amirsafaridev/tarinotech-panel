@@ -11,12 +11,12 @@
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">امکانات جانبی - ویرایش</h1>
+        <h1 class="page-title">انواع پروژه ها - ویرایش</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.facility.index') }}">امکانات جانبی</a></li>
-                <li class="breadcrumb-item active">ویرایش</li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.project.type.index') }}">انواع پروژه ها</a></li>
+                <li class="breadcrumb-item active">ویرایش نوع</li>
             </ol>
         </div>
     </div>
@@ -30,19 +30,18 @@
                         @csrf
                         @method('PATCH')
 
-                        <x-admin.select-model class="multiple"
-                                              identify="project_base_id"
+                        <x-admin.select-model class="multiple" identify="project_base_id"
                                               title="انتخاب نوع پروژه"
+                                              :items="$projectBases"
                                               key="id"
                                               value="title"
-                                              :items="$projectBases"
-                                              :old="$facility->project_base_id"/>
+                                              :old="$projectType->project_base_id"/>
 
-                        <x-admin.input identify="title" title="عنوان" :old="$facility->title"/>
+                        <x-admin.input identify="title" title="عنوان" :old="$projectType->title"/>
 
                         <x-admin.button-submit title="{{ trans('panel.update') }}"/>
-
                         <x-admin.button-delete/>
+
                     </form>
 
                     <form id="deleteItem" action="{{ $routeDestroy }}" method="post" class="form-inline">
@@ -63,7 +62,7 @@
     @include('admin.partial.request')
     <script>
         $(document).ready(function (){
-            activeParentUl('{{ route('admin.facility.index') }}');
-        })
+            activeParentUl('{{ route('admin.project.type.index') }}');
+        });
     </script>
 @endsection

@@ -8,7 +8,7 @@
         <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.presenter.index') }}">نمایندگان</a></li>
                 <li class="breadcrumb-item active">نمایش</li>
             </ol>

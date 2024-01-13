@@ -34,7 +34,7 @@ Route::group(['guard' => 'admin', 'prefix' => 'presenter', 'as' => 'presenter.']
     Route::post('/', [PresenterController::class, 'store'])->name('store');
     Route::patch('/{user}', [PresenterController::class, 'update'])->name('update');
     Route::delete('/{user}', [PresenterController::class, 'destroy'])->name('destroy');
-})->middleware('ensure.presenter');
+});
 
 Route::group(['guard' => 'admin', 'prefix' => 'knowledge-way', 'as' => 'knowledge-way.'], function () {
     Route::get('/', [KnowledgeWayController::class, 'index'])->name('index');

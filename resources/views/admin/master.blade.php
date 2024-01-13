@@ -52,7 +52,7 @@
                     <a aria-label="Hide Sidebar" class="app-sidebar__toggle" data-bs-toggle="sidebar" href="javascript:void(0)">
                         <i class="fal fa-navicon"></i>
                     </a>
-                    <a class="logo-horizontal d-none" href="{{ route('admin.dashboard') }}">
+                    <a class="logo-horizontal d-none" href="{{ route('admin.dashboard.index') }}">
                         <img src="{{ asset('res-admin/assets/images/brand/logo.png') }}" class="header-brand-img desktop-logo" alt="logo">
                         <img src="{{ asset('res-admin/assets/images/brand/logo-dark.png') }}" class="header-brand-img light-logo1" alt="logo">
                     </a>

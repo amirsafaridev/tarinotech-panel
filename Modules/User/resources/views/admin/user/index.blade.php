@@ -9,7 +9,7 @@
         <h1 class="page-title">مدیریت مشتری ها</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item active">لیست مشتری ها</li>
             </ol>
         </div>

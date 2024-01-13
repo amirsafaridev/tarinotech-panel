@@ -19,3 +19,16 @@ Route::get('/test/send-email', [TestController::class, 'sendEmail']);
 Route::get('/test/aws-upload', [TestController::class, 'awsUpload']);
 Route::get('/test/aws-list', [TestController::class, 'awsList']);
 Route::get('/deploy', [DeployController::class, 'index']);
+
+Route::get('/echo-permission', function () {
+    $routes = Route::getRoutes();
+    foreach ($routes as $route) {
+        $name = $route->getName();
+        $nameUpper = str($name)->upper()->replace(['-', '.'], '_');
+        if (str($name)->startsWith('admin.')) {
+            echo str($name).'<br>';
+            echo $nameUpper.'<br>';
+            echo '<hr>';
+        }
+    }
+});
