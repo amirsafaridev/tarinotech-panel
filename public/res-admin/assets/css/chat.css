@@ -229,3 +229,15 @@
     margin: 10px 0;
     border-radius: 5px;
 }
+.sample-message-row{
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #2d2d4e;
+    margin-bottom: 10px;
+    border: 1px solid rgba(193, 193, 193, 0.23);
+    transition: all 0.2s ease-in-out;
+}
+
+.sample-message-row:hover{
+    background-color: #2c2c55;
+}

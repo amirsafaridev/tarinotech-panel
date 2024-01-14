@@ -1,10 +1,12 @@
 <?php
 
-namespace Database\Seeders;
+namespace Modules\Support\database\seeders;
 
 use App\Enums\Database\SampleMessage\MessageType;
-use App\Models\SampleMessage;
 use Illuminate\Database\Seeder;
+use Modules\Support\app\Models\SampleMessage;
+
+use function now;
 
 class SampleMessageSeeder extends Seeder
 {

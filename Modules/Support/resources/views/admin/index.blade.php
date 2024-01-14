@@ -59,9 +59,10 @@
                                     <x-admin.input type="file" identify="file-attachment" id="file-attachment"/>
                                 </div>
                                 <div class="action mt-2">
-                                    <button type="button" class="btn btn-pill btn-icon btn-gray">
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#sample-message-modal" class="btn btn-pill btn-icon btn-gray">
                                         <span class="fal mt-1 fa-message"></span>
                                     </button>
+
                                     <button type="button" id="btn-microphone" class="btn btn-pill btn-icon btn-danger">
                                         <span class="fal mt-1 fa-microphone"></span>
                                     </button>
@@ -91,6 +92,7 @@
             </div>
         </div>
     </div>
+    @include('support::admin.part.modal-ready-message');
 @endsection
 @section('script')
     @include('admin.partial.loader.script',['load'=>[

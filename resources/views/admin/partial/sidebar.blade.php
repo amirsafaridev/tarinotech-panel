@@ -187,6 +187,10 @@
                         @can('ADMIN_SUPPORT_INDEX')
                             <li><a href="{{ route('admin.support.index') }}" class="slide-item">لیست</a></li>
                         @endcan
+
+                        @can('ADMIN_SUPPORT_SAMPLE_MESSAGE_INDEX')
+                            <li><a href="{{ route('admin.support.sample-message.index') }}" class="slide-item">پیام های آماده</a></li>
+                        @endcan
                     </ul>
                 </li>
 
@@ -275,10 +279,6 @@
                     <ul class="slide-menu">
                         @can('ADMIN_SETTING_INDEX')
                             <li><a href="{{ route('admin.setting.index') }}" class="slide-item">تنظیمات پایه</a></li>
-                        @endcan
-
-                        @can('ADMIN_SAMPLE_MESSAGE_INDEX')
-                            <li><a href="{{ route('admin.sample-message.index') }}" class="slide-item">پیام های آماده</a></li>
                         @endcan
 
                         @can('ADMIN_AUTO_MESSAGE_INDEX')

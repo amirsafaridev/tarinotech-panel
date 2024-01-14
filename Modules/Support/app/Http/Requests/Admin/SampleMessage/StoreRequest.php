@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Support\app\Http\Requests\Admin;
+namespace Modules\Support\app\Http\Requests\Admin\SampleMessage;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -21,9 +21,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'title' => 'required|max:255',
-            'project_id' => 'required|integer|exists:projects,id',
-            'admin_id' => 'required|array',
-            'logo' => 'required|image|mimes:img,png,jpeg|max:5024',
+            'message' => 'required',
         ];
     }
 }

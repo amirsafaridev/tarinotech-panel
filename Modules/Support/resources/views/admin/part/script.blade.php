@@ -114,9 +114,11 @@
     }
 
     /* Message Script */
+
     const messageContainer = $('#message-container');
     const replayContainer = $('#replay-container');
     const messageForm = $('#message-form');
+    const message = $('#message');
 
     const btnMessageSend = $('#btn-message-send');
     const btnCancelEdit = $('#btn-cancel-edit');
@@ -609,4 +611,64 @@
 
         return new Blob(mp3DataChunks, {type: 'audio/mp3'});
     }
+
+    /* Sample Message Script */
+    const sampleMessageModal = $('#sample-message-modal');
+    const sampleMessageContainer = $('#sample-message-container');
+    const searchSampleMessage = $('#search_sample_message');
+    let sampleLoaded = false;
+
+    $(document).ready(function () {
+        setupSampleModal();
+        setupSampleMessageSearch();
+        setupSampleMessageSelect();
+    });
+
+    function setupSampleMessageSelect(){
+        sampleMessageContainer.on('click','.sample-message-row',function (){
+            message.val($(this).find('.message').html());
+        })
+    }
+
+    function setupSampleModal(){
+        sampleMessageModal.on('shown.bs.modal', () => {
+            if(!sampleLoaded){
+                getSampleMessages();
+            }
+        })
+    }
+
+    const debouncedSampleMessageSearch = setupDebounce(getSampleMessages, 1000);
+
+    function setupSampleMessageSearch(){
+        searchSampleMessage.on("input", function () {
+            debouncedSampleMessageSearch();
+        });
+    }
+
+    function getSampleMessages(){
+
+        const filter = [
+            `search=${searchSampleMessage.val()}`
+        ];
+        sampleMessageContainer.prepend(loadingMotion)
+        $.ajax({
+            url: '{{ route('admin.support.sample-message.message') }}?' + filter.join('&'),
+            type: 'GET',
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                let messages = '';
+                response.sampleMessages.forEach(function (message) {
+                    messages += message.htmlRender;
+                });
+                sampleMessageContainer.find('.loading').remove();
+                sampleMessageContainer.html(messages);
+            },
+            error: function (error) {
+                console.error('Error Get Sample Messages:', error);
+            }
+        });
+    }
+
 </script>

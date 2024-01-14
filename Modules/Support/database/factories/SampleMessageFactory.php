@@ -1,15 +1,18 @@
 <?php
 
-namespace Database\Factories;
+namespace Modules\Support\database\factories;
 
 use App\Enums\Database\SampleMessage\MessageType;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Support\app\Models\SampleMessage;
 
 /**
  * @extends Factory
  */
 class SampleMessageFactory extends Factory
 {
+    protected $model = SampleMessage::class;
+
     /**
      * Define the model's default state.
      *

@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Enums\Database\SampleMessage\MessageType;
-use App\Models\SampleMessage;
 use Illuminate\Database\Seeder;
+use Modules\Support\app\Models\SampleMessage;
 
 class AutoMessageSeeder extends Seeder
 {

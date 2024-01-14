@@ -7,10 +7,10 @@ use App\Enums\General\BtnType;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AutoMessage\UpdateRequest;
-use App\Models\SampleMessage;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
+use Modules\Support\app\Models\SampleMessage;
 use Yajra\DataTables\Facades\DataTables;
 
 class AutoMessageController extends Controller

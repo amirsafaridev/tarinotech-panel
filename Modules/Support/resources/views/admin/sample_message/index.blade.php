@@ -6,11 +6,11 @@
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">پیام های آماده</h1>
+        <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item active">پیام های آماده</li>
+                <li class="breadcrumb-item active">{{ $title }}</li>
             </ol>
         </div>
     </div>
@@ -19,9 +19,9 @@
         <div class="col-xl-12 col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title">پیام های آماده</h3>
-                    @can('ADMIN_SAMPLE_MESSAGE_CREATE')
-                        <a class="btn btn-success btn-sm" href="{{ route('admin.sample-message.create') }}">ایجاد</a>
+                    <div class="card-title">{{ $title }}</div>
+                    @can('ADMIN_SUPPORT_SAMPLE_MESSAGE_CREATE')
+                        <a class="btn btn-primary" href="{{ route('admin.support.sample-message.create') }}">ایجاد</a>
                     @endcan
                 </div>
                 <div class="card-body">
@@ -30,20 +30,20 @@
                         <table id="data-table" class="table">
                             <thead>
                             <tr>
-                                @foreach($selects as $select)
-                                    <th>{{ trans('datatable.'.$select)}}</th>
+                                @foreach ($dataTable['columns'] as $column)
+                                    <th>{{ $column['as'] }}</th>
                                 @endforeach
-                                <th>{{ trans('datatable.action') }}</th>
                             </tr>
                             </thead>
+
                             <tfoot>
                             <tr>
-                                @foreach($selects as $select)
-                                    <th>{{ trans('datatable.'.$select)}}</th>
+                                @foreach ($dataTable['columns'] as $column)
+                                    <th>{{ $column['as'] }}</th>
                                 @endforeach
-                                <th>{{ trans('datatable.action') }}</th>
                             </tr>
                             </tfoot>
+
                             <tbody>
                             </tbody>
                         </table>
@@ -55,5 +55,5 @@
 @endsection
 @section('script')
     @include('admin.partial.loader.script',['load'=>[\App\Enums\Assets\ScriptLoader::DataTable()]])
-    @include('admin.partial.datatable')
+    @include('admin.partial.datatable2')
 @endsection

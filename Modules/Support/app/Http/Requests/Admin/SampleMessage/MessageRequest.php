@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Support\app\Http\Requests\Admin;
+namespace Modules\Support\app\Http\Requests\Admin\SampleMessage;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequest extends FormRequest
+class MessageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,10 +20,7 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|max:255',
-            'project_id' => 'required|integer|exists:projects,id',
-            'admin_id' => 'required|array',
-            'logo' => 'nullable|image|mimes:img,png,jpeg|max:5024',
+            'search' => 'alpha_num',
         ];
     }
 }

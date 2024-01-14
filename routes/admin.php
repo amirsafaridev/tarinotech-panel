@@ -4,7 +4,6 @@ use App\Http\Controllers\Admin\AutoMessageController;
 use App\Http\Controllers\Admin\GroupGoalController;
 use App\Http\Controllers\Admin\Report\GoalGroupController as GoalGroupControllerReport;
 use App\Http\Controllers\Admin\Report\LoginController;
-use App\Http\Controllers\Admin\SampleMessageController;
 use App\Http\Controllers\Admin\SettingController;
 use Illuminate\Support\Facades\Route;
 use Modules\Admin\app\Http\Controllers\Admin\GoalReportController as GoalControllerReport;
@@ -42,16 +41,6 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
     Route::controller(SettingController::class)->group(function () {
         Route::get('/setting', 'index')->name('setting.index');
         Route::patch('/setting', 'update')->name('setting.update');
-    });
-
-    Route::controller(SampleMessageController::class)->group(function () {
-        Route::get('/sample-message', 'index')->name('sample-message.index');
-        Route::get('/sample-message/data', 'data')->name('sample-message.data');
-        Route::get('/sample-message/create', 'create')->name('sample-message.create');
-        Route::post('/sample-message/store', 'store')->name('sample-message.store');
-        Route::get('/sample-message/{sampleMessage}/edit', 'edit')->name('sample-message.edit');
-        Route::patch('/sample-message/{sampleMessage}/update', 'update')->name('sample-message.update');
-        Route::delete('/sample-message/{sampleMessage}/destroy', 'destroy')->name('sample-message.destroy');
     });
 
     Route::controller(AutoMessageController::class)->group(function () {

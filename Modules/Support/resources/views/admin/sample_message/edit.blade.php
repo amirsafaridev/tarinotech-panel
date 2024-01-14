@@ -11,11 +11,11 @@
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">پیام های آماده - ویرایش</h1>
+        <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.sample-message.index') }}">پیام های آماده</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.support.sample-message.index') }}">پیام های آماده</a></li>
                 <li class="breadcrumb-item active">ویرایش</li>
             </ol>
         </div>
@@ -26,7 +26,7 @@
             <div class="card">
                 <div class="card-body pb-3">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ $routeUpdate }}">
+                    <form class="request-form forms-sample" method="post" action="{{ route('admin.support.sample-message.update',$sampleMessage->id) }}">
                         @csrf
                         @method('PATCH')
 
@@ -39,7 +39,7 @@
                         <x-admin.button-delete/>
                     </form>
 
-                    <form id="deleteItem" action="{{ $routeDestroy }}" method="post" class="form-inline">
+                    <form id="deleteItem" action="{{ route('admin.support.sample-message.destroy',$sampleMessage->id) }}" method="post" class="form-inline">
                         @csrf
                         @method('DELETE')
                     </form>
@@ -59,8 +59,8 @@
     @include('admin.partial.ckeditor')
     <script>
         $(document).ready(function () {
-            CKEDITOR.replace( 'message');
-            activeParentUl('{{ route('admin.sample-message.index') }}');
+            //CKEDITOR.replace( 'message');
+            activeParentUl('{{ route('admin.support.sample-message.index') }}');
         })
     </script>
 @endsection
