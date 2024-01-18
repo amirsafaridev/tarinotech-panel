@@ -28,6 +28,8 @@
 
     @yield('head')
 
+    @stack('styles')
+
     <link id="theme" rel="stylesheet" type="text/css" media="all" href="{{ asset('res-admin/assets/css/my-style.css') }}" />
 
 
@@ -152,6 +154,8 @@
 <script src="{{ asset('res-admin/assets/js/custom.js') }}"></script>
 
 @yield('script')
+
+@stack('scripts');
 
 <script>
     $(document).ready(function () {

@@ -188,12 +188,28 @@
                             <li><a href="{{ route('admin.support.index') }}" class="slide-item">لیست</a></li>
                         @endcan
 
+                        @can('ADMIN_SUPPORT_NOTIFY_INDEX')
+                            <li><a href="{{ route('admin.support.notify.index') }}" class="slide-item">اطلاعیه ها</a></li>
+                        @endcan
+
                         @can('ADMIN_SUPPORT_SAMPLE_MESSAGE_INDEX')
                             <li><a href="{{ route('admin.support.sample-message.index') }}" class="slide-item">پیام های آماده</a></li>
                         @endcan
                     </ul>
                 </li>
 
+                <li class="slide can-expand">
+                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navSupport">
+                        <i class="side-menu__icon fal fa-comment"></i>
+                        <span class="side-menu__label">تیکت ها</span><i class="angle fal fa-angle-left"></i>
+                    </a>
+
+                    <ul class="slide-menu">
+                        @can('ADMIN_TICKET_INDEX')
+                            <li><a href="{{ route('admin.ticket.index') }}" class="slide-item">لیست</a></li>
+                        @endcan
+                    </ul>
+                </li>
 
                 <li class="sub-category">
                     <h3>امور مالی</h3>

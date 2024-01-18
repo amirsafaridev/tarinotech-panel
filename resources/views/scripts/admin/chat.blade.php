@@ -21,7 +21,23 @@
         setupSelectChat();
         setupGroupSearch();
         messageForm[0].reset();
+
+        setChatId();
+
+        @if($chat->id)
+            loadMessage(chatId.val());
+            messageHeader.title.html('{{ $chat->title }}');
+            @if($chat->project_id)
+                messageHeader.description.html('{{ $chat->project->title }} - {{ $chat->project->domain }}');
+            @endif
+        @endif
     })
+
+    function setChatId(){
+        @if($chat->id)
+            chatId.val(parseInt('{{ $chat->id }}'));
+        @endif
+    }
 
     function setScrollPagination() {
         chatContainer.scroll(function () {
@@ -292,6 +308,7 @@
         /* Reset Replay */
         replayContainer.html('');
         parentId.val('');
+        setChatId();
     }
 
     function setMessagesScrollPagination() {

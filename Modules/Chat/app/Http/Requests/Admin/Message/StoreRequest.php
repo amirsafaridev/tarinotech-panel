@@ -21,7 +21,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'message' => 'required',
-            'chat_id' => 'required|integer|exists:chats,id',
+            'chat_id' => 'required|integer',
             'parent_id' => 'nullable|integer',
             'files' => 'nullable|array',
             'files.*' => 'integer',

@@ -2,6 +2,8 @@
 
 namespace Modules\Chat\app\Http\Controllers\Admin;
 
+use App\Enums\Database\Chat\ChatStatus;
+use App\Enums\Database\Chat\ChatType;
 use App\Http\Controllers\Controller;
 use App\Traits\HasJsonCommonResponse;
 use DB;
@@ -12,6 +14,7 @@ use Modules\Chat\app\Http\Requests\Admin\Message\EditRequest;
 use Modules\Chat\app\Http\Requests\Admin\Message\IndexRequest;
 use Modules\Chat\app\Http\Requests\Admin\Message\StoreRequest;
 use Modules\Chat\app\Http\Requests\Admin\Message\UpdateRequest;
+use Modules\Support\app\Models\Chat;
 use Modules\Support\app\Models\ChatMessage;
 use Modules\Support\app\Models\ChatMessageAttachment;
 use Modules\Support\app\Models\ChatUser;
@@ -70,10 +73,15 @@ class MessageController extends Controller
         try {
             DB::beginTransaction();
 
+            $chatId = $request->input('chat_id');
+
+            /* Find Chat */
+            $chat = Chat::query()->findOrFail($chatId);
+
             /* Update Seen */
             ChatUser::query()
                 ->where('user_id', auth()->id())
-                ->where('chat_id', $request->input('chat_id'))
+                ->where('chat_id', $chatId)
                 ->update([
                     'seen_at' => now(),
                 ]);
@@ -94,6 +102,14 @@ class MessageController extends Controller
                     ->update([
                         'chat_message_id' => $message->id,
                     ]);
+            }
+
+            $chat->touch();
+
+            if ($chat->type === ChatType::Ticket) {
+                /*$chat->update([
+                    'status' => ChatStatus::AdminAnswer,
+                ]);*/
             }
 
             DB::commit();

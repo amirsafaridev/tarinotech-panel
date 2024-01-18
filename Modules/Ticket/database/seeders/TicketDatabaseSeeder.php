@@ -11,6 +11,8 @@ class TicketDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call([]);
+        $this->call([
+            TicketSeeder::class,
+        ]);
     }
 }

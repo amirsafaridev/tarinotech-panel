@@ -12,6 +12,7 @@ class SupportDatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            NotifySeeder::class,
             SampleMessageSeeder::class,
         ]);
     }

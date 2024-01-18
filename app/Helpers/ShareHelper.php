@@ -163,3 +163,18 @@ if (! function_exists('compressHtml')) {
         return preg_replace($search, $replace, $html);
     }
 }
+if (! function_exists('makeUiStar')) {
+    function makeUiStar(int $star): string
+    {
+        $htmlRender = '';
+        for ($i = 1; $i <= 5; $i++) {
+            if ($i <= $star) {
+                $htmlRender .= '<i class="fas fa-star text-warning"></i>';
+            } else {
+                $htmlRender .= '<i class="fal fa-star"></i>';
+            }
+        }
+
+        return $htmlRender;
+    }
+}

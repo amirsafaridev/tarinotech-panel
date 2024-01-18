@@ -10,4 +10,8 @@ final class ChatStatus extends Enum implements LocalizedEnum
     const Open = 1;
 
     const Close = 2;
+
+    const UserAnswer = 3;
+
+    const AdminAnswer = 4;
 }

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Support\app\Http\Controllers\Admin\GroupController;
+use Modules\Support\app\Http\Controllers\Admin\NotifyController;
 use Modules\Support\app\Http\Controllers\Admin\SampleMessageController;
 use Modules\Support\app\Http\Controllers\Admin\SupportController;
 
@@ -15,6 +16,10 @@ Route::group(['guard' => 'admin'], function () {
         Route::post('/', [GroupController::class, 'store'])->name('store');
         Route::patch('/{chat}', [GroupController::class, 'update'])->name('update');
         Route::delete('/{chat}', [GroupController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::group(['guard' => 'admin', 'as' => 'notify.', 'prefix' => 'notify'], function () {
+        Route::get('/', [NotifyController::class, 'index'])->name('index');
     });
 
     Route::group(['as' => 'sample-message.', 'prefix' => 'sample-message'], function () {
