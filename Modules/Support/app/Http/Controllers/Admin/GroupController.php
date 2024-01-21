@@ -35,7 +35,7 @@ class GroupController extends Controller
         $search = request()->input('search');
 
         $chatsPaginator = Chat::query()
-            ->select(['id', 'title', 'logo', 'status', 'updated_at', 'created_at'])
+            ->select(['id', 'title', 'logo', 'status', 'project_id', 'updated_at', 'created_at'])
             ->with(['users.user', 'project'])
             ->when(! empty($search), function ($q) use ($search) {
                 $q->whereHas('project', function ($q) use ($search) {
