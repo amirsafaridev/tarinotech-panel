@@ -51,5 +51,22 @@ class ViewComposerProvider extends ServiceProvider
 
             $view->with(compact('projects', 'admins'));
         });
+
+        view()->composer(['support::admin.notify.edit'], function ($view) {
+
+            $admins = Admin::query()
+                ->with('jobTitle')
+                ->has('jobTitle')
+                ->get()
+                ->map(function (Admin $admin) {
+                    $data = $admin;
+                    $data['optionTitle'] = sprintf('%s %s - (%s)', $admin->first_name, $admin->last_name, $admin?->jobTitle->title);
+
+                    return $data;
+
+                });
+
+            $view->with(compact('admins'));
+        });
     }
 }

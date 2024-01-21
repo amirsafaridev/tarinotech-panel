@@ -3,9 +3,18 @@
         <div class="d-flex flex-column">
             <div class="d-flex align-items-center" id="message-header-container">
                 <img class="w-7 h-7 rounded m-logo d-none" src="" alt="">
-                <div class="ms-3">
-                    <h5 class="card-title m-title">یک گفتگو را انتخاب کنید</h5>
-                    <h6 class="card-subtitle mb-0 text-muted m-description"></h6>
+                <div class="ms-3 w-100 d-flex justify-content-between">
+                   <div>
+                       <h5 class="card-title m-title">یک گفتگو را انتخاب کنید</h5>
+                       <h6 class="card-subtitle mb-0 text-muted m-description">نمایش گفتگو</h6>
+                   </div>
+                    <div>
+                        @if(isset($chat))
+                            @if($chat->type === \App\Enums\Database\Chat\ChatType::Public)
+                                <a class="btn btn-success" href="{{ route('admin.support.notify.edit',$chat->id) }}">ویرایش کانال</a>
+                            @endif
+                        @endif
+                    </div>
                 </div>
             </div>
             <hr class="hr-message">

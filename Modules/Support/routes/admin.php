@@ -20,6 +20,8 @@ Route::group(['guard' => 'admin'], function () {
 
     Route::group(['guard' => 'admin', 'as' => 'notify.', 'prefix' => 'notify'], function () {
         Route::get('/', [NotifyController::class, 'index'])->name('index');
+        Route::get('/{chat}', [NotifyController::class, 'edit'])->name('edit');
+        Route::patch('/{chat}', [NotifyController::class, 'update'])->name('update');
     });
 
     Route::group(['as' => 'sample-message.', 'prefix' => 'sample-message'], function () {

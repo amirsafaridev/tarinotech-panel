@@ -2,8 +2,10 @@
 
 namespace Modules\Chat\app\Http\Middleware;
 
+use App\Enums\Database\Chat\ChatType;
 use Closure;
 use Illuminate\Http\Request;
+use Modules\Support\app\Models\Chat;
 use Modules\Support\app\Models\ChatUser;
 
 class ChatAccess
@@ -15,7 +17,13 @@ class ChatAccess
     {
         $chatId = $request->input('chat_id');
 
-        if (! $chatId || ! $this->userCanAccessChat($chatId)) {
+        $chat = Chat::query()->findOrFail($chatId);
+
+        if ($chat->type === ChatType::Public) {
+            return $next($request);
+        }
+
+        if (! $this->userCanAccessChat($chatId)) {
             abort(404);
         }
 
