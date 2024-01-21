@@ -39,7 +39,7 @@ class Chat extends Model
 
     public function project(): BelongsTo
     {
-        return $this->belongsTo(Project::class, 'id');
+        return $this->belongsTo(Project::class, 'project_id');
     }
 
     public function meta(): HasOne
