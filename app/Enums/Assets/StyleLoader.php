@@ -8,6 +8,7 @@ use BenSampo\Enum\Enum;
  * @method static static DataTable()
  * @method static static Toast()
  * @method static static MultiSelect()
+ * @method static static CellPhone()
  * @method static static Alert()
  * @method static static Select2()
  * @method static static Quill()
@@ -31,4 +32,6 @@ final class StyleLoader extends Enum
     const Datepicker = 7;
 
     const Acf = 8;
+
+    const CellPhone = 9;
 }

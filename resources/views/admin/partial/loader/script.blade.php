@@ -11,6 +11,10 @@
     <script src="{{ asset('res-admin/assets/plugins/sweetalert2/sweetalert.min.js') }}"></script>
 @endif
 
+@if (in_array(\App\Enums\Assets\ScriptLoader::CellPhone(),$load))
+    <script src="{{ asset('res-admin/assets/plugins/intlTelInput/js/intlTelInput.js') }}"></script>
+    <script src="{{ asset('res-admin/assets/plugins/intlTelInput/js/intlTelInput-jquery.min.js') }}"></script>
+@endif
 
 @if (in_array(\App\Enums\Assets\ScriptLoader::Select2(),$load))
     <script src="{{ asset('res-admin/assets/plugins/select2/js/select2.full.min.js') }}"></script>

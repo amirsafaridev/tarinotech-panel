@@ -34,7 +34,7 @@ class UserFactory extends Factory
             'document_id' => $this->faker->numerify('########'),
 
             'tel' => $this->faker->numerify('021#####'),
-            'email' => $this->faker->email,
+            'email' => $this->faker->unique()->email(),
 
             'dob' => $this->faker->date,
             'person_type' => PersonType::getRandomValue(),

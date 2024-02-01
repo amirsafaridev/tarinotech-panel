@@ -42,7 +42,6 @@ class User extends Authenticatable
         'father_name',
         'national_id',
         'document_id',
-        'tel',
         'email',
         'avatar',
         'national_photo',
@@ -117,11 +116,21 @@ class User extends Authenticatable
         return $this->morphOne(Login::class, 'user')->latest('login_at');
     }
 
+    public function phones(): HasMany
+    {
+        return $this->hasMany(UseCellphone::class, 'user_id');
+    }
+
     public function fullname(): Attribute
     {
         return new Attribute(
             get: fn () => $this->first_name.' '.$this->last_name
         );
+    }
+
+    public function setEmailAttribute($value)
+    {
+        $this->attributes['email'] = $value !== '' ? $value : null;
     }
 
     public function getActivitylogOptions(): LogOptions

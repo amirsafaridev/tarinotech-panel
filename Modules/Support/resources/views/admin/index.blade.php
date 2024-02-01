@@ -25,14 +25,10 @@
         </div>
         <div class="col-md-5">
             <div class="aw-chat aw-chat-height" id="chat-container">
-                <div class="d-flex justify-content-between align-items-center gap-2 mb-3">
-                    <div class="flex-grow-1">
-                        <x-admin.input identify="search" placeholder="جستجو"/>
-                    </div>
-                    @can('ADMIN_SUPPORT_GROUP_CREATE')
-                        <a href="{{ route('admin.support.group.create') }}" class="btn btn-success">ایجاد گروه</a>
-                    @endcan
+                <div class="flex-grow-1">
+                    <x-admin.input identify="search" placeholder="جستجو"/>
                 </div>
+
                 <div class="" id="chat-group-container">
 
                 </div>

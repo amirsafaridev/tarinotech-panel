@@ -10,6 +10,10 @@
     <link rel="stylesheet" href="{{ asset('res-admin/assets/plugins/lou-multi-select/css/multi-select.css') }}">
 @endif
 
+@if (in_array(\App\Enums\Assets\StyleLoader::CellPhone(),$load))
+    <link rel="stylesheet" href="{{ asset('res-admin/assets/plugins/intlTelInput/css/intlTelInput.min.css') }}">
+@endif
+
 @if (in_array(\App\Enums\Assets\StyleLoader::Alert(),$load))
     <link rel="stylesheet" href="{{ asset('res-admin/assets/plugins/sweetalert2/sweetalert.css') }}">
 @endif

@@ -28,7 +28,14 @@
                     <form class="request-form forms-sample" method="post" action="{{ route('admin.user.store') }}">
                         @csrf
 
-                        <x-admin.input identify="mobile" :title="trans('fields.admin.mobile')" />
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <x-admin.input-phone identify="mobile" title="شماره همراه" />
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <x-admin.input identify="email" title="پست الکرونیکی" />
+                            </div>
+                        </div>
 
                         <div class="row">
                             <div class="col-12 col-md-6">
@@ -42,7 +49,6 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <x-admin.input identify="last_name" title="نام خانوادگی" />
-
                             </div>
                             <div class="col-12 col-md-6">
                                 <x-admin.input identify="en_last_name" title="به لاتین" />
@@ -108,15 +114,7 @@
 
                         <x-admin.input identify="postal_code" title="کدپستی" />
 
-
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <x-admin.input identify="email" title="پست الکترونیکی" type="email" />
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <x-admin.input identify="tel" title="تلفن ثابت" />
-                            </div>
-                        </div>
+                        <x-admin.textarea identify="cellphones" title="شماره های تماس" rows="4" />
 
                         <x-admin.select-enum identify="irnic_status" title="شناسه ایرنیک" :enum-class="\Modules\User\app\Enums\IrnicStatus::class"/>
 
@@ -138,6 +136,8 @@
                         <x-admin.checkbox identify="official_bill" description="درخواست فاکتور رسمی"  />
 
                         <x-admin.button-submit/>
+
+
                     </form>
                 </div>
             </div>
@@ -157,5 +157,4 @@
     @include('admin.partial.script.mask')
 
     @include('user::admin.user.script.share')
-
 @endsection

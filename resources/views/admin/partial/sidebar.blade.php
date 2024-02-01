@@ -188,6 +188,10 @@
                             <li><a href="{{ route('admin.support.index') }}" class="slide-item">لیست</a></li>
                         @endcan
 
+                        @can('ADMIN_SUPPORT_GROUP_CREATE')
+                            <li><a href="{{ route('admin.support.group.create') }}" class="slide-item">ایجاد گروه</a></li>
+                        @endcan
+
                         @can('ADMIN_SUPPORT_NOTIFY_INDEX')
                             <li><a href="{{ route('admin.support.notify.index') }}" class="slide-item">اطلاعیه ها</a></li>
                         @endcan

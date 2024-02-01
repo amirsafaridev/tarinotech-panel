@@ -22,6 +22,7 @@ use Modules\User\app\Http\Requests\Admin\User\UpdateRequest;
 use Modules\User\app\Models\Address;
 use Modules\User\app\Models\Company;
 use Modules\User\app\Models\Irnic;
+use Modules\User\app\Models\UseCellphone;
 use Modules\User\app\Models\User;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -99,6 +100,8 @@ class UserController extends Controller
 
             $this->updateAddress($req, $user->id);
 
+            $this->syncCellphones($user);
+
             DB::commit();
 
             return $this->successResponse();
@@ -111,7 +114,7 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        $user->load(['address', 'company', 'irnic']);
+        $user->load(['address', 'company', 'irnic', 'phones']);
 
         $title = self::EDIT_TITLE;
 
@@ -135,6 +138,8 @@ class UserController extends Controller
             $this->updateIrnic($req, $user->id);
 
             $this->updateAddress($req, $user->id);
+
+            $this->syncCellphones($user);
 
             DB::commit();
 
@@ -182,17 +187,13 @@ class UserController extends Controller
         $userData['father_name'] = $req->input('father_name');
         $userData['national_id'] = $req->input('national_id');
         $userData['document_id'] = $req->input('document_id');
-        $userData['tel'] = $req->input('tel');
-        $userData['email'] = $req->input('email');
+
+        $userData['email'] = $req->input('email') ?? null;
         $userData['person_type'] = $req->input('person_type');
 
         $userData['knowledge_way_id'] = $req->input('knowledge_way_id');
         $userData['knowledge_way'] = $req->input('knowledge_way');
-
-        /** Not required in edit mode */
-        if ($req->input('mobile')) {
-            $userData['mobile'] = $req->input('mobile');
-        }
+        $userData['mobile'] = $req->input('mobile');
 
         $dob = $req->input('dob');
         $userData['dob'] = empty($dob) ? null : Helper::toGregorian($dob);
@@ -307,5 +308,22 @@ class UserController extends Controller
                     ->setAs('عملیات')
             )
             ->render();
+    }
+
+    private function syncCellphones(User $user)
+    {
+        UseCellphone::query()
+            ->where('user_id', $user->id)
+            ->delete();
+
+        $cellphonesText = request()->input('cellphones');
+        if (! $cellphonesText) {
+            return;
+        }
+        $cellphonesArray = explode(PHP_EOL, $cellphonesText);
+        $cellphonesArray = array_filter($cellphonesArray, 'trim');
+        foreach ($cellphonesArray as $cellphone) {
+            $user->phones()->create(['phone' => $cellphone]);
+        }
     }
 }

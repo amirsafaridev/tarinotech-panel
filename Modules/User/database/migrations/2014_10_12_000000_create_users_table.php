@@ -23,8 +23,7 @@ return new class extends Migration
             $table->string('national_photo')->nullable();
             $table->string('national_id')->nullable();
             $table->string('document_id')->nullable();
-            $table->string('tel')->nullable();
-            $table->string('email')->nullable();
+            $table->string('tel')->nullable(); // Removed another migration add cellphones
 
             $table->string('avatar')->nullable();
             $table->date('dob')->nullable();
@@ -34,6 +33,7 @@ return new class extends Migration
             $table->boolean('official_bill')->default(false);
 
             /* Auth */
+            $table->string('email')->nullable(); // Update another migration
             $table->string('mobile')->unique();
             $table->dateTime('verify_at')->nullable();
             $table->boolean('is_block')->default(false);

@@ -17,6 +17,7 @@ use BenSampo\Enum\Enum;
  * @method static Toast()
  * @method static AjaxForm()
  * @method static Recorder()
+ * @method static CellPhone()
  */
 final class ScriptLoader extends Enum
 {
@@ -43,4 +44,6 @@ final class ScriptLoader extends Enum
     const AjaxForm = 11;
 
     const Recorder = 12;
+
+    const CellPhone = 13;
 }

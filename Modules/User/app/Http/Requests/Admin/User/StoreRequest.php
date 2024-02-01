@@ -3,9 +3,9 @@
 namespace Modules\User\app\Http\Requests\Admin\User;
 
 use App\Enums\Database\Company\CompanyType;
-use App\Rules\IRMobile;
 use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Modules\User\app\Enums\IrnicStatus;
 use Modules\User\app\Enums\PersonType;
 
@@ -26,9 +26,7 @@ class StoreRequest extends FormRequest
     {
 
         $rules = [
-            'mobile' => ['required', 'unique:users,mobile', new IRMobile()],
-            'tel' => 'required|max:255',
-            'email' => 'required|max:255',
+            'mobile' => ['required', 'unique:users,mobile'],
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
             'en_first_name' => 'required|max:255',
@@ -47,20 +45,25 @@ class StoreRequest extends FormRequest
             'knowledge_way_id' => 'required|integer|exists:knowledge_ways,id',
             'knowledge_way' => 'max:255',
         ];
+
+        if ($this->input('email')) {
+            $rules['email'] = ['email', Rule::unique('users', 'email')];
+        }
+
         if ($this->input('person_type') === PersonType::Legal) {
-            $rules = [
+            $rules = array_merge($rules, [
                 'company_name' => 'required|max:255',
                 'company_identify' => 'max:255',
                 'company_register_id' => 'max:255',
                 'company_type' => [new EnumValue(CompanyType::class, false)],
-            ];
+            ]);
         }
 
         if ($this->input('irnic_status') === IrnicStatus::HasIt) {
-            $rules = [
+            $rules = array_merge($rules, [
                 'irnic_identify' => 'required|max:255',
                 'irnic_password' => 'required|max:255',
-            ];
+            ]);
         }
 
         return $rules;
@@ -72,6 +75,7 @@ class StoreRequest extends FormRequest
             'irnic_status' => (int) $this->input('irnic_status'),
             'person_type' => (int) $this->input('person_type'),
             'company_type' => (int) $this->input('company_type'),
+            'mobile' => str_replace('+', '', $this->input('mobile')),
         ]);
     }
 }

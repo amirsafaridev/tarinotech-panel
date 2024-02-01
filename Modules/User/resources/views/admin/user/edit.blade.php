@@ -29,7 +29,17 @@
                         @csrf
                         @method('PATCH')
 
-                        <x-admin.input identify="mobile" :title="trans('fields.admin.mobile')" :old="$user->mobile" :disabled="true" />
+                        <x-admin.input identify="id" type="hidden" :old="$user->id"/>
+
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <x-admin.input-phone identify="mobile" :title="trans('fields.admin.mobile')" :old="$user->mobile" />
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <x-admin.input identify="email" title="پست الکرونیکی" :old="$user->email" />
+                            </div>
+                        </div>
+
 
                         <div class="row">
                             <div class="col-12 col-md-6">
@@ -111,15 +121,7 @@
 
                         <x-admin.input identify="postal_code" title="کدپستی" :old="$user->address->postal_code" />
 
-
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <x-admin.input identify="email" title="پست الکترونیکی" type="email" :old="$user->email"/>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <x-admin.input identify="tel" title="تلفن ثابت" :old="$user->tel" />
-                            </div>
-                        </div>
+                        <x-admin.textarea identify="cellphones" title="شماره های تماس" rows="4" :old="$user->phones->implode('phone',PHP_EOL)" />
 
                         <x-admin.select-enum identify="irnic_status" title="شناسه ایرنیک" :enum-class="\Modules\User\app\Enums\IrnicStatus::class" :old="$user->irnic->status"/>
 
