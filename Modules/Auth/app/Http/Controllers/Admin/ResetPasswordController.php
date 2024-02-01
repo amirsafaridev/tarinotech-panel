@@ -30,7 +30,6 @@ class ResetPasswordController extends Controller
     {
         try {
             $otp = OtpCode::query()
-                ->has('user')
                 ->with('user')
                 ->where('code', $request->input('code'))
                 ->where('expired_at', '>', now())

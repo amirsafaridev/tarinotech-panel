@@ -204,7 +204,6 @@ class FactorController extends Controller
 
             $project = Project::query()
                 ->with('user')
-                ->has('user')
                 ->findOrFail($factorData['project_id']);
 
             $user = $project->user;
