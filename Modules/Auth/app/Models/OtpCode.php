@@ -20,10 +20,12 @@ class OtpCode extends Model
 
     protected $fillable = [
         'identify',
+        'user_type',
+        'user_id',
+        'code',
         'expired_at',
         'ip',
         'agent',
-        'code',
     ];
 
     public function user(): MorphTo

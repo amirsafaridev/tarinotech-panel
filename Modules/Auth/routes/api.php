@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\Auth\app\Http\Controllers\Api\LoginController;
+use Modules\Auth\app\Http\Controllers\Api\VerifyController;
 
 /*
     |--------------------------------------------------------------------------
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Route;
     |
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
-    Route::get('auth', fn (Request $request) => $request->user())->name('auth');
+Route::group(['prefix' => 'auth', 'name' => 'auth.'], function () {
+    Route::post('/login', [LoginController::class, 'index']);
+    Route::post('/verify', [VerifyController::class, 'index']);
 });

@@ -58,8 +58,7 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        $login = new Login();
-        $login->userLogin($user);
+        Login::userLogin($user);
     }
 
     protected function credentials(Request $request)

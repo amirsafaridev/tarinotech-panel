@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Str;
 use Modules\Admin\app\Models\Admin;
 use Modules\Log\app\Enums\LogNames;
+use Modules\User\app\Models\User;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -36,7 +37,7 @@ class Login extends Model
         return $this->morphTo();
     }
 
-    public function userLogin(Admin $user)
+    public static function userLogin(Admin|User $user)
     {
         $user->logins()->create([
             'id' => Str::uuid(),
