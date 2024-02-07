@@ -1,4 +1,4 @@
-POST {{ URL }}/api/auth/login
+GET {{ URL }}/api/blog
 Content-Type: application/json
 Accept: application/json
 
@@ -8,7 +8,7 @@ Accept: application/json
 
 ###
 
-POST {{ URL }}/api/auth/verify
+GET {{ URL }}/api/blog/test-blog
 Content-Type: application/json
 Accept: application/json
 

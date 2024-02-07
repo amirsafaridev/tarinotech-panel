@@ -31,6 +31,7 @@ class BlogServiceProvider extends ServiceProvider
     {
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(ViewComposerProvider::class);
+        $this->app->register(EventServiceProvider::class);
     }
 
     /**

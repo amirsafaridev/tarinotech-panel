@@ -1,0 +1,5 @@
+GET {{ URL }}/api/blog/category
+Content-Type: application/json
+Accept: application/json
+
+###

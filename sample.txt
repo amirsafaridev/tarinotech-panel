@@ -1,0 +1,4 @@
+docker exec -it tarinotech-frontend_web_1 bash
+docker exec -it tarinotech-frontend_web_1 /bin/sh
+docker exec -it php_tarinotech bash
+service httpd restart

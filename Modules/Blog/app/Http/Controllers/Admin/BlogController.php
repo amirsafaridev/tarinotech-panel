@@ -14,8 +14,8 @@ use App\Traits\HasJsonCommonResponse;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Modules\Blog\app\Http\Requests\Admin\StoreRequest;
-use Modules\Blog\app\Http\Requests\Admin\UpdateRequest;
+use Modules\Blog\app\Http\Requests\Admin\Blog\StoreRequest;
+use Modules\Blog\app\Http\Requests\Admin\Blog\UpdateRequest;
 use Modules\Blog\app\Models\Blog;
 use Yajra\DataTables\Facades\DataTables;
 

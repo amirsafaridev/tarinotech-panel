@@ -1,0 +1,5 @@
+GET {{ URL }}/api/enums
+Content-Type: application/json
+Accept: application/json
+
+###

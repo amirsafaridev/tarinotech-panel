@@ -3,7 +3,7 @@
 namespace Modules\Blog\app\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Modules\BlogCategory\app\Models\BlogCategory;
+use Modules\Blog\app\Models\BlogCategory;
 
 class ViewComposerProvider extends ServiceProvider
 {

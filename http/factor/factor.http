@@ -1,14 +1,15 @@
-POST {{ URL }}/api/auth/login
+GET {{ URL }}/api/factor
 Content-Type: application/json
 Accept: application/json
 
 {
-  "identify": "09354960060"
+  "sort": "id|desc",
+  "status": "done"
 }
 
 ###
 
-POST {{ URL }}/api/auth/verify
+GET {{ URL }}/api/factor/123535
 Content-Type: application/json
 Accept: application/json
 

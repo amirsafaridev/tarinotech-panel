@@ -5,12 +5,12 @@ namespace Modules\Blog\app\Models;
 use App\Traits\HasSlugTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Log\app\Enums\LogNames;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class Blog extends Model
+class BlogCategory extends Model
 {
     use HasFactory;
     use HasSlugTrait;
@@ -18,24 +18,21 @@ class Blog extends Model
 
     protected $fillable = [
         'title',
-        'slug',
-        'blog_category_id',
         'photo',
-        'body',
-        'is_publish',
-        'meta_description',
         'meta_keywords',
+        'slug',
+        'meta_description',
     ];
 
-    public function category(): BelongsTo
+    public function blogs(): HasMany
     {
-        return $this->belongsTo(BlogCategory::class, 'blog_category_id');
+        return $this->hasMany(Blog::class);
     }
 
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->useLogName(LogNames::BLOG)
+            ->useLogName(LogNames::BLOG_CATEGORY)
             ->logAll();
     }
 }
