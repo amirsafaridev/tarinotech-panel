@@ -8,8 +8,8 @@ use Exception;
 use Modules\Auth\app\Http\Requests\Api\Auth\VerifyRequest;
 use Modules\Auth\app\Models\Login;
 use Modules\Auth\app\Models\OtpCode;
-use Modules\Auth\app\Resources\UserResource;
 use Modules\User\app\Models\User;
+use Modules\User\app\Resources\User\UserResource;
 
 use function now;
 

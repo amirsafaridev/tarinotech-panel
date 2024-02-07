@@ -42,6 +42,7 @@ class Factor extends Model
     protected $casts = [
         'gateway_data' => 'json',
         'expired_at' => 'date',
+        'is_official' => 'boolean',
     ];
 
     public function project(): BelongsTo

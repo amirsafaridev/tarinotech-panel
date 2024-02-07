@@ -75,6 +75,7 @@ class User extends Authenticatable
         'verify_at' => 'datetime',
         'password' => 'hashed',
         'dob' => 'datetime',
+        'official_bill' => 'boolean',
     ];
 
     protected $appends = ['fullname'];

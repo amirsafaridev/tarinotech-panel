@@ -1,7 +1,7 @@
 GET {{ URL }}/user
 Content-Type: application/json
 Accept: application/json
-Authorization: Bearer 3|adh8fF2oGCn9uuSLfPKqnF1R9PNn7ZRuSY3bQULZ4ce93f44
+Authorization: Bearer 1|zuNCfXLqd6bj89nZUp2JXdMB6VK0s6L7Y0CmP09Ia021fa31
 ###
 
 POST {{ URL }}/logout
