@@ -10,7 +10,7 @@ class SortFilter extends FilterBase
 {
     public function handle(Builder $query, Closure $next)
     {
-        $allowedSortKeys = ['id', 'title', 'price', 'final_price'];
+        $allowedSortKeys = ['created_at', 'final_price'];
         $allowedSortOrders = ['desc', 'asc'];
 
         $sortParam = request('sort');

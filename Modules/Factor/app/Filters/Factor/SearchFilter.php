@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Blog\app\Filter\Blog;
+namespace Modules\Factor\app\Filters\Factor;
 
 use App\Filters\FilterBase;
 use Closure;
@@ -18,7 +18,7 @@ class SearchFilter extends FilterBase
             $query->where(function (Builder $query) use ($search) {
                 $query
                     ->where('title', 'like', '%'.$search.'%')
-                    ->orWhere('body', 'like', '%'.$search.'%');
+                    ->orWhere('identify', 'like', '%'.$search.'%');
 
             });
         }

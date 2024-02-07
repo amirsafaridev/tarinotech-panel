@@ -5,7 +5,28 @@ Authorization: Bearer 1|zuNCfXLqd6bj89nZUp2JXdMB6VK0s6L7Y0CmP09Ia021fa31
 
 ###
 
-GET {{ URL }}/factor/123535
+GET {{ URL }}/factor?sort=final_price-asc
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer 1|zuNCfXLqd6bj89nZUp2JXdMB6VK0s6L7Y0CmP09Ia021fa31
+
+###
+
+GET {{ URL }}/factor?sort=created_at-desc
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer 1|zuNCfXLqd6bj89nZUp2JXdMB6VK0s6L7Y0CmP09Ia021fa31
+
+###
+
+GET {{ URL }}/factor?project=نساجی
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer 1|zuNCfXLqd6bj89nZUp2JXdMB6VK0s6L7Y0CmP09Ia021fa31
+
+###
+
+GET {{ URL }}/factor/457442
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer 1|zuNCfXLqd6bj89nZUp2JXdMB6VK0s6L7Y0CmP09Ia021fa31

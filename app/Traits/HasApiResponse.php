@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 
 trait HasApiResponse
@@ -28,6 +29,10 @@ trait HasApiResponse
     protected function exceptionResponse(Exception $exception, string $message = null): JsonResponse
     {
         report($exception);
+
+        if ($exception instanceof ModelNotFoundException) {
+            return $this->failResponse('Model Not Found.', 404);
+        }
 
         $responseData = [
             'success' => false,
