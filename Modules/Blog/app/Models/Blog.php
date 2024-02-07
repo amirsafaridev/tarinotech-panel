@@ -2,6 +2,7 @@
 
 namespace Modules\Blog\app\Models;
 
+use App\Traits\Filterable;
 use App\Traits\HasSlugTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,9 +13,14 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Blog extends Model
 {
+    use Filterable;
     use HasFactory;
     use HasSlugTrait;
     use LogsActivity;
+
+    protected $casts = [
+        'is_publish' => 'boolean',
+    ];
 
     protected $fillable = [
         'title',

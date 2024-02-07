@@ -25,14 +25,4 @@ class ResponseService
             'data' => $data,
         ], $code);
     }
-
-    public static function token($user, $token)
-    {
-        return Response::json([
-            'status' => 200,
-            'message' => trans('api.auth.login.success'),
-            'token' => $token,
-            'user' => $user,
-        ]);
-    }
 }

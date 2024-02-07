@@ -1,20 +1,20 @@
-POST {{ URL }}/api/auth/login
+POST {{ URL }}/auth/login
 Content-Type: application/json
 Accept: application/json
 
 {
-  "identify": "09354960060"
+  "identify": "zasadi@hotmail.com"
 }
 
 ###
 
-POST {{ URL }}/api/auth/verify
+POST {{ URL }}/auth/verify
 Content-Type: application/json
 Accept: application/json
 
 {
-  "identify": "09354960060",
-  "code": "6843"
+  "identify": "zasadi@hotmail.com",
+  "code": "4675"
 }
 
 ###

@@ -1,16 +1,16 @@
-GET {{ URL }}/api/user
+GET {{ URL }}/user
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer 3|adh8fF2oGCn9uuSLfPKqnF1R9PNn7ZRuSY3bQULZ4ce93f44
 ###
 
-POST {{ URL }}/api/logout
+POST {{ URL }}/logout
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer 3|adh8fF2oGCn9uuSLfPKqnF1R9PNn7ZRuSY3bQULZ4ce93f44
 ###
 
-POST {{ PUT }}/api/profile
+POST {{ PUT }}/profile
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer 3|adh8fF2oGCn9uuSLfPKqnF1R9PNn7ZRuSY3bQULZ4ce93f44

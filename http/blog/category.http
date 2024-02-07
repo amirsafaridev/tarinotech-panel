@@ -1,4 +1,4 @@
-GET {{ URL }}/api/blog/category
+GET {{ URL }}/blog/category
 Content-Type: application/json
 Accept: application/json
 

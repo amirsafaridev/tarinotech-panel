@@ -2,11 +2,14 @@
 
 namespace App\Exceptions;
 
-use App\Service\Response\ResponseService;
+use App\Traits\HasApiResponse;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Laravel\Sanctum\Exceptions\MissingScopeException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
@@ -18,6 +21,8 @@ class Handler extends ExceptionHandler
      *
      * @var array<int, string>
      */
+    use HasApiResponse;
+
     protected $dontFlash = [
         'current_password',
         'password',
@@ -34,24 +39,23 @@ class Handler extends ExceptionHandler
         });
     }
 
-    public function render($request, Throwable $e)
+    public function render($request, Throwable $e): Response|JsonResponse|RedirectResponse|\Symfony\Component\HttpFoundation\Response
     {
         if ($request->expectsJson()) {
-            $ResponseService = resolve(ResponseService::class);
             if ($e instanceof AuthenticationException) {
-                return $ResponseService::failure('Unauthenticated.', 401);
+                return $this->failResponse('Unauthenticated.', 401);
             }
             if ($e instanceof ModelNotFoundException) {
-                return $ResponseService::failure('Model Not Found.', 404);
+                return $this->failResponse('Model Not Found.', 404);
             }
             if ($e instanceof ThrottleRequestsException) {
-                return $ResponseService::failure('Too Many Attempts.', 429);
+                return $this->failResponse('Too Many Attempts.', 429);
             }
             if ($e instanceof NotFoundHttpException) {
-                return $ResponseService::failure('Route or Url Not Found.', 404);
+                return $this->failResponse('Route or Url Not Found.', 404);
             }
             if ($e instanceof MissingScopeException) {
-                return $ResponseService::failure('User can access.', 403);
+                return $this->failResponse('User can access.', 403);
             }
         }
 

@@ -1,21 +1,13 @@
-GET {{ URL }}/api/factor
+GET {{ URL }}/factor
 Content-Type: application/json
 Accept: application/json
-
-{
-  "sort": "id|desc",
-  "status": "done"
-}
+Authorization: Bearer 3|adh8fF2oGCn9uuSLfPKqnF1R9PNn7ZRuSY3bQULZ4ce93f44
 
 ###
 
-GET {{ URL }}/api/factor/123535
+GET {{ URL }}/factor/123535
 Content-Type: application/json
 Accept: application/json
-
-{
-  "identify": "09354960060",
-  "code": "6843"
-}
+Authorization: Bearer 3|adh8fF2oGCn9uuSLfPKqnF1R9PNn7ZRuSY3bQULZ4ce93f44
 
 ###

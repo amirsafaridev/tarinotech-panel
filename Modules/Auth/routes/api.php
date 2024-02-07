@@ -15,7 +15,5 @@ use Modules\Auth\app\Http\Controllers\Api\VerifyController;
     |
 */
 
-Route::group(['prefix' => 'auth', 'name' => 'auth.'], function () {
-    Route::post('/login', [LoginController::class, 'index']);
-    Route::post('/verify', [VerifyController::class, 'index']);
-});
+Route::post('/login', [LoginController::class, 'index']);
+Route::post('/verify', [VerifyController::class, 'index']);

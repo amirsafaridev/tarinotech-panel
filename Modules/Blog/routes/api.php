@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\Blog\app\Http\Controllers\Api\BlogController;
+use Modules\Blog\app\Http\Controllers\Api\CategoryController;
 
 /*
     |--------------------------------------------------------------------------
@@ -14,6 +15,9 @@ use Illuminate\Support\Facades\Route;
     |
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
-    Route::get('blog', fn (Request $request) => $request->user())->name('blog');
+Route::group(['prefix' => 'category', 'as' => 'category'], function () {
+    Route::get('/', [CategoryController::class, 'index']);
 });
+
+Route::get('/', [BlogController::class, 'index']);
+Route::get('/{slug}', [BlogController::class, 'single']);
