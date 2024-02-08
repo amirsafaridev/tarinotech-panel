@@ -1,17 +1,21 @@
-GET {{ URL }}/user
+# List Message
+GET {{ URL }}/chat/7/message
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{ TOKEN }}
 ###
 
-POST {{ URL }}/logout
+# Send Message
+POST {{ URL }}/chat/7/message
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{ TOKEN }}
+
+{
+  "message":"Test Message",
+  "files": [8,9]
+}
 ###
 
-POST {{ PUT }}/profile
-Content-Type: application/json
-Accept: application/json
-Authorization: Bearer {{ TOKEN }}
-###
+# Edit Message
+# Delete Message

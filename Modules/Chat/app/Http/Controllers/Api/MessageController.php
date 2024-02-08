@@ -2,78 +2,55 @@
 
 namespace Modules\Chat\app\Http\Controllers\Api;
 
-use App\Enums\Database\Chat\ChatStatus;
-use App\Enums\Database\Chat\ChatType;
 use App\Http\Controllers\Controller;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasApiResponse;
 use DB;
 use Exception;
-use Modules\Admin\app\Models\Admin;
 use Modules\Chat\app\Http\Requests\Admin\Message\DestroyRequest;
 use Modules\Chat\app\Http\Requests\Admin\Message\EditRequest;
-use Modules\Chat\app\Http\Requests\Admin\Message\IndexRequest;
 use Modules\Chat\app\Http\Requests\Admin\Message\StoreRequest;
 use Modules\Chat\app\Http\Requests\Admin\Message\UpdateRequest;
+use Modules\Chat\app\Resources\Message\MessageCollection;
+use Modules\Chat\app\Resources\Message\MessageResource;
 use Modules\Support\app\Models\Chat;
 use Modules\Support\app\Models\ChatMessage;
 use Modules\Support\app\Models\ChatMessageAttachment;
 use Modules\Support\app\Models\ChatUser;
+use Modules\User\app\Models\User;
 use View;
 
 class MessageController extends Controller
 {
-    use HasJsonCommonResponse;
+    use HasApiResponse;
 
-    const EDIT_TITLE = 'پیام - ویرایش';
-
-    public function index(IndexRequest $request)
+    public function index(int $chatId)
     {
 
-        $messagesPaginator = ChatMessage::query()
+        $messages = ChatMessage::query()
             ->with(['user', 'attachments', 'replay'])
-            ->where('chat_id', $request->input('chat_id'))
+            ->where('chat_id', $chatId)
             ->orderBy('updated_at')
             ->paginate(100);
 
-        $messages = $messagesPaginator->items();
-
-        $messages = collect($messages)->map(function (ChatMessage $message) {
-            $data = $message;
-            $data['htmlRender'] = compressHtml(View::make('support::admin.part.row-message', ['message' => $message]));
-
-            return $data;
-        });
-
         /* Update For Counter */
         ChatUser::query()
-            ->where('chat_id', $request->input('chat_id'))
+            ->where('chat_id', $chatId)
             ->where('user_id', auth()->id())
-            ->where('user_type', Admin::class)
+            ->where('user_type', User::class)
             ->update([
                 'seen_at' => now(),
                 'unread' => 0,
             ]);
 
-        return [
-            'success' => true,
-            'messages' => $messages,
-            'pagination' => [
-                'total' => $messagesPaginator->total(),
-                'per_page' => $messagesPaginator->perPage(),
-                'current_page' => $messagesPaginator->currentPage(),
-                'last_page' => $messagesPaginator->lastPage(),
-                'from' => $messagesPaginator->firstItem(),
-                'to' => $messagesPaginator->lastItem(),
-            ],
-        ];
+        $data = new MessageCollection($messages);
+
+        return $this->successResponse($data, 'message list');
     }
 
-    public function store(StoreRequest $request)
+    public function store(int $chatId, StoreRequest $request)
     {
         try {
             DB::beginTransaction();
-
-            $chatId = $request->input('chat_id');
 
             /* Find Chat */
             $chat = Chat::query()->findOrFail($chatId);
@@ -88,10 +65,10 @@ class MessageController extends Controller
 
             /* Create Message */
             $message = ChatMessage::query()->create([
-                'chat_id' => $request->input('chat_id'),
+                'chat_id' => $chatId,
                 'parent_id' => $request->input('parent_id'),
                 'content' => $request->input('message'),
-                'user_type' => Admin::class,
+                'user_type' => User::class,
                 'user_id' => auth()->id(),
             ]);
 
@@ -99,6 +76,7 @@ class MessageController extends Controller
             if ($request->input('files')) {
                 ChatMessageAttachment::query()
                     ->whereIn('id', $request->input('files'))
+                    ->whereNull('chat_message_id')
                     ->update([
                         'chat_message_id' => $message->id,
                     ]);
@@ -106,22 +84,11 @@ class MessageController extends Controller
 
             $chat->touch();
 
-            if ($chat->type === ChatType::Ticket) {
-                /*$chat->update([
-                    'status' => ChatStatus::AdminAnswer,
-                ]);*/
-            }
-
             DB::commit();
 
-            $htmlRender = compressHtml(View::make('support::admin.part.row-message', ['message' => $message]));
+            $data = new MessageResource($message->load('user', 'attachments', 'replay'));
 
-            return response()->json([
-                'htmlRender' => $htmlRender,
-                'result' => 'success',
-                'action' => 'store',
-                'message' => trans('panel.success_store'),
-            ]);
+            return $this->successResponse($data, 'sent message');
 
         } catch (Exception $exception) {
             DB::rollBack();

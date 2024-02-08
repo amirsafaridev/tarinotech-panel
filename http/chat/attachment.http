@@ -1,0 +1,26 @@
+# Attachment Upload
+
+POST {{ URL }}/chat/attachment
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{ TOKEN }}
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="file.txt"
+
+< /home/ali/Desktop/Development/Backend/tarinotech-backend/public/uploads/admin/avatar.png
+--WebAppBoundary--
+###
+
+# Attachment Destroy
+DELETE {{ URL }}/chat/attachment
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{ TOKEN }}
+
+{
+  "file_id": 7
+}
+###
+

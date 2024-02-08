@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Chat\app\Http\Requests\Admin\Message;
+namespace Modules\Chat\app\Http\Requests\Api\Message;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -21,6 +21,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'message' => 'required',
+            'chat_id' => 'required|integer',
             'parent_id' => 'nullable|integer',
             'files' => 'nullable|array',
             'files.*' => 'integer',

@@ -27,7 +27,8 @@ class ChatController extends Controller
                         ->where('user_id', auth()->id());
                 })
                 ->orWhere('type', ChatType::Public)
-                ->latest()
+                ->orderByRaw('CASE WHEN type = '.ChatType::Public.' THEN 0 ELSE 1 END')
+                ->orderBy('created_at', 'desc')
                 ->get();
 
             $data = ChatResource::collection($chats);

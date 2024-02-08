@@ -20,7 +20,8 @@ return new class extends Migration
 
             $table->foreign('chat_id')
                 ->on('chats')
-                ->references('id');
+                ->references('id')
+                ->cascadeOnDelete();
         });
     }
 

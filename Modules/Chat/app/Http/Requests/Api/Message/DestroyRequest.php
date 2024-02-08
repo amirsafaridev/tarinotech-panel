@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Chat\app\Http\Requests\Admin\Message;
+namespace Modules\Chat\app\Http\Requests\Api\Message;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends FormRequest
+class DestroyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,10 +20,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'message' => 'required',
-            'parent_id' => 'nullable|integer',
-            'files' => 'nullable|array',
-            'files.*' => 'integer',
+            'message_id' => 'required|integer',
         ];
     }
 

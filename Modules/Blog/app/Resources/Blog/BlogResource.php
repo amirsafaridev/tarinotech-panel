@@ -17,7 +17,7 @@ class BlogResource extends JsonResource
         $data['id'] = $this->id;
         $data['title'] = $this->title;
         $data['slug'] = $this->slug;
-        $data['photo'] = $this->photo === null ? null : asset($this->photo);
+        $data['photo'] = $this->photo ? asset($this->photo) : null;
         $data['body'] = $this->body;
         $data['is_publish'] = $this->is_publish;
         $data['meta_description'] = $this->meta_description;
