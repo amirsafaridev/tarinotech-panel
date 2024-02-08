@@ -17,6 +17,7 @@ class MessageResource extends JsonResource
         $data['id'] = $this->id;
         $data['content'] = $this->content;
         $data['created_at'] = $this->created_at;
+        $data['chat_id'] = $this->chat_id;
 
         if ($this->relationLoaded('user')) {
             $data['user'] = new UserMessageResource($this->user);

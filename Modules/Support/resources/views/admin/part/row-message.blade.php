@@ -1,5 +1,9 @@
-<div id="message-{{$message->id}}" class="d-flex  @if($message->user_id  !== auth()->id()) justify-content-end @else justify-content-start @endif">
-    <div class="d-flex gap-2 align-items-start aw-message-item  @if($message->user_id  !== auth()->id()) flex-row-reverse @endif">
+@php
+    $isMessageAlignedRight = $message->user_id  !== auth()->id() && $message->user_type !== \Modules\Admin\app\Models\Admin::class || isset($reverse);
+@endphp
+
+<div id="message-{{$message->id}}" class="d-flex  @if($isMessageAlignedRight) justify-content-end @else justify-content-start @endif">
+    <div class="d-flex gap-2 align-items-start aw-message-item  @if($isMessageAlignedRight) flex-row-reverse @endif">
         <div class="d-flex justify-content-center align-items-center flex-column flex-shrink-0 w-8">
             <img class="w-7 mb-1" src="{{ asset($message->user->avatar ?? 'uploads/admin/avatar.png') }}" alt="{{ $message->user->first_name }}">
             <span class="font-12">{{ $message->user->first_name }}</span>

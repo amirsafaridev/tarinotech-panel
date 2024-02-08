@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Traits\HasApiResponse;
 use DB;
 use Exception;
+use Modules\Chat\app\Events\Message\NewMessage;
 use Modules\Chat\app\Http\Requests\Admin\Message\DestroyRequest;
 use Modules\Chat\app\Http\Requests\Admin\Message\EditRequest;
 use Modules\Chat\app\Http\Requests\Admin\Message\StoreRequest;
@@ -87,6 +88,9 @@ class MessageController extends Controller
             DB::commit();
 
             $data = new MessageResource($message->load('user', 'attachments', 'replay'));
+
+            $htmlRender = compressHtml(View::make('support::admin.part.row-message', ['message' => $message, 'reverse' => true]));
+            event(new NewMessage($data, $htmlRender));
 
             return $this->successResponse($data, 'sent message');
 

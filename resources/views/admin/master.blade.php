@@ -32,7 +32,7 @@
 
     <link id="theme" rel="stylesheet" type="text/css" media="all" href="{{ asset('res-admin/assets/css/my-style.css') }}" />
 
-
+    @vite('resources/js/app.js')
 </head>
 
 <body class="app sidebar-mini rtl @if(app()->isLocal()) dark-mode @endif">
@@ -152,6 +152,8 @@
 <script src="{{ asset('res-admin/assets/js/sticky.js') }}"></script>
 
 <script src="{{ asset('res-admin/assets/js/custom.js') }}"></script>
+
+
 
 @yield('script')
 

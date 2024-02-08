@@ -10,8 +10,6 @@
         "@fullhuman/postcss-purgecss": "^5.0.0",
         "@popperjs/core": "^2.11.6",
         "@vituum/vite-plugin-postcss": "^1.1.0",
-        "axios": "^1.1.2",
-        "bootstrap": "^5.2.3",
         "laravel-vite-plugin": "^0.7.5",
         "postcss-import": "^15.1.0",
         "purgecss": "^5.0.0",
@@ -20,6 +18,8 @@
     },
     "dependencies": {
         "cssnano": "^6.0.1",
-        "postcss-cli": "^10.1.0"
+        "laravel-echo": "^1.15.3",
+        "postcss-cli": "^10.1.0",
+        "pusher-js": "^8.4.0-rc2"
     }
 }

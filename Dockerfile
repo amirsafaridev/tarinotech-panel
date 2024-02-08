@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y \
     libzip-dev
 
 # Install FFMPEG
-RUN apt-get install -y ffmpeg
+# RUN apt-get install -y ffmpeg
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*

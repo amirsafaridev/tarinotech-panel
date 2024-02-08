@@ -20,6 +20,9 @@
         setScrollPagination();
         setupSelectChat();
         setupGroupSearch();
+
+        setupSocket();
+
         messageForm[0].reset();
 
         setChatId();
@@ -32,6 +35,30 @@
             @endif
         @endif
     })
+
+    function setupSocket(){
+        window.Echo.channel('chat-group')
+            .listen('.new-message', (e) => {
+                let chatItem = chatItemFinder(e.message.chat_id);
+                let notify = chatItemNotifyFinder(chatItem);
+
+                let notifyCounter = Number(notify.html()) + 1;
+                notify.html(notifyCounter);
+
+                if(Number(chatId.val()) === Number(e.message.chat_id)){
+                    messageContainer.append(e.htmlRendered);
+                    messageContainer.scrollTop(messageContainer.prop("scrollHeight"));
+                }
+            });
+    }
+
+    function chatItemFinder(chatId){
+        return $('.aw-chat-item[data-chat-id="' + chatId + '"]');
+    }
+
+    function chatItemNotifyFinder(chatItem){
+        return chatItem.find('.aw-time-notify span.notify');
+    }
 
     function setChatId(){
         @if($chat->id)
@@ -126,6 +153,11 @@
             messagePage = 1;
 
             loadMessage(chatId.val());
+
+            // Zero Notify
+            let chatItem = chatItemFinder(chatId.val());
+            chatItemNotifyFinder(chatItem).html(0);
+
         })
     }
 
