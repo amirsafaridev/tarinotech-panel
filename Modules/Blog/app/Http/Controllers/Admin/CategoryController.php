@@ -17,12 +17,6 @@ use Modules\Blog\app\Http\Requests\Admin\Category\UpdateRequest;
 use Modules\Blog\app\Models\BlogCategory;
 use Yajra\DataTables\Facades\DataTables;
 
-use function event;
-use function formatJalaliDateTime;
-use function route;
-use function trans;
-use function view;
-
 class CategoryController extends Controller
 {
     use HasDatatable;

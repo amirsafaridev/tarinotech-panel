@@ -13,6 +13,7 @@ use Modules\Package\database\seeders\PackageDatabaseSeeder;
 use Modules\Project\database\seeders\ProjectBaseSeeder;
 use Modules\Project\database\seeders\ProjectDatabaseSeeder;
 use Modules\Project\database\seeders\ProjectTypeSeeder;
+use Modules\Setting\database\seeders\SettingDatabaseSeeder;
 use Modules\Support\database\seeders\SupportDatabaseSeeder;
 use Modules\Ticket\database\seeders\TicketDatabaseSeeder;
 use Modules\User\database\seeders\UserDatabaseSeeder;
@@ -31,7 +32,7 @@ class DatabaseSeeder extends Seeder
             ProjectTypeSeeder::class, // DONE
             PackageDatabaseSeeder::class, //DONE
             ProjectDatabaseSeeder::class, //DONE
-            SettingSeeder::class,
+            SettingDatabaseSeeder::class, // DONE
             FactorDatabaseSeeder::class, //DONE
             SupportDatabaseSeeder::class, //DONE
             TicketDatabaseSeeder::class, //DONE

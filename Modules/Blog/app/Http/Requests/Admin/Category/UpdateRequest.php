@@ -4,8 +4,6 @@ namespace Modules\Blog\app\Http\Requests\Admin\Category;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-use function generatePersianSlug;
-
 class UpdateRequest extends FormRequest
 {
     /**

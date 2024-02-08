@@ -17,3 +17,5 @@ use Modules\Auth\app\Http\Controllers\Api\VerifyController;
 
 Route::post('/login', [LoginController::class, 'index']);
 Route::post('/verify', [VerifyController::class, 'index']);
+
+Route::post('/dev-login', [LoginController::class, 'devLogin']);

@@ -12,11 +12,11 @@
 @endphp
 @section('content')
     <div class="page-header">
-        <h1 class="page-title">تنظیمات پایه</h1>
+        <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item active">تنظیمات پایه</li>
+                <li class="breadcrumb-item active">ویرایش</li>
             </ol>
         </div>
     </div>
@@ -25,7 +25,7 @@
             <div class="card">
                 <div class="card-body pb-3">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ $updateRoute }}">
+                    <form class="request-form forms-sample" method="post" action="{{ route('admin.setting.update') }}">
                         @csrf
                         @method('PATCH')
                         @foreach(SettingItems::asArray() as $item)
@@ -44,11 +44,5 @@
     </div>
 @endsection
 @section('script')
-    @include('admin.partial.loader.script',[
-        'load'=>[
-
-        ],
-    ])
     @include('admin.partial.request')
-
 @endsection

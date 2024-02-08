@@ -19,13 +19,6 @@ use Modules\Project\app\Models\ProjectBase;
 use Modules\Project\app\Models\ProjectFacility;
 use Modules\Project\app\Models\ProjectType;
 
-use function redirect;
-use function report;
-use function response;
-use function route;
-use function trans;
-use function view;
-
 class ProjectFacilityController extends Controller
 {
     public function index(Project $project)

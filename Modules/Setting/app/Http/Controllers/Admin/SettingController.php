@@ -1,26 +1,29 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace Modules\Setting\app\Http\Controllers\Admin;
 
 use App\Enums\Database\Setting\SettingItems;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Setting\UpdateRequest;
-use App\Models\Setting;
+use App\Traits\HasJsonCommonResponse;
+use Modules\Setting\app\Http\Requests\Admin\Setting\UpdateRequest;
+use Modules\Setting\app\Models\Setting;
 
 class SettingController extends Controller
 {
+    use HasJsonCommonResponse;
+
+    const EDIT_TITLE = 'تنظیمات - ویرایش';
+
     public function index()
     {
-        $title = 'تنظیمات پایه';
-        $updateRoute = route('admin.setting.update');
+        $title = self::EDIT_TITLE;
 
-        // Get all settings as a key-value array
-        $settings = Setting::query()->pluck('value', 'key')->all();
+        $settings = Setting::query()
+            ->pluck('value', 'key')
+            ->all();
 
-        // Get the list of all possible setting keys
         $allSettingKeys = SettingItems::asArray();
 
-        // Create settings that do not exist
         foreach ($allSettingKeys as $item) {
             if (! array_key_exists($item, $settings)) {
                 $settings[$item] = '';
@@ -31,7 +34,7 @@ class SettingController extends Controller
             }
         }
 
-        return view('admin.setting.edit', compact('title', 'updateRoute', 'settings'));
+        return view('setting::admin.edit', compact('title', 'settings'));
     }
 
     public function update(UpdateRequest $request)
@@ -50,10 +53,7 @@ class SettingController extends Controller
             }
         }
 
-        return response()->json([
-            'result' => 'success',
-            'message' => trans('panel.success_update'),
-        ]);
+        return $this->successUpdateResponse();
     }
 
     private function settingSet($key, $value)

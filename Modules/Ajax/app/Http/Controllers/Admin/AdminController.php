@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Admin\app\Models\Admin;
 
-use function response;
-
 class AdminController extends Controller
 {
     public function remoteSelect(Request $request)

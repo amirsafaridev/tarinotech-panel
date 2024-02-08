@@ -16,10 +16,6 @@ use Modules\Project\app\Http\Requests\Admin\Facility\UpdateRequest;
 use Modules\Project\app\Models\Facility;
 use Yajra\DataTables\Facades\DataTables;
 
-use function route;
-use function trans;
-use function view;
-
 class FacilityController extends Controller
 {
     use HasDatatable;

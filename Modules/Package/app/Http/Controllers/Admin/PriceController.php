@@ -10,13 +10,6 @@ use Illuminate\Http\Request;
 use Modules\Package\app\Models\Package;
 use Modules\Package\app\Models\PackagePrice;
 
-use function redirect;
-use function report;
-use function response;
-use function route;
-use function trans;
-use function view;
-
 class PriceController extends Controller
 {
     public function edit(Package $package, PackagePrice $packagePrice)

@@ -7,8 +7,6 @@ use Modules\User\app\Enums\PersonType;
 use Modules\User\app\Enums\UserType;
 use Modules\User\app\Models\User;
 
-use function asset;
-
 class UserResource extends JsonResource
 {
     /**

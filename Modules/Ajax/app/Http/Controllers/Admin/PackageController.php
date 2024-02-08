@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Package\app\Models\Package;
 
-use function response;
-
 class PackageController extends Controller
 {
     public function byType(Request $request)

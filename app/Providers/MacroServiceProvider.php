@@ -16,8 +16,7 @@ class MacroServiceProvider extends ServiceProvider
                 $data[] = [
                     'key' => $item,
                     'value' => $key,
-                    'description' => self::getDescription($item),
-                    'select' => false,
+                    'label' => self::getDescription($item),
                 ];
             }
 

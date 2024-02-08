@@ -4,7 +4,6 @@ use App\Http\Controllers\Admin\AutoMessageController;
 use App\Http\Controllers\Admin\GroupGoalController;
 use App\Http\Controllers\Admin\Report\GoalGroupController as GoalGroupControllerReport;
 use App\Http\Controllers\Admin\Report\LoginController;
-use App\Http\Controllers\Admin\SettingController;
 use Illuminate\Support\Facades\Route;
 use Modules\Admin\app\Http\Controllers\Admin\GoalReportController as GoalControllerReport;
 use Modules\Dashboard\app\Http\Controllers\Admin\HomeController;
@@ -36,11 +35,6 @@ Route::group(['middleware' => ['admin.auth'/*,'acl'*/], 'guard' => 'admin'], fun
         Route::get('/report/login', 'index')->name('report.login');
         Route::get('/report/{login}/login', 'show')->name('report.login-show')
             ->whereUlid('login');
-    });
-
-    Route::controller(SettingController::class)->group(function () {
-        Route::get('/setting', 'index')->name('setting.index');
-        Route::patch('/setting', 'update')->name('setting.update');
     });
 
     Route::controller(AutoMessageController::class)->group(function () {

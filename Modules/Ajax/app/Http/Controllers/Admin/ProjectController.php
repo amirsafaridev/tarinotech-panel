@@ -8,8 +8,6 @@ use Illuminate\Http\Request;
 use Modules\Project\app\Models\Project;
 use View;
 
-use function response;
-
 class ProjectController extends Controller
 {
     public function singleViewItem(Request $request)

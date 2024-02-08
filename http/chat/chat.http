@@ -1,3 +1,10 @@
+# List CHAT
+GET {{ URL }}/chat
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer 1|2wxgvyhzsLGtZKHXFKxZsMMbWZNZsIFVEDrpLWlu22e848ed
+
+
 # List Message
 # Send Message
 # Edit Message

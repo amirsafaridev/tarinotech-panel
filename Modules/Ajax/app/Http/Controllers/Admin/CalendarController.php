@@ -8,9 +8,6 @@ use Hekmatinasser\Verta\Verta;
 use Illuminate\Support\Facades\DB;
 use Modules\Ajax\app\Http\Requests\CalcWorkDayRequest;
 
-use function now;
-use function response;
-
 class CalendarController extends Controller
 {
     public function calcFreeDays(CalcWorkDayRequest $request)

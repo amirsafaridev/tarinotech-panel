@@ -2,6 +2,7 @@
 
 namespace Modules\Auth\app\Http\Controllers\Api;
 
+use App;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Traits\HasApiResponse;
@@ -11,8 +12,7 @@ use Modules\Auth\app\Models\OtpCode;
 use Modules\Auth\app\Notifications\SendCodeNotification;
 use Modules\Auth\app\Notifications\SendOtpCodeNotification;
 use Modules\User\app\Models\User;
-
-use function now;
+use Modules\User\app\Resources\User\UserResource;
 
 class LoginController extends Controller
 {
@@ -37,6 +37,24 @@ class LoginController extends Controller
             return $this->exceptionResponse($exception);
         }
 
+    }
+
+    public function devLogin()
+    {
+        if (App::isProduction()) {
+            exit();
+        }
+        try {
+
+            $user = User::first();
+
+            $token = $user->createToken('authToken')->plainTextToken;
+
+            return $this->successResponse(['user' => new UserResource($user), 'token' => $token], 'با موفقیت وارد شدید');
+
+        } catch (Exception $exception) {
+            return $this->exceptionResponse($exception);
+        }
     }
 
     private function findUserByIdentify($identify): ?User

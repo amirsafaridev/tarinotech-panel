@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\Setting\app\Http\Controllers\Api\SettingController;
 
 /*
     |--------------------------------------------------------------------------
@@ -14,6 +14,5 @@ use Illuminate\Support\Facades\Route;
     |
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
-    Route::get('setting', fn (Request $request) => $request->user())->name('setting');
-});
+Route::get('/', [SettingController::class, 'index']);
+Route::get('/enums', [SettingController::class, 'enums']);

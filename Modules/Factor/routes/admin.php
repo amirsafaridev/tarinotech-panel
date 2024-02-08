@@ -16,8 +16,8 @@ Route::group(['guard' => 'admin'], function () {
         Route::patch('/{transaction_category}', [TransactionCategoryController::class, 'update'])->name('update');
         Route::delete('/{transaction_category}', [TransactionCategoryController::class, 'destroy'])->name('destroy');
     });
-    /* CATEGORY ROUTES */
 
+    /* FACTOR ROUTES */
     Route::get('/', [FactorController::class, 'index'])->name('index');
     Route::get('/data', [FactorController::class, 'data'])->name('data');
     Route::get('/create', [FactorController::class, 'create'])->name('create');

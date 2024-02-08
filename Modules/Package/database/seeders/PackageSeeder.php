@@ -5,8 +5,6 @@ namespace Modules\Package\database\seeders;
 use Illuminate\Database\Seeder;
 use Modules\Package\app\Models\Package;
 
-use function now;
-
 class PackageSeeder extends Seeder
 {
     /**

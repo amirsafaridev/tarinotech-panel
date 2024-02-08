@@ -6,8 +6,6 @@ use App\Enums\Database\SampleMessage\MessageType;
 use Illuminate\Database\Seeder;
 use Modules\Support\app\Models\SampleMessage;
 
-use function now;
-
 class SampleMessageSeeder extends Seeder
 {
     /**

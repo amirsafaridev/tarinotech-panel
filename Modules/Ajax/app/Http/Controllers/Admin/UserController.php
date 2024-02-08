@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\User\app\Models\User;
 
-use function response;
-
 class UserController extends Controller
 {
     public function remoteSelect(Request $request)

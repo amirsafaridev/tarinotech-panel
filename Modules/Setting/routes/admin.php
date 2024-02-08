@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Setting\app\Http\Controllers\SettingController;
+use Modules\Setting\app\Http\Controllers\Admin\SettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +14,8 @@ use Modules\Setting\app\Http\Controllers\SettingController;
 |
 */
 
+/* SETTING ROUTES */
 Route::group([], function () {
-    Route::resource('setting', SettingController::class)->names('setting');
+    Route::get('/', [SettingController::class, 'index'])->name('index');
+    Route::patch('/', [SettingController::class, 'update'])->name('update');
 });

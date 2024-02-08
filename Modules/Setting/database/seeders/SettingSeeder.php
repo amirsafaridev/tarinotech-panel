@@ -1,10 +1,10 @@
 <?php
 
-namespace Database\Seeders;
+namespace Modules\Setting\database\seeders;
 
 use App\Enums\Database\Setting\SettingItems;
-use App\Models\Setting;
 use Illuminate\Database\Seeder;
+use Modules\Setting\app\Models\Setting;
 
 class SettingSeeder extends Seeder
 {

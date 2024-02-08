@@ -11,8 +11,6 @@ use Modules\Auth\app\Models\OtpCode;
 use Modules\User\app\Models\User;
 use Modules\User\app\Resources\User\UserResource;
 
-use function now;
-
 class VerifyController extends Controller
 {
     use HasApiResponse;
