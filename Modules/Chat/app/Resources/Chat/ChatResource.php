@@ -7,6 +7,7 @@ use App\Enums\Database\Chat\ChatType;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Project\app\Resources\Project\ProjectResource;
 use Modules\Support\app\Models\Chat;
+use Modules\User\app\Resources\User\UserResource;
 
 class ChatResource extends JsonResource
 {
@@ -25,11 +26,12 @@ class ChatResource extends JsonResource
         $data['status_title'] = ChatStatus::getDescription($this->status);
         $data['created_at'] = $this->created_at;
         $data['updated_at'] = $this->updated_at;
+        $data['update_ago'] = $this->updated_at->ago();
         if ($this->relationLoaded('project')) {
             $data['project'] = new ProjectResource($this->project);
         }
         if ($this->relationLoaded('users')) {
-            $data['user'] = $this->users->first();
+            //$data['user'] = new UserResource($this->users->first());
         }
 
         return $data;

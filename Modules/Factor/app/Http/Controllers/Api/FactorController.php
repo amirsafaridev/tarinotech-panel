@@ -31,7 +31,7 @@ class FactorController extends Controller
 
             $factors = Factor::query()
                 ->whereIntegerInRaw('project_id', $userProjectsIds)
-                ->with('project.type')
+                ->with(['project.type', 'items.category'])
                 ->filter([
                     SearchFilter::class,
                     ProjectFilter::class,
@@ -63,7 +63,7 @@ class FactorController extends Controller
             $factor = Factor::query()
                 ->whereIntegerInRaw('project_id', $userProjectsIds)
                 ->where('identify', $identify)
-                ->with('project.type')
+                ->with(['project.type', 'items.category'])
                 ->firstOrFail();
 
             $data = new FactorResource($factor);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Blog\app\Filter\Blog;
+namespace Modules\Blog\app\Filters\Blog;
 
 use App\Filters\FilterBase;
 use Closure;

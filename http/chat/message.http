@@ -6,6 +6,17 @@ Authorization: Bearer {{ TOKEN }}
 ###
 
 # Send Message
+POST {{ URL }}/chat/7/message
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{ TOKEN }}
+
+{
+  "message":"Hi"
+}
+###
+
+# Send Message
 POST {{ URL }}/chat/8/message
 Content-Type: application/json
 Accept: application/json

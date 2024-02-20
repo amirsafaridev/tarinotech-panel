@@ -19,10 +19,11 @@ class BlogResource extends JsonResource
         $data['slug'] = $this->slug;
         $data['photo'] = $this->photo ? asset($this->photo) : null;
         $data['body'] = $this->body;
+        $data['abstract'] = str(strip_tags($this->body))->limit(200);
         $data['is_publish'] = $this->is_publish;
         $data['meta_description'] = $this->meta_description;
         $data['meta_keywords'] = $this->meta_keywords;
-        $data['created_at'] = $this->created_at;
+        $data['created_at'] = $this->created_at->toJalali()->format(formatJalaliDate());
         $data['updated_at'] = $this->updated_at;
         if ($this->relationLoaded('category')) {
             $data['category'] = new CategoryResource($this->category);

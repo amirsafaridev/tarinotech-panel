@@ -1,7 +1,7 @@
 GET {{ URL }}/factor
 Content-Type: application/json
 Accept: application/json
-Authorization: Bearer 1|zuNCfXLqd6bj89nZUp2JXdMB6VK0s6L7Y0CmP09Ia021fa31
+Authorization: Bearer {{ TOKEN }}
 
 ###
 

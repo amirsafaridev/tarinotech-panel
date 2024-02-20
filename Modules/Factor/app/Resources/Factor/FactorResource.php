@@ -32,6 +32,10 @@ class FactorResource extends JsonResource
             $data['project'] = new ProjectResource($this->project);
         }
 
+        if ($this->relationLoaded('items')) {
+            $data['items'] = FactorItemResource::collection($this->items);
+        }
+
         return $data;
     }
 }

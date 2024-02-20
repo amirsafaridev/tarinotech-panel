@@ -9,6 +9,7 @@ use Modules\Admin\app\Models\PresenterProject;
 use Modules\Project\app\Models\Project;
 use Modules\Project\app\Resources\Project\ProjectResource;
 use Modules\User\app\Enums\UserType;
+use Modules\User\app\Http\Requests\Api\User\UpdateRequest;
 use Modules\User\app\Resources\User\UserResource;
 
 class ProfileController extends Controller
@@ -40,6 +41,22 @@ class ProfileController extends Controller
                 'user' => new UserResource($user),
                 'projects' => ProjectResource::collection($projects),
             ]);
+        } catch (Exception $exception) {
+            return $this->exceptionResponse($exception);
+        }
+    }
+
+    public function update(UpdateRequest $request)
+    {
+        try {
+            auth()->user()->update([
+                'first_name' => $request->input('first_name'),
+                'last_name' => $request->input('last_name'),
+                'en_first_name' => $request->input('en_first_name'),
+                'en_last_name' => $request->input('en_last_name'),
+            ]);
+
+            return $this->successResponse(null, 'با موفقیت به روز شد!');
         } catch (Exception $exception) {
             return $this->exceptionResponse($exception);
         }

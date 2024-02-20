@@ -10,3 +10,7 @@
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+use App\Http\Controllers\Api\HomeController;
+
+Route::get('/home', [HomeController::class, 'index']);

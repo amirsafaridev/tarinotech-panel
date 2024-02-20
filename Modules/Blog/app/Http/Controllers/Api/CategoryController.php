@@ -16,6 +16,7 @@ class CategoryController extends Controller
     {
         try {
             $categories = BlogCategory::withCount('blogs')
+                ->where('id', '>', 1)
                 ->orderByDesc('blogs_count')
                 ->get();
 
