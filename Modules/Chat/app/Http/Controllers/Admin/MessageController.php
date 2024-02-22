@@ -9,11 +9,13 @@ use App\Traits\HasJsonCommonResponse;
 use DB;
 use Exception;
 use Modules\Admin\app\Models\Admin;
+use Modules\Chat\app\Events\Message\NewMessage;
 use Modules\Chat\app\Http\Requests\Admin\Message\DestroyRequest;
 use Modules\Chat\app\Http\Requests\Admin\Message\EditRequest;
 use Modules\Chat\app\Http\Requests\Admin\Message\IndexRequest;
 use Modules\Chat\app\Http\Requests\Admin\Message\StoreRequest;
 use Modules\Chat\app\Http\Requests\Admin\Message\UpdateRequest;
+use Modules\Chat\app\Resources\Message\MessageResource;
 use Modules\Support\app\Models\Chat;
 use Modules\Support\app\Models\ChatMessage;
 use Modules\Support\app\Models\ChatMessageAttachment;
@@ -115,6 +117,8 @@ class MessageController extends Controller
             DB::commit();
 
             $htmlRender = compressHtml(View::make('support::admin.part.row-message', ['message' => $message]));
+
+            event(new NewMessage(new MessageResource($message), $htmlRender));
 
             return response()->json([
                 'htmlRender' => $htmlRender,

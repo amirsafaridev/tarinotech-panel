@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Chat\app\Http\Controllers\Admin\AttachmentController;
-use Modules\Chat\app\Http\Controllers\Admin\AttachmentStreamController;
 use Modules\Chat\app\Http\Controllers\Admin\MessageController;
 use Modules\Chat\app\Http\Middleware\ChatAccess;
 use Modules\Chat\app\Http\Middleware\MessageAccess;
@@ -52,12 +51,5 @@ Route::group(['guard' => 'admin'], function () {
         Route::post('/destroy', [AttachmentController::class, 'destroy'])
             ->middleware([MessageAccess::class])
             ->name('destroy');
-    });
-});
-
-Route::group(['guard' => 'admin'], function () {
-    Route::group(['as' => 'attachment.steam.', 'prefix' => 'attachment/steam'], function () {
-        Route::get('/{path}', [AttachmentStreamController::class, 'read'])
-            ->name('read');
     });
 });

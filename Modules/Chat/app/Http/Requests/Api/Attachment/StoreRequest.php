@@ -19,8 +19,10 @@ class StoreRequest extends FormRequest
      */
     public function rules(): array
     {
+        logger($this->file('file')->getMimeType());
+
         return [
-            'file' => 'required|file|mimes:jpeg,png,gif,mp4,mov,avi,doc,docx,xls,xlsx,pdf,mp3|max:10240',
+            'file' => 'required|file|mimes:jpeg,png,gif,mp4,mov,avi,doc,docx,xls,xlsx,pdf,mp3,wav,ogg|max:10240',
         ];
     }
 }

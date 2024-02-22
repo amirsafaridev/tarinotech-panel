@@ -24,8 +24,8 @@
                 @foreach($message->attachments as $attachment)
                     @if(in_array($attachment->file_extension,['png','jpg','gif','jpeg']))
                         <div class="d-flex justify-content-between w-full py-1">
-                            <a target="_blank" href="{{ route('admin.chat.attachment.steam.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}" class="attachment">
-                                <div class="w-4 h-4 p-3" style="border-radius: 10px;padding:5px;background-color: rgba(255,255,255,0.06);background-image: url('{{ route('admin.chat.attachment.steam.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}');background-size: cover">
+                            <a target="_blank" href="{{ route('stream.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}" class="attachment">
+                                <div class="w-4 h-4 p-3" style="border-radius: 10px;padding:5px;background-color: rgba(255,255,255,0.06);background-image: url('{{ route('stream.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}');background-size: cover">
                                 </div>
                             </a>
                             <div class="d-flex flex-column align-items-end font-12">
@@ -33,15 +33,15 @@
                                 <span>{{ formatFileSize($attachment->file_size) }}</span>
                             </div>
                         </div>
-                    @elseif($attachment->file_extension === 'mp3')
+                    @elseif(in_array($attachment->file_extension,['mp3','ogg','wav']))
                         <div class="d-flex justify-content-between w-full py-1">
                             <audio controls class="w-100">
-                                <source src="{{ route('admin.chat.attachment.steam.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}" type="audio/mp3">
+                                <source src="{{ route('stream.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}" type="audio/mp3">
                                 Your browser does not support the audio tag.
                             </audio>
                         </div>
                     @else
-                        <a target="_blank" href="{{ route('admin.chat.attachment.steam.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}" class="attachment">
+                        <a target="_blank" href="{{ route('stream.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}" class="attachment">
                             <span class="fal fa-file"></span>
                         </a>
                     @endif

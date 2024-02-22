@@ -6,7 +6,7 @@ Authorization: Bearer {{ TOKEN }}
 ###
 
 # Send Message
-POST {{ URL }}/chat/7/message
+POST {{ URL }}n
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{ TOKEN }}

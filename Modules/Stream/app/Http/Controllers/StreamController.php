@@ -1,14 +1,18 @@
 <?php
 
-namespace Modules\Chat\app\Http\Controllers\Admin;
+namespace Modules\Stream\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 
-class AttachmentStreamController extends Controller
+use function abort;
+use function report;
+use function response;
+
+class StreamController extends Controller
 {
-    public function read($path)
+    public function index($path)
     {
         try {
 

@@ -13,7 +13,7 @@ let laravelEcho = new Echo({
     encrypted: false,
     disableStats: true,
     enabledTransports: ['ws', 'wss'],
-    cluster: 'es'
+    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER
 });
 
 window.Echo = laravelEcho;

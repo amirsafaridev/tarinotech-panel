@@ -1,0 +1,31 @@
+{
+    "name": "tarinotech/stream",
+    "description": "",
+    "authors": [
+        {
+            "name": "Ali Mousavi",
+            "email": "mosaviali701@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Stream\\": "",
+            "Modules\\Stream\\App\\": "app/",
+            "Modules\\Stream\\Database\\Factories\\": "database/factories/",
+            "Modules\\Stream\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Stream\\Tests\\": "tests/"
+        }
+    }
+}
