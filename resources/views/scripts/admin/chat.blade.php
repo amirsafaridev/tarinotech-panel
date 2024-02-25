@@ -56,6 +56,14 @@
                 console.log("subscribed To Channel");
             });
 
+        window.Echo.channel('public-ch')
+            .listen('.test', (e) => {
+                console.log(e);
+            })
+            .subscribed(function () {
+                console.log("subscribed To Channel public-ch");
+            });
+
     }
 
     function chatItemFinder(chatId){
