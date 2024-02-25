@@ -48,6 +48,10 @@
                     messageContainer.scrollTop(messageContainer.prop("scrollHeight"));
                 }
             })
+            .error((error) => {
+                console.error('Error:', error);
+                // Handle the error here, such as displaying a message to the user
+            })
             .subscribed(function () {
                 console.log("subscribed To Channel");
             });
