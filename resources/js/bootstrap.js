@@ -5,10 +5,10 @@ window.Pusher = Pusher;
 
 let laravelEcho = new Echo({
     broadcaster: 'pusher',
-    key: import.meta.env.VITE_PUSHER_APP_KEY,
-    wsHost: import.meta.env.VITE_PUSHER_HOST,
-    wsPort: import.meta.env.VITE_PUSHER_PORT,
-    wssPort: import.meta.env.VITE_PUSHER_PORT,
+    key: "asdfkjlj2459123128",
+    wsHost: "ws.tarinotech.com",
+    wsPort: 80,
+    wssPort: 80,
     forceTLS: false,
     encrypted: false,
     disableStats: true,
