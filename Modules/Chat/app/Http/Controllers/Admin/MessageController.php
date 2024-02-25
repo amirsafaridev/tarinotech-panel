@@ -2,20 +2,20 @@
 
 namespace Modules\Chat\app\Http\Controllers\Admin;
 
-use App\Enums\Database\Chat\ChatStatus;
-use App\Enums\Database\Chat\ChatType;
 use App\Http\Controllers\Controller;
 use App\Traits\HasJsonCommonResponse;
 use DB;
 use Exception;
 use Modules\Admin\app\Models\Admin;
+use Modules\Chat\app\Events\Message\ChatUpdate;
+use Modules\Chat\app\Events\Message\DeleteMessage;
 use Modules\Chat\app\Events\Message\NewMessage;
+use Modules\Chat\app\Events\Message\UpdateMessage;
 use Modules\Chat\app\Http\Requests\Admin\Message\DestroyRequest;
 use Modules\Chat\app\Http\Requests\Admin\Message\EditRequest;
 use Modules\Chat\app\Http\Requests\Admin\Message\IndexRequest;
 use Modules\Chat\app\Http\Requests\Admin\Message\StoreRequest;
 use Modules\Chat\app\Http\Requests\Admin\Message\UpdateRequest;
-use Modules\Chat\app\Resources\Message\MessageResource;
 use Modules\Support\app\Models\Chat;
 use Modules\Support\app\Models\ChatMessage;
 use Modules\Support\app\Models\ChatMessageAttachment;
@@ -80,14 +80,6 @@ class MessageController extends Controller
             /* Find Chat */
             $chat = Chat::query()->findOrFail($chatId);
 
-            /* Update Seen */
-            ChatUser::query()
-                ->where('user_id', auth()->id())
-                ->where('chat_id', $chatId)
-                ->update([
-                    'seen_at' => now(),
-                ]);
-
             /* Create Message */
             $message = ChatMessage::query()->create([
                 'chat_id' => $request->input('chat_id'),
@@ -108,17 +100,12 @@ class MessageController extends Controller
 
             $chat->touch();
 
-            if ($chat->type === ChatType::Ticket) {
-                /*$chat->update([
-                    'status' => ChatStatus::AdminAnswer,
-                ]);*/
-            }
-
             DB::commit();
 
             $htmlRender = compressHtml(View::make('support::admin.part.row-message', ['message' => $message]));
 
-            event(new NewMessage(new MessageResource($message), $htmlRender));
+            broadcast(new NewMessage($message, $htmlRender));
+            broadcast(new ChatUpdate($chat));
 
             return response()->json([
                 'htmlRender' => $htmlRender,
@@ -188,6 +175,8 @@ class MessageController extends Controller
 
             $htmlRender = compressHtml(View::make('support::admin.part.row-message', ['message' => $message->load('attachments')]));
 
+            broadcast(new UpdateMessage($message));
+
             return response()->json([
                 'htmlRender' => $htmlRender,
                 'result' => 'success',
@@ -209,6 +198,8 @@ class MessageController extends Controller
             $message = ChatMessage::query()
                 ->where('id', $request->input('message_id'))
                 ->firstOrFail();
+
+            broadcast(new DeleteMessage($message));
 
             /* Delete Message */
             $message->delete();

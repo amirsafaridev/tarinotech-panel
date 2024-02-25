@@ -56,14 +56,6 @@ class MessageController extends Controller
             /* Find Chat */
             $chat = Chat::query()->findOrFail($chatId);
 
-            /* Update Seen */
-            ChatUser::query()
-                ->where('user_id', auth()->id())
-                ->where('chat_id', $chatId)
-                ->update([
-                    'seen_at' => now(),
-                ]);
-
             /* Create Message */
             $message = ChatMessage::query()->create([
                 'chat_id' => $chatId,
@@ -87,12 +79,12 @@ class MessageController extends Controller
 
             DB::commit();
 
-            $data = new MessageResource($message->load('user', 'attachments', 'replay'));
+            $message = $message->load('user', 'attachments', 'replay');
 
             $htmlRender = compressHtml(View::make('support::admin.part.row-message', ['message' => $message, 'reverse' => true]));
-            event(new NewMessage($data, $htmlRender));
+            broadcast(new NewMessage($message, $htmlRender));
 
-            return $this->successResponse($data, 'sent message');
+            return $this->successResponse(new MessageResource($message), 'sent message');
 
         } catch (Exception $exception) {
             DB::rollBack();

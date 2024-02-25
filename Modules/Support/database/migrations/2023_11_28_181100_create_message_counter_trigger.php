@@ -25,11 +25,12 @@ return new class extends Migration
 
                 DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 
-                UPDATE chat_users 
-                SET seen_at = NOW() 
-                WHERE user_id = NEW.user_id 
-                AND user_type = REPLACE(NEW.user_type, \'\\\\\', \'\\\\\\\\\');
-
+                UPDATE chat_users
+                SET seen_at = NOW()
+                WHERE user_id = NEW.user_id
+                AND chat_users.chat_id = NEW.chat_id
+                AND RIGHT(user_type, 4) = RIGHT(NEW.user_type, 4);
+               
                 OPEN cur;
 
                 read_loop: LOOP

@@ -21,8 +21,6 @@
         setupSelectChat();
         setupGroupSearch();
 
-        setupSocket();
-
         messageForm[0].reset();
 
         setChatId();
@@ -36,8 +34,8 @@
         @endif
     })
 
-    function setupSocket(){
-        window.Echo.channel('chat-group')
+    function setupSocketChat(chatId){
+        window.Echo.private('chat.'+chatId)
             .listen('.new-message', (e) => {
                 let chatItem = chatItemFinder(e.message.chat_id);
                 let notify = chatItemNotifyFinder(chatItem);
@@ -45,7 +43,7 @@
                 let notifyCounter = Number(notify.html()) + 1;
                 notify.html(notifyCounter);
 
-                if(Number(chatId.val()) === Number(e.message.chat_id)){
+                if(Number(chatId) === Number(e.message.chat_id)){
                     messageContainer.append(e.htmlRendered);
                     messageContainer.scrollTop(messageContainer.prop("scrollHeight"));
                 }
@@ -153,6 +151,9 @@
             messagePage = 1;
 
             loadMessage(chatId.val());
+
+            // Connect Socket
+            setupSocketChat(chat.data('chat-id'));
 
             // Zero Notify
             let chatItem = chatItemFinder(chatId.val());
@@ -305,9 +306,6 @@
                 /* Reload Message On Update */
                 if (response.action === 'update') {
                     $("#message-" + response.messageId).replaceWith(response.htmlRender);
-                } else {
-                    messageContainer.append(response.htmlRender);
-                    messageContainer.scrollTop(messageContainer.prop("scrollHeight"));
                 }
 
                 btnMessageSend.html(icons.send);

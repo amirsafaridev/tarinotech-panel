@@ -40,6 +40,15 @@
                                 Your browser does not support the audio tag.
                             </audio>
                         </div>
+                    @elseif(in_array($attachment->file_extension,['mp4','mov','avi']))
+                        <div class="d-flex justify-content-between w-full py-1">
+                            <video controls class="w-100">
+                                <source src="{{ route('stream.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}" type="video/mp4">
+                                <source src="{{ route('stream.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}" type="video/quicktime">
+                                <source src="{{ route('stream.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}" type="video/x-msvideo">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
                     @else
                         <a target="_blank" href="{{ route('stream.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}" class="attachment">
                             <span class="fal fa-file"></span>

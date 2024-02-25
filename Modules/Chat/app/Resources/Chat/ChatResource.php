@@ -7,7 +7,7 @@ use App\Enums\Database\Chat\ChatType;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Project\app\Resources\Project\ProjectResource;
 use Modules\Support\app\Models\Chat;
-use Modules\User\app\Resources\User\UserResource;
+use Modules\User\app\Models\User;
 
 class ChatResource extends JsonResource
 {
@@ -31,7 +31,13 @@ class ChatResource extends JsonResource
             $data['project'] = new ProjectResource($this->project);
         }
         if ($this->relationLoaded('users')) {
-            //$data['user'] = new UserResource($this->users->first());
+            $user = auth()->user();
+            $data['user'] = new ChatUserResource(
+                $this->users
+                    ->where('user_id', $user->id)
+                    ->where('user_type', User::class)
+                    ->first()
+            );
         }
 
         return $data;

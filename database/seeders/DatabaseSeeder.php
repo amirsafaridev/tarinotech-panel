@@ -43,5 +43,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
         resolve(PermissionService::class)->sync();
+
+        if (app()->isLocal()) {
+            $this->call([
+                DeveloperReadySeeder::class,
+            ]);
+        }
     }
 }

@@ -32,3 +32,7 @@ Route::get('/echo-permission', function () {
         }
     }
 });
+
+Route::post('/broadcasting/auth/web', function (Illuminate\Http\Request $request) {
+    return Broadcast::auth($request);
+})->middleware(['auth:admin']);

@@ -7,24 +7,21 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Chat\app\Resources\Message\MessageResource;
-use Modules\Support\app\Models\ChatMessage;
+use Modules\Support\app\Models\Chat;
 
-class NewMessage implements ShouldBroadcast
+class ChatUpdate implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * Create a new event instance.
      */
-    private ChatMessage $chatMessage;
+    private Chat $chat;
 
-    private string $htmlRendered = '';
-
-    public function __construct(ChatMessage $chatMessage, $htmlRendered = '')
+    public function __construct(Chat $chat)
     {
-        $this->chatMessage = $chatMessage;
-        $this->htmlRendered = $htmlRendered;
+        $this->chat = $chat;
+
     }
 
     /**
@@ -33,13 +30,13 @@ class NewMessage implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('chat.'.$this->chatMessage->chat_id),
+            new PrivateChannel('chat'),
         ];
     }
 
     public function broadcastAs(): string
     {
-        return 'new-message';
+        return 'chat-update';
     }
 
     /**
@@ -49,6 +46,8 @@ class NewMessage implements ShouldBroadcast
      */
     public function broadcastWith(): array
     {
-        return ['message' => new MessageResource($this->chatMessage), 'htmlRendered' => $this->htmlRendered];
+        return ['chat' => [
+            'id' => $this->chat->id,
+        ]];
     }
 }

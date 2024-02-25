@@ -10,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use Modules\Chat\app\Resources\Message\MessageResource;
 use Modules\Support\app\Models\ChatMessage;
 
-class NewMessage implements ShouldBroadcast
+class DeleteMessage implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -19,12 +19,9 @@ class NewMessage implements ShouldBroadcast
      */
     private ChatMessage $chatMessage;
 
-    private string $htmlRendered = '';
-
-    public function __construct(ChatMessage $chatMessage, $htmlRendered = '')
+    public function __construct(ChatMessage $chatMessage)
     {
         $this->chatMessage = $chatMessage;
-        $this->htmlRendered = $htmlRendered;
     }
 
     /**
@@ -39,7 +36,7 @@ class NewMessage implements ShouldBroadcast
 
     public function broadcastAs(): string
     {
-        return 'new-message';
+        return 'delete-message';
     }
 
     /**
@@ -49,6 +46,6 @@ class NewMessage implements ShouldBroadcast
      */
     public function broadcastWith(): array
     {
-        return ['message' => new MessageResource($this->chatMessage), 'htmlRendered' => $this->htmlRendered];
+        return ['message' => new MessageResource($this->chatMessage)];
     }
 }
