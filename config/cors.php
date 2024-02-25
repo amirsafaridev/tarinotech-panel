@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://app.tarinotech.com', 'http://localhost:3000'],
+    'allowed_origins' => ['http://app.tarinotech.com', 'http://localhost:3000', 'http://portal.tarinotech.com'],
 
     'allowed_origins_patterns' => [],
 
