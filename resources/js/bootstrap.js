@@ -11,7 +11,7 @@ let laravelEcho = new Echo({
     wssPort: 80,
     forceTLS: false,
     encrypted: false,
-    disableStats: true,
+    disableStats: false,
     enabledTransports: ['ws', 'wss'],
     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
     authEndpoint:'/broadcasting/auth/web'
