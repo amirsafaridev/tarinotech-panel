@@ -50,7 +50,7 @@
             })
             .subscribed(function () {
                 console.log("subscribed To Channel");
-            });;
+            });
 
     }
 
