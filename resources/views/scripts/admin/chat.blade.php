@@ -47,7 +47,11 @@
                     messageContainer.append(e.htmlRendered);
                     messageContainer.scrollTop(messageContainer.prop("scrollHeight"));
                 }
-            });
+            })
+            .subscribed(function () {
+                console.log("subscribed To Channel");
+            });;
+
     }
 
     function chatItemFinder(chatId){
