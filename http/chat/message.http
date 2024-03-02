@@ -6,7 +6,7 @@ Authorization: Bearer {{ TOKEN }}
 ###
 
 # Send Message
-POST {{ URL }}n
+POST {{ URL }}
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{ TOKEN }}

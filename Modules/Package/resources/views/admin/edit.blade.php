@@ -54,7 +54,7 @@
         </div>
 
         <div class="col-xl-6 col-lg-6 col-md-6 col-12">
-            @include('admin.package_price.card.list',['prices'=>$package->prices])
+            @include('package::admin.price.card.list',['prices'=>$package->prices])
         </div>
     </div>
 @endsection
