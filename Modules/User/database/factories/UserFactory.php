@@ -33,7 +33,6 @@ class UserFactory extends Factory
             'national_id' => $this->faker->numerify('########'),
             'document_id' => $this->faker->numerify('########'),
 
-            'tel' => $this->faker->numerify('021#####'),
             'email' => $this->faker->unique()->email(),
 
             'dob' => $this->faker->date,

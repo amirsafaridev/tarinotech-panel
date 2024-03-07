@@ -12,6 +12,7 @@ use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Row;
 use Modules\User\app\Enums\UserType;
+use Modules\User\app\Models\UseCellphone;
 use Modules\User\app\Models\User;
 
 class UserImport implements OnEachRow, SkipsEmptyRows, ToModel, WithMultipleSheets, WithStartRow, WithValidation
@@ -28,7 +29,6 @@ class UserImport implements OnEachRow, SkipsEmptyRows, ToModel, WithMultipleShee
             'father_name' => $row[4],
             'national_id' => $row[5],
             'document_id' => $row[6],
-            'tel' => $row[7],
             'email' => $row[8],
             'dob' => $dob,
             'person_type' => $row[10],
@@ -57,7 +57,7 @@ class UserImport implements OnEachRow, SkipsEmptyRows, ToModel, WithMultipleShee
             '1' => 'required',
             '10' => 'required',
             '11' => 'required',
-            '12' => 'required',
+            '12' => 'required|unique:users,mobile',
             '15' => 'required',
             '18' => 'required',
             '19' => 'required',
@@ -101,5 +101,24 @@ class UserImport implements OnEachRow, SkipsEmptyRows, ToModel, WithMultipleShee
                 'password' => $row[21] ? Crypt::encrypt($row[21]) : '',
             ]);
         }
+
+        $this->createUserCellphones($row[7], $user->id);
+    }
+
+    private function createUserCellphones(?string $phoneNumbersString, int $userId)
+    {
+        if (empty($phoneNumbersString)) {
+            return;
+        }
+
+        $splitPhones = explode('|', $phoneNumbersString);
+        $insertable = array_map(function ($phone) use ($userId) {
+            return [
+                'user_id' => $userId,
+                'phone' => $phone,
+            ];
+        }, $splitPhones);
+
+        UseCellphone::insert($insertable);
     }
 }
