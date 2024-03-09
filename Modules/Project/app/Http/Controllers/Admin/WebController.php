@@ -196,11 +196,11 @@ class WebController extends Controller
         if ($req->input('similar_sites')) {
             $similarSites = explode(PHP_EOL, $req->input('similar_sites'));
         }
-        $language = resolve(SampleTransformer::class);
-        $language->setFavoriteSites($favoriteSites);
-        $language->setSimilarSites($similarSites);
+        $sample = resolve(SampleTransformer::class);
+        $sample->setFavoriteSites($favoriteSites);
+        $sample->setSimilarSites($similarSites);
 
-        return $language;
+        return $sample;
     }
 
     private function initialProjectData(Request $request): array

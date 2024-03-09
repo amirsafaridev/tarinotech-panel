@@ -11,6 +11,7 @@ use Modules\Project\app\Http\Controllers\Admin\SeoController;
 use Modules\Project\app\Http\Controllers\Admin\StatusController;
 use Modules\Project\app\Http\Controllers\Admin\TypeController;
 use Modules\Project\app\Http\Controllers\Admin\WebController;
+use Modules\Project\app\Http\Controllers\Admin\WebImportController;
 
 Route::group(['guard' => 'admin'], function () {
 
@@ -68,6 +69,10 @@ Route::group(['guard' => 'admin'], function () {
         Route::get('/', [WebController::class, 'index'])->name('index');
         Route::get('/data', [WebController::class, 'data'])->name('data');
         Route::get('/create', [WebController::class, 'create'])->name('create');
+
+        /* Import */
+        Route::get('/import', [WebImportController::class, 'index'])->name('import.index');
+        Route::post('/import', [WebImportController::class, 'import'])->name('import.store');
 
         Route::group([], function () {
             Route::get('/{projectId}/show', [WebController::class, 'show'])->name('show');

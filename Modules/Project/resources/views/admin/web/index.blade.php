@@ -20,9 +20,14 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <div class="card-title">{{ $title }}</div>
-                    @can('ADMIN_PROJECT_WEB_CREATE')
-                        <a class="btn btn-primary" href="{{ route('admin.project.web.create') }}">ایجاد</a>
-                    @endcan
+                    <div>
+                        @can('ADMIN_PROJECT_WEB_CREATE')
+                            <a class="btn btn-primary" href="{{ route('admin.project.web.create') }}">ایجاد</a>
+                        @endcan
+                        @can('ADMIN_PROJECT_WEB_IMPORT_INDEX')
+                            <a class="btn btn-success" href="{{ route('admin.project.web.import.index') }}">Excel</a>
+                        @endcan
+                    </div>
                 </div>
                 <div class="card-body">
                     @include('admin.partial.message')
