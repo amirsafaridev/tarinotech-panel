@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <span class="bold">اغلام فاکتور</span>
+        <span class="bold">اقلام فاکتور</span>
     </div>
     <div class="card-body">
         <div class="table-responsive">

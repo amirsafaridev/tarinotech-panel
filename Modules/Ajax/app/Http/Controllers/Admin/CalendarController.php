@@ -22,7 +22,12 @@ class CalendarController extends Controller
                 throw new Exception('Invalid start date provided');
             }
 
-            $endDate = $currentDate->copy()->addDays($request->get('days'));
+            if ($request->has('end_date')) {
+                $endDate = Verta::parse($request->input('end_date'))->toCarbon();
+
+            } else {
+                $endDate = $currentDate->copy()->addDays($request->get('days'));
+            }
 
             $freeDays = DB::table('free_days')->get();
 
@@ -42,6 +47,7 @@ class CalendarController extends Controller
                 'success' => true,
                 'total_work_days' => $totalWorkDays,
                 'total_free_days' => $totalFreeDays,
+                'total' => $totalFreeDays + $totalWorkDays,
                 'final_date' => $finalDate->format('Y-m-d'),
                 'final_date_jalali' => $finalDate->toJalali()->format('Y/m/d'),
                 'message' => 'محاسبه شد.',

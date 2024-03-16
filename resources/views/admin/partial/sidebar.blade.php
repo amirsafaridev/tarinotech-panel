@@ -112,6 +112,10 @@
                             @can('ADMIN_KNOWLEDGE_WAY_INDEX')
                                 <li><a href="{{ route('admin.knowledge-way.index') }}" class="slide-item">راه های آشنایی</a></li>
                             @endcan
+
+                            @can('ADMIN_COMMUNICATION_INDEX')
+                                <li><a href="{{ route('admin.communication.index') }}" class="slide-item">راه های ارتباطی</a></li>
+                            @endcan
                         </ul>
                     </li>
                 @endcanany

@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Ajax\app\Http\Requests;
+namespace Modules\User\app\Http\Requests\Admin\Communication;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CalcWorkDayRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,9 +20,7 @@ class CalcWorkDayRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'days' => 'integer|min:1',
-            'start_date' => 'required|date_format:Y/m/d',
-            'end_date' => 'required|jdate',
+            'title' => 'required|max:255',
         ];
     }
 }

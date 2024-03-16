@@ -83,17 +83,25 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <x-admin.select-model identify="knowledge_way_id"
-                                                      title="طربفه آشنایی"
+                                                      title="ظریقه آشنایی"
                                                       value="title"
                                                       key="id"
                                                       :items="$knowledgeWays" :old="$user->knowledge_way_id"/>
                             </div>
                             <div class="col-12 col-md-6">
                                 <x-admin.input identify="knowledge_way"
-                                               title="طریق آشنایی (متنی)"
+                                               title="طریقه آشنایی (متنی)"
                                                :old="$user->knowledge_way"/>
                             </div>
                         </div>
+
+                        <x-admin.select-model identify="communications[]"
+                                              title="راه های ارتباطی"
+                                              value="title"
+                                              key="id"
+                                              :multiple="true"
+                                              :items="$communications"
+                                              :old="$user->communications->pluck('id')->toArray()"/>
 
                         <x-admin.select-enum identify="person_type" title="نوع شخص" :enum-class="\Modules\User\app\Enums\PersonType::class" :old="$user->person_type"/>
 

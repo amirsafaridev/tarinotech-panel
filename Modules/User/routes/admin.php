@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\User\app\Http\Controllers\Admin\CommunicationController;
 use Modules\User\app\Http\Controllers\Admin\KnowledgeWayController;
 use Modules\User\app\Http\Controllers\Admin\PresenterController;
 use Modules\User\app\Http\Controllers\Admin\UserController;
@@ -45,4 +46,15 @@ Route::group(['guard' => 'admin', 'prefix' => 'knowledge-way', 'as' => 'knowledg
     Route::post('/', [KnowledgeWayController::class, 'store'])->name('store');
     Route::patch('/{knowledgeWay}', [KnowledgeWayController::class, 'update'])->name('update');
     Route::delete('/{knowledgeWay}', [KnowledgeWayController::class, 'destroy'])->name('destroy');
+});
+
+Route::group(['guard' => 'admin', 'prefix' => 'communication', 'as' => 'communication.'], function () {
+    Route::get('/', [CommunicationController::class, 'index'])->name('index');
+    Route::get('/data', [CommunicationController::class, 'data'])->name('data');
+    Route::get('/create', [CommunicationController::class, 'create'])->name('create');
+    Route::get('/{communication}', [CommunicationController::class, 'edit'])->name('edit');
+
+    Route::post('/', [CommunicationController::class, 'store'])->name('store');
+    Route::patch('/{communication}', [CommunicationController::class, 'update'])->name('update');
+    Route::delete('/{communication}', [CommunicationController::class, 'destroy'])->name('destroy');
 });

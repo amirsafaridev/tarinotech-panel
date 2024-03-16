@@ -44,6 +44,7 @@ class StoreRequest extends FormRequest
 
             'knowledge_way_id' => 'required|integer|exists:knowledge_ways,id',
             'knowledge_way' => 'max:255',
+            'communications' => 'array',
         ];
 
         if ($this->input('email')) {

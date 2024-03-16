@@ -51,7 +51,7 @@ class ProjectObserver
             $factor->items()->create([
                 'factor_id' => $factor->id,
                 'title' => $factorTitle,
-                'transaction_category_id' => 2,
+                'transaction_category_id' => 1,
                 'price' => $price,
                 'tax_rate' => $taxRate,
                 'tax_amount' => $taxAmount,

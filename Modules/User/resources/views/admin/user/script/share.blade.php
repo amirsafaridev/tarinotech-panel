@@ -23,6 +23,9 @@
         makeInputOnlyAlpha($('#en_last_name'));
     })
 
+    const communications = $('#communications');
+    communications.select2();
+
     const companyContainer = $('#company_container');
     function stateCompanyContainer(status){
         if(status === '{{ \Modules\User\app\Enums\PersonType::Legal }}'){

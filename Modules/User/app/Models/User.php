@@ -100,6 +100,11 @@ class User extends Authenticatable
         return $this->hasOne(KnowledgeWay::class);
     }
 
+    public function communications(): BelongsToMany
+    {
+        return $this->belongsToMany(Communication::class, 'user_communication');
+    }
+
     public function projects(): HasMany
     {
         return $this->hasMany(Project::class);

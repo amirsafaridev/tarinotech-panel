@@ -55,7 +55,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>عکس ملی</td>
+                    <td>تصویر کارت ملی</td>
                     <td>
                         @if($user->national_photo)
                             <a class="btn btn-success" href="{{ asset($user->national_photo) }}">دانلود</a>
@@ -76,7 +76,7 @@
                 </tr>
                 <tr>
                     <td>تاریخ تولد</td>
-                    <td>{{ $user->dob }}</td>
+                    <td>{{ $user->dob->toJalali()->format(formatJalaliDate()) }}</td>
                 </tr>
                 <tr>
                     <td>نوع شخص</td>
@@ -107,18 +107,19 @@
                     </td>
                 </tr>
 
-                <tr>
+                {{--<tr>
                     <td>تایید شده در</td>
                     <td>
                         @if($user->verify_at)
-                            <span>{{ $user->verify_at->toJalali()->format('d Y m') }}</span>
+                            <span>{{ $user->verify_at->toJalali()->format(formatJalaliDate()) }}</span>
                         @else
                             <span>تایید نشده</span>
                         @endif
                     </td>
-                </tr>
+                </tr>--}}
+
                 <tr>
-                    <td>بلاک شده</td>
+                    <td>غیر فعال</td>
                     <td>
                         @include('admin.partial.bool_badge',['value' => $user->is_block])
                     </td>

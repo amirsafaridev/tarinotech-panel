@@ -3,6 +3,7 @@
 namespace Modules\User\app\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Modules\User\app\Models\Communication;
 use Modules\User\app\Models\KnowledgeWay;
 
 class ViewComposerProvider extends ServiceProvider
@@ -27,7 +28,10 @@ class ViewComposerProvider extends ServiceProvider
         view()->composer(['user::admin.user.create', 'user::admin.user.edit'], function ($view) {
             $knowledgeWays = KnowledgeWay::query()
                 ->get();
-            $view->with(compact('knowledgeWays'));
+
+            $communications = Communication::query()
+                ->get();
+            $view->with(compact('knowledgeWays', 'communications'));
         });
     }
 }

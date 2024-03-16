@@ -98,38 +98,41 @@
                             <table class="print-main-table">
                                 <tbody>
                                 <tr class="header-row-bg">
-                                    <td colspan="4">
-                                        <p class="text-center p-title">صورت حساب الکترونیکی فروش خدمات شرکت برخط نگاران</p>
+                                    <td colspan="3">
+                                        <p class="text-center p-title">صورت حساب الکترونیکی فروش خدمات شرکت برخط نگاران جهان ارتباط</p>
+                                    </td>
+                                    <td colspan="1">
+                                        <p class="text-center p-title">{{ $factor->created_at->toJalali()->format(formatJalaliDate()) }}</p>
                                     </td>
                                 </tr>
                                 <tr class="header-row-bg">
                                     <td colspan="4">
-                                        <p class="text-right p-title">مشحصات فروشنده</p>
+                                        <p class="text-right p-title">مشخصات فروشنده</p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="25%">
                                         <p>
                                             <span>شماره اقتصادی :</span>
+                                            <span>411513734335</span>
+                                        </p>
+                                    </td>
+                                    <td width="25%">
+                                        <p>
+                                            <span>شماره ثبت / شماره ملی :</span>
+                                            <span>489741</span>
+                                        </p>
+                                    </td>
+                                    <td width="25%">
+                                        <p>
+                                            <span>شناسه ملی :</span>
                                             <span>14005743726</span>
                                         </p>
                                     </td>
                                     <td width="25%">
                                         <p>
-                                            <span>شماره / شماره ملی :</span>
-                                            <span>14005743726</span>
-                                        </p>
-                                    </td>
-                                    <td width="25%">
-                                        <p>
-                                            <span>کد شعبه :</span>
-                                            <span>-</span>
-                                        </p>
-                                    </td>
-                                    <td width="25%">
-                                        <p>
-                                            <span>کد پستی :</span>
-                                            <span>1794636411</span>
+                                            <span>کدپستی :</span>
+                                            <span>1911613635</span>
                                         </p>
                                     </td>
                                 </tr>
@@ -142,15 +145,15 @@
                                     </td>
                                     <td width="50%" colspan="2">
                                         <p>
-                                            <span>نام بنگاه اقتصادی :</span>
-                                            <span>برخط نگاران جهان ارتباط</span>
+                                            <span>شماره تماس :</span>
+                                            <span>02178513</span>
                                         </p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="25%">
                                         <p>
-                                            <span>شماره پروتنه گمرکی :</span>
+                                            <span>شماره پرونده گمرکی :</span>
                                             <span>-</span>
                                         </p>
                                     </td>
@@ -170,15 +173,22 @@
                                 </tr>
 
                                 <tr>
+                                    <td colspan="4">
+                                        <p>آدرس</p>
+                                        <p>تهران، شهر تهران، داوودیه، خیابان شهید امیر سهیل تبریزیان ، خیابان آسایی، پلاک ۲ طبقه ۳ واحد ۱۲</p>
+                                    </td>
+                                </tr>
+
+                                <tr>
                                     <td colspan="4" class="header-row-bg">
-                                        <p class="text-right p-title">مشحصات خریدار</p>
+                                        <p class="text-right p-title">مشخصات خریدار</p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="25%">
                                         <p>
                                             <span>شماره اقتصادی :</span>
-                                            <span>14005743726</span>
+                                            <span>-</span>
                                         </p>
                                     </td>
                                     <td width="25%">
@@ -189,13 +199,13 @@
                                     </td>
                                     <td width="25%">
                                         <p>
-                                            <span>کد شعبه :</span>
+                                            <span>شناسه ملی :</span>
                                             <span>-</span>
                                         </p>
                                     </td>
                                     <td width="25%">
                                         <p>
-                                            <span>کد پستی :</span>
+                                            <span>کدپستی :</span>
                                             <span>{{ $factor->project->user->address?->postal_code }}</span>
                                         </p>
                                     </td>
@@ -212,6 +222,12 @@
                                             <span>نام بنگاه اقتصادی :</span>
                                             <span>{{ $factor->project->user->comany?->title }}</span>
                                         </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <p>آدرس</p>
+                                        <p>{{ $factor->project->user->address?->address }}</p>
                                     </td>
                                 </tr>
 
@@ -233,7 +249,7 @@
                                                 <td>مبلغ واحد (ریال)</td>
                                                 <td>نوع ارز</td>
                                                 <td>مبلغ تخفیف</td>
-                                                <td>نوع مالیت بر ارزش افزوده</td>
+                                                <td>نوع مالیات بر ارزش افزوده</td>
                                                 <td>مبلغ مالیات بر ارزش افزوده</td>
                                                 <td>مبلغ کالا / خدمات</td>
                                             </tr>

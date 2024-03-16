@@ -156,15 +156,32 @@
             }, debounceDelay);
         });
 
+        deadlineAt.on('change', function () {
+            const inputValue = $(this).val();
+
+            if (!inputValue) {
+                return;
+            }
+
+            const ajaxUrl = '{{ route('admin.ajax.calendar.calc') }}';
+            const postData = {start_date: agreementAt.val(),end_date: deadlineAt.val()};
+
+            postAjax(ajaxUrl, postData)
+                .then(handleResponse)
+                .catch(handleAjaxError);
+        });
+
         function handleResponse(response) {
             const totalWorkDays = response.total_work_days;
             const totalFreeDays = response.total_free_days;
             const finalDateJalali = response.final_date_jalali;
+            const total = response.total;
 
             const updatedMessage = `تعداد روز های محاسبه شده ${totalWorkDays} می باشد و تعداد روز های تعطیل محاسبه شده ${totalFreeDays} می باشد. تاریخ تحویل ${finalDateJalali} می باشد`;
             displayMessage(updatedMessage);
 
             deadlineAt.val(finalDateJalali);
+            workingDaysInput.val(total);
         }
 
         function handleAjaxError(response) {

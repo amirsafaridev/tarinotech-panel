@@ -254,7 +254,7 @@
                             <x-admin.input identify="deadline_at"
                                            title="تاریخ تحویل"
                                            :old="verta($project->deadline_at)->format('Y/m/d')"
-                                           :is-date-picker="true"/>
+                                           />
                         </div>
                         <div class="col-12">
                             <div class="alert alert-success d-flex justify-content-center align-items-center"

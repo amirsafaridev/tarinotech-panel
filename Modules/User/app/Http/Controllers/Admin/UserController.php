@@ -102,6 +102,10 @@ class UserController extends Controller
 
             $this->syncCellphones($user);
 
+            if (count($req->input('communications', []))) {
+                $this->syncCommunications($req, $user);
+            }
+
             DB::commit();
 
             return $this->successResponse();
@@ -140,6 +144,10 @@ class UserController extends Controller
             $this->updateAddress($req, $user->id);
 
             $this->syncCellphones($user);
+
+            if (count($req->input('communications', []))) {
+                $this->syncCommunications($req, $user);
+            }
 
             DB::commit();
 
@@ -322,5 +330,10 @@ class UserController extends Controller
         foreach ($cellphonesArray as $cellphone) {
             $user->phones()->create(['phone' => $cellphone]);
         }
+    }
+
+    private function syncCommunications(Request $req, User $user)
+    {
+        $user->communications()->sync($req->input('communications'));
     }
 }

@@ -14,6 +14,7 @@ class UserDatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             KnowledgeWaySeeder::class,
+            CommunicationSeeder::class,
         ]);
     }
 }

@@ -42,7 +42,7 @@
                     <td>{{ \App\Enums\Database\Factor\FactorStatus::getDescription($factor->status) }}</td>
                 </tr>
                 <tr>
-                    <td>به صوری رسمی</td>
+                    <td>به صورت رسمی</td>
                     <td>@include('admin.partial.bool_badge',['value'=> $factor->is_official])</td>
                 </tr>
                 <tr>
