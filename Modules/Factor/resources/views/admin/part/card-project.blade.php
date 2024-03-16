@@ -14,6 +14,12 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>نوع شخص</td>
+                        <td>
+                            {{ \Modules\User\app\Enums\PersonType::getDescription($factor->project->user->person_type) }}
+                        </td>
+                    </tr>
+                    <tr>
                         <td>پروژه</td>
                         <td>
                             @php
