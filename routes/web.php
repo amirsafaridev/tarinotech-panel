@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/test', [TestController::class, 'index']);
+Route::get('/test/import', [TestController::class, 'import']);
+Route::get('/test/phpinfo', [TestController::class, 'phpInfo']);
 Route::get('/test/send-email', [TestController::class, 'sendEmail']);
 Route::get('/test/aws-upload', [TestController::class, 'awsUpload']);
 Route::get('/test/aws-list', [TestController::class, 'awsList']);
