@@ -131,15 +131,17 @@
 
                         <x-admin.textarea identify="cellphones" title="شماره های تماس" rows="4" :old="$user->phones->implode('phone',PHP_EOL)" />
 
-                        <x-admin.select-enum identify="irnic_status" title="شناسه ایرنیک" :enum-class="\Modules\User\app\Enums\IrnicStatus::class" :old="$user->irnic->status"/>
+                        <x-admin.select-enum identify="irnic_status" title="شناسه ایرنیک"
+                                             :enum-class="\Modules\User\app\Enums\IrnicStatus::class"
+                                             :old="$user->irnic?->status"/>
 
                         <div id="irnic_container" class="d-none">
                             <div class="row">
                                 <div class="col-12 col-md-6">
-                                    <x-admin.input identify="irnic_identify" title=" شناسه ایرنیک" :old="$user->irnic->identify" />
+                                    <x-admin.input identify="irnic_identify" title=" شناسه ایرنیک" :old="$user->irnic?->identify" />
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <x-admin.input identify="irnic_password" title="رمز عبور ایرنیک" :old="$user->irnic->password" />
+                                    <x-admin.input identify="irnic_password" title="رمز عبور ایرنیک" :old="$user->irnic?->password" />
                                 </div>
                             </div>
                         </div>

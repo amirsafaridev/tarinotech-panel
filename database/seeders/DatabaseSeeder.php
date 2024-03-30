@@ -27,15 +27,15 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             AdminDatabaseSeeder::class, //DONE
-            UserDatabaseSeeder::class, //DONE
+            //UserDatabaseSeeder::class, //DONE
             ProjectBaseSeeder::class, // DONE
             ProjectTypeSeeder::class, // DONE
             PackageDatabaseSeeder::class, //DONE
-            ProjectDatabaseSeeder::class, //DONE
+            //ProjectDatabaseSeeder::class, //DONE
             SettingDatabaseSeeder::class, // DONE
-            FactorDatabaseSeeder::class, //DONE
+            //FactorDatabaseSeeder::class, //DONE
             SupportDatabaseSeeder::class, //DONE
-            TicketDatabaseSeeder::class, //DONE
+            //TicketDatabaseSeeder::class, //DONE
             AutoMessageSeeder::class,
             FreeDayDatabaseSeeder::class, // DONE
             BlogCategoryDatabaseSeeder::class, //DONE

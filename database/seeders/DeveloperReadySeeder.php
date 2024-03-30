@@ -33,7 +33,7 @@ class DeveloperReadySeeder extends Seeder
             'password' => bcrypt('12345678'),
         ]);
 
-        $user = User::first();
+        /*$user = User::first();
         $user->update([
             'user_type' => UserType::Primary,
             'is_block' => false,
@@ -63,6 +63,6 @@ class DeveloperReadySeeder extends Seeder
                 'user_type' => Admin::class,
                 'seen_at' => now(),
             ]);
-        }
+        }*/
     }
 }
