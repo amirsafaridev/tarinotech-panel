@@ -82,7 +82,7 @@
                     <td>نوع شخص</td>
                     <td>{{ \Modules\User\app\Enums\PersonType::getDescription($user->person_type) }}</td>
                 </tr>
-                @if($user->person_type === \Modules\User\app\Enums\PersonType::Legal)
+                @if($user->person_type === \Modules\User\app\Enums\PersonType::Legal && $user->company)
                     <tr>
                         <td>نام شرکت</td>
                         <td>{{ $user->company->name }}</td>

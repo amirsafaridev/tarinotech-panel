@@ -19,19 +19,24 @@ use Maatwebsite\Excel\Row;
 use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Enums\WebHostLocation;
 use Modules\Project\app\Models\ProjectWeb;
+use Modules\User\app\Models\User;
 
 class ProjectWebImport implements OnEachRow, SkipsEmptyRows, ToModel, WithHeadingRow, WithMultipleSheets, WithStartRow, WithValidation
 {
     private function initialProjectData(array $row): array
     {
         $agreementAt = $row['agreement_at'];
-        $deadlineAt = $row['deadline_at'];
+        $deadlineAt = $row['deadline_at'] ?? null;
+
+        $user = User::query()
+            ->where('mobile', $row['user_id'])
+            ->first();
 
         $data = [
             'title' => $row['title'],
             'domain' => $row['domain_primary'],
-            'admin_id' => auth()->id(),
-            'user_id' => $row['user_id'],
+            'admin_id' => $row['admin_id'],
+            'user_id' => $user->id,
             'status_id' => $row['status_id'],
             'base_id' => ProjectBase::Web,
             'price' => $row['price'],
@@ -70,7 +75,12 @@ class ProjectWebImport implements OnEachRow, SkipsEmptyRows, ToModel, WithHeadin
         $domains->setDomainUsername((string) $row['domain_username']);
         $domains->setDomainPassword($domainPassword);
         $domains->setDomainPrimary((string) $row['domain_primary']);
-        $domains->setDomainsRequired(explode('|', $row['domains_required']));
+
+        $domainsRequired = [];
+        if (isset($row['domains_required'])) {
+            $domainsRequired = explode('|', $row['domains_required']);
+        }
+        $domains->setDomainsRequired($domainsRequired);
         $domains->setOtherDomain((string) $row['other_domain']);
 
         /* Set Host */
@@ -96,7 +106,6 @@ class ProjectWebImport implements OnEachRow, SkipsEmptyRows, ToModel, WithHeadin
         $sample->setSimilarSites($similarSites);
 
         $insert = [
-            'field_activity' => $row['field_activity'],
             'package_id' => $row['package_id'],
             'pages' => $row['pages'],
             'domains' => $domains->toArray(),
@@ -130,17 +139,17 @@ class ProjectWebImport implements OnEachRow, SkipsEmptyRows, ToModel, WithHeadin
             'title' => 'required|max:255',
             'domain_primary' => 'required|max:255',
 
-            'user_id' => 'required|exists:users,id',
+            'admin_id' => 'required|exists:admins,id',
+            'user_id' => 'required|exists:users,mobile',
             'type_id' => 'required|exists:project_types,id',
             'status_id' => 'required|exists:project_statuses,id',
 
             'price' => 'required|integer',
-            'deadline_at' => 'required',
+            //'deadline_at' => 'required',
 
-            'field_activity' => 'required|max:255',
             'package_id' => 'required|exists:packages,id',
             'pages' => 'required|integer',
-            'agreement_at' => 'required',
+            'agreement_at' => 'required|jdate',
             'working_days' => 'required|integer',
 
             /* Business */

@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('project_webs', function (Blueprint $table) {
             $table->id();
-            $table->string('field_activity')->nullable();
             $table->unsignedInteger('package_id');
             $table->unsignedTinyInteger('pages')->default(0);
 

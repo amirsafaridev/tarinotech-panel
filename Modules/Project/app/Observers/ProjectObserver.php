@@ -15,7 +15,7 @@ class ProjectObserver
     public function created(Project $project): void
     {
         if ($project->base_id === ProjectBase::Web) {
-            $this->createWebFactor($project);
+            //$this->createWebFactor($project);
         }
     }
 

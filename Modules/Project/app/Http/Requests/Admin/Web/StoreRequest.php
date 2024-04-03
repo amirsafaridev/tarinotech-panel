@@ -30,7 +30,6 @@ class StoreRequest extends FormRequest
             'price' => 'required|integer',
             'deadline_at' => 'required|jdate',
 
-            'field_activity' => 'required|max:255',
             'package_id' => 'required|exists:packages,id',
             'pages' => 'required|integer',
             'agreement_at' => 'required|jdate',

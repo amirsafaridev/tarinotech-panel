@@ -236,11 +236,6 @@
 
                     <div class="row">
                         <div class="col-12 col-md-6">
-                            <x-admin.input identify="field_activity"
-                                           title="زمینه فعالیت"
-                                           :old="$project->target->field_activity"/>
-                        </div>
-                        <div class="col-12 col-md-6">
                             <x-admin.input identify="pages"
                                            title="تعداد صفحات داخلی"
                                            :old="$project->target->pages"/>

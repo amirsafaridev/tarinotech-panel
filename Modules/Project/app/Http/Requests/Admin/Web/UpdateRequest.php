@@ -29,7 +29,6 @@ class UpdateRequest extends FormRequest
             'price' => 'required|integer',
             'deadline_at' => 'required|date_format:Y/m/d',
 
-            'field_activity' => 'required|max:255',
             'package_id' => 'required|exists:packages,id',
             'pages' => 'required|integer',
             'agreement_at' => 'required|jdate',

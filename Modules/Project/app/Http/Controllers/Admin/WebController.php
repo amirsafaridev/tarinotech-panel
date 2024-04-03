@@ -245,7 +245,6 @@ class WebController extends Controller
         $sample = $this->getSample($request);
 
         return [
-            'field_activity' => $request->input('field_activity'),
             'package_id' => $request->input('package_id'),
             'pages' => $request->input('pages'),
             'domains' => $domain->toArray(),

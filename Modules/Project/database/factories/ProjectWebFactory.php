@@ -27,7 +27,6 @@ class ProjectWebFactory extends Factory
     public function definition(): array
     {
         return [
-            'field_activity' => 'زمینه کاری',
             'package_id' => rand(1, 3),
             'pages' => $this->faker->numberBetween(1, 10),
             'domains' => $this->makeDomain(),

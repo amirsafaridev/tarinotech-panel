@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Validators\ValidationException;
 use Modules\Admin\app\Models\Admin;
 use Modules\Admin\app\Notifications\Admin\SendPasswordByEmail;
+use Modules\Project\app\Imports\ProjectWebImport;
 use Modules\User\app\Imports\UserImport;
 
 class TestController extends Controller
@@ -45,7 +47,18 @@ class TestController extends Controller
         $this->dieInProduction();
         try {
             Excel::import(new UserImport(), 'Customer.xlsx', 'public');
-        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+        } catch (ValidationException $e) {
+            return $e->failures();
+        }
+    }
+
+    public function importProject()
+    {
+        $this->dieInProduction();
+
+        try {
+            Excel::import(new ProjectWebImport(), 'WebProject.xlsx', 'public');
+        } catch (ValidationException $e) {
             return $e->failures();
         }
     }
