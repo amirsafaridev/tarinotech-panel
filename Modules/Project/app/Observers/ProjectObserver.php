@@ -15,7 +15,7 @@ class ProjectObserver
     public function created(Project $project): void
     {
         if ($project->base_id === ProjectBase::Web) {
-            //$this->createWebFactor($project);
+            $this->createWebFactor($project);
         }
     }
 
@@ -25,14 +25,15 @@ class ProjectObserver
         $originalPrice = $project->price;
 
         $factorDetails = [
-            ['title' => 'بیعانه', 'percentage' => 30],
-            ['title' => 'واریزی مرحله اول', 'percentage' => 40],
-            ['title' => 'تسویه', 'percentage' => 30],
+            ['title' => 'بیعانه', 'percentage' => 30, 'category_id' => 2],
+            ['title' => 'واریزی مرحله اول', 'percentage' => 40, 'category_id' => 3],
+            ['title' => 'تسویه', 'percentage' => 30, 'category_id' => 4],
         ];
 
         foreach ($factorDetails as $factorDetail) {
             $factorTitle = $factorDetail['title'];
             $factorPercentage = $factorDetail['percentage'];
+            $categoryId = $factorDetail['category_id'];
 
             $price = calcPercentOfPrice($factorPercentage, $originalPrice);
             $taxAmount = calcPercentOfPrice($taxRate, $price);
@@ -51,7 +52,7 @@ class ProjectObserver
             $factor->items()->create([
                 'factor_id' => $factor->id,
                 'title' => $factorTitle,
-                'transaction_category_id' => 1,
+                'transaction_category_id' => $categoryId,
                 'price' => $price,
                 'tax_rate' => $taxRate,
                 'tax_amount' => $taxAmount,

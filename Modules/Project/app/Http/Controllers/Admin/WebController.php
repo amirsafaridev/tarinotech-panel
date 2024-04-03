@@ -286,6 +286,7 @@ class WebController extends Controller
             )
             ->addColumn(
                 ColumnOption::new()->setName('target.package.title')
+                    ->setSearchable(false)
                     ->setSortable(false)
                     ->setAs('نوع')
             )

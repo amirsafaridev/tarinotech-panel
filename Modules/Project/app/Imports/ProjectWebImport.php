@@ -8,20 +8,19 @@ use App\Service\Json\WebProject\HostTransformer;
 use App\Service\Json\WebProject\LanguageTransformer;
 use App\Service\Json\WebProject\SampleTransformer;
 use Illuminate\Support\Facades\Crypt;
-use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use Maatwebsite\Excel\Row;
 use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Enums\WebHostLocation;
 use Modules\Project\app\Models\ProjectWeb;
 use Modules\User\app\Models\User;
 
-class ProjectWebImport implements OnEachRow, SkipsEmptyRows, ToModel, WithHeadingRow, WithMultipleSheets, WithStartRow, WithValidation
+class ProjectWebImport implements SkipsEmptyRows, ToModel, WithChunkReading, WithHeadingRow, WithMultipleSheets, WithStartRow, WithValidation
 {
     private function initialProjectData(array $row): array
     {
@@ -30,7 +29,7 @@ class ProjectWebImport implements OnEachRow, SkipsEmptyRows, ToModel, WithHeadin
 
         $user = User::query()
             ->where('mobile', $row['user_id'])
-            ->first();
+            ->firstOrFail();
 
         $data = [
             'title' => $row['title'],
@@ -61,13 +60,59 @@ class ProjectWebImport implements OnEachRow, SkipsEmptyRows, ToModel, WithHeadin
         return $data;
     }
 
-    public function model(array $row): ProjectWeb
+    public function startRow(): int
     {
-        //$dob = $row[9] ? Helper::toGregorian($row[9]) : null;
+        return 3;
+    }
 
-        logger(str($row['host_location'])->trim());
+    public function sheets(): array
+    {
+        return [1 => $this];
+    }
 
-        /* Set Domain */
+    public function rules(): array
+    {
+        return [
+            'title' => 'required|max:255',
+            'domain_primary' => 'required|max:255',
+
+            //'admin_id' => 'required|exists:admins,id',
+            //'user_id' => 'required|exists:users,mobile',
+            //'type_id' => 'required|exists:project_types,id',
+            //'status_id' => 'required|exists:project_statuses,id',
+
+            'price' => 'required|integer',
+            //'deadline_at' => 'required',
+
+            //'package_id' => 'required|exists:packages,id',
+            //'pages' => 'required|integer',
+            'agreement_at' => 'required|jdate',
+            'working_days' => 'required|integer',
+
+            /* Business */
+            //'business_domain_id' => 'required|exists:business_domains,id',
+
+            /* Domain */
+            'domain_provider_website' => 'required_if:have_domain,on',
+            'domain_username' => 'required_if:have_domain,on',
+            'domain_password' => 'required_if:have_domain,on',
+
+            /* Host */
+            'host_provider' => 'required_if:have_host,on',
+            'host_username' => 'required_if:have_host,on',
+            'host_password' => 'required_if:have_host,on',
+        ];
+    }
+
+    public function customValidationMessages(): array
+    {
+        return [
+
+        ];
+    }
+
+    public function model(array $row)
+    {
         $domainPassword = $row['domain_password'] ? Crypt::encrypt($row['domain_password']) : '';
         $domains = resolve(DomainTransformer::class);
         $domains->setHaveDomain((bool) $row['have_domain']);
@@ -107,7 +152,7 @@ class ProjectWebImport implements OnEachRow, SkipsEmptyRows, ToModel, WithHeadin
 
         $insert = [
             'package_id' => $row['package_id'],
-            'pages' => $row['pages'],
+            'pages' => $row['pages'] ?? 7,
             'domains' => $domains->toArray(),
             'host' => $host->toArray(),
             'language' => $language->toArray(),
@@ -119,63 +164,10 @@ class ProjectWebImport implements OnEachRow, SkipsEmptyRows, ToModel, WithHeadin
 
         $projectParams = $this->initialProjectData($row);
         $projectWeb->project()->create($projectParams);
-
-        return $projectWeb;
     }
 
-    public function startRow(): int
+    public function chunkSize(): int
     {
-        return 3;
-    }
-
-    public function sheets(): array
-    {
-        return [0 => $this];
-    }
-
-    public function rules(): array
-    {
-        return [
-            'title' => 'required|max:255',
-            'domain_primary' => 'required|max:255',
-
-            'admin_id' => 'required|exists:admins,id',
-            'user_id' => 'required|exists:users,mobile',
-            'type_id' => 'required|exists:project_types,id',
-            'status_id' => 'required|exists:project_statuses,id',
-
-            'price' => 'required|integer',
-            //'deadline_at' => 'required',
-
-            'package_id' => 'required|exists:packages,id',
-            'pages' => 'required|integer',
-            'agreement_at' => 'required|jdate',
-            'working_days' => 'required|integer',
-
-            /* Business */
-            'business_domain_id' => 'required|exists:business_domains,id',
-
-            /* Domain */
-            'domain_provider_website' => 'required_if:have_domain,on',
-            'domain_username' => 'required_if:have_domain,on',
-            'domain_password' => 'required_if:have_domain,on',
-
-            /* Host */
-            'host_provider' => 'required_if:have_host,on',
-            'host_username' => 'required_if:have_host,on',
-            'host_password' => 'required_if:have_host,on',
-        ];
-    }
-
-    public function customValidationMessages(): array
-    {
-        return [
-
-        ];
-    }
-
-    public function onRow(Row $row)
-    {
-
+        return 10;
     }
 }
