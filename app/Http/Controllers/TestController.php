@@ -32,7 +32,7 @@ class TestController extends Controller
 
     public function smsSend()
     {
-        //$this->dieInProduction();
+        $this->dieInProduction();
 
         /*try {
             $params = resolve(SMSIRParams::class)

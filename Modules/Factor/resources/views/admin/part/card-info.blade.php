@@ -16,7 +16,7 @@
                 </tr>
                 <tr>
                     <td>لینک پرداخت</td>
-                    <td>{{ route('factor.payment.index',$factor->identify) }}</td>
+                    <td>{{ route('factor.factor.index',$factor->identify) }}</td>
                 </tr>
                 <tr>
                     <td>کارشناس</td>
