@@ -19,5 +19,6 @@ class VerifyCsrfToken extends Middleware
         'admin/ajax/*',
         'ajax/*',
         'broadcasting/auth/web',
+        'payment/verify/sepehr',
     ];
 }

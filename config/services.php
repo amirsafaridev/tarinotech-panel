@@ -21,6 +21,13 @@ return [
         'scheme' => 'https',
     ],
 
+    'smsir' => [
+        'key' => env('SMS_IR_API_KEY'),
+        'lineNumber' => env('SMS_IR_LINE_NUMBER'),
+        'apiVerify' => env('SMS_IR_API_VERIFY', 'https://api.sms.ir/v1/send/verify'),
+        'apiBulk' => env('SMS_IR_API_VERIFY', 'https://api.sms.ir/v1/send/bulk'),
+    ],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],

@@ -21,6 +21,8 @@ Route::get('/test/phpinfo', [TestController::class, 'phpInfo']);
 Route::get('/test/send-email', [TestController::class, 'sendEmail']);
 Route::get('/test/aws-upload', [TestController::class, 'awsUpload']);
 Route::get('/test/aws-list', [TestController::class, 'awsList']);
+Route::get('/test/sms-send', [TestController::class, 'smsSend']);
+Route::get('/test/pay', [TestController::class, 'pay']);
 Route::get('/deploy', [DeployController::class, 'index']);
 
 Route::get('/echo-permission', function () {

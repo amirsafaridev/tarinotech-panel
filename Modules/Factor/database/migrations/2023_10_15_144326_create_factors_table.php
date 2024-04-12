@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->char('identify')->unique()->index();
             $table->char('transaction_id')->index()->nullable();
+
             $table->unsignedBigInteger('admin_id');
             $table->unsignedBigInteger('project_id');
             $table->unsignedInteger('final_price')->default(0);
@@ -24,6 +25,7 @@ return new class extends Migration
             $table->boolean('is_official')->default(false);
             $table->dateTime('expired_at')->nullable();
             $table->dateTime('paid_at')->nullable();
+            $table->char('gateway')->nullable();
             $table->json('gateway_data');
             $table->timestamps();
             $table->softDeletes();

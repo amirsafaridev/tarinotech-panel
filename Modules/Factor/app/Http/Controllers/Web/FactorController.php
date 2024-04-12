@@ -2,10 +2,11 @@
 
 namespace Modules\Factor\app\Http\Controllers\Web;
 
+use App\Enums\Database\Factor\FactorStatus;
 use App\Http\Controllers\Controller;
 use Modules\Factor\app\Models\Factor;
 
-class PaymentController extends Controller
+class FactorController extends Controller
 {
     const PAYMENT_TITLE = 'پرداخت فاکتور';
 
@@ -16,14 +17,10 @@ class PaymentController extends Controller
         $factor = Factor::query()
             ->with('items')
             ->where('identify', $identify)
+            ->where('status', FactorStatus::Pending)
             ->firstOrFail();
 
-        return view('factor::web.payment', compact('title', 'factor'));
+        return view('factor::web.factor', compact('title', 'factor'));
 
-    }
-
-    public function callback()
-    {
-        return 'Payment Callback';
     }
 }

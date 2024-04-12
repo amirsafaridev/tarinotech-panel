@@ -1,10 +1,9 @@
 <?php
 
-use Modules\Factor\app\Http\Controllers\Web\PaymentController;
+use Modules\Factor\app\Http\Controllers\Web\FactorController;
 
-Route::group(['as' => 'payment.'], function () {
-    Route::get('/{identify}', [PaymentController::class, 'index'])
+Route::group(['as' => 'factor.'], function () {
+    Route::get('/{identify}', [FactorController::class, 'index'])
         ->name('index')
         ->whereAlphaNumeric('identify');
-    Route::get('/data', [PaymentController::class, 'callback'])->name('callback');
 });

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Payment\app\Http\Controllers\PaymentController;
+use Modules\Payment\app\Http\Controllers\Web\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,5 +15,12 @@ use Modules\Payment\app\Http\Controllers\PaymentController;
 */
 
 Route::group([], function () {
-    Route::resource('payment', PaymentController::class)->names('payment');
+    Route::post('/verify/sepehr', [PaymentController::class, 'verifySepehr'])
+        ->name('verify-sepehr');
+
+    Route::get('/test', [PaymentController::class, 'test']);
+
+    Route::get('/{identify}', [PaymentController::class, 'pay'])
+        ->name('pay')
+        ->whereAlphaNumeric('identify');
 });

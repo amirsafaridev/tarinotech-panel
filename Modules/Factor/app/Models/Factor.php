@@ -37,6 +37,7 @@ class Factor extends Model
         'is_official',
         'expired_at',
         'gateway_data',
+        'gateway',
     ];
 
     protected $casts = [
