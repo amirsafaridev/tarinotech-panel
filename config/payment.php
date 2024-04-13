@@ -201,10 +201,10 @@ return [
             'apiPurchaseUrl' => 'https://api.payping.ir/v2/pay/',
             'apiPaymentUrl' => 'https://api.payping.ir/v2/pay/gotoipg/',
             'apiVerificationUrl' => 'https://api.payping.ir/v2/pay/verify/',
-            'merchantId' => '',
+            'merchantId' => config('PAYPING_MERCHANT_ID'),
             'callbackUrl' => 'http://yoursite.com/path/to',
             'description' => 'payment using payping',
-            'currency' => 'T', //Can be R, T (Rial, Toman)
+            'currency' => 'R', //Can be R, T (Rial, Toman)
         ],
         'paystar' => [
             'apiPurchaseUrl' => 'https://core.paystar.ir/api/pardakht/create/',

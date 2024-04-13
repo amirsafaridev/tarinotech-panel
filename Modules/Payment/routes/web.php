@@ -18,6 +18,9 @@ Route::group([], function () {
     Route::post('/verify/sepehr', [PaymentController::class, 'verifySepehr'])
         ->name('verify-sepehr');
 
+    Route::post('/verify-payping', [PaymentController::class, 'verifyPayping'])
+        ->name('verify-payping');
+
     Route::get('/test', [PaymentController::class, 'test']);
 
     Route::get('/{identify}', [PaymentController::class, 'pay'])

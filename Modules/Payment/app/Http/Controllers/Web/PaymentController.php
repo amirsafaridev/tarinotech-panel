@@ -37,12 +37,12 @@ class PaymentController extends Controller
 
             $paymentDriver = $this->getPaymentDriver($factor->project->user);
 
-            return Payment::via($paymentDriver)->callbackUrl(route('payment.verify-sepehr'))->purchase(
+            return Payment::via($paymentDriver['driver'])->callbackUrl($paymentDriver['verify'])->purchase(
                 $invoice,
                 function ($driver, $transactionId) use ($factor, $paymentDriver) {
                     $factor->update([
                         'transaction_id' => $transactionId,
-                        'gateway' => $paymentDriver,
+                        'gateway' => $paymentDriver['driver'],
                     ]);
                 }
             )->pay()->render();
@@ -88,6 +88,41 @@ class PaymentController extends Controller
 
     }
 
+    public function verifyPayping()
+    {
+        $title = 'نتیجه تراکنش';
+
+        try {
+            $identify = request('refid');
+
+            $factor = Factor::query()
+                ->where('identify', $identify)
+                ->where('status', FactorStatus::Pending)
+                ->firstOrFail();
+
+            Payment::via($factor->gateway)->amount($factor->final_price)
+                ->transactionId($factor->transaction_id)
+                ->verify();
+
+            $factor->update([
+                'gateway_data' => request()->post(),
+                'status' => FactorStatus::Paid,
+                'paid_at' => now(),
+            ]);
+
+            return view('payment::web.payping-success', compact('title', 'factor'));
+
+        } catch (Exception $exception) {
+
+            report($exception);
+            $message = $exception->getMessage();
+
+            return view('payment::web.message', compact('title', 'message'));
+
+        }
+
+    }
+
     public function test()
     {
         $title = 'نتیجه تراکنش';
@@ -100,12 +135,18 @@ class PaymentController extends Controller
         return view('payment::web.message', compact('title', 'message'));
     }
 
-    private function getPaymentDriver(User $user): string
+    private function getPaymentDriver(User $user): array
     {
         if ($user->person_type === PersonType::Person) {
-            return 'sepehr';
+            return [
+                'driver' => 'sepehr',
+                'verify' => route('payment.verify-sepehr'),
+            ];
         } else {
-            return 'payping';
+            return [
+                'driver' => 'payping',
+                'verify' => route('payment.verify-payping'),
+            ];
         }
     }
 }
