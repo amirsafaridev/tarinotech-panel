@@ -20,5 +20,6 @@ class VerifyCsrfToken extends Middleware
         'ajax/*',
         'broadcasting/auth/web',
         'payment/verify/sepehr',
+        'payment/verify-payping',
     ];
 }
