@@ -201,7 +201,7 @@ return [
             'apiPurchaseUrl' => 'https://api.payping.ir/v2/pay/',
             'apiPaymentUrl' => 'https://api.payping.ir/v2/pay/gotoipg/',
             'apiVerificationUrl' => 'https://api.payping.ir/v2/pay/verify/',
-            'merchantId' => config('PAYPING_MERCHANT_ID'),
+            'merchantId' => env('PAYPING_MERCHANT_ID'),
             'callbackUrl' => 'http://yoursite.com/path/to',
             'description' => 'payment using payping',
             'currency' => 'R', //Can be R, T (Rial, Toman)
