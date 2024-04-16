@@ -21,13 +21,14 @@ class FactorResource extends JsonResource
         $data['transaction_id'] = $this->transaction_id;
         $data['project_id'] = $this->project_id;
         $data['final_price'] = $this->final_price;
+        $data['payment_link'] = route('factor.factor.index', $this->id);
         $data['status'] = $this->status;
         $data['status_title'] = FactorStatus::getDescription($this->status);
         $data['is_official'] = $this->is_official;
-        $data['expired_at'] = $this->expired_at;
-        $data['paid_at'] = $this->paid_at;
-        $data['created_at'] = $this->created_at;
-        $data['updated_at'] = $this->updated_at;
+        $data['expired_at'] = $this->expired_at ? $this->expired_at->toJalali()->format(formatJalaliDateTime()) : '';
+        $data['paid_at'] = $this->paid_at ? $this->paid_at->toJalali()->format(formatJalaliDateTime()) : '';
+        $data['created_at'] = $this->created_at->toJalali()->format(formatJalaliDateTime());
+        $data['updated_at'] = $this->updated_at->toJalali()->format(formatJalaliDateTime());
         if ($this->relationLoaded('project')) {
             $data['project'] = new ProjectResource($this->project);
         }
