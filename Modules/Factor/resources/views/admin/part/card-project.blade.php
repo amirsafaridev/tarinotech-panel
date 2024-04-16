@@ -39,7 +39,7 @@
                                     }
                                 }
                             @endphp
-                            <a href="">{{ $factor->project->title }}</a>
+                            <a href="{{ route('admin.project.manage',$factor->project_id) }}">{{ $factor->project->title }}</a>
                         </td>
                     </tr>
                     <tr>

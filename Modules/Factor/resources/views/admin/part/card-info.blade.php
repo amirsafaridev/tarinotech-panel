@@ -15,6 +15,10 @@
                     <td>{{ $factor->title }}</td>
                 </tr>
                 <tr>
+                    <td>درگاه</td>
+                    <td>{{ $factor->gateway }}</td>
+                </tr>
+                <tr>
                     <td>لینک پرداخت</td>
                     <td>{{ route('factor.factor.index',$factor->identify) }}</td>
                 </tr>
