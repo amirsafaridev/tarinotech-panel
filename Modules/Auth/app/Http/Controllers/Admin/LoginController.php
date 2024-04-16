@@ -27,7 +27,6 @@ class LoginController extends Controller
 
     public function index()
     {
-        Auth::guard('admin')->loginUsingId(1);
         $title = self::INDEX_TITLE;
 
         if (app()->isLocal()) {
