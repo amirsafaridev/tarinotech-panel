@@ -21,7 +21,7 @@ class FactorResource extends JsonResource
         $data['transaction_id'] = $this->transaction_id;
         $data['project_id'] = $this->project_id;
         $data['final_price'] = $this->final_price;
-        $data['payment_link'] = route('factor.factor.index', $this->id);
+        $data['payment_link'] = route('factor.factor.index', $this->identify);
         $data['status'] = $this->status;
         $data['status_title'] = FactorStatus::getDescription($this->status);
         $data['is_official'] = $this->is_official;
