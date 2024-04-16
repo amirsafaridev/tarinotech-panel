@@ -137,7 +137,7 @@ class PaymentController extends Controller
 
     private function getPaymentDriver(User $user): array
     {
-        if ($user->person_type === PersonType::Person) {
+        if ($user->person_type === PersonType::Legal) {
             return [
                 'driver' => 'sepehr',
                 'verify' => route('payment.verify-sepehr'),
