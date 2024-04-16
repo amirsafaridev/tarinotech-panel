@@ -70,8 +70,6 @@ class SeoController extends Controller
         } catch (Exception $exception) {
             DB::rollBack();
 
-            return $exception->getMessage();
-
             return $this->exceptionResponse($exception);
         }
     }
@@ -101,15 +99,6 @@ class SeoController extends Controller
 
             return $this->exceptionResponse($exception);
         }
-    }
-
-    public function show($projectId)
-    {
-        $project = $this->getOrFailProject($projectId);
-
-        $title = self::SHOW_TITLE;
-
-        return view('project::admin.seo.show', compact('title', 'project'));
     }
 
     public function destroy($projectId)
@@ -293,7 +282,7 @@ class SeoController extends Controller
                 })
                 ->addColumn('action', function ($project) {
                     $actions = Helper::btnMaker(BtnType::Warning, route('admin.project.seo.edit', $project->id), trans('panel.action.edit'));
-                    $actions .= Helper::btnMaker(BtnType::Info, route('admin.project.seo.show', $project->id), trans('panel.action.show'));
+                    $actions .= Helper::btnMaker(BtnType::Info, route('admin.project.manage', $project->id), trans('panel.action.show'));
 
                     return $actions;
                 })

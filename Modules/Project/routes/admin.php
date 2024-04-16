@@ -75,7 +75,6 @@ Route::group(['guard' => 'admin'], function () {
         Route::post('/import', [WebImportController::class, 'import'])->name('import.store');
 
         Route::group([], function () {
-            Route::get('/{projectId}/show', [WebController::class, 'show'])->name('show');
             Route::get('/{projectId}', [WebController::class, 'edit'])->name('edit');
             Route::patch('/{projectId}', [WebController::class, 'update'])->name('update');
         })->whereNumber('projectId');
@@ -89,7 +88,6 @@ Route::group(['guard' => 'admin'], function () {
         Route::get('/create', [SeoController::class, 'create'])->name('create');
 
         Route::group([], function () {
-            Route::get('/{projectId}/show', [SeoController::class, 'show'])->name('show');
             Route::get('/{projectId}', [SeoController::class, 'edit'])->name('edit');
             Route::patch('/{projectId}', [SeoController::class, 'update'])->name('update');
         })->whereNumber('projectId');
@@ -103,7 +101,6 @@ Route::group(['guard' => 'admin'], function () {
         Route::get('/create', [AdsController::class, 'create'])->name('create');
 
         Route::group([], function () {
-            Route::get('/{projectId}/show', [AdsController::class, 'show'])->name('show');
             Route::get('/{projectId}', [AdsController::class, 'edit'])->name('edit');
             Route::patch('/{projectId}', [AdsController::class, 'update'])->name('update');
         })->whereNumber('projectId');

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Admin\app\Models\Admin;
+use Modules\Factor\app\Models\Factor;
 use Modules\Log\app\Enums\LogNames;
 use Modules\Support\app\Models\Chat;
 use Modules\User\app\Models\User;
@@ -86,6 +87,11 @@ class Project extends Model
     public function chats(): HasMany
     {
         return $this->hasMany(Chat::class, 'project_id');
+    }
+
+    public function factors(): HasMany
+    {
+        return $this->hasMany(Factor::class, 'project_id');
     }
 
     public function getActivitylogOptions(): LogOptions

@@ -122,15 +122,6 @@ class WebController extends Controller
         }
     }
 
-    public function show($projectId)
-    {
-        $project = $this->getOrFailProject($projectId);
-
-        $title = self::SHOW_TITLE;
-
-        return view('project::admin.web.show', compact('title', 'project'));
-    }
-
     public function destroy($projectId)
     {
         try {
@@ -365,7 +356,7 @@ class WebController extends Controller
                 })
                 ->addColumn('action', function ($project) {
                     $actions = Helper::btnMaker(BtnType::Warning, route('admin.project.web.edit', $project->id), trans('panel.action.edit'));
-                    $actions .= Helper::btnMaker(BtnType::Info, route('admin.project.web.show', $project->id), trans('panel.action.show'));
+                    $actions .= Helper::btnMaker(BtnType::Info, route('admin.project.manage', $project->id), trans('panel.action.show'));
 
                     return $actions;
                 })

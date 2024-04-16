@@ -39,9 +39,22 @@ class ProjectController extends Controller
         return view('project::admin.index', compact('title', 'routeData', 'dataTable'));
     }
 
-    public function manage($id)
+    public function manage(Project $project)
     {
-        return $id;
+
+        $title = self::SHOW_TITLE;
+
+        $project->load([
+            'admin',
+            'user',
+            'status',
+            'type',
+            'businessDomain',
+            'target',
+            'factors.admin',
+        ]);
+
+        return view('project::admin.show', compact('title', 'project'));
     }
 
     public function destroy(Admin $admin)

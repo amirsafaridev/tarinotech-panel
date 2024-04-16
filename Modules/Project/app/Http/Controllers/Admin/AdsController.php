@@ -100,15 +100,6 @@ class AdsController extends Controller
         }
     }
 
-    public function show($projectId)
-    {
-        $project = $this->getOrFailProject($projectId);
-
-        $title = self::SHOW_TITLE;
-
-        return view('project::admin.ads.show', compact('title', 'project'));
-    }
-
     public function destroy($projectId)
     {
         try {
@@ -255,7 +246,7 @@ class AdsController extends Controller
                 })
                 ->addColumn('action', function ($project) {
                     $actions = Helper::btnMaker(BtnType::Warning, route('admin.project.ads.edit', $project->id), trans('panel.action.edit'));
-                    $actions .= Helper::btnMaker(BtnType::Info, route('admin.project.ads.show', $project->id), trans('panel.action.show'));
+                    $actions .= Helper::btnMaker(BtnType::Info, route('admin.project.manage', $project->id), trans('panel.action.show'));
 
                     return $actions;
                 })
