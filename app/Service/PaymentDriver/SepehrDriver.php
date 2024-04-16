@@ -62,6 +62,8 @@ class SepehrDriver extends Driver
 
         $tokenData = json_decode($tokenResponse);
 
+        dd($tokenData);
+
         if (empty($tokenData->AccessToken) && $tokenData->Status != 0) {
             $this->purchaseFailure($tokenData->Status);
         }
