@@ -19,7 +19,7 @@ class ProjectResource extends JsonResource
         $data['domain'] = $this->domain;
         $data['type_id'] = $this->type_id;
         $data['base_id'] = $this->base_id;
-        $data['status_id'] = $this->status_id->toJalali()->format(formatJalaliDateTime());
+        $data['status_id'] = $this->status_id;
         $data['created_at'] = $this->created_at->toJalali()->format(formatJalaliDateTime());
 
         if ($this->relationLoaded('type')) {
