@@ -54,8 +54,14 @@
                     <td>{{ \App\Enums\Database\Factor\FactorStatus::getDescription($factor->status) }}</td>
                 </tr>
                 <tr>
-                    <td>به صورت رسمی</td>
-                    <td>@include('admin.partial.bool_badge',['value'=> $factor->is_official])</td>
+                    <td>نوع فاکتور</td>
+                    <td>
+                    @if($factor->is_official)
+                        <span>فاکتور رسمی</span>
+                    @else
+                        <span>فاکتور غیر رسمی</span>
+                    @endif
+                    </td>
                 </tr>
                 <tr>
                     <td>تاریخ انقضاء</td>

@@ -25,7 +25,15 @@ class PaymentController extends Controller
                 ->whereHas('project.user')
                 ->where('identify', $identify)
                 ->where('status', FactorStatus::Pending)
-                ->firstOrFail();
+                ->first();
+
+            if (! $factor) {
+                return redirect(route('factor.factor.index', $identify))
+                    ->with([
+                        'message' => 'فاکتور انتخاب شده قابل پرداخت نمی باشد.',
+                        'warning' => true,
+                    ]);
+            }
 
             $invoice = new Invoice();
             $invoice->amount($factor->final_price);
@@ -123,17 +131,6 @@ class PaymentController extends Controller
 
         }
 
-    }
-
-    public function test()
-    {
-        $title = 'نتیجه تراکنش';
-
-        //$factor = Factor::query()->find(1556);
-        //return view('payment::web.sepehr-success', compact('title', 'factor'));
-        $message = 'متن خطا';
-
-        return view('payment::web.message', compact('title', 'message'));
     }
 
     private function getPaymentDriverByPersonType(User $user): array
