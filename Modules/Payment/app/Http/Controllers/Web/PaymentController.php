@@ -5,6 +5,7 @@ namespace Modules\Payment\app\Http\Controllers\Web;
 use App\Enums\Database\Factor\FactorStatus;
 use App\Http\Controllers\Controller;
 use Exception;
+use Modules\Factor\app\Enums\PaymentGateway;
 use Modules\Factor\app\Models\Factor;
 use Modules\User\app\Enums\PersonType;
 use Modules\User\app\Models\User;
@@ -35,14 +36,14 @@ class PaymentController extends Controller
                 $invoice->detail($item->title, $item->price);
             }
 
-            $paymentDriver = $this->getPaymentDriver($factor->project->user);
+            $paymentDriver = $this->getPaymentDriverByPersonType($factor->project->user);
 
             return Payment::via($paymentDriver['driver'])->callbackUrl($paymentDriver['verify'])->purchase(
                 $invoice,
                 function ($driver, $transactionId) use ($factor, $paymentDriver) {
                     $factor->update([
                         'transaction_id' => $transactionId,
-                        'gateway' => $paymentDriver['driver'],
+                        'gateway' => $paymentDriver['gateway'],
                     ]);
                 }
             )->pay()->render();
@@ -100,7 +101,8 @@ class PaymentController extends Controller
                 ->where('status', FactorStatus::Pending)
                 ->firstOrFail();
 
-            Payment::via($factor->gateway)->amount($factor->final_price)
+            Payment::via($this->getPaymentDriver($factor->gateway))
+                ->amount($factor->final_price)
                 ->transactionId($factor->transaction_id)
                 ->verify();
 
@@ -128,25 +130,35 @@ class PaymentController extends Controller
         $title = 'نتیجه تراکنش';
 
         //$factor = Factor::query()->find(1556);
-
         //return view('payment::web.sepehr-success', compact('title', 'factor'));
         $message = 'متن خطا';
 
         return view('payment::web.message', compact('title', 'message'));
     }
 
-    private function getPaymentDriver(User $user): array
+    private function getPaymentDriverByPersonType(User $user): array
     {
-        if ($user->person_type === PersonType::Legal) {
+        if ($user->person_type === PersonType::Legal || $user->official_bill) {
             return [
                 'driver' => 'sepehr',
                 'verify' => route('payment.verify-sepehr'),
+                'gateway' => PaymentGateway::SEPEHR,
             ];
         } else {
             return [
                 'driver' => 'payping',
                 'verify' => route('payment.verify-payping'),
+                'gateway' => PaymentGateway::PAYPING,
             ];
         }
+    }
+
+    private function getPaymentDriver(int $getaway)
+    {
+        if ($getaway == PaymentGateway::PAYPING) {
+            return 'payping';
+        }
+
+        return 'sepehr';
     }
 }

@@ -25,7 +25,8 @@ return new class extends Migration
             $table->boolean('is_official')->default(false);
             $table->dateTime('expired_at')->nullable();
             $table->dateTime('paid_at')->nullable();
-            $table->char('gateway')->nullable();
+            $table->unsignedTinyInteger('gateway')
+                ->nullable();
             $table->json('gateway_data');
             $table->timestamps();
             $table->softDeletes();

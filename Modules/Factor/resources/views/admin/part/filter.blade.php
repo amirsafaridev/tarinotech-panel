@@ -15,6 +15,14 @@
     </div>
 
     <div class="col-12 col-md-3 col-xl-2">
+        <x-admin.select-enum
+                identify="gateway"
+                title="درگاه"
+                :enum-class="\Modules\Factor\app\Enums\PaymentGateway::class"
+        />
+    </div>
+
+    <div class="col-12 col-md-3 col-xl-2">
         <x-admin.input
                 identify="price_from"
                 title="قیمت از (ریال)"

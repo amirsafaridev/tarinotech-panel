@@ -22,7 +22,7 @@ class CalcWorkDayRequest extends FormRequest
         return [
             'days' => 'integer|min:1',
             'start_date' => 'required|date_format:Y/m/d',
-            'end_date' => 'required|jdate',
+            'end_date' => 'jdate',
         ];
     }
 }

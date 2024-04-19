@@ -14,10 +14,18 @@
                     <td>عنوان</td>
                     <td>{{ $factor->title }}</td>
                 </tr>
-                <tr>
-                    <td>درگاه</td>
-                    <td>{{ $factor->gateway }}</td>
-                </tr>
+
+                    <tr>
+                        <td>درگاه</td>
+                        <td>
+                            @if($factor->gateway)
+                                {{ \Modules\Factor\app\Enums\PaymentGateway::getDescription($factor->gateway) }}
+                            @else
+                                <span>-</span>
+                            @endif
+                        </td>
+                    </tr>
+
                 <tr>
                     <td>لینک پرداخت</td>
                     <td>{{ route('factor.factor.index',$factor->identify) }}</td>

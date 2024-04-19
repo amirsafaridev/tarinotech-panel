@@ -18,6 +18,8 @@ use App\Traits\HasJsonCommonResponse;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
+use Modules\Factor\app\Enums\PaymentGateway;
+use Modules\Factor\app\Filters\Factor\GatewayFilter;
 use Modules\Factor\app\Filters\Factor\PriceFilter;
 use Modules\Factor\app\Filters\Factor\ProjectFilter;
 use Modules\Factor\app\Filters\Factor\StatusFilter;
@@ -72,7 +74,6 @@ class FactorController extends Controller
                 resolve(FactorItemCreateJob::class)->handle(
                     $this->setItemValues($factor, $item)
                 );
-
             }
 
             if ($request->input('custom_customer') == 'yes') {
@@ -195,6 +196,7 @@ class FactorController extends Controller
         $factorData['admin_id'] = auth()->id();
 
         $factorData['is_official'] = false;
+        $factorData['gateway'] = PaymentGateway::PAYPING;
 
         $customCustomer = $request->input('custom_customer');
         $projectId = $request->input('project_id');
@@ -209,6 +211,7 @@ class FactorController extends Controller
             $user = $project->user;
             if ($user->person_type === PersonType::Legal || $user->official_bill) {
                 $factorData['is_official'] = true;
+                $factorData['gateway'] = PaymentGateway::SEPEHR;
             }
         }
 
@@ -264,6 +267,9 @@ class FactorController extends Controller
                 ColumnOption::new()->setName('final_price')->setAs('مبلغ (ریال)')
             )
             ->addColumn(
+                ColumnOption::new()->setName('gateway')->setAs('درگاه پرداخت')
+            )
+            ->addColumn(
                 ColumnOption::new()->setName('status')->setAs('وضعیت')
             )
             ->addColumn(
@@ -282,6 +288,7 @@ class FactorController extends Controller
             ->addExternalFilter(ExternalFilter::new()->setKey('price_from')->isPrice())
             ->addExternalFilter(ExternalFilter::new()->setKey('price_to')->isPrice())
             ->addExternalFilter(ExternalFilter::new()->setKey('status'))
+            ->addExternalFilter(ExternalFilter::new()->setKey('gateway'))
             ->render();
     }
 
@@ -296,6 +303,7 @@ class FactorController extends Controller
                     'project_id',
                     'final_price',
                     'status',
+                    'gateway',
                     'expired_at',
                     'created_at',
                 ])
@@ -304,6 +312,7 @@ class FactorController extends Controller
                     StatusFilter::class,
                     ProjectFilter::class,
                     AdminFilter::class,
+                    GatewayFilter::class,
                 ])
                 ->with([
                     'admin' => function ($query) {
@@ -323,6 +332,13 @@ class FactorController extends Controller
                 })
                 ->editColumn('project.title', function (Factor $factor) {
                     return $factor->project_id ? $factor->project->title : 'پروژه ندارد';
+                })
+                ->editColumn('gateway', function (Factor $factor) {
+                    if ($factor->gateway) {
+                        return PaymentGateway::getDescription($factor->gateway);
+                    }
+
+                    return '';
                 })
                 ->editColumn('created_at', function (Factor $factor) {
                     return $factor->created_at->toJalali()->format(formatJalaliDateTime());

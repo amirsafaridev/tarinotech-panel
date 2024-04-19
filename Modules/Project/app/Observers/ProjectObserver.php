@@ -3,9 +3,11 @@
 namespace Modules\Project\app\Observers;
 
 use App\Enums\Database\Factor\FactorStatus;
+use Modules\Factor\app\Enums\PaymentGateway;
 use Modules\Factor\app\Models\Factor;
 use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Models\Project;
+use Modules\User\app\Enums\PersonType;
 
 class ProjectObserver
 {
@@ -39,13 +41,24 @@ class ProjectObserver
             $taxAmount = calcPercentOfPrice($taxRate, $price);
             $totalPrice = $price + $taxAmount;
 
+            $isOfficial = false;
+            $gateway = PaymentGateway::PAYPING;
+
+            if ($user = $project->user) {
+                if ($user->person_type === PersonType::Legal || $user->official_bill) {
+                    $isOfficial = true;
+                    $gateway = PaymentGateway::SEPEHR;
+                }
+            }
+
             $factor = Factor::query()->create([
                 'title' => $factorTitle,
                 'admin_id' => $project->admin_id,
                 'project_id' => $project->id,
                 'final_price' => $totalPrice,
                 'status' => FactorStatus::Draft,
-                'is_official' => 0,
+                'is_official' => $isOfficial,
+                'gateway' => $gateway,
                 'gateway_data' => [],
             ]);
 

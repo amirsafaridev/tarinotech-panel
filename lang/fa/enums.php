@@ -9,6 +9,7 @@ use App\Enums\Database\Facility\PriceType;
 use App\Enums\Database\Facility\WorkCycle;
 use App\Enums\Database\Factor\FactorStatus;
 use App\Enums\Database\Setting\SettingItems;
+use Modules\Factor\app\Enums\PaymentGateway;
 use Modules\Log\app\Enums\LogEvents;
 use Modules\Log\app\Enums\LogNames;
 use Modules\Project\app\Enums\ProjectBase;
@@ -185,5 +186,10 @@ return [
     ChatStatus::class => [
         ChatStatus::Open => 'باز',
         ChatStatus::Close => 'بسته',
+    ],
+
+    PaymentGateway::class => [
+        PaymentGateway::SEPEHR => 'سپهر (صادرات)',
+        PaymentGateway::PAYPING => 'پی پینگ',
     ],
 ];

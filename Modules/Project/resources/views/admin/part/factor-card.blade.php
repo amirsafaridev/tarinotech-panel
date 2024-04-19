@@ -14,6 +14,7 @@
                 <th>عنوان</th>
                 <th>کارشناس</th>
                 <th>مبلغ (ریال)</th>
+                <th>درگاه</th>
                 <th>وضعیت</th>
                 <th>مهلت پرداخت</th>
                 <th>ایجاد</th>
@@ -30,6 +31,11 @@
                         <a href="{{ route('admin.admin.show',$factor->admin_id) }}">{{ $factor->admin->first_name }} {{ $factor->admin->last_name }}</a>
                     </td>
                     <td>{{ number_format($factor->final_price) }}</td>
+                    <td>
+                    @if($factor->gateway)
+                        {{ \Modules\Factor\app\Enums\PaymentGateway::getDescription($factor->gateway) }}
+                    @endif
+                    </td>
                     <td>{!! factorStatusRender($factor->status) !!}</td>
                     <td>
                         @if($factor->expired_at)
