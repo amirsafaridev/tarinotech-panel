@@ -14,4 +14,11 @@ class Controller extends BaseController
     {
         return in_array($sort, $allowed) ? explode('-', $sort) : null;
     }
+
+    public function dieInProduction()
+    {
+        if (app()->isProduction()) {
+            abort(404);
+        }
+    }
 }

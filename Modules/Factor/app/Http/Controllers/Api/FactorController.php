@@ -2,6 +2,7 @@
 
 namespace Modules\Factor\app\Http\Controllers\Api;
 
+use App\Enums\Database\Factor\FactorStatus;
 use App\Http\Controllers\Controller;
 use App\Traits\HasApiResponse;
 use Exception;
@@ -32,6 +33,7 @@ class FactorController extends Controller
             $factors = Factor::query()
                 ->whereIntegerInRaw('project_id', $userProjectsIds)
                 ->with(['project.type', 'items.category'])
+                ->where('status', '!=', FactorStatus::Draft)
                 ->filter([
                     SearchFilter::class,
                     ProjectFilter::class,

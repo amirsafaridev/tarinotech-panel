@@ -80,6 +80,11 @@ class User extends Authenticatable
 
     protected $appends = ['fullname'];
 
+    public function routeNotificationForSms($driver, $notification = null)
+    {
+        return $this->mobile;
+    }
+
     public function address(): HasOne
     {
         return $this->hasOne(Address::class);

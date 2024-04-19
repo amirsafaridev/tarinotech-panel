@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\User\Auth\OtpNotification;
 use App\Service\Sms\SMSIR;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
@@ -10,6 +11,7 @@ use Modules\Admin\app\Models\Admin;
 use Modules\Admin\app\Notifications\Admin\SendPasswordByEmail;
 use Modules\Project\app\Imports\ProjectWebImport;
 use Modules\User\app\Imports\UserImport;
+use Modules\User\app\Models\User;
 use Shetabit\Multipay\Invoice;
 use Shetabit\Payment\Facade\Payment;
 
@@ -107,10 +109,10 @@ class TestController extends Controller
         }
     }
 
-    private function dieInProduction()
+    public function otpNotification()
     {
-        if (app()->isProduction()) {
-            abort(404);
-        }
+        $this->dieInProduction();
+        $user = User::query()->first();
+        $user->notify(new OtpNotification('2233'));
     }
 }

@@ -2,15 +2,14 @@
 
 namespace Modules\Auth\app\Http\Controllers\Api;
 
-use App;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
+use App\Notifications\User\Auth\OtpNotification;
 use App\Traits\HasApiResponse;
 use Exception;
 use Modules\Auth\app\Http\Requests\Api\Auth\LoginRequest;
 use Modules\Auth\app\Models\OtpCode;
 use Modules\Auth\app\Notifications\SendCodeNotification;
-use Modules\Auth\app\Notifications\SendOtpCodeNotification;
 use Modules\User\app\Models\User;
 use Modules\User\app\Resources\User\UserResource;
 
@@ -30,7 +29,8 @@ class LoginController extends Controller
             }
 
             $otp = $this->generateOtp($user, $identify, $request);
-            //$this->sendOtp($user, $identify, $otp);
+
+            $this->sendOtp($user, $identify, $otp);
 
             return $this->successResponse(['code' => $otp], 'کد برای شما ارسال شد');
         } catch (Exception $exception) {
@@ -41,9 +41,7 @@ class LoginController extends Controller
 
     public function devLogin()
     {
-        if (App::isProduction()) {
-            exit();
-        }
+        $this->dieInProduction();
         try {
 
             $user = User::first();
@@ -88,9 +86,9 @@ class LoginController extends Controller
     private function sendOtp(User $user, string $identify, string $otp): void
     {
         if (filter_var($identify, FILTER_VALIDATE_EMAIL)) {
-            $user->notify(new SendCodeNotification($otp)); // For Email
+            $user->notify(new SendCodeNotification($otp));
         } else {
-            $user->notify(new SendOtpCodeNotification($otp)); // For Mobile
+            $user->notify(new OtpNotification($otp));
         }
     }
 }

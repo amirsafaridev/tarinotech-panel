@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App;
-use App\Channel\SmsChannel;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
@@ -18,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Notification::resolved(function ($service) {
             $service->extend('sms', function ($app) {
-                return new SmsChannel();
+                return new App\Notifications\Channels\SMSChannel();
             });
         });
     }
