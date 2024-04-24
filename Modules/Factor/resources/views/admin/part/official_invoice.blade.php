@@ -43,7 +43,7 @@
         <td width="50%" colspan="2">
             <p>
                 <span>نام شخص حقیقی/حقوقی :</span>
-                <span>معین تقی زاده</span>
+                <span>برخط نگاران جهان ارتباط</span>
             </p>
         </td>
         <td width="50%" colspan="2">
