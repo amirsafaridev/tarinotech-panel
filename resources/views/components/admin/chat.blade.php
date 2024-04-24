@@ -56,6 +56,10 @@
                         <button type="submit" id="btn-message-send" class="btn btn-pill btn-icon btn-success">
                             <span class="fal mt-1 fa-send fa-rotate-180"></span>
                         </button>
+
+                        <button type="button" id="btn-end-chat" class="btn btn-success">
+                            <span>پایان گفتکو</span>
+                        </button>
                     </div>
                 </form>
             </div>

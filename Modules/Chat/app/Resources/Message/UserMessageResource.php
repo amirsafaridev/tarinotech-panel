@@ -4,6 +4,7 @@ namespace Modules\Chat\app\Resources\Message;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Admin\app\Models\Admin;
+use Modules\Support\app\Models\ChatBot;
 use Modules\User\app\Models\User;
 
 class UserMessageResource extends JsonResource
@@ -21,11 +22,17 @@ class UserMessageResource extends JsonResource
      */
     public function toArray($request): array
     {
-        /** @var $this User|Admin */
+        /** @var $this User|Admin|ChatBot */
         $data['id'] = $this->id;
         $data['type'] = $this->type;
-        $data['first_name'] = $this->first_name;
-        $data['last_name'] = $this->last_name;
+        if ($this->type === 'Bot') {
+            $data['first_name'] = 'تارینوتک';
+            $data['last_name'] = '';
+        } else {
+            $data['first_name'] = $this->first_name;
+            $data['last_name'] = $this->last_name;
+        }
+
         $data['photo'] = $this->avatar ? asset($this->avatar) : null;
 
         return $data;

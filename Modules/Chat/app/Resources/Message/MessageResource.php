@@ -5,6 +5,7 @@ namespace Modules\Chat\app\Resources\Message;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Admin\app\Models\Admin;
 use Modules\Chat\app\Resources\Attachment\AttachmentResource;
+use Modules\Support\app\Models\ChatBot;
 use Modules\Support\app\Models\ChatMessage;
 
 class MessageResource extends JsonResource
@@ -24,6 +25,9 @@ class MessageResource extends JsonResource
             $type = 'User';
             if ($this->user_type === Admin::class) {
                 $type = 'Support';
+            }
+            if ($this->user_type === ChatBot::class) {
+                $type = 'Bot';
             }
             $data['user'] = new UserMessageResource($this->user, $type);
         }

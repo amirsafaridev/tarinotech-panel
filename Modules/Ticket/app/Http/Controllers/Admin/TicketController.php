@@ -12,10 +12,10 @@ use App\Http\Controllers\Controller;
 use App\Traits\HasDatatable;
 use App\Traits\HasJsonCommonResponse;
 use Exception;
-use Illuminate\Http\Request;
 use Modules\Admin\app\Models\Admin;
 use Modules\Support\app\Models\Chat;
-use Modules\Ticket\app\Http\Requests\Admin\UpdateRequest;
+use Modules\Support\app\Models\ChatBot;
+use Modules\Support\app\Models\ChatMessage;
 use Yajra\DataTables\Facades\DataTables;
 
 class TicketController extends Controller
@@ -27,7 +27,7 @@ class TicketController extends Controller
 
     const CREATE_TITLE = 'تیکت ها - ایجاد';
 
-    const EDIT_TITLE = 'تیکت ها - ویرایش';
+    const TICKET_CHAT_TITLE = 'تیکت ها - پاسخ تیکت';
 
     public function index()
     {
@@ -42,7 +42,7 @@ class TicketController extends Controller
 
     public function message(Chat $chat)
     {
-        $title = self::EDIT_TITLE;
+        $title = self::TICKET_CHAT_TITLE;
 
         $chat->load('project');
 
@@ -52,46 +52,27 @@ class TicketController extends Controller
                 'user_type' => Admin::class,
                 'seen_at' => now(),
             ]);
+
+            $admin = $chat->users()->create([
+                'user_id' => auth()->id(),
+                'user_type' => ChatBot::class,
+                'seen_at' => now(),
+            ]);
+
+            ChatMessage::query()
+                ->create([
+                    'chat_id' => $chat->id,
+                    'user_type' => ChatBot::class,
+                    'user_id' => 1,
+                    'content' => sprintf('پشتیبان %s اماده پاسخگویی می باشد', auth()->user()->fullname),
+                ]);
+
             $chat->update([
                 'status' => ChatStatus::AdminAnswer,
             ]);
         }
 
         return view('ticket::admin.message', compact('title', 'chat'));
-    }
-
-    public function update(UpdateRequest $request, Chat $chat)
-    {
-        try {
-
-            $item = $this->prepareItemData($request);
-            $item['slug'] = $request->input('slug');
-            $chat->update($item);
-
-            return $this->successUpdateResponse();
-        } catch (Exception $exception) {
-
-            return $this->exceptionResponse($exception);
-        }
-    }
-
-    public function destroy(Chat $chat)
-    {
-        try {
-            $chat->delete();
-
-            return $this->successDestroyBack(route('admin.blog.category.index'));
-        } catch (Exception $exception) {
-
-            return $this->exceptionBack($exception);
-        }
-    }
-
-    protected function prepareItemData(Request $request): array
-    {
-        $item['title'] = $request->input('title');
-
-        return $item;
     }
 
     public function getDataRoute(): string
@@ -176,7 +157,11 @@ class TicketController extends Controller
                     return 'در انتظار';
                 })
                 ->editColumn('meta.rate', function (Chat $chat) {
-                    return makeUiStar($chat->meta->rate);
+                    if ($chat->meta) {
+                        return makeUiStar($chat->meta->rate);
+                    }
+
+                    return '';
                 })
                 ->addColumn('action', function (Chat $chat) {
                     return Helper::btnMaker(BtnType::Success, route('admin.ticket.message', $chat->id), 'پاسخ');

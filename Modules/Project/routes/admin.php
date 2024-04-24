@@ -77,6 +77,7 @@ Route::group(['guard' => 'admin'], function () {
         Route::group([], function () {
             Route::get('/{projectId}', [WebController::class, 'edit'])->name('edit');
             Route::patch('/{projectId}', [WebController::class, 'update'])->name('update');
+            Route::delete('/{projectId}', [WebController::class, 'destroy'])->name('destroy');
         })->whereNumber('projectId');
 
         Route::post('/', [WebController::class, 'store'])->name('store');
@@ -90,6 +91,8 @@ Route::group(['guard' => 'admin'], function () {
         Route::group([], function () {
             Route::get('/{projectId}', [SeoController::class, 'edit'])->name('edit');
             Route::patch('/{projectId}', [SeoController::class, 'update'])->name('update');
+            Route::delete('/{projectId}', [SeoController::class, 'destroy'])->name('destroy');
+
         })->whereNumber('projectId');
 
         Route::post('/', [SeoController::class, 'store'])->name('store');
@@ -103,6 +106,8 @@ Route::group(['guard' => 'admin'], function () {
         Route::group([], function () {
             Route::get('/{projectId}', [AdsController::class, 'edit'])->name('edit');
             Route::patch('/{projectId}', [AdsController::class, 'update'])->name('update');
+            Route::delete('/{projectId}', [AdsController::class, 'destroy'])->name('destroy');
+
         })->whereNumber('projectId');
 
         Route::post('/', [AdsController::class, 'store'])->name('store');
@@ -116,5 +121,4 @@ Route::group(['guard' => 'admin'], function () {
     Route::get('/', [ProjectController::class, 'index'])->name('index');
     Route::get('/data', [ProjectController::class, 'data'])->name('data');
     Route::get('/{project}', [ProjectController::class, 'manage'])->name('manage');
-    Route::delete('/{project}', [ProjectController::class, 'destroy'])->name('destroy');
 });

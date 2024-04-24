@@ -106,9 +106,8 @@ class AdsController extends Controller
             $project = $this->getOrFailProject($projectId);
             $project->delete();
 
-            return $this->successDestroyBack(route('admin.project.seo.index'));
+            return $this->successDestroyBack(route('admin.project.ads.index'));
         } catch (Exception $exception) {
-            DB::rollBack();
 
             return $this->exceptionBack($exception);
         }

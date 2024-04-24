@@ -3,6 +3,7 @@
 namespace Modules\User\app\Resources\User;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Project\app\Resources\Project\ProjectResource;
 use Modules\User\app\Enums\PersonType;
 use Modules\User\app\Enums\UserType;
 use Modules\User\app\Models\User;
@@ -37,6 +38,10 @@ class UserResource extends JsonResource
 
         $res['user_type'] = $this->user_type;
         $res['user_type_title'] = UserType::getDescription($this->user_type);
+
+        if ($this->load('projects')) {
+            $res['projects'] = ProjectResource::collection($this->projects);
+        }
 
         return $res;
     }

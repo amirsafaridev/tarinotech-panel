@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Notifications\User\Auth\OtpNotification;
 use App\Traits\HasApiResponse;
 use Exception;
+use Modules\Auth\app\Http\Requests\Api\Auth\DevLoginRequest;
 use Modules\Auth\app\Http\Requests\Api\Auth\LoginRequest;
 use Modules\Auth\app\Models\OtpCode;
 use Modules\Auth\app\Notifications\SendCodeNotification;
@@ -39,12 +40,15 @@ class LoginController extends Controller
 
     }
 
-    public function devLogin()
+    public function devLogin(DevLoginRequest $request)
     {
         $this->dieInProduction();
         try {
 
-            $user = User::first();
+            $user = User::query()
+                ->where('mobile', $request->input('mobile'))
+                ->with('projects')
+                ->firstOrFail();
 
             $token = $user->createToken('authToken')->plainTextToken;
 

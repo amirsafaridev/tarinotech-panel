@@ -1,12 +1,12 @@
 # List Message
-GET {{ URL }}/chat/7/message
+GET {{ URL }}/chat/5/message
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{ TOKEN }}
 ###
 
 # Send Message
-POST {{ URL }}
+POST {{ URL }}/chat/5/message
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{ TOKEN }}
@@ -17,7 +17,7 @@ Authorization: Bearer {{ TOKEN }}
 ###
 
 # Send Message
-POST {{ URL }}/chat/8/message
+POST {{ URL }}/chat/4/message
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{ TOKEN }}

@@ -24,6 +24,7 @@
     <div class="row">
         <div class="col-12">
             <x-admin.chat :chat="$chat"/>
+
         </div>
     </div>
 @endsection

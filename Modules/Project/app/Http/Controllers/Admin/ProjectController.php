@@ -13,7 +13,6 @@ use App\Traits\HasDatatable;
 use App\Traits\HasJsonCommonResponse;
 use Exception;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Modules\Admin\app\Models\Admin;
 use Modules\Project\app\Filters\StatusFilter;
 use Modules\Project\app\Filters\TypeFilter;
 use Modules\Project\app\Models\Project;
@@ -55,19 +54,6 @@ class ProjectController extends Controller
         ]);
 
         return view('project::admin.show', compact('title', 'project'));
-    }
-
-    public function destroy(Admin $admin)
-    {
-        try {
-            $admin->delete();
-
-            return $this->successDestroyBack(route('admin.project.index'));
-
-        } catch (Exception $exception) {
-
-            return $this->exceptionBack($exception);
-        }
     }
 
     public function getDataRoute(): string

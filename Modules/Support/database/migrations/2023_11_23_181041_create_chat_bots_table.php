@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Chat\app\Enums\ChatBotAction;
 
 return new class extends Migration
 {
@@ -15,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->char('name');
             $table->char('logo');
+            $table->enum('action', ChatBotAction::getValues());
             $table->timestamps();
         });
     }

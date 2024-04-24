@@ -1,0 +1,10 @@
+# Create Ticket
+POST {{ URL }}/ticket
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{ TOKEN }}
+
+{
+  "project_id":58
+}
+###

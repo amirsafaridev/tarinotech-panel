@@ -2,9 +2,10 @@
 @section('title') {{ $title }} @endsection
 @section('head')
     @include('admin.partial.loader.style',['load'=>[
-       \App\Enums\Assets\StyleLoader::Toast(),
-       \App\Enums\Assets\StyleLoader::Select2(),
+        \App\Enums\Assets\StyleLoader::Toast(),
+        \App\Enums\Assets\StyleLoader::Select2(),
         \App\Enums\Assets\StyleLoader::Datepicker(),
+        \App\Enums\Assets\StyleLoader::Alert(),
    ]])
 @endsection
 @section('content')
@@ -288,16 +289,23 @@
                                       :old="$project->note"/>
 
                     <x-admin.button-submit title="{{ trans('panel.update') }}"/>
+                    <x-admin.button-delete/>
 
                 </div>
             </div>
         </div>
     </form>
+
+    <form id="deleteItem" action="{{ route('admin.project.web.destroy',$project->id) }}" method="post" class="form-inline">
+        @csrf
+        @method('DELETE')
+    </form>
 @endsection
 @section('script')
     @include('admin.partial.loader.script',['load'=>[
         \App\Enums\Assets\ScriptLoader::Select2(),
-         \App\Enums\Assets\ScriptLoader::Datepicker(),
+        \App\Enums\Assets\ScriptLoader::Datepicker(),
+        \App\Enums\Assets\ScriptLoader::Alert(),
     ]])
     @include('admin.partial.request')
     @include('admin.partial.script.global')

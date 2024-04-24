@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\Ticket\app\Http\Controllers\Api\TicketController;
 
 /*
     |--------------------------------------------------------------------------
@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
     |
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
-    Route::get('ticket', fn (Request $request) => $request->user())->name('ticket');
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/', [TicketController::class, 'store']);
 });

@@ -130,7 +130,6 @@ class WebController extends Controller
 
             return $this->successDestroyBack(route('admin.project.web.index'));
         } catch (Exception $exception) {
-            DB::rollBack();
 
             return $this->exceptionBack($exception);
         }

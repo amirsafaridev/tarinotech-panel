@@ -22,3 +22,7 @@ Accept: application/json
 POST {{ URL }}/auth/dev-login
 Content-Type: application/json
 Accept: application/json
+
+{
+  "mobile": "09033609009"
+}
