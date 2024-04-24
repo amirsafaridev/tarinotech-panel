@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'tax' => env('FACTOR_TAX', 0.09),
+    'tax' => env('FACTOR_TAX', 0.10),
 ];
