@@ -45,7 +45,7 @@
                 <x-admin.input identify="item[{{ $_index }}][price]" title="مبلغ (ریال)" :add-class="['price-input','calc']" :old="$price"/>
             </div>
             <div class="col-12 col-md-4 col-lg-2">
-                <x-admin.input identify="item[{{ $_index }}][tax]" title="مالیات بر ارزش افزوده ۹ درصد (ریال)" :add-class="['tax-input','calc']" :read-only="true" :old="$taxAmount"/>
+                <x-admin.input identify="item[{{ $_index }}][tax]" title=" مالیات بر ارزش افزوده {{ config('factor.tax') }} درصد (ریال)" :add-class="['tax-input','calc']" :read-only="true" :old="$taxAmount"/>
             </div>
             <div class="col-12 col-md-4 col-lg-2">
                 <x-admin.input identify="item[{{ $_index }}][discount]" title="تخفیف (ریال)" :add-class="['offer-input','calc']" :old="$discount"/>
