@@ -127,10 +127,11 @@
 
                 const taxInput = priceInput.parent().parent().parent().find('.tax-input');
 
+                const taxRate = Number('{{ config('factor.tax') }}');
                 if (value <= 0) {
                     taxInput.val(0);
                 } else {
-                    let taxCalc = Math.round(value * 0.09);
+                    let taxCalc = Math.round(value * taxRate);
                     taxInput.val(numberWithCommas(taxCalc))
                 }
                 updateTotalPrice(input);
