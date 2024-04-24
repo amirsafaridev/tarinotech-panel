@@ -9,7 +9,7 @@ class FactorItemUpdateJob
 {
     public function handle(FactorItemValues $values, int $id): float|int
     {
-        $taxRate = 0.09;
+        $taxRate = config('factor.tax');
         $price = $values->getPrice();
         $taxAmount = $price * $taxRate;
         $finalPrice = ($price + $taxAmount) - $values->getDiscount();

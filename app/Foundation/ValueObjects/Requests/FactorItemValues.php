@@ -12,7 +12,7 @@ class FactorItemValues
 
     private int $price;
 
-    private float $taxRate = 0.09;
+    private float $taxRate = 0.10;
 
     private int $taxAmount;
 
