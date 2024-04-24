@@ -321,7 +321,8 @@ class FactorController extends Controller
                     'project' => function ($query) {
                         $query->select('projects.id', 'projects.title', 'projects.domain');
                     },
-                ]);
+                ])
+                ->whereHas('project');
 
             return DataTables::eloquent($factors)
                 ->editColumn('status', function (Factor $factor) {
