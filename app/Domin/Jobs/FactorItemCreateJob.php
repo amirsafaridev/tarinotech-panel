@@ -9,7 +9,7 @@ class FactorItemCreateJob
 {
     public function handle(FactorItemValues $values): FactorItem
     {
-        $taxRate = 0.09;
+        $taxRate = config('factor.tax');
         $price = $values->getPrice();
         $taxAmount = $price * $taxRate;
         $finalPrice = ($price + $taxAmount) - $values->getDiscount();
