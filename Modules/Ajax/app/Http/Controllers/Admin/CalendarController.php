@@ -18,9 +18,9 @@ class CalendarController extends Controller
 
             $currentDate = Verta::parse($request->input('start_date'))->toCarbon();
 
-            if ($currentDate->greaterThan(now())) {
+            /*if ($currentDate->greaterThan(now())) {
                 throw new Exception('Invalid start date provided');
-            }
+            }*/
 
             if ($request->has('end_date')) {
                 $endDate = Verta::parse($request->input('end_date'))->toCarbon();
