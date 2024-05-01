@@ -103,7 +103,7 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         @if($factor->project)
-                            @if($factor->project->user->person_type == \Modules\User\app\Enums\PersonType::Legal)
+                            @if($factor->is_official || $factor->project->user->official_bill))
                                 @include('factor::admin.part.official_invoice')
                             @else
                                 @include('factor::admin.part.unofficial_invoice')
