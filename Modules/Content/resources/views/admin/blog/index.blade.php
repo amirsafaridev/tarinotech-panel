@@ -21,7 +21,7 @@
             <div class="card">
                 <div class="card-body">
                     @include('admin.partial.message')
-                    @include('content::admin.part.filter')
+                    @include('content::admin.part.blog.filter')
                     <div class="table-responsive">
                         <table id="data-table" class="table">
                             <thead>

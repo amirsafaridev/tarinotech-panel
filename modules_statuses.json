@@ -20,5 +20,6 @@
     "Auth": true,
     "Support": true,
     "FreeDay": true,
-    "Stream": true
+    "Stream": true,
+    "Content": true
 }

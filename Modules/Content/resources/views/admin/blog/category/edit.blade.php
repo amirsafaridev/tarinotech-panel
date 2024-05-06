@@ -15,33 +15,34 @@
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.permission.index') }}">پرمیشن ها</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.content.blog.index') }}">بلاگ ها</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.content.blog.category.index') }}">دسته بندی ها</a></li>
                 <li class="breadcrumb-item active">ویرایش</li>
             </ol>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-xl-4 col-lg-6 col-md-6 col-12">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-12">
             <div class="card">
                 <div class="card-body pb-3">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ route('admin.permission.update',$permission->id) }}">
+                    <form class="request-form forms-sample" method="post" action="{{ route('admin.content.blog.category.update',$blogCategory->id) }}">
                         @csrf
                         @method('PATCH')
 
-                        <x-admin.input identify="id" type="hidden" :old="$permission->id"/>
+                        <x-admin.input identify="id" type="hidden" :old="$blogCategory->id"/>
 
-                        <x-admin.input identify="name" title="نام" :old="$permission->name"/>
+                        <x-admin.input identify="title" title="عنوان" :old="$blogCategory->title"/>
 
-                        <x-admin.input identify="title" title="عنوان" :old="$permission->title"/>
+                        <x-admin.input identify="slug" title="اسلاگ" :old="$blogCategory->slug"/>
 
                         <x-admin.button-submit title="{{ trans('panel.update') }}"/>
 
                         <x-admin.button-delete/>
                     </form>
 
-                    <form id="deleteItem" action="{{ route('admin.permission.destroy',$permission->id) }}" method="post" class="form-inline">
+                    <form id="deleteItem" action="{{ route('admin.content.blog.category.destroy',$blogCategory->id) }}" method="post" class="form-inline">
                         @csrf
                         @method('DELETE')
                     </form>
@@ -51,17 +52,15 @@
     </div>
 @endsection
 @section('script')
-    @include('admin.partial.loader.script',['load'=>[
-    \App\Enums\Assets\ScriptLoader::Alert(),
-        \App\Enums\Assets\ScriptLoader::CKEditor(),
-    ]])
+    @include('admin.partial.loader.script',[
+        'load'=>[
+            \App\Enums\Assets\ScriptLoader::Alert(),
+        ],
+    ])
     @include('admin.partial.request')
-    @include('admin.partial.ckeditor')
-
     <script>
         $(document).ready(function () {
-            activeParentUl('{{ route('admin.content.blog.index') }}');
-            CKEDITOR.replace( 'body');
+            activeParentUl('{{ route('admin.content.blog.category.index') }}');
         })
     </script>
 @endsection

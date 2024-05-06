@@ -5,18 +5,15 @@ namespace Database\Seeders;
 use App\Service\PermissionService;
 use Illuminate\Database\Seeder;
 use Modules\Admin\database\seeders\AdminDatabaseSeeder;
-use Modules\Blog\database\seeders\BlogCategoryDatabaseSeeder;
-use Modules\Blog\database\seeders\BlogDatabaseSeeder;
-use Modules\Factor\database\seeders\FactorDatabaseSeeder;
+use Modules\Content\database\seeders\BlogCategoryDatabaseSeeder;
+use Modules\Content\database\seeders\BlogDatabaseSeeder;
+use Modules\Content\database\seeders\ContentDatabaseSeeder;
 use Modules\FreeDay\database\seeders\FreeDayDatabaseSeeder;
 use Modules\Package\database\seeders\PackageDatabaseSeeder;
 use Modules\Project\database\seeders\ProjectBaseSeeder;
-use Modules\Project\database\seeders\ProjectDatabaseSeeder;
 use Modules\Project\database\seeders\ProjectTypeSeeder;
 use Modules\Setting\database\seeders\SettingDatabaseSeeder;
 use Modules\Support\database\seeders\SupportDatabaseSeeder;
-use Modules\Ticket\database\seeders\TicketDatabaseSeeder;
-use Modules\User\database\seeders\UserDatabaseSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -40,6 +37,7 @@ class DatabaseSeeder extends Seeder
             FreeDayDatabaseSeeder::class, // DONE
             BlogCategoryDatabaseSeeder::class, //DONE
             BlogDatabaseSeeder::class, //DONE
+            ContentDatabaseSeeder::class, //DONE
         ]);
 
         resolve(PermissionService::class)->sync();

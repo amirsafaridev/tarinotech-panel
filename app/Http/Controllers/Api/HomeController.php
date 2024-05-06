@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Traits\HasApiResponse;
 use Exception;
-use Modules\Blog\app\Models\Blog;
-use Modules\Blog\app\Resources\Blog\BlogResource;
+use Modules\Content\app\Models\Blog;
+use Modules\Content\app\Resources\Blog\BlogResource;
 
 class HomeController extends Controller
 {

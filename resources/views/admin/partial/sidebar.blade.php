@@ -306,9 +306,10 @@
 
 
                 @canany([
-                    'ADMIN_BLOG_INDEX',
-                    'ADMIN_BLOG_CREATE',
-                    'ADMIN_BLOG_CATEGORY_INDEX',
+                    'ADMIN_CONTENT_BLOG_INDEX',
+                    'ADMIN_CONTENT_BLOG_CREATE',
+                    'ADMIN_CONTENT_BLOG_CATEGORY_INDEX',
+                    'ADMIN_CONTENT_SLIDER_INDEX',
                 ])
                     <li class="sub-category">
                         <h3>محتوا</h3>
@@ -321,20 +322,33 @@
                         </a>
 
                         <ul class="slide-menu">
-                            @can('ADMIN_BLOG_INDEX')
-                                <li><a href="{{ route('admin.blog.index') }}" class="slide-item">لیست</a></li>
+                            @can('ADMIN_CONTENT_BLOG_INDEX')
+                                <li><a href="{{ route('admin.content.blog.index') }}" class="slide-item">لیست</a></li>
                             @endcan
 
-                            @can('ADMIN_BLOG_CREATE')
-                                <li><a href="{{ route('admin.blog.create') }}" class="slide-item">ایجاد</a></li>
+                            @can('ADMIN_CONTENT_BLOG_CREATE')
+                                <li><a href="{{ route('admin.content.blog.create') }}" class="slide-item">ایجاد</a></li>
                             @endcan
 
-                            @can('ADMIN_BLOG_CATEGORY_INDEX')
-                                <li><a href="{{ route('admin.blog.category.index') }}" class="slide-item">دسته بندی ها</a>
+                            @can('ADMIN_CONTENT_BLOG_CATEGORY_INDEX')
+                                <li><a href="{{ route('admin.content.blog.category.index') }}" class="slide-item">دسته بندی ها</a>
                                 </li>
                             @endcan
                         </ul>
                     </li>
+
+                    @can('ADMIN_CONTENT_SLIDER_INDEX')
+                        <li class="slide can-expand">
+                            <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navSlider">
+                                <i class="side-menu__icon fal fa-images"></i>
+                                <span class="side-menu__label">اسلایدر</span><i class="angle fal fa-angle-left"></i>
+                            </a>
+
+                            <ul class="slide-menu">
+                                <li><a href="{{ route('admin.content.slider.index') }}" class="slide-item">لیست</a></li>
+                            </ul>
+                        </li>
+                    @endcan
                 @endcanany
 
                 @canany(['ADMIN_LOG_INDEX','ADMIN_LOGIN_INDEX'])
@@ -343,7 +357,7 @@
                     </li>
 
                     <li class="slide can-expand">
-                        <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navBlog">
+                        <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navLog">
                             <i class="side-menu__icon fal fa-bug"></i>
                             <span class="side-menu__label">لاگ ها</span><i class="angle fal fa-angle-left"></i>
                         </a>

@@ -288,5 +288,7 @@ return [
         'business_domain' => 'زمینه کاری متنی',
         'admin_id' => 'پرسنل',
         'logo' => 'تصویر',
+        'published_at' => 'تاریخ انتشار',
+        'archived_at' => 'تاریخ آرشیو',
     ],
 ];
