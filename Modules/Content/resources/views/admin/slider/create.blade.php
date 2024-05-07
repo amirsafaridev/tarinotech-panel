@@ -28,6 +28,8 @@
                         @csrf
                         <x-admin.input identify="title" title="عنوان"/>
 
+                        <x-admin.input identify="link" title="لینک"/>
+
                         <x-admin.input type="file" identify="photo" title="تصویر"/>
 
                         <x-admin.input identify="published_at"

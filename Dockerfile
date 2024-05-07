@@ -9,6 +9,7 @@ WORKDIR /var/www
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
+    libwebp-dev \
     libpng-dev \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
@@ -33,7 +34,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install extensions
 RUN docker-php-ext-install pdo_mysql zip exif pcntl bz2
-RUN docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-freetype=/usr/include/
+RUN docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-freetype=/usr/include/  --with-webp=/usr/include/
 RUN docker-php-ext-install gd
 
 # Install composer

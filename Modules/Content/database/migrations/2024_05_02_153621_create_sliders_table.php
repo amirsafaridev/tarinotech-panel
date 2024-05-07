@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('photo');
+            $table->string('link')->nullable();
             $table->unsignedBigInteger('sort_id');
             $table->dateTime('published_at');
             $table->dateTime('archived_at')

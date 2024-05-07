@@ -85,7 +85,7 @@ class SliderController extends Controller
         try {
             $slider->delete();
 
-            return $this->successDestroyBack(route('admin.content.blog.index'));
+            return $this->successDestroyBack(route('admin.content.slider.index'));
         } catch (Exception $exception) {
 
             return $this->exceptionBack($exception);
@@ -99,6 +99,7 @@ class SliderController extends Controller
     {
         $sliderData['title'] = $req->input('title');
         $sliderData['description'] = $req->input('description');
+        $sliderData['link'] = $req->input('link');
 
         $publishedAt = Helper::toGregorian($req->input('published_at'));
         $sliderData['published_at'] = $publishedAt;

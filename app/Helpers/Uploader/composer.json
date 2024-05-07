@@ -1,0 +1,14 @@
+{
+  "name": "vendor_name/Uploader",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "ali",
+      "email": "email@example.com"
+    }
+  ],
+  "require": {
+  }
+}

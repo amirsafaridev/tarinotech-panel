@@ -35,6 +35,8 @@
 
                         <x-admin.input identify="title" title="عنوان" :old="$slider->title"/>
 
+                        <x-admin.input identify="link" title="لینک"/>
+
                         @if($slider->photo)
                             <img class="img img-fluid rounded-2" src="{{ asset($slider->photo) }}" alt="{{ $slider->title }}">
                         @endif

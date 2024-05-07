@@ -22,4 +22,5 @@ yarn-error.log
 /public/uploads/avatar/*
 /public/uploads/user/*
 /public/uploads/chat/*
+/public/uploads/slider/*
 /http/http-client.env.json

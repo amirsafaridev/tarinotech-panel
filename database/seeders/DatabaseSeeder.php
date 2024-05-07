@@ -14,6 +14,7 @@ use Modules\Project\database\seeders\ProjectBaseSeeder;
 use Modules\Project\database\seeders\ProjectTypeSeeder;
 use Modules\Setting\database\seeders\SettingDatabaseSeeder;
 use Modules\Support\database\seeders\SupportDatabaseSeeder;
+use Modules\User\database\seeders\UserDatabaseSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,7 +25,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             AdminDatabaseSeeder::class, //DONE
-            //UserDatabaseSeeder::class, //DONE
+            UserDatabaseSeeder::class, //DONE
             ProjectBaseSeeder::class, // DONE
             ProjectTypeSeeder::class, // DONE
             PackageDatabaseSeeder::class, //DONE

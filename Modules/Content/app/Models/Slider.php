@@ -13,6 +13,7 @@ class Slider extends Model
         'title',
         'description',
         'photo',
+        'link',
         'sort_id',
         'published_at',
         'archived_at',

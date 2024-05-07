@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManager;
 use stdClass;
 
 class PhotoUploader implements IPhotoUploadBuilder
@@ -142,7 +143,9 @@ class PhotoUploader implements IPhotoUploadBuilder
         $extension = $fileUploadInstance->extension();
         $path = $this->config->path.$uniqueName.'.'.$extension;
 
-        $image = Image::make($fileUploadInstance);
+        $manager = new ImageManager(['driver' => 'gd']);
+
+        $image = $manager->make($fileUploadInstance);
         $this->applyImageManipulations($image);
         $image->save($path);
 
