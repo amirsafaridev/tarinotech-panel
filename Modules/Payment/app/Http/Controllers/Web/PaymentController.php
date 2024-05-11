@@ -113,7 +113,7 @@ class PaymentController extends Controller
         $title = 'نتیجه تراکنش';
 
         try {
-            $identify = request('refid');
+            $identify = request('code');
 
             $factor = Factor::query()
                 ->where('identify', $identify)
