@@ -1,5 +1,5 @@
 @extends('web.master')
-@section('title') {{ $title }} @endsection
+@section('title') {{ $title ?? 'نتیجه تراکنش' }} @endsection
 @section('head')
     <link rel="stylesheet" href="{{ asset('res-admin/assets/css/factor.css') }}">
 @endsection
