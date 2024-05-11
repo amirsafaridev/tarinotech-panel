@@ -74,7 +74,7 @@ class PaymentController extends Controller
             $identify = request('invoiceid');
 
             $factor = Factor::query()
-                ->where('identify', $identify)
+                ->where('transaction_id', $identify)
                 ->where('status', FactorStatus::Pending)
                 ->first();
 
@@ -116,7 +116,7 @@ class PaymentController extends Controller
             $identify = request('code');
 
             $factor = Factor::query()
-                ->where('identify', $identify)
+                ->where('transaction_id', $identify)
                 ->where('status', FactorStatus::Pending)
                 ->first();
 
