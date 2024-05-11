@@ -9,6 +9,8 @@ class FactorController extends Controller
 {
     const PAYMENT_TITLE = 'پرداخت فاکتور';
 
+    const FACTOR_NOT_FOUND = 'فاکتور مورد نظر یافت نشد!';
+
     public function index($identify)
     {
         $title = self::PAYMENT_TITLE;
@@ -17,7 +19,15 @@ class FactorController extends Controller
             ->with(['items', 'project'])
             ->whereHas('items')
             ->where('identify', $identify)
-            ->firstOrFail();
+            ->first();
+
+        if (! $factor) {
+            return redirect(route('factor.factor.index', $identify))
+                ->with([
+                    'message' => self::FACTOR_NOT_FOUND,
+                    'warning' => true,
+                ]);
+        }
 
         return view('factor::web.factor', compact('title', 'factor'));
 
