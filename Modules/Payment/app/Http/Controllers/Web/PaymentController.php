@@ -14,6 +14,10 @@ use Shetabit\Payment\Facade\Payment;
 
 class PaymentController extends Controller
 {
+    const FACTOR_NOT_FOUND = 'فاکتور مورد نظر یافت نشد!';
+
+    const PAY_EXCEPTION = 'خطایی در عملیات پرداخت رخ داده است لطفا مجدد تلاش کنید!';
+
     /**
      * Display a listing of the resource.
      */
@@ -30,7 +34,7 @@ class PaymentController extends Controller
             if (! $factor) {
                 return redirect(route('factor.factor.index', $identify))
                     ->with([
-                        'message' => 'فاکتور انتخاب شده قابل پرداخت نمی باشد.',
+                        'message' => self::FACTOR_NOT_FOUND,
                         'warning' => true,
                     ]);
             }
@@ -56,23 +60,29 @@ class PaymentController extends Controller
                 }
             )->pay()->render();
         } catch (Exception $exception) {
-            return $exception->getMessage();
+            report($exception);
+            $message = self::PAY_EXCEPTION;
+
+            return view('payment::web.message', compact('message'));
         }
 
     }
 
     public function verifySepehr()
     {
-
-        $title = 'نتیجه تراکنش';
-
         try {
             $identify = request('invoiceid');
 
             $factor = Factor::query()
                 ->where('identify', $identify)
                 ->where('status', FactorStatus::Pending)
-                ->firstOrFail();
+                ->first();
+
+            if (! $factor) {
+                $message = self::FACTOR_NOT_FOUND;
+
+                return view('payment::web.message', compact('message'));
+            }
 
             Payment::via($this->getPaymentDriver($factor->gateway))
                 ->amount($factor->final_price)
@@ -85,14 +95,14 @@ class PaymentController extends Controller
                 'paid_at' => now(),
             ]);
 
-            return view('payment::web.sepehr-success', compact('title', 'factor'));
+            return view('payment::web.sepehr-success', compact('factor'));
 
         } catch (Exception $exception) {
 
             report($exception);
-            $message = $exception->getMessage();
+            $message = self::PAY_EXCEPTION;
 
-            return view('payment::web.message', compact('title', 'message'));
+            return view('payment::web.message', compact('message'));
 
         }
 
@@ -108,7 +118,13 @@ class PaymentController extends Controller
             $factor = Factor::query()
                 ->where('identify', $identify)
                 ->where('status', FactorStatus::Pending)
-                ->firstOrFail();
+                ->first();
+
+            if (! $factor) {
+                $message = self::FACTOR_NOT_FOUND;
+
+                return view('payment::web.message', compact('title', 'message'));
+            }
 
             Payment::via($this->getPaymentDriver($factor->gateway))
                 ->amount($factor->final_price)
@@ -126,7 +142,7 @@ class PaymentController extends Controller
         } catch (Exception $exception) {
 
             report($exception);
-            $message = $exception->getMessage();
+            $message = self::PAY_EXCEPTION;
 
             return view('payment::web.message', compact('title', 'message'));
 
