@@ -74,7 +74,8 @@ class PaymentController extends Controller
                 ->where('status', FactorStatus::Pending)
                 ->firstOrFail();
 
-            Payment::via($factor->gateway)->amount($factor->final_price)
+            Payment::via($this->getPaymentDriver($factor->gateway))
+                ->amount($factor->final_price)
                 ->transactionId($factor->transaction_id)
                 ->verify();
 
