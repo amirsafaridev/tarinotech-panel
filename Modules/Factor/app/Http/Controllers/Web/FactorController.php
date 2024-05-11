@@ -22,7 +22,7 @@ class FactorController extends Controller
             ->first();
 
         if (! $factor) {
-            return redirect(route('factor.factor.index', $identify))
+            return view('factor::web.factor')
                 ->with([
                     'message' => self::FACTOR_NOT_FOUND,
                     'warning' => true,
