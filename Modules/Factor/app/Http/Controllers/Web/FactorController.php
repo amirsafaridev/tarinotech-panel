@@ -22,11 +22,9 @@ class FactorController extends Controller
             ->first();
 
         if (! $factor) {
-            return view('factor::web.factor')
-                ->with([
-                    'message' => self::FACTOR_NOT_FOUND,
-                    'warning' => true,
-                ]);
+            $message = self::FACTOR_NOT_FOUND;
+
+            return view('payment::web.message', compact('message'));
         }
 
         return view('factor::web.factor', compact('title', 'factor'));
