@@ -38,6 +38,7 @@ class Factor extends Model
         'expired_at',
         'gateway_data',
         'gateway',
+        'paid_at',
     ];
 
     protected $casts = [
