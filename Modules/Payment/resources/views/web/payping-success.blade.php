@@ -32,7 +32,7 @@
                     </tr>
                     <tr>
                         <td>تاریخ پرداخت</td>
-                        <td>{{ $factor->paid_at }}</td>
+                        <td>{{ $factor->paid_at?->toJalali()->format(formatJalaliDateTime()) }}</td>
                     </tr>
                     </tbody>
                 </table>

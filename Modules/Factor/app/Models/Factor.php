@@ -45,6 +45,7 @@ class Factor extends Model
         'gateway_data' => 'json',
         'expired_at' => 'date',
         'is_official' => 'boolean',
+        'paid_at' => 'datetime',
     ];
 
     public function project(): BelongsTo
