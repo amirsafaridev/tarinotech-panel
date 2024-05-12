@@ -35,7 +35,7 @@
                     </tr>
                     <tr>
                         <td>تاریخ پرداخت</td>
-                        <td>{{ $factor->paid_at?->toJalali()->format(formatJalaliDateTime()) }}</td>
+                        <td>{{ $factor->paid_at?->toJalali()->format(formatJalaliDate()) }}</td>
                     </tr>
                     <tr>
                         <td>رسید دیجیتال</td>
