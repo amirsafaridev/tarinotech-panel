@@ -140,6 +140,16 @@
                 </tr>
             @endif
 
+            <!-- Options -->
+            @if($project->target->options->isNotEmpty())
+                <tr>
+                    <td>اپشن ها</td>
+                    <td>
+                        {{ $project->target->options->pluck('title')->implode(', ') }}
+                    </td>
+                </tr>
+            @endif
+
             @if(!empty($project->target->sample['favorite_sites']))
                 <tr>
                     <td>سایت های مورد پسند</td>

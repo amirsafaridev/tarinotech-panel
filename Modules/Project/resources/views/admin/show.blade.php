@@ -37,7 +37,7 @@
         </div>
 
         @if($project->factors->isNotEmpty())
-            <div class="col-12">
+            <div class="col-12 d-print-none">
                 @include('project::admin.part.factor-card')
             </div>
         @endif

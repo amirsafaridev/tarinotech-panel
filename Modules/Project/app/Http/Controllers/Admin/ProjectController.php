@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Project\app\Filters\StatusFilter;
 use Modules\Project\app\Filters\TypeFilter;
 use Modules\Project\app\Models\Project;
+use Modules\Project\app\Models\ProjectWeb;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProjectController extends Controller
@@ -49,9 +50,12 @@ class ProjectController extends Controller
             'status',
             'type',
             'businessDomain',
-            'target',
             'factors.admin',
         ]);
+
+        if ($project->target_type === ProjectWeb::class) {
+            $project->load('target.options');
+        }
 
         return view('project::admin.show', compact('title', 'project'));
     }

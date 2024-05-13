@@ -200,7 +200,8 @@ class WebController extends Controller
         $deadlineAt = $request->input('deadline_at');
 
         $adminId = auth()->id();
-        if (auth()->user()->hasRole(RoleName::SUPER_ADMIN)) {
+        $user = auth()->user();
+        if ($user->hasRole(RoleName::SUPER_ADMIN)) {
             $adminId = $request->input('admin_id');
         }
 
