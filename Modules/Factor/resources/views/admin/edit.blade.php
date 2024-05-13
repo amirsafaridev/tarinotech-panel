@@ -49,7 +49,7 @@
                         @if(is_null($factor->project_id) && $factor->meta)
 
                             <x-admin.checkbox identify="custom_customer"
-                                              description="ثبت دستی مشتری"
+                                              description="ثبت دستی کارفرما"
                                               :old="(bool)$factor->meta"/>
 
                             <div id="custom_customer_container" style="display: none" class="p-2 mb-2">

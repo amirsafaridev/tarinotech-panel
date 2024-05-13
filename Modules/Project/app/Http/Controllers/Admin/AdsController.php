@@ -180,7 +180,7 @@ class AdsController extends Controller
                     ->setName('admin.fullname')
                     ->setSearchable(false)
                     ->setSortable(false)
-                    ->setAs('نام کارشناس')
+                    ->setAs('نام کارشناس فروش')
             )
             ->addColumn(
                 ColumnOption::new()->setName('type.title')

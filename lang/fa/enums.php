@@ -43,7 +43,7 @@ return [
 
     UserType::class => [
         UserType::Presenter => 'نماینده',
-        UserType::Primary => 'مشتری',
+        UserType::Primary => 'کارفرما',
     ],
 
     SettingItems::class => [
@@ -78,7 +78,7 @@ return [
         WebLanguage::IN => 'هندی',
         WebLanguage::PK => 'پاکستانی',
         WebLanguage::RO => 'رومانیایی',
-        WebLanguage::MS => 'ماالیی',
+        WebLanguage::MS => 'مالایی',
     ],
 
     WebFacility::class => [

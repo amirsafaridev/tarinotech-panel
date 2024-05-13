@@ -45,7 +45,7 @@
 
                         <div id="project_info" class="mb-3"></div>
 
-                        <x-admin.checkbox identify="custom_customer" description="ثبت دستی مشتری"/>
+                        <x-admin.checkbox identify="custom_customer" description="ثبت دستی کارفرما"/>
 
                         <div id="custom_customer_container" style="display: none" class="p-2 mb-2">
                             <x-admin.select-model

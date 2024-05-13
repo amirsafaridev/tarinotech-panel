@@ -31,13 +31,13 @@ class UserController extends Controller
     use HasDatatable;
     use HasJsonCommonResponse;
 
-    const INDEX_TITLE = 'مشتری ها';
+    const INDEX_TITLE = 'کارفرمایان';
 
-    const CREATE_TITLE = 'ایجاد مشتری ها';
+    const CREATE_TITLE = 'ایجاد کارفرما';
 
-    const EDIT_TITLE = 'ویرایش مشتری ها';
+    const EDIT_TITLE = 'ویرایش کارفرما';
 
-    const SHOW_TITLE = 'نمایش مشتری';
+    const SHOW_TITLE = 'نمایش کارفرما';
 
     public function index()
     {

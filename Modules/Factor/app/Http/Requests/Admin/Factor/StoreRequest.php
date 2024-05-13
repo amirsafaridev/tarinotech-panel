@@ -74,8 +74,8 @@ class StoreRequest extends FormRequest
             /* Meta */
             'type_id.required_if' => 'نوع پروژه الزامی است',
             'project_title.required_if' => 'نام پروژه الزامی است',
-            'customer_fullname.required_if' => 'نام مشتری الزارمی است',
-            'customer_mobile.required_if' => 'شماره موبایل مشتری الزامی است',
+            'customer_fullname.required_if' => 'نام کارفرما الزارمی است',
+            'customer_mobile.required_if' => 'شماره موبایل کارفرما الزامی است',
         ];
     }
 

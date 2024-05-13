@@ -5,12 +5,12 @@
 @endsection
 @section('content')
     <div class="page-header">
-        <h1 class="page-title">مدیریت مشتری ها</h1>
+        <h1 class="page-title">مدیریت کارفرمایان</h1>
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.user.index') }}">مشتری ها</a></li>
-                <li class="breadcrumb-item active">نمایش مشتری</li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.user.index') }}">کارفرمایان</a></li>
+                <li class="breadcrumb-item active">نمایش کارفرما</li>
             </ol>
         </div>
     </div>

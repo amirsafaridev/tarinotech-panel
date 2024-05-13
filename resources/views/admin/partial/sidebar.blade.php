@@ -104,13 +104,13 @@
                 @canany(['ADMIN_USER_INDEX','ADMIN_USER_CREATE','ADMIN_PRESENTER_INDEX','ADMIN_KNOWLEDGE_WAY_INDEX'])
 
                     <li class="sub-category">
-                        <h3>مدیریت مشتری ها</h3>
+                        <h3>مدیریت کارفرمایان</h3>
                     </li>
 
                     <li class="slide can-expand">
                         <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navUser">
                             <i class="side-menu__icon fal fa-user"></i>
-                            <span class="side-menu__label">مشتری ها</span><i class="angle fal fa-angle-left"></i>
+                            <span class="side-menu__label">کارفرمایان</span><i class="angle fal fa-angle-left"></i>
                         </a>
                         <ul class="slide-menu">
                             @can('ADMIN_USER_INDEX')

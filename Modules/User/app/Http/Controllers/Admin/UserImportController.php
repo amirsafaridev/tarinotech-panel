@@ -13,7 +13,7 @@ class UserImportController extends Controller
 {
     use HasJsonCommonResponse;
 
-    const INDEX_TITLE = 'مشتری ها - بارگذاری';
+    const INDEX_TITLE = 'کارفرمایان - بارگذاری';
 
     public function index()
     {

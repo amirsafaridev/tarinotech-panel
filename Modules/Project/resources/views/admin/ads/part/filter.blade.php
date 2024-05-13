@@ -3,7 +3,7 @@
     <div class="col-12 col-md-3 col-xl-2">
         <x-admin.input
                 identify="admin"
-                title="کارشناس"
+                title="کارشناس فروش"
         />
     </div>
 

@@ -25,27 +25,27 @@
                 <td>{{ $project->domain }}</td>
             </tr>
             <tr>
-                <td>کارشناس</td>
+                <td>کارشناس فروش</td>
                 <td>
                     <a href="{{ route('admin.admin.show',$project->admin_id) }}">{{ $project->admin->first_name }} {{ $project->admin->last_name }}</a>
                 </td>
             </tr>
             <tr>
-                <td>کارشناس (موبایل)</td>
+                <td>کارشناس فروش (موبایل)</td>
                 <td>{{ $project->admin->mobile }}</td>
             </tr>
             <tr>
-                <td>کارشناس (ایمیل)</td>
+                <td>کارشناس فروش (ایمیل)</td>
                 <td>{{ $project->admin->email }}</td>
             </tr>
             <tr>
-                <td>مشتری</td>
+                <td>کارفرما</td>
                 <td>
                     <a href="{{ route('admin.user.show',$project->user_id) }}">{{ $project->user->first_name }} {{ $project->user->last_name }}</a>
                 </td>
             </tr>
             <tr>
-                <td>مشتری (موبایل)</td>
+                <td>کارفرما (موبایل)</td>
                 <td>{{ $project->user->mobile }}</td>
             </tr>
             <tr>
