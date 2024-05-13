@@ -2,7 +2,10 @@
 
 namespace Modules\Project\app\Providers;
 
+use App\Enums\Database\Role\RoleName;
+use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
+use Modules\Admin\app\Models\Admin;
 use Modules\Package\app\Models\Package;
 use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Models\BusinessDomain;
@@ -114,7 +117,9 @@ class ViewComposerProvider extends ServiceProvider
                 ->where('base_id', ProjectBase::Web)
                 ->get();
 
-            $view->with(compact('types', 'statuses', 'packages', 'options', 'businessDomains'));
+            $admins = $this->getAdminBaseOnRole();
+
+            $view->with(compact('types', 'statuses', 'packages', 'options', 'businessDomains', 'admins'));
         });
     }
 
@@ -195,5 +200,19 @@ class ViewComposerProvider extends ServiceProvider
 
             $view->with(compact('bases'));
         });
+    }
+
+    private function getAdminBaseOnRole(): Collection
+    {
+        $user = auth()->user();
+        $admins = collect([]);
+        if ($user->hasRole(RoleName::SUPER_ADMIN)) {
+            $admins = Admin::query()
+                ->latest()
+                ->get();
+        }
+
+        return $admins;
+
     }
 }

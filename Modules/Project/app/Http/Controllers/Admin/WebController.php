@@ -2,6 +2,7 @@
 
 namespace Modules\Project\app\Http\Controllers\Admin;
 
+use App\Enums\Database\Role\RoleName;
 use App\Enums\General\BtnType;
 use App\Filters\Admin\Admin\AdminFilter;
 use App\Filters\Admin\Package\PackageID;
@@ -198,10 +199,15 @@ class WebController extends Controller
         $agreementAt = $request->input('agreement_at');
         $deadlineAt = $request->input('deadline_at');
 
+        $adminId = auth()->id();
+        if (auth()->user()->hasRole(RoleName::SUPER_ADMIN)) {
+            $adminId = $request->input('admin_id');
+        }
+
         $data = [
             'title' => $request->input('title'),
             'domain' => $request->input('domain_primary'),
-            'admin_id' => auth()->id(),
+            'admin_id' => $adminId,
             'user_id' => $request->input('user_id'),
             'status_id' => $request->input('status_id'),
             'base_id' => ProjectBase::Web,

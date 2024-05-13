@@ -23,7 +23,8 @@
         </div>
     </div>
 
-    <form class="request-form row forms-sample" method="post" action="{{ route('admin.project.web.edit',$project->id) }}">
+    <form class="request-form row forms-sample" method="post"
+          action="{{ route('admin.project.web.edit',$project->id) }}">
         <div class="col-xl-6 col-lg-6 col-md-6 col-12">
             @include('admin.partial.message')
             @csrf
@@ -45,6 +46,15 @@
 
                     <x-admin.select-user title="کارفرما"
                                          :old="$project->user_id"/>
+
+                    @role(\App\Enums\Database\Role\RoleName::SUPER_ADMIN)
+                    <x-admin.select-model title="کارشناس فروش"
+                                          identify="admin_id"
+                                          :old="$project->admin_id"
+                                          :items="$admins"
+                                          key="id"
+                                          value="fullName"/>
+                    @endrole
                 </div>
             </div>
 
@@ -250,7 +260,7 @@
                             <x-admin.input identify="deadline_at"
                                            title="تاریخ تحویل"
                                            :old="verta($project->deadline_at)->format('Y/m/d')"
-                                           />
+                            />
                         </div>
                         <div class="col-12">
                             <div class="alert alert-success d-flex justify-content-center align-items-center"
@@ -296,7 +306,8 @@
         </div>
     </form>
 
-    <form id="deleteItem" action="{{ route('admin.project.web.destroy',$project->id) }}" method="post" class="form-inline">
+    <form id="deleteItem" action="{{ route('admin.project.web.destroy',$project->id) }}" method="post"
+          class="form-inline">
         @csrf
         @method('DELETE')
     </form>
