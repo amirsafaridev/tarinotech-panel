@@ -12,7 +12,8 @@ class SupportDatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            NotifySeeder::class,
+            // Create Record By Migration
+            // NotifySeeder::class,
             SampleMessageSeeder::class,
         ]);
     }

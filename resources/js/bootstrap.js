@@ -5,15 +5,14 @@ window.Pusher = Pusher;
 
 let laravelEcho = new Echo({
     broadcaster: 'pusher',
-    key: import.meta.env.VITE_PUSHER_APP_KEY,
-    wsHost: import.meta.env.VITE_PUSHER_HOST,
-    wsPort: import.meta.env.VITE_PUSHER_PORT,
-    wssPort: import.meta.env.VITE_PUSHER_PORT,
+    key: '12345678',
+    wsHost: 'localhost',
+    wsPort: 6001,
     forceTLS: false,
     encrypted: false,
     disableStats: true,
-    enabledTransports: ['ws', 'wss'],
-    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+    //enabledTransports: ['ws'],
+    cluster: 'mt1',
     authEndpoint:'/broadcasting/auth/web'
 });
 

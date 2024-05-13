@@ -4,6 +4,7 @@ namespace Modules\Auth\app\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Traits\HasApiResponse;
+use Auth;
 use Exception;
 use Modules\Auth\app\Http\Requests\Api\Auth\VerifyRequest;
 use Modules\Auth\app\Models\Login;
@@ -28,9 +29,10 @@ class VerifyController extends Controller
             $user = $this->verifyUser($otpCode);
             $this->loginUser($user);
             $this->deleteOtpCode($otpCode);
-            $token = $user->createToken('authToken')->plainTextToken;
 
-            return $this->successResponse(['user' => new UserResource($user), 'token' => $token], 'با موفقیت وارد شدید');
+            Auth::login($user);
+
+            return $this->successResponse(['user' => new UserResource($user), 'token' => ''], 'با موفقیت وارد شدید');
         } catch (Exception $exception) {
             return $this->exceptionResponse($exception);
         }

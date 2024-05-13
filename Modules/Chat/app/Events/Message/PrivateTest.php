@@ -8,7 +8,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PublicTest implements ShouldBroadcast
+class PrivateTest implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -26,13 +26,13 @@ class PublicTest implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new Channel('public'),
+            new Channel('chat.1'),
         ];
     }
 
     public function broadcastAs(): string
     {
-        return 'message';
+        return 'new-message';
     }
 
     /**
@@ -42,9 +42,6 @@ class PublicTest implements ShouldBroadcast
      */
     public function broadcastWith(): array
     {
-        return [
-            'success' => true,
-            'message' => 'Test Message',
-        ];
+        return ['success' => true];
     }
 }

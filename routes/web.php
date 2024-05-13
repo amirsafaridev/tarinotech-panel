@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DeployController;
+use App\Http\Controllers\SocketTestController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,9 @@ Route::get('/test/pay', [TestController::class, 'pay']);
 Route::get('/test/otp-notification', [TestController::class, 'otpNotification']);
 Route::get('/deploy', [DeployController::class, 'index']);
 
+Route::get('/socket/private', [SocketTestController::class, 'sendPrivate']);
+Route::get('/socket/public', [SocketTestController::class, 'sendPublic']);
+
 Route::get('/echo-permission', function () {
     $routes = Route::getRoutes();
     foreach ($routes as $route) {
@@ -41,4 +45,4 @@ Route::get('/echo-permission', function () {
 
 Route::post('/broadcasting/auth/web', function (Illuminate\Http\Request $request) {
     return Broadcast::auth($request);
-})->middleware(['auth:admin']);
+})->middleware(['web', 'admin.auth']);

@@ -11,6 +11,7 @@ use Modules\Content\database\seeders\ContentDatabaseSeeder;
 use Modules\FreeDay\database\seeders\FreeDayDatabaseSeeder;
 use Modules\Package\database\seeders\PackageDatabaseSeeder;
 use Modules\Project\database\seeders\ProjectBaseSeeder;
+use Modules\Project\database\seeders\ProjectDatabaseSeeder;
 use Modules\Project\database\seeders\ProjectTypeSeeder;
 use Modules\Setting\database\seeders\SettingDatabaseSeeder;
 use Modules\Support\database\seeders\SupportDatabaseSeeder;
@@ -29,7 +30,7 @@ class DatabaseSeeder extends Seeder
             ProjectBaseSeeder::class, // DONE
             ProjectTypeSeeder::class, // DONE
             PackageDatabaseSeeder::class, //DONE
-            //ProjectDatabaseSeeder::class, //DONE
+            ProjectDatabaseSeeder::class, //DONE
             SettingDatabaseSeeder::class, // DONE
             //FactorDatabaseSeeder::class, //DONE
             SupportDatabaseSeeder::class, //DONE

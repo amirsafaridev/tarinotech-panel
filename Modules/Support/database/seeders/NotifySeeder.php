@@ -17,7 +17,7 @@ class NotifySeeder extends Seeder
     {
         $chat = Chat::query()->create([
             'title' => 'اطلاعیه ها',
-            'logo' => 'logo.png',
+            'logo' => 'uploads/chat/logo/default.png',
             'project_id' => null,
             'type' => ChatType::Public,
             'status' => ChatStatus::Open,

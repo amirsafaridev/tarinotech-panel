@@ -16,7 +16,9 @@ return new class extends Migration
         Schema::create('chats', function (Blueprint $table) {
             $table->id();
             $table->char('title');
-            $table->string('logo')->nullable();
+            $table->string('logo')
+                ->default('uploads/chat/logo/default.png')
+                ->nullable();
             $table->unsignedTinyInteger('type')->default(ChatType::Private);
             $table->unsignedTinyInteger('status')->default(ChatStatus::Open);
             $table->unsignedBigInteger('project_id')->nullable();

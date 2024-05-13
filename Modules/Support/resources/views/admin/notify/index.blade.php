@@ -34,7 +34,7 @@
 
     <script>
         $(document).ready(function () {
-
-        })
+            setupSocketChat(1);
+        });
     </script>
 @endsection

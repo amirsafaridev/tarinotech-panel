@@ -14,7 +14,7 @@ return new class extends Migration
         DB::table('chats')
             ->insert([
                 'title' => 'اطلاعیه ها',
-                'logo' => 'logo.png',
+                'logo' => 'uploads/chat/logo/default.png',
                 'type' => ChatType::Public,
                 'status' => ChatStatus::Open,
                 'project_id' => null,

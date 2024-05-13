@@ -17,4 +17,4 @@ Route::get('/home', [HomeController::class, 'index']);
 
 Route::post('/broadcasting/auth/api', function (Illuminate\Http\Request $request) {
     return Broadcast::auth($request);
-})->middleware(['api', 'auth:sanctum']);
+})->middleware(['auth:sanctum']);

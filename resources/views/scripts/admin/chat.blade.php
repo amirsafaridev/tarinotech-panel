@@ -53,7 +53,7 @@
                 // Handle the error here, such as displaying a message to the user
             })
             .subscribed(function () {
-                console.log("subscribed To Channel");
+                console.log(`Subscribed To Private Channel ${chatId}`);
             });
 
         window.Echo.channel('public-ch')
