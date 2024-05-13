@@ -73,6 +73,12 @@ return [
         WebLanguage::FR => 'فرانسوی',
         WebLanguage::RU => 'روسی',
         WebLanguage::DE => 'آلمانی',
+        WebLanguage::TR => 'ترکی',
+        WebLanguage::CN => 'چینی',
+        WebLanguage::IN => 'هندی',
+        WebLanguage::PK => 'پاکستانی',
+        WebLanguage::RO => 'رومانیایی',
+        WebLanguage::MS => 'ماالیی',
     ],
 
     WebFacility::class => [

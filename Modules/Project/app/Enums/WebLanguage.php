@@ -22,4 +22,16 @@ final class WebLanguage extends Enum implements LocalizedEnum
     const RU = 'RU';
 
     const DE = 'DE';
+
+    const TR = 'TR';
+
+    const CN = 'CN';
+
+    const IN = 'IN';
+
+    const PK = 'PK';
+
+    const RO = 'RO';
+
+    const MS = 'MS';
 }
