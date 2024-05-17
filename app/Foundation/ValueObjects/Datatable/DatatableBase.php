@@ -24,8 +24,13 @@ class DatatableBase
 
     public function render(): array
     {
+
+        $columns = collect($this->columns)->reject(function ($item) {
+            return ! $item['visible'];
+        });
+
         return [
-            'columns' => $this->columns,
+            'columns' => $columns,
             'externalFilters' => $this->externalFilters,
         ];
     }

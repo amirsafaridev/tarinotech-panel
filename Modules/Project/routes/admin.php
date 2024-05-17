@@ -12,6 +12,7 @@ use Modules\Project\app\Http\Controllers\Admin\StatusController;
 use Modules\Project\app\Http\Controllers\Admin\TypeController;
 use Modules\Project\app\Http\Controllers\Admin\WebController;
 use Modules\Project\app\Http\Controllers\Admin\WebImportController;
+use Modules\Project\app\Http\Controllers\Admin\WebStatusController;
 
 Route::group(['guard' => 'admin'], function () {
 
@@ -75,6 +76,11 @@ Route::group(['guard' => 'admin'], function () {
         Route::post('/import', [WebImportController::class, 'import'])->name('import.store');
 
         Route::group([], function () {
+
+            /* Status */
+            Route::get('/{projectId}/status', [WebStatusController::class, 'index'])->name('edit.status');
+            Route::patch('/{projectId}/status', [WebStatusController::class, 'update'])->name('update.status');
+
             Route::get('/{projectId}', [WebController::class, 'edit'])->name('edit');
             Route::patch('/{projectId}', [WebController::class, 'update'])->name('update');
             Route::delete('/{projectId}', [WebController::class, 'destroy'])->name('destroy');

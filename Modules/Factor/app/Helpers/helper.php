@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\Database\Factor\FactorStatus;
+use Modules\Factor\app\Enums\FactorStatus;
 
 if (! function_exists('calcPercentOfPrice')) {
     function calcPercentOfPrice(float $percent, int $price): int
@@ -21,6 +21,7 @@ if (! function_exists('factorStatusRender')) {
 
         switch ($status) {
             case FactorStatus::Paid:
+            case FactorStatus::PaidManual:
                 $badgeClass = 'success';
                 break;
 

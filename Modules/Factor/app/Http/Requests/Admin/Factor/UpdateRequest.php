@@ -2,10 +2,10 @@
 
 namespace Modules\Factor\app\Http\Requests\Admin\Factor;
 
-use App\Enums\Database\Factor\FactorStatus;
 use App\Rules\IRMobile;
 use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\Factor\app\Enums\FactorStatus;
 
 class UpdateRequest extends FormRequest
 {

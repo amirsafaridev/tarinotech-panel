@@ -9,6 +9,10 @@ class PermissionService
 {
     public array $additionalPermissions = [
         'SUPER_ADMIN',
+        'PROJECT_PRICE_SHOW',
+        'PROJECT_PRICE_EDIT',
+        'PROJECT_STATUS_UPDATE',
+        'PROJECT_SELF',
     ];
 
     public function sync(): int

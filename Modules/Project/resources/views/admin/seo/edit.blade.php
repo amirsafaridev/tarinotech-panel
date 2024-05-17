@@ -169,12 +169,13 @@
                                            title="زمینه فعالیت"
                                            :old="$project->target->field_activity"/>
                         </div>
-                        <div class="col-12 col-md-6">
-                            <x-admin.input identify="price"
-                                           title="قیمت (ریال)"
-                                           :old="number_format($project->price)"/>
-                        </div>
-
+                        @if(hasAdminPermission(\App\Enums\Database\Role\PermissionName::PROJECT_PRICE_EDIT))
+                            <div class="col-12 col-md-6">
+                                <x-admin.input identify="price"
+                                               title="قیمت (ریال)"
+                                               :old="number_format($project->price)"/>
+                            </div>
+                        @endif
                     </div>
 
                     <div class="row">

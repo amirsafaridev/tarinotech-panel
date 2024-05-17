@@ -198,13 +198,12 @@
                                     key="id"
                                     value="title"/>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-6 d-none">
                             <x-admin.select-simple identify="status_id"
                                                    title="وضعیت پروژه"
 
                             />
                         </div>
-
 
                     </div>
 
@@ -270,9 +269,11 @@
                         </div>
                     </div>
 
-                    <x-admin.input identify="price"
-                                   title="قیمت (ریال)"
-                                   :old="number_format($project->price)"/>
+                    @if(hasAdminPermission(\App\Enums\Database\Role\PermissionName::PROJECT_PRICE_EDIT))
+                        <x-admin.input identify="price"
+                                       title="قیمت (ریال)"
+                                       :old="number_format($project->price)"/>
+                    @endif
 
                     <x-admin.textarea identify="similar_sites"
                                       title="سایت های مشابه"

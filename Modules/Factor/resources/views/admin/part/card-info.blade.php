@@ -51,7 +51,7 @@
                 </tr>
                 <tr>
                     <td>وضعیت</td>
-                    <td>{{ \App\Enums\Database\Factor\FactorStatus::getDescription($factor->status) }}</td>
+                    <td>{{ \Modules\Factor\app\Enums\FactorStatus::getDescription($factor->status) }}</td>
                 </tr>
                 <tr>
                     <td>نوع فاکتور</td>

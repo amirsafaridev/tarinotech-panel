@@ -2,6 +2,7 @@
 
 namespace Modules\Project\app\Http\Controllers\Admin;
 
+use App\Enums\Database\Role\PermissionName;
 use App\Enums\General\BtnType;
 use App\Filters\Admin\Admin\AdminFilter;
 use App\Foundation\ValueObjects\Datatable\ColumnOption;
@@ -67,6 +68,7 @@ class ProjectController extends Controller
 
     public function getDataTable(): array
     {
+
         return (new DatatableBase())
             ->addColumn(
                 ColumnOption::new()->setName('id')->setAs('شناسه')
@@ -92,7 +94,12 @@ class ProjectController extends Controller
                     ->setAs('وضعیت')
             )
             ->addColumn(
-                ColumnOption::new()->setName('price')->setAs('قیمت')
+                ColumnOption::new()
+                    ->setName('price')
+                    ->setAs('قیمت')
+                    ->setVisible(
+                        hasAdminPermission(PermissionName::PROJECT_PRICE_SHOW)
+                    )
             )
             ->addColumn(
                 ColumnOption::new()->setName('domain')->setAs('دامنه')
@@ -114,11 +121,11 @@ class ProjectController extends Controller
     public function data()
     {
         try {
+
             $projects = Project::query()
                 ->select([
                     'id',
                     'title',
-                    'price',
                     'domain',
                     'type_id',
                     'status_id',
@@ -137,6 +144,10 @@ class ProjectController extends Controller
                         $query->select('admins.id', 'admins.first_name', 'admins.last_name');
                     },
                 ]);
+
+            if (hasAdminPermission(PermissionName::PROJECT_PRICE_SHOW)) {
+                $projects->addSelect('price');
+            }
 
             return DataTables::eloquent($projects)
                 ->editColumn('created_at', function (Project $project) {

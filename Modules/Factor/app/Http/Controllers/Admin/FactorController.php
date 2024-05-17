@@ -4,7 +4,6 @@ namespace Modules\Factor\app\Http\Controllers\Admin;
 
 use App\Domin\Jobs\FactorItemCreateJob;
 use App\Domin\Jobs\FactorItemUpdateJob;
-use App\Enums\Database\Factor\FactorStatus;
 use App\Enums\General\BtnType;
 use App\Filters\Admin\Admin\AdminFilter;
 use App\Foundation\ValueObjects\Datatable\ColumnOption;
@@ -18,6 +17,7 @@ use App\Traits\HasJsonCommonResponse;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
+use Modules\Factor\app\Enums\FactorStatus;
 use Modules\Factor\app\Enums\PaymentGateway;
 use Modules\Factor\app\Filters\Factor\GatewayFilter;
 use Modules\Factor\app\Filters\Factor\PriceFilter;

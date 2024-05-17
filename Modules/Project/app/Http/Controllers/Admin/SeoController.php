@@ -2,6 +2,7 @@
 
 namespace Modules\Project\app\Http\Controllers\Admin;
 
+use App\Enums\Database\Role\PermissionName;
 use App\Enums\General\BtnType;
 use App\Filters\Admin\Admin\AdminFilter;
 use App\Filters\Admin\Project\StatusFilter;
@@ -219,7 +220,12 @@ class SeoController extends Controller
                     ->setAs('وضعیت')
             )
             ->addColumn(
-                ColumnOption::new()->setName('price')->setAs('قیمت')
+                ColumnOption::new()
+                    ->setName('price')
+                    ->setAs('قیمت')
+                    ->setVisible(
+                        hasAdminPermission(PermissionName::PROJECT_PRICE_SHOW)
+                    )
             )
             ->addColumn(
                 ColumnOption::new()->setName('domain')->setAs('دامنه')
@@ -269,6 +275,10 @@ class SeoController extends Controller
                     TypeFilter::class,
                     StatusFilter::class,
                 ]);
+
+            if (hasAdminPermission(PermissionName::PROJECT_PRICE_SHOW)) {
+                $projects->addSelect('price');
+            }
 
             return DataTables::eloquent($projects)
                 ->editColumn('created_at', function (Project $project) {

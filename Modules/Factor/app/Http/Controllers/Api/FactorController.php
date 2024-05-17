@@ -2,10 +2,10 @@
 
 namespace Modules\Factor\app\Http\Controllers\Api;
 
-use App\Enums\Database\Factor\FactorStatus;
 use App\Http\Controllers\Controller;
 use App\Traits\HasApiResponse;
 use Exception;
+use Modules\Factor\app\Enums\FactorStatus;
 use Modules\Factor\app\Filters\Factor\PriceFilter;
 use Modules\Factor\app\Filters\Factor\ProjectFilter;
 use Modules\Factor\app\Filters\Factor\SearchFilter;

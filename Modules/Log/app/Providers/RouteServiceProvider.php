@@ -40,7 +40,7 @@ class RouteServiceProvider extends ServiceProvider
         $prefix = config('routes.admin-prefix');
         Route::prefix($prefix.'/log')
             ->namespace($this->moduleNamespace)
-            ->middleware(['web', 'admin.auth', 'acl'])
+            ->middleware(['web', 'admin.auth', 'acl', 'admin.scope'])
             ->as('admin.log.')
             ->group(module_path('Log', '/routes/admin.php'));
     }

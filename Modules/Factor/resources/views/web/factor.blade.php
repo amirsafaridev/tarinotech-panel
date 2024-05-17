@@ -62,7 +62,7 @@
                     @endforeach
                     </tbody>
                 </table>
-                @if($factor->status === \App\Enums\Database\Factor\FactorStatus::Pending)
+                @if($factor->status === \Modules\Factor\app\Enums\FactorStatus::Pending)
                     <a class="btn btn-success btn-lg w-100" href="{{ route('payment.pay',$factor->identify) }}">پرداخت آنلاین</a>
                 @endif
             </div>

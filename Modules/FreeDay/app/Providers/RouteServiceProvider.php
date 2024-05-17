@@ -40,7 +40,7 @@ class RouteServiceProvider extends ServiceProvider
         $prefix = config('routes.admin-prefix');
         Route::prefix($prefix.'/free-day')
             ->namespace($this->moduleNamespace)
-            ->middleware(['web', 'admin.auth', 'acl'])
+            ->middleware(['web', 'admin.auth', 'acl', 'admin.scope'])
             ->as('admin.free-day.')
             ->group(module_path('FreeDay', '/routes/admin.php'));
     }

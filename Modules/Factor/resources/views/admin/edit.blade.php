@@ -80,7 +80,7 @@
 
 
                         <x-admin.select-enum identify="status" title="وضعیت"
-                                             :enum-class="\App\Enums\Database\Factor\FactorStatus::class"
+                                             :enum-class="\Modules\Factor\app\Enums\FactorStatus::class"
                                              :old="$factor->status"/>
 
                         <x-admin.input identify="expired_at"

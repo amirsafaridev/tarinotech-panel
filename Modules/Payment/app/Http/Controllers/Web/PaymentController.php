@@ -2,9 +2,9 @@
 
 namespace Modules\Payment\app\Http\Controllers\Web;
 
-use App\Enums\Database\Factor\FactorStatus;
 use App\Http\Controllers\Controller;
 use Exception;
+use Modules\Factor\app\Enums\FactorStatus;
 use Modules\Factor\app\Enums\PaymentGateway;
 use Modules\Factor\app\Models\Factor;
 use Modules\User\app\Enums\PersonType;

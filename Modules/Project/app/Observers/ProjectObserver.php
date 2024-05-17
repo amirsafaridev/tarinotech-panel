@@ -2,7 +2,7 @@
 
 namespace Modules\Project\app\Observers;
 
-use App\Enums\Database\Factor\FactorStatus;
+use Modules\Factor\app\Enums\FactorStatus;
 use Modules\Factor\app\Enums\PaymentGateway;
 use Modules\Factor\app\Models\Factor;
 use Modules\Project\app\Enums\ProjectBase;

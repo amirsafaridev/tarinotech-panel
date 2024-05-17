@@ -10,6 +10,8 @@ class ColumnOption
 
     private bool $searchable = true;
 
+    private bool $visible = true;
+
     private string $as = '';
 
     public static function new(): ColumnOption
@@ -68,6 +70,18 @@ class ColumnOption
         return $this;
     }
 
+    public function isVisible(): bool
+    {
+        return $this->visible;
+    }
+
+    public function setVisible(bool $visible): ColumnOption
+    {
+        $this->visible = $visible;
+
+        return $this;
+    }
+
     public function make(): array
     {
         return [
@@ -75,6 +89,7 @@ class ColumnOption
             'sortable' => $this->sortable,
             'searchable' => $this->searchable,
             'as' => $this->as,
+            'visible' => $this->visible,
         ];
     }
 }

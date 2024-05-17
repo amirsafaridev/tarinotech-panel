@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums\Database\Factor;
+namespace Modules\Factor\app\Enums;
 
 use BenSampo\Enum\Contracts\LocalizedEnum;
 use BenSampo\Enum\Enum;
@@ -18,4 +18,6 @@ final class FactorStatus extends Enum implements LocalizedEnum
     const Lock = 5;
 
     const Draft = 6;
+
+    const PaidManual = 7;
 }

@@ -121,6 +121,24 @@ class ViewComposerProvider extends ServiceProvider
 
             $view->with(compact('types', 'statuses', 'packages', 'options', 'businessDomains', 'admins'));
         });
+
+        view()->composer([
+            'project::admin.web.status.edit',
+        ], function ($view) {
+            $types = ProjectType::query()
+                ->where('base_id', ProjectBase::Web)
+                ->with(['base', 'statuses'])
+                ->get();
+
+            $statuses = ProjectStatus::query()
+                ->whereHas('type', function ($q) {
+                    $q->where('base_id', ProjectBase::Web);
+                })
+                ->with('type')
+                ->get();
+
+            $view->with(compact('types', 'statuses'));
+        });
     }
 
     private function getSeoComposer(): void
@@ -204,9 +222,8 @@ class ViewComposerProvider extends ServiceProvider
 
     private function getAdminBaseOnRole(): Collection
     {
-        $user = auth()->user();
         $admins = collect([]);
-        if ($user->hasRole(RoleName::SUPER_ADMIN)) {
+        if (hasAdminRole(RoleName::SUPER_ADMIN)) {
             $admins = Admin::query()
                 ->latest()
                 ->get();

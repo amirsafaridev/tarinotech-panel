@@ -2,8 +2,8 @@
 
 namespace Modules\Factor\app\Resources\Factor;
 
-use App\Enums\Database\Factor\FactorStatus;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Factor\app\Enums\FactorStatus;
 use Modules\Factor\app\Models\Factor;
 use Modules\Project\app\Resources\Project\ProjectResource;
 

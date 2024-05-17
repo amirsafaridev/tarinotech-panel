@@ -178,3 +178,16 @@ if (! function_exists('makeUiStar')) {
         return $htmlRender;
     }
 }
+if (! function_exists('hasAdminPermission')) {
+    function hasAdminPermission(string $permissionName): bool
+    {
+        return auth()->user()->hasPermissionTo($permissionName);
+    }
+}
+
+if (! function_exists('hasAdminRole')) {
+    function hasAdminRole(int $roleId): bool
+    {
+        return auth()->user()->hasRole($roleId);
+    }
+}

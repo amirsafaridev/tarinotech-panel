@@ -2,6 +2,7 @@
 
 namespace Modules\Project\app\Http\Controllers\Admin;
 
+use App\Enums\Database\Role\PermissionName;
 use App\Enums\Database\Role\RoleName;
 use App\Enums\General\BtnType;
 use App\Filters\Admin\Admin\AdminFilter;
@@ -71,6 +72,8 @@ class WebController extends Controller
             $projectWeb = ProjectWeb::query()->create($this->initialWebData($request));
 
             $projectParams = $this->initialProjectData($request);
+            $projectParams['status_id'] = $request->input('status_id');
+
             $agreementAt = $projectParams['agreement_at'];
             if ($agreementAt) {
                 $projectParams['renewal_at'] = Carbon::parse($agreementAt)->addYear()
@@ -200,8 +203,7 @@ class WebController extends Controller
         $deadlineAt = $request->input('deadline_at');
 
         $adminId = auth()->id();
-        $user = auth()->user();
-        if ($user->hasRole(RoleName::SUPER_ADMIN)) {
+        if (hasAdminRole(RoleName::SUPER_ADMIN)) {
             $adminId = $request->input('admin_id');
         }
 
@@ -209,15 +211,17 @@ class WebController extends Controller
             'title' => $request->input('title'),
             'domain' => $request->input('domain_primary'),
             'admin_id' => $adminId,
-            'user_id' => $request->input('user_id'),
-            'status_id' => $request->input('status_id'),
-            'base_id' => ProjectBase::Web,
-            'price' => $request->input('price'),
             'type_id' => $request->input('type_id'),
+            'user_id' => $request->input('user_id'),
+            'base_id' => ProjectBase::Web,
             'note' => $request->input('note'),
             'business_domain_id' => $request->input('business_domain_id'),
             'business_domain' => $request->input('business_domain'),
         ];
+
+        if (hasAdminPermission(PermissionName::PROJECT_PRICE_EDIT)) {
+            $data['price'] = $request->input('price');
+        }
 
         if (! empty($agreementAt)) {
             $data['agreement_at'] = Helper::toGregorian($agreementAt);
@@ -298,7 +302,12 @@ class WebController extends Controller
                     ->setAs('وضعیت')
             )
             ->addColumn(
-                ColumnOption::new()->setName('price')->setAs('قیمت')
+                ColumnOption::new()
+                    ->setName('price')
+                    ->setAs('قیمت')
+                    ->setVisible(
+                        hasAdminPermission(PermissionName::PROJECT_PRICE_SHOW)
+                    )
             )
             ->addColumn(
                 ColumnOption::new()->setName('domain')->setAs('دامنه')
@@ -321,6 +330,7 @@ class WebController extends Controller
     public function data()
     {
         try {
+
             $projects = Project::query()
                 ->select([
                     'id',
@@ -353,6 +363,10 @@ class WebController extends Controller
                     StatusFilter::class,
                 ]);
 
+            if (hasAdminPermission(PermissionName::PROJECT_PRICE_SHOW)) {
+                $projects->addSelect('price');
+            }
+
             return DataTables::eloquent($projects)
                 ->editColumn('created_at', function (Project $project) {
                     return $project->created_at->toJalali()->format('Y/m/d');
@@ -363,6 +377,7 @@ class WebController extends Controller
                 ->addColumn('action', function ($project) {
                     $actions = Helper::btnMaker(BtnType::Warning, route('admin.project.web.edit', $project->id), trans('panel.action.edit'));
                     $actions .= Helper::btnMaker(BtnType::Info, route('admin.project.manage', $project->id), trans('panel.action.show'));
+                    $actions .= Helper::btnMaker(BtnType::Success, route('admin.project.web.edit.status', $project->id), 'تغییر وضعیت');
 
                     return $actions;
                 })

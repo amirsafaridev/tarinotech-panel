@@ -7,8 +7,8 @@ use App\Enums\Database\Company\CompanyType;
 use App\Enums\Database\Facility\FinancialCycle;
 use App\Enums\Database\Facility\PriceType;
 use App\Enums\Database\Facility\WorkCycle;
-use App\Enums\Database\Factor\FactorStatus;
 use App\Enums\Database\Setting\SettingItems;
+use Modules\Factor\app\Enums\FactorStatus;
 use Modules\Factor\app\Enums\PaymentGateway;
 use Modules\Log\app\Enums\LogEvents;
 use Modules\Log\app\Enums\LogNames;
@@ -113,6 +113,7 @@ return [
         FactorStatus::Lock => 'در حال پرداخت',
         FactorStatus::OnHold => 'نگه داشته شده',
         FactorStatus::Draft => 'پیش نویس',
+        FactorStatus::PaidManual => 'پرداخت دستی',
     ],
 
     SeoAgreementDuration::class => [

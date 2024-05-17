@@ -26,7 +26,6 @@ class UpdateRequest extends FormRequest
             'title' => 'required|max:255',
             'domain_primary' => 'required|max:255',
             'user_id' => 'required|exists:users,id',
-            'status_id' => 'required|exists:project_statuses,id',
             'price' => 'required|integer',
             'deadline_at' => 'required|date_format:Y/m/d',
 
@@ -54,7 +53,7 @@ class UpdateRequest extends FormRequest
             'languages' => 'array',
         ];
 
-        if (auth()->user()->hasRole(RoleName::SUPER_ADMIN)) {
+        if (hasAdminRole(RoleName::SUPER_ADMIN)) {
             $baseRule['admin_id'] = 'required|exists:admins,id';
         }
 

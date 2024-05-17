@@ -16,10 +16,12 @@
                 <td>عنوان پروژه</td>
                 <td>{{ $project->title }}</td>
             </tr>
-            <tr>
-                <td>مبلغ پروژه (ریال)</td>
-                <td>{{ number_format($project->price) }}</td>
-            </tr>
+            @if(hasAdminPermission('PROJECT_PRICE_SHOW'))
+                <tr>
+                    <td>مبلغ پروژه (ریال)</td>
+                    <td>{{ number_format($project->price) }}</td>
+                </tr>
+            @endif
             <tr>
                 <td>دامنه</td>
                 <td>{{ $project->domain }}</td>
