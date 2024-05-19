@@ -26,7 +26,13 @@ class ProjectType extends Model
     protected function path(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->base->title.' - '.$this->title,
+            get: function () {
+                if ($this->relationLoaded('base')) {
+                    return $this->base->title.' - '.$this->title;
+                }
+
+                return '';
+            }
         );
     }
 

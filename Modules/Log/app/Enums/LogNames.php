@@ -68,4 +68,6 @@ class LogNames extends Enum implements LocalizedEnum
     const TRANSACTION_CATEGORY = 'transaction_category';
 
     const USER = 'user';
+
+    const DEFAULT = 'default';
 }

@@ -28,7 +28,7 @@
 
             <tr>
                 <td colspan="2">
-                    <a class="btn btn-primary" href="{{ route('admin.project.ads.edit',$project->target_id) }}">ویرایش</a>
+                    <a class="btn btn-primary" href="{{ route('admin.project.ads.edit',$project->id) }}">ویرایش</a>
                 </td>
             </tr>
 

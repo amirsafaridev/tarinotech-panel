@@ -74,7 +74,7 @@ class ViewComposerProvider extends ServiceProvider
         ], function ($view) {
             $types = ProjectType::query()
                 ->where('base_id', ProjectBase::Ads)
-                ->with(['base', 'statuses'])
+                ->with(['base', 'statuses.type'])
                 ->get();
 
             $statuses = ProjectStatus::query()
@@ -97,7 +97,7 @@ class ViewComposerProvider extends ServiceProvider
         ], function ($view) {
             $types = ProjectType::query()
                 ->where('base_id', ProjectBase::Web)
-                ->with(['base', 'statuses'])
+                ->with(['base', 'statuses.type'])
                 ->get();
 
             $statuses = ProjectStatus::query()
@@ -127,7 +127,7 @@ class ViewComposerProvider extends ServiceProvider
         ], function ($view) {
             $types = ProjectType::query()
                 ->where('base_id', ProjectBase::Web)
-                ->with(['base', 'statuses'])
+                ->with(['base', 'statuses.type'])
                 ->get();
 
             $statuses = ProjectStatus::query()
@@ -150,7 +150,7 @@ class ViewComposerProvider extends ServiceProvider
         ], function ($view) {
             $types = ProjectType::query()
                 ->where('base_id', ProjectBase::Seo)
-                ->with(['base', 'statuses'])
+                ->with(['base', 'statuses.type'])
                 ->get();
 
             $statuses = ProjectStatus::query()

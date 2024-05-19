@@ -27,7 +27,13 @@ class ProjectStatus extends Model
     protected function path(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->type->title.' - '.$this->title,
+            get: function () {
+                if ($this->relationLoaded('base')) {
+                    return $this->type->title.' - '.$this->title;
+                }
+
+                return '';
+            }
         );
     }
 

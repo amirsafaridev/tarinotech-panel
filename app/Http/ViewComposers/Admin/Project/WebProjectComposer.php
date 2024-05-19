@@ -18,7 +18,7 @@ class WebProjectComposer
     {
 
         $types = ProjectType::query()
-            ->with('statuses')
+            ->with('statuses.type')
             ->where('base_id', ProjectBase::Web)
             ->get();
 

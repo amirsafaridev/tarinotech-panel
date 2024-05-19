@@ -15,13 +15,14 @@ if (! function_exists('getEventName')) {
 }
 
 if (! function_exists('getEventType')) {
-    function getEventType(string $event): string
+    function getEventType(?string $event): string
     {
         $eventColors = [
             LogEvents::CREATED => 'success',
             LogEvents::UPDATED => 'primary',
             LogEvents::DELETED => 'danger',
             LogEvents::RESTORED => 'secondary',
+            LogEvents::EDITED => 'warning',
         ];
 
         $color = $eventColors[$event] ?? 'default';

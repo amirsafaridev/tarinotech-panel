@@ -164,7 +164,7 @@
 
             <tr>
                 <td colspan="2">
-                    <a class="btn btn-primary" href="{{ route('admin.project.web.edit',$project->target_id) }}">ویرایش</a>
+                    <a class="btn btn-primary" href="{{ route('admin.project.web.edit',$project->id) }}">ویرایش</a>
                 </td>
             </tr>
 

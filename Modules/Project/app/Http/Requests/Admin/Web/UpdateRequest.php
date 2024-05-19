@@ -2,6 +2,7 @@
 
 namespace Modules\Project\app\Http\Requests\Admin\Web;
 
+use App\Enums\Database\Role\PermissionName;
 use App\Enums\Database\Role\RoleName;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -57,13 +58,17 @@ class UpdateRequest extends FormRequest
             $baseRule['admin_id'] = 'required|exists:admins,id';
         }
 
+        if (hasAdminPermission(PermissionName::PROJECT_PRICE_EDIT)) {
+            $baseRule['price'] = 'required|integer';
+        }
+
         return $baseRule;
     }
 
     protected function prepareForValidation()
     {
         $this->merge([
-            'price' => str_replace(',', '', $this->input('price')),
+            'price' => str_replace(',', '', $this->input('price', '')),
         ]);
     }
 }

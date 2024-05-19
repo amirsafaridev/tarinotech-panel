@@ -73,6 +73,7 @@ class WebController extends Controller
 
             $projectParams = $this->initialProjectData($request);
             $projectParams['status_id'] = $request->input('status_id');
+            $projectParams['price'] = $request->input('price');
 
             $agreementAt = $projectParams['agreement_at'];
             if ($agreementAt) {
@@ -108,7 +109,12 @@ class WebController extends Controller
             $project = $this->getOrFailProject($projectId);
 
             DB::beginTransaction();
-            $project->update($this->initialProjectData($request));
+
+            $projectParams = $this->initialProjectData($request);
+            if (hasAdminPermission(PermissionName::PROJECT_PRICE_EDIT)) {
+                $projectParams['price'] = $request->input('price');
+            }
+            $project->update($projectParams);
 
             /**
              * @var $projectWeb ProjectWeb
@@ -218,10 +224,6 @@ class WebController extends Controller
             'business_domain_id' => $request->input('business_domain_id'),
             'business_domain' => $request->input('business_domain'),
         ];
-
-        if (hasAdminPermission(PermissionName::PROJECT_PRICE_EDIT)) {
-            $data['price'] = $request->input('price');
-        }
 
         if (! empty($agreementAt)) {
             $data['agreement_at'] = Helper::toGregorian($agreementAt);

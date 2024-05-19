@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Traits\HasJsonCommonResponse;
 use Exception;
 use Illuminate\Http\Request;
+use Modules\Log\app\Traits\HasSingleLogTrack;
 use Modules\Project\app\Http\Requests\Admin\WebStatus\UpdateRequest;
 use Modules\Project\app\Models\Project;
 use Modules\Project\app\Models\ProjectWeb;
@@ -13,6 +14,7 @@ use Modules\Project\app\Models\ProjectWeb;
 class WebStatusController extends Controller
 {
     use HasJsonCommonResponse;
+    use HasSingleLogTrack;
 
     const INDEX_TITLE = 'پروژه های وب - ویرایش وضعیت';
 
@@ -22,7 +24,9 @@ class WebStatusController extends Controller
 
         $title = self::INDEX_TITLE;
 
-        return view('project::admin.web.status.edit', compact('title', 'project'));
+        $logs = $this->trackChanges('status_id', $project, $projectId);
+
+        return view('project::admin.web.status.edit', compact('title', 'project', 'logs'));
     }
 
     public function update(UpdateRequest $request, $projectId)

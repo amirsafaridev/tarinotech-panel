@@ -64,6 +64,8 @@
         </div>
     </form>
 
+    @include('log::admin.part.table',['logTitle'=>'تست','itemsProperties'=>$statuses])
+
 @endsection
 @section('script')
     @include('admin.partial.loader.script',['load'=>[

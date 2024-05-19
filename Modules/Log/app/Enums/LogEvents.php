@@ -14,4 +14,6 @@ class LogEvents extends Enum implements LocalizedEnum
     const UPDATED = 'updated';
 
     const RESTORED = 'restored';
+
+    const EDITED = 'edited';
 }
