@@ -27,7 +27,6 @@ class UpdateRequest extends FormRequest
             'title' => 'required|max:255',
             'domain_primary' => 'required|max:255',
             'user_id' => 'required|exists:users,id',
-            'price' => 'required|integer',
             'deadline_at' => 'required|date_format:Y/m/d',
 
             'package_id' => 'required|exists:packages,id',
