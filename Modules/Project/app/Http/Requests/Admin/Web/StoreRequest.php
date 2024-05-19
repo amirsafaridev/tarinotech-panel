@@ -2,6 +2,7 @@
 
 namespace Modules\Project\app\Http\Requests\Admin\Web;
 
+use App\Enums\Database\Role\RoleName;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
@@ -19,7 +20,7 @@ class StoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $baseRule = [
             'title' => 'required|max:255',
             'domain_primary' => 'required|max:255',
 
@@ -53,6 +54,12 @@ class StoreRequest extends FormRequest
             /* Language */
             'languages' => 'array',
         ];
+
+        if (hasAdminRole(RoleName::SUPER_ADMIN)) {
+            $baseRule['admin_id'] = 'required|exists:admins,id';
+        }
+
+        return $baseRule;
     }
 
     protected function prepareForValidation()

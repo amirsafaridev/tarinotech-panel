@@ -4,6 +4,7 @@ namespace Modules\Project\database\seeders;
 
 use Illuminate\Database\Seeder;
 use Modules\Project\app\Enums\ProjectBase;
+use Modules\Project\app\Models\Project;
 use Modules\Project\app\Models\ProjectWeb;
 use Modules\Project\database\factories\ProjectFactory;
 use Modules\Project\database\factories\ProjectWebFactory;
@@ -15,6 +16,9 @@ class ProjectWebSeeder extends Seeder
      */
     public function run(): void
     {
+        $dispatcher = Project::getEventDispatcher();
+        Project::unsetEventDispatcher();
+
         ProjectWebFactory::new()
             ->count(20)
             ->create()->each(function (ProjectWeb $projectWeb) {
@@ -27,5 +31,7 @@ class ProjectWebSeeder extends Seeder
                         'type_id' => rand(1, 7),
                     ]);
             });
+
+        Project::setEventDispatcher($dispatcher);
     }
 }

@@ -11,6 +11,8 @@ class FactorSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $this->call([
+            TransactionCategorySeeder::class,
+        ]);
     }
 }

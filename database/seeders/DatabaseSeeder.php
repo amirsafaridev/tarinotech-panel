@@ -8,6 +8,7 @@ use Modules\Admin\database\seeders\AdminDatabaseSeeder;
 use Modules\Content\database\seeders\BlogCategoryDatabaseSeeder;
 use Modules\Content\database\seeders\BlogDatabaseSeeder;
 use Modules\Content\database\seeders\ContentDatabaseSeeder;
+use Modules\Factor\database\seeders\FactorDatabaseSeeder;
 use Modules\FreeDay\database\seeders\FreeDayDatabaseSeeder;
 use Modules\Package\database\seeders\PackageDatabaseSeeder;
 use Modules\Project\database\seeders\ProjectBaseSeeder;
@@ -32,7 +33,7 @@ class DatabaseSeeder extends Seeder
             PackageDatabaseSeeder::class, //DONE
             ProjectDatabaseSeeder::class, //DONE
             SettingDatabaseSeeder::class, // DONE
-            //FactorDatabaseSeeder::class, //DONE
+            FactorDatabaseSeeder::class, //DONE
             SupportDatabaseSeeder::class, //DONE
             //TicketDatabaseSeeder::class, //DONE
             AutoMessageSeeder::class,

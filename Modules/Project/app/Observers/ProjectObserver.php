@@ -5,6 +5,7 @@ namespace Modules\Project\app\Observers;
 use Modules\Factor\app\Enums\FactorStatus;
 use Modules\Factor\app\Enums\PaymentGateway;
 use Modules\Factor\app\Models\Factor;
+use Modules\Factor\app\Models\TransactionCategory;
 use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Models\Project;
 use Modules\User\app\Enums\PersonType;
@@ -26,10 +27,15 @@ class ProjectObserver
         $taxRate = config('factor.tax');
         $originalPrice = $project->price;
 
+        $transactionCategories = TransactionCategory::query()
+            ->get()
+            ->keyBy('id')
+            ->toArray();
+
         $factorDetails = [
-            ['title' => 'بیعانه', 'percentage' => 30, 'category_id' => 2],
-            ['title' => 'واریزی مرحله اول', 'percentage' => 40, 'category_id' => 3],
-            ['title' => 'تسویه', 'percentage' => 30, 'category_id' => 4],
+            ['title' => $transactionCategories[2]['title'], 'percentage' => 30, 'category_id' => 2],
+            ['title' => $transactionCategories[3]['title'], 'percentage' => 40, 'category_id' => 3],
+            ['title' => $transactionCategories[4]['title'], 'percentage' => 30, 'category_id' => 4],
         ];
 
         foreach ($factorDetails as $factorDetail) {
