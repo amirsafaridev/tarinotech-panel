@@ -177,7 +177,7 @@
             const finalDateJalali = response.final_date_jalali;
             const total = response.total;
 
-            const updatedMessage = `"تعداد روز های تقویمی ${total} روز، روزهای کاری ${totalWorkDays} و تعداد روز های تعطیل محاسبه شده ${totalFreeDays} روز می باشد. تار یخ تحویل ${finalDateJalali} می باشد.`;
+            const updatedMessage = `تعداد روز های تقویمی ${total} روز، روزهای کاری ${totalWorkDays} و تعداد روز های تعطیل محاسبه شده ${totalFreeDays} روز می باشد. تار یخ تحویل ${finalDateJalali} می باشد.`;
 
             displayMessage(updatedMessage);
 
