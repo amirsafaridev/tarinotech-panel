@@ -44,7 +44,7 @@ class ProjectObserver
             $categoryId = $factorDetail['category_id'];
 
             $price = calcPercentOfPrice($factorPercentage, $originalPrice);
-            $taxAmount = calcPercentOfPrice($taxRate, $price);
+            $taxAmount = $price * $taxRate;
             $totalPrice = $price + $taxAmount;
 
             $isOfficial = false;
