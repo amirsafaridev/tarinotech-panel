@@ -113,7 +113,7 @@ return [
         FactorStatus::Lock => 'در حال پرداخت',
         FactorStatus::OnHold => 'نگه داشته شده',
         FactorStatus::Draft => 'پیش نویس',
-        FactorStatus::PaidManual => 'پرداخت دستی',
+        FactorStatus::PaidManual => 'پرداخت شده (دستی)',
     ],
 
     SeoAgreementDuration::class => [

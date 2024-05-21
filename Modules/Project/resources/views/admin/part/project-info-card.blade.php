@@ -32,6 +32,7 @@
                     <a href="{{ route('admin.admin.show',$project->admin_id) }}">{{ $project->admin->first_name }} {{ $project->admin->last_name }}</a>
                 </td>
             </tr>
+            @role(\App\Enums\Database\Role\RoleName::SUPER_ADMIN)
             <tr>
                 <td>کارشناس فروش (موبایل)</td>
                 <td>{{ $project->admin->mobile }}</td>
@@ -40,6 +41,7 @@
                 <td>کارشناس فروش (ایمیل)</td>
                 <td>{{ $project->admin->email }}</td>
             </tr>
+            @endrole
             <tr>
                 <td>کارفرما</td>
                 <td>

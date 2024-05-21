@@ -27,7 +27,7 @@ class UpdateRequest extends FormRequest
             'title' => 'required|max:255',
             'expired_at' => 'required|jdate',
             'item' => 'required|array',
-            'status' => ['required', new EnumValue(FactorStatus::class)],
+            'status' => ['required', new EnumValue(FactorStatus::class), 'not_in:'.FactorStatus::Paid],
             'item.*.title' => 'required|max:255',
             'item.*.transaction_category_id' => 'required|integer',
             'item.*.price' => 'required|integer',

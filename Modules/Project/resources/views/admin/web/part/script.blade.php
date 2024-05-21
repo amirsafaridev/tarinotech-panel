@@ -177,11 +177,12 @@
             const finalDateJalali = response.final_date_jalali;
             const total = response.total;
 
-            const updatedMessage = `تعداد روز های محاسبه شده ${totalWorkDays} می باشد و تعداد روز های تعطیل محاسبه شده ${totalFreeDays} می باشد. تاریخ تحویل ${finalDateJalali} می باشد`;
+            const updatedMessage = `"تعداد روز های تقویمی ${total} روز، روزهای کاری ${totalWorkDays} و تعداد روز های تعطیل محاسبه شده ${totalFreeDays} روز می باشد. تار یخ تحویل ${finalDateJalali} می باشد.`;
+
             displayMessage(updatedMessage);
 
             deadlineAt.val(finalDateJalali);
-            workingDaysInput.val(total);
+            // workingDaysInput.val(total);
         }
 
         function handleAjaxError(response) {

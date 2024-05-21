@@ -20,4 +20,14 @@ final class FactorStatus extends Enum implements LocalizedEnum
     const Draft = 6;
 
     const PaidManual = 7;
+
+    public static function asSelectArray(): array
+    {
+        $selectItems = collect(parent::asSelectArray())->reject(function ($key, $value) {
+
+            return $value == self::Paid;
+        });
+
+        return $selectItems->toArray();
+    }
 }

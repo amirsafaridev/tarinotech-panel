@@ -44,6 +44,10 @@
 
     function select2Setup() {
         projectId.select2();
+
+        setTimeout(function (){
+            projectId.trigger('change')
+        },200)
     }
 
     function projectLoader() {
@@ -68,6 +72,8 @@
                     console.log(response);
                 });
         });
+
+
     }
 
     function factorItemSetup() {

@@ -143,7 +143,7 @@
             <!-- Options -->
             @if($project->target->options->isNotEmpty())
                 <tr>
-                    <td>اپشن ها</td>
+                    <td>امکانات بیشتر</td>
                     <td>
                         {{ $project->target->options->pluck('title')->implode(', ') }}
                     </td>
@@ -164,7 +164,7 @@
 
             <tr>
                 <td colspan="2">
-                    <a class="btn btn-primary" href="{{ route('admin.project.web.edit',$project->id) }}">ویرایش</a>
+                    <button type="button" onclick="printMe()" class="btn btn-primary" >پرینت</button>
                 </td>
             </tr>
 

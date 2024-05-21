@@ -28,7 +28,7 @@
 
             <tr>
                 <td colspan="2">
-                    <a class="btn btn-primary" href="{{ route('admin.project.ads.edit',$project->id) }}">ویرایش</a>
+                    <button type="button" onclick="printMe()" class="btn btn-primary" >پرینت</button>
                 </td>
             </tr>
 

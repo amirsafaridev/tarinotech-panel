@@ -85,7 +85,7 @@
                             <td>{{ number_format($item->price) }}</td>
                             <td>ریال (ایران)</td>
                             <td>{{ number_format($item->discount) }}</td>
-                            <td>{{ config('factor.tax') }}</td>
+                            <td>{{ config('factor.tax') * 100 }} درصد</td>
                             <td>{{ number_format($item->tax_amount) }}</td>
                             <td>{{ number_format($item->final_price) }}</td>
                         </tr>
