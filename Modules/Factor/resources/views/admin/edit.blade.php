@@ -79,8 +79,8 @@
 
 
 
-                        <x-admin.select-enum identify="status" title="وضعیت"
-                                             :enum-class="\Modules\Factor\app\Enums\FactorStatus::class"
+                        <x-admin.select-simple identify="status" title="وضعیت"
+                                             :items="\Modules\Factor\app\Enums\FactorStatus::asFilteredSelectArray()"
                                              :old="$factor->status"/>
 
                         <x-admin.input identify="expired_at"

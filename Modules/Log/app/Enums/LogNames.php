@@ -27,6 +27,8 @@ class LogNames extends Enum implements LocalizedEnum
 
     const FACTOR = 'factor';
 
+    const FACTOR_STATUS = 'factor_status';
+
     const FACTOR_META = 'factor_meta';
 
     const FACTOR_ITEM = 'factor_item';

@@ -1,6 +1,7 @@
 <?php
 
 use Modules\Factor\app\Http\Controllers\Admin\FactorController;
+use Modules\Factor\app\Http\Controllers\Admin\FactorStatusController;
 use Modules\Factor\app\Http\Controllers\Admin\MakeViewController;
 use Modules\Factor\app\Http\Controllers\Admin\TransactionCategoryController;
 
@@ -15,6 +16,17 @@ Route::group(['guard' => 'admin'], function () {
         Route::post('/', [TransactionCategoryController::class, 'store'])->name('store');
         Route::patch('/{transaction_category}', [TransactionCategoryController::class, 'update'])->name('update');
         Route::delete('/{transaction_category}', [TransactionCategoryController::class, 'destroy'])->name('destroy');
+    });
+
+    /* STATUS ROUTES */
+    Route::group(['prefix' => 'status', 'as' => 'status.'], function () {
+        Route::get('/', [FactorStatusController::class, 'index'])->name('index');
+        Route::get('/data', [FactorStatusController::class, 'data'])->name('data');
+        Route::get('/create', [FactorStatusController::class, 'create'])->name('create');
+        Route::get('/{factorStatusForward}', [FactorStatusController::class, 'edit'])->name('edit');
+        Route::post('/', [FactorStatusController::class, 'store'])->name('store');
+        Route::patch('/{factorStatusForward}', [FactorStatusController::class, 'update'])->name('update');
+        Route::delete('/{factorStatusForward}', [FactorStatusController::class, 'destroy'])->name('destroy');
     });
 
     /* FACTOR ROUTES */

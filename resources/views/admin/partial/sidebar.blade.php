@@ -296,6 +296,11 @@
                                 <li><a href="{{ route('admin.factor.create') }}" class="slide-item">ایجاد</a></li>
                             @endcan
 
+                            @can('ADMIN_FACTOR_STATUS_INDEX')
+                                <li><a href="{{ route('admin.factor.status.index') }}" class="slide-item">وضعیت خودکار</a>
+                                </li>
+                            @endcan
+
                             @can('ADMIN_FACTOR_CATEGORY_INDEX')
                                 <li><a href="{{ route('admin.factor.category.index') }}" class="slide-item">انواع واریزی</a>
                                 </li>

@@ -162,6 +162,7 @@ return [
         LogNames::COMPANY => 'شرکت',
         LogNames::FACILITY => 'امکانات جانبی',
         LogNames::FACTOR => 'فاکتور',
+        LogNames::FACTOR_STATUS => 'فاکتور - وضعیت خودکار',
         LogNames::FACTOR_ITEM => 'فاکتور ایتم',
         LogNames::FREE_DAY => 'تقویم تعطیلات',
         LogNames::LOGIN => 'ورود',

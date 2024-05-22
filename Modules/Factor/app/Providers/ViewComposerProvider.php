@@ -3,6 +3,7 @@
 namespace Modules\Factor\app\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Models\Project;
 use Modules\Project\app\Models\ProjectType;
 
@@ -43,6 +44,15 @@ class ViewComposerProvider extends ServiceProvider
                 ->get();
 
             $view->with(compact('projects', 'types'));
+        });
+
+        view()->composer(['factor::admin.status.create', 'factor::admin.status.edit'], function ($view) {
+
+            $types = ProjectType::query()
+                ->where('base_id', ProjectBase::Web)
+                ->with(['base', 'statuses.type'])
+                ->get();
+            $view->with(compact('types'));
         });
     }
 }

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedTinyInteger('type_id');
             $table->unsignedTinyInteger('base_id');
-            $table->unsignedTinyInteger('status_id')
+            $table->unsignedInteger('status_id')
                 ->nullable();
 
             $table->morphs('target');
