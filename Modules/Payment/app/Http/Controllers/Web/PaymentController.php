@@ -26,7 +26,6 @@ class PaymentController extends Controller
         try {
             $factor = Factor::query()
                 ->with(['items', 'project.user'])
-                ->whereHas('project.user')
                 ->where('identify', $identify)
                 ->where('status', FactorStatus::Pending)
                 ->first();
@@ -48,7 +47,7 @@ class PaymentController extends Controller
                 $invoice->detail($item->title, $item->price);
             }
 
-            $paymentDriver = $this->getPaymentDriverByPersonType($factor->project->user);
+            $paymentDriver = $this->getPaymentDriverByPersonType($factor->project?->user);
 
             return Payment::via($paymentDriver['driver'])->callbackUrl($paymentDriver['verify'])->purchase(
                 $invoice,
@@ -150,21 +149,21 @@ class PaymentController extends Controller
 
     }
 
-    private function getPaymentDriverByPersonType(User $user): array
+    private function getPaymentDriverByPersonType(?User $user): array
     {
-        if ($user->person_type === PersonType::Legal || $user->official_bill) {
+        if ($user && ($user->person_type === PersonType::Legal || $user->official_bill)) {
             return [
                 'driver' => 'sepehr',
                 'verify' => route('payment.verify-sepehr'),
                 'gateway' => PaymentGateway::SEPEHR,
             ];
-        } else {
-            return [
-                'driver' => 'payping',
-                'verify' => route('payment.verify-payping'),
-                'gateway' => PaymentGateway::PAYPING,
-            ];
         }
+
+        return [
+            'driver' => 'payping',
+            'verify' => route('payment.verify-payping'),
+            'gateway' => PaymentGateway::PAYPING,
+        ];
     }
 
     private function getPaymentDriver(int $getaway)

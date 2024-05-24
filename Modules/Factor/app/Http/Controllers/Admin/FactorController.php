@@ -165,7 +165,7 @@ class FactorController extends Controller
     {
         $title = self::SHOW_TITLE;
 
-        $factor->load(['items.category', 'project.user', 'admin', 'meta.type']);
+        $factor->load(['items.category', 'project.user', 'admin', 'meta.type.base']);
 
         return view('factor::admin.show', compact('title', 'factor'));
     }
@@ -321,8 +321,7 @@ class FactorController extends Controller
                     'project' => function ($query) {
                         $query->select('projects.id', 'projects.title', 'projects.domain');
                     },
-                ])
-                ->whereHas('project');
+                ]);
 
             return DataTables::eloquent($factors)
                 ->editColumn('status', function (Factor $factor) {

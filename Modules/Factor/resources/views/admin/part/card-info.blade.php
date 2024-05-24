@@ -56,7 +56,7 @@
                 <tr>
                     <td>نوع فاکتور</td>
                     <td>
-                    @if($factor->is_official || $factor->project->user->official_bill)
+                    @if($factor->is_official || $factor->project?->user?->official_bill)
                         <span>فاکتور رسمی</span>
                     @else
                         <span>فاکتور غیر رسمی</span>

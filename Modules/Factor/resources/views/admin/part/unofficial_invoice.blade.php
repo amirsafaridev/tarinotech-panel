@@ -15,28 +15,49 @@
         </td>
     </tr>
     <tr>
+
         <td width="25%">
             <p>
                 <span>نام :</span>
-                <span>{{ $factor->project->user->first_name }} {{ $factor->project->user->last_name }}</span>
+                @if($factor->meta)
+                    <span>{{ $factor->meta->customer_fullname}}</span>
+
+                @else
+                    <span>{{ $factor->project->user->first_name }} {{ $factor->project->user->last_name }}</span>
+                @endif
             </p>
         </td>
+
+
         <td width="25%">
             <p>
                 <span>شماره / شماره ملی :</span>
-                <span>{{ $factor->project->user->national_id }}</span>
+                @if($factor->meta)
+                    <span>-</span>
+                @else
+                    <span>{{ $factor->project->user->national_id }}</span>
+                @endif
             </p>
         </td>
         <td width="25%">
             <p>
                 <span>شماره تماس :</span>
-                <span>{{ $factor->project->user->mobile }}</span>
+                @if($factor->meta)
+                    <span>{{ $factor->meta->customer_mobile}}</span>
+                @else
+                    <span>{{ $factor->project->user->mobile }}</span>
+                @endif
+
             </p>
         </td>
         <td width="25%">
             <p>
                 <span>کدپستی :</span>
-                <span>{{ $factor->project->user->address?->postal_code }}</span>
+                @if($factor->meta)
+                    <span>-</span>
+                @else
+                    <span>{{ $factor->project->user->address?->postal_code }}</span>
+                @endif
             </p>
         </td>
     </tr>
