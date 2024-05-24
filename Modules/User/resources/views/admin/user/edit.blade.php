@@ -36,7 +36,7 @@
                                 <x-admin.input-phone identify="mobile" :title="trans('fields.admin.mobile')" :old="$user->mobile" />
                             </div>
                             <div class="col-12 col-md-6">
-                                <x-admin.input identify="email" title="پست الکرونیکی" :old="$user->email" />
+                                <x-admin.input identify="email" title="پست الکترونیکی" :old="$user->email" />
                             </div>
                         </div>
 

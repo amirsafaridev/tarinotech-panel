@@ -16,7 +16,7 @@
             @can('PROJECT_PRICE_SHOW')
                 <div class="row">
                     <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3">
-                        <div class="card bg-primary img-card box-primary-shadow">
+                        <div class="card bg-primary-gradient img-card box-primary-shadow">
                             <div class="card-body">
                                 <div class="d-flex">
                                     <div class="text-white">
@@ -29,7 +29,7 @@
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3">
-                        <div class="card bg-success img-card box-info-shadow">
+                        <div class="card bg-success-gradient img-card box-info-shadow">
                             <div class="card-body">
                                 <div class="d-flex">
                                     <div class="text-white">
@@ -47,7 +47,7 @@
                     </div>
 
                     <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3">
-                        <div class="card bg-danger img-card box-info-shadow">
+                        <div class="card bg-danger-gradient img-card box-info-shadow">
                             <div class="card-body">
                                 <div class="d-flex">
                                     <div class="text-white">
@@ -56,6 +56,21 @@
                                         @endphp
                                         <h2 class="mb-0 number-font">{{ $totalNotPaid }}</h2>
                                         <p class="text-white mb-0">مجموع پرداخت نشده (ریال)</p>
+                                    </div>
+                                    <div class="ms-auto"><i class="fa fa-envelope-o text-white fs-30 me-2 mt-2"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                        <div class="card bg-info-gradient img-card box-info-shadow">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="text-white">
+                                        <h2 class="mb-0 number-font">{{ number_format($project->price ) }}</h2>
+                                        <p class="text-white mb-0">مبلغ کل پروژه (ریال)</p>
                                     </div>
                                     <div class="ms-auto"><i class="fa fa-envelope-o text-white fs-30 me-2 mt-2"></i>
                                     </div>

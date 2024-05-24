@@ -3,7 +3,9 @@
 namespace Modules\Factor\app\Http\Requests\Admin\Factor;
 
 use App\Rules\IRMobile;
+use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\User\app\Enums\PersonType;
 
 class StoreRequest extends FormRequest
 {
@@ -31,11 +33,18 @@ class StoreRequest extends FormRequest
             'item.*.tax' => 'required|integer',
             'item.*.discount' => 'required|integer',
 
-            /* Meta Validation */
-            'type_id' => 'required_if:custom_customer,yes|exists:project_types,id',
+            /* Custom User Validation Project */
+            'project_type_id' => 'required_if:custom_customer,yes|exists:project_types,id',
+            'project_status_id' => 'required_if:custom_customer,yes|exists:project_statuses,id',
+            'project_package_id' => 'required_if:custom_customer,yes|exists:packages,id',
             'project_title' => 'required_if:custom_customer,yes|max:255',
-            'customer_fullname' => 'required_if:custom_customer,yes|max:255',
-            'customer_mobile' => ['required_if:custom_customer,yes', 'max:255', new IRMobile()],
+            'project_price' => 'required_if:custom_customer,yes|integer',
+
+            /* Custom User Validation User */
+            'user_first_name' => 'required_if:custom_customer,yes|max:255',
+            'user_last_name' => 'required_if:custom_customer,yes|max:255',
+            'user_person_type' => ['required_if:custom_customer,yes|max:255', new EnumValue(PersonType::class, false)],
+            'user_mobile' => ['required_if:custom_customer,yes', 'max:255', 'unique:users,mobile'/*, new IRMobile()*/],
         ];
     }
 
@@ -55,6 +64,10 @@ class StoreRequest extends FormRequest
             'item' => $items,
             'custom_customer' => $this->input('custom_customer') === 'on' ? 'yes' : 'no',
             'project_id' => $this->input('project_id') !== '' ? $this->input('project_id') : null,
+            'project_price' => str_replace(',', '', $this->input('project_price')),
+            'person_type' => (int) $this->input('person_type'),
+            'user_mobile' => str_replace('+', '', $this->input('user_mobile')),
+
         ]);
     }
 

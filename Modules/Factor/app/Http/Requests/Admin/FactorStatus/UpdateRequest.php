@@ -25,4 +25,11 @@ class UpdateRequest extends FormRequest
             'project_status_forward_id' => 'required|exists:project_statuses,id',
         ];
     }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'factor_status' => (int) $this->input('factor_status'),
+        ]);
+    }
 }

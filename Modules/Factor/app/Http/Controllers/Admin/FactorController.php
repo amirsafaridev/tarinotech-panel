@@ -2,8 +2,8 @@
 
 namespace Modules\Factor\app\Http\Controllers\Admin;
 
-use App\Domin\Jobs\FactorItemCreateJob;
-use App\Domin\Jobs\FactorItemUpdateJob;
+use App\Domain\Jobs\FactorItemCreateJob;
+use App\Domain\Jobs\FactorItemUpdateJob;
 use App\Enums\General\BtnType;
 use App\Filters\Admin\Admin\AdminFilter;
 use App\Foundation\ValueObjects\Datatable\ColumnOption;
@@ -12,6 +12,10 @@ use App\Foundation\ValueObjects\Datatable\ExternalFilter;
 use App\Foundation\ValueObjects\Requests\FactorItemValues;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
+use App\Service\Json\WebProject\DomainTransformer;
+use App\Service\Json\WebProject\HostTransformer;
+use App\Service\Json\WebProject\LanguageTransformer;
+use App\Service\Json\WebProject\SampleTransformer;
 use App\Traits\HasDatatable;
 use App\Traits\HasJsonCommonResponse;
 use DB;
@@ -28,8 +32,11 @@ use Modules\Factor\app\Http\Requests\Admin\Factor\UpdateRequest;
 use Modules\Factor\app\Models\Factor;
 use Modules\Factor\app\Models\FactorItem;
 use Modules\Factor\app\Models\TransactionCategory;
+use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Models\Project;
+use Modules\Project\app\Models\ProjectWeb;
 use Modules\User\app\Enums\PersonType;
+use Modules\User\app\Models\User;
 use Yajra\DataTables\Facades\DataTables;
 
 class FactorController extends Controller
@@ -44,6 +51,8 @@ class FactorController extends Controller
     const EDIT_TITLE = 'فاکتور ها - ویرایش';
 
     const SHOW_TITLE = 'فاکتور ها - نمایش';
+
+    const DEFAULT_DOMAIN = 'https://sample.ir';
 
     public function index()
     {
@@ -68,7 +77,15 @@ class FactorController extends Controller
         try {
 
             DB::beginTransaction();
-            $factor = Factor::query()->create($this->prepareItemData($request));
+
+            $factorData = $this->prepareItemData($request);
+            if ($request->input('custom_customer') == 'yes') {
+                $user = $this->makeUser($request);
+                $project = $this->makeProject($request, $user);
+                $factorData['project_id'] = $project->id;
+            }
+
+            $factor = Factor::query()->create($factorData);
 
             foreach ($request->input('item') as $item) {
                 resolve(FactorItemCreateJob::class)->handle(
@@ -76,13 +93,10 @@ class FactorController extends Controller
                 );
             }
 
-            if ($request->input('custom_customer') == 'yes') {
-                $factor->meta()->create($this->prepareMeta($request));
-            }
-
             DB::commit();
 
             $this->updateFinalPrice($factor);
+            $this->updateGatewayBaseUser($factor);
 
             return $this->successResponse();
         } catch (Exception $exception) {
@@ -91,17 +105,6 @@ class FactorController extends Controller
 
             return $this->exceptionResponse($exception);
         }
-    }
-
-    private function updateFinalPrice(Factor $factor)
-    {
-        $itemPrice = FactorItem::query()
-            ->where('factor_id', $factor->id)
-            ->sum('final_price');
-
-        $factor->update([
-            'final_price' => $itemPrice,
-        ]);
     }
 
     public function edit(Factor $factor)
@@ -125,7 +128,8 @@ class FactorController extends Controller
                 $factorItemValues = $this->setItemValues($factor, $item);
                 $action = $item['action'];
                 if ($action === 'store') {
-                    resolve(FactorItemCreateJob::class)->handle($factorItemValues);
+                    resolve(FactorItemCreateJob::class)
+                        ->handle($factorItemValues);
                 } else {
                     $updatedItemIds[] = $item['id'];
                     resolve(FactorItemUpdateJob::class)
@@ -144,10 +148,6 @@ class FactorController extends Controller
             $updatedAttributes = $this->prepareItemData($request);
             $updatedAttributes['status'] = $request->input('status');
             $factor->update($updatedAttributes);
-
-            if ($request->input('custom_customer') == 'yes' && ! $factor->project_id) {
-                $factor->meta()->update($this->prepareMeta($request));
-            }
 
             DB::commit();
 
@@ -195,37 +195,74 @@ class FactorController extends Controller
         $factorData['gateway_data'] = [];
         $factorData['admin_id'] = auth()->id();
 
-        $factorData['is_official'] = false;
-        $factorData['gateway'] = PaymentGateway::PAYPING;
-
-        $customCustomer = $request->input('custom_customer');
-        $projectId = $request->input('project_id');
-
-        if ($customCustomer == 'no') {
-            $factorData['project_id'] = $projectId;
-
-            $project = Project::query()
-                ->with('user')
-                ->findOrFail($factorData['project_id']);
-
-            $user = $project->user;
-            if ($user->person_type === PersonType::Legal || $user->official_bill) {
-                $factorData['is_official'] = true;
-                $factorData['gateway'] = PaymentGateway::SEPEHR;
-            }
-        }
+        $factorData['project_id'] = $request->input('project_id');
 
         return $factorData;
     }
 
-    protected function prepareMeta(Request $request): array
+    private function makeUser(Request $request): User
     {
-        $factorMetaData['customer_fullname'] = $request->input('customer_fullname');
-        $factorMetaData['customer_mobile'] = $request->input('customer_mobile');
-        $factorMetaData['project_title'] = $request->input('project_title');
-        $factorMetaData['type_id'] = $request->input('type_id');
+        $userData['mobile'] = $request->input('user_mobile');
+        $userData['first_name'] = $request->input('user_first_name');
+        $userData['last_name'] = $request->input('user_last_name');
+        $userData['person_type'] = $request->input('user_person_type');
+        $userData['official_bill'] = $request->has('user_official_bill');
 
-        return $factorMetaData;
+        return User::query()->create($userData);
+    }
+
+    private function makeProject(Request $request, User $user): Project
+    {
+        $domains = resolve(DomainTransformer::class);
+        $domains->setDomainPrimary(self::DEFAULT_DOMAIN);
+
+        $webData = [
+            'package_id' => $request->input('project_package_id'),
+            'domains' => $domains->toArray(),
+            'host' => resolve(HostTransformer::class)->toArray(),
+            'language' => resolve(LanguageTransformer::class)->toArray(),
+            'sample' => resolve(SampleTransformer::class)->toArray(),
+            'working_days' => 0,
+        ];
+
+        $webProject = ProjectWeb::query()->create($webData);
+
+        $projectData = [
+            'title' => $request->input('project_title'),
+            'price' => $request->input('project_price'),
+            'type_id' => $request->input('project_type_id'),
+            'status_id' => $request->input('project_status_id'),
+            'agreement_at' => now(),
+            'user_id' => $user->id,
+            'admin_id' => auth()->id(),
+            'base_id' => ProjectBase::Web,
+            'domain' => self::DEFAULT_DOMAIN,
+        ];
+
+        return $webProject->project()->create($projectData);
+    }
+
+    private function updateFinalPrice(Factor $factor)
+    {
+        $itemPrice = FactorItem::query()
+            ->where('factor_id', $factor->id)
+            ->sum('final_price');
+
+        $factor->update([
+            'final_price' => $itemPrice,
+        ]);
+    }
+
+    private function updateGatewayBaseUser(Factor $factor)
+    {
+        $user = $factor->project->user;
+        $isOfficial = $user->person_type === PersonType::Legal || $user->official_bill;
+        $gateway = $isOfficial ? PaymentGateway::SEPEHR : PaymentGateway::PAYPING;
+
+        $factor->update([
+            'is_official' => $isOfficial,
+            'gateway' => $gateway,
+        ]);
     }
 
     private function setItemValues(Factor $factor, array $item): FactorItemValues

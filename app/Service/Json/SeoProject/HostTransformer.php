@@ -9,7 +9,7 @@ class HostTransformer
 {
     private ?string $hostProvider = null;
 
-    private ?string $hostLocation;
+    private ?string $hostLocation = SeoHostLocation::IN_COMPANY;
 
     public function setHostProvider(?string $hostProvider)
     {

@@ -33,7 +33,7 @@
                                 <x-admin.input-phone identify="mobile" title="شماره همراه" />
                             </div>
                             <div class="col-12 col-md-6">
-                                <x-admin.input identify="email" title="پست الکرونیکی" />
+                                <x-admin.input identify="email" title="پست الکترونیکی" />
                             </div>
                         </div>
 

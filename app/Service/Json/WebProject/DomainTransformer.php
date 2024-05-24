@@ -16,7 +16,7 @@ class DomainTransformer
 
     private string $domainPrimary;
 
-    private array $domainsRequired;
+    private array $domainsRequired = [];
 
     public function setHaveDomain(bool $haveDomain): void
     {

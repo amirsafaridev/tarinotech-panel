@@ -19,12 +19,7 @@
         <td width="25%">
             <p>
                 <span>نام :</span>
-                @if($factor->meta)
-                    <span>{{ $factor->meta->customer_fullname}}</span>
-
-                @else
-                    <span>{{ $factor->project->user->first_name }} {{ $factor->project->user->last_name }}</span>
-                @endif
+                <span>{{ $factor->project->user->first_name }} {{ $factor->project->user->last_name }}</span>
             </p>
         </td>
 
@@ -42,12 +37,7 @@
         <td width="25%">
             <p>
                 <span>شماره تماس :</span>
-                @if($factor->meta)
-                    <span>{{ $factor->meta->customer_mobile}}</span>
-                @else
-                    <span>{{ $factor->project->user->mobile }}</span>
-                @endif
-
+                <span>{{ $factor->project->user->mobile }}</span>
             </p>
         </td>
         <td width="25%">

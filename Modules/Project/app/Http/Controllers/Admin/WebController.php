@@ -2,6 +2,7 @@
 
 namespace Modules\Project\app\Http\Controllers\Admin;
 
+use App\Domain\Jobs\AutoFactorMakerJob;
 use App\Enums\Database\Role\PermissionName;
 use App\Enums\Database\Role\RoleName;
 use App\Enums\General\BtnType;
@@ -80,8 +81,11 @@ class WebController extends Controller
                 $projectParams['renewal_at'] = Carbon::parse($agreementAt)->addYear()
                     ->format('Y-m-d');
             }
-            $projectWeb->project()->create($projectParams);
+            $project = $projectWeb->project()->create($projectParams);
             $projectWeb->options()->attach($request->input('options'));
+
+            $autoMakeFactor = resolve(AutoFactorMakerJob::class);
+            $autoMakeFactor->handle($project);
 
             DB::commit();
 

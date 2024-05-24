@@ -12,6 +12,12 @@
     const customCustomerContainer = $('#custom_customer_container');
     const customCustomer = $('#custom_customer');
 
+    /* Custom User | Project */
+    const projectPrice = $('#project_price');
+    const projectTypeId = $('#project_type_id')
+    const projectStatusId = $('#project_status_id');
+    const projectPackageId = $('#project_package_id');
+
     $(document).ready(function () {
         activeParentUl('{{ route('admin.factor.index') }}');
         jalaliDatepicker.startWatch();
@@ -23,23 +29,18 @@
         factorItemInputType();
 
         setupCustomCustomer();
+
+        applyTypeInput();
+
+        /* Custom User | Project */
+        @if(isset($types))
+            typeStatusSetup();
+            typePackageSetup();
+        @endif
     })
 
-    function setupCustomCustomer() {
-        customCustomer.change(function () {
-            if ($(this).is(':checked')) {
-                customCustomerContainer.fadeIn();
-                projectId.val("");
-                projectId.prop('disabled', true);
-                projectId.prop('readonly', true);
-                projectId.trigger("change")
-            } else {
-                customCustomerContainer.fadeOut();
-                projectId.prop('disabled', false);
-                projectId.prop('readonly', false);
-            }
-        });
-        customCustomer.trigger('change');
+    function applyTypeInput() {
+        makeInputPrice(projectPrice);
     }
 
     function select2Setup() {
@@ -72,8 +73,6 @@
                     console.log(response);
                 });
         });
-
-
     }
 
     function factorItemSetup() {
@@ -172,4 +171,64 @@
         });
         h4FinalPrice.text(numberWithCommas(totalPrice - totalSub));
     }
+
+    @if(isset($types))
+        function typeStatusSetup() {
+            const jsonTypeWithStatuses = @json( $types);
+            projectTypeId.change(function () {
+                const id = parseInt($(this).val());
+                const type = jsonTypeWithStatuses.find(function (item) {
+                    return item.id === id;
+                })
+                if (type) {
+                    projectStatusId.empty();
+                    type.statuses.forEach(function (status) {
+                        const option = $('<option>', {
+                            value: status.id,
+                            text: status.title
+                        });
+                        projectStatusId.append(option);
+                    });
+                }
+            });
+            projectTypeId.trigger('change');
+        }
+
+        function typePackageSetup() {
+            const jsonTypeWithPackages = @json( $packages);
+
+            projectTypeId.change(function () {
+                const id = parseInt($(this).val());
+                const packages = jsonTypeWithPackages.filter(function (item) {
+                    return item.type_id === id;
+                })
+                projectPackageId.empty();
+                packages.forEach(function (status) {
+                    const option = $('<option>', {
+                        value: status.id,
+                        text: status.title
+                    });
+                    projectPackageId.append(option);
+                });
+            });
+            projectTypeId.trigger('change');
+        }
+
+        function setupCustomCustomer() {
+            customCustomer.change(function () {
+                if ($(this).is(':checked')) {
+                    customCustomerContainer.fadeIn();
+                    projectId.val("");
+                    projectId.prop('disabled', true);
+                    projectId.prop('readonly', true);
+                    projectId.trigger("change")
+                } else {
+                    customCustomerContainer.fadeOut();
+                    projectId.prop('disabled', false);
+                    projectId.prop('readonly', false);
+                }
+            });
+            customCustomer.trigger('change');
+        }
+    @endif
 </script>

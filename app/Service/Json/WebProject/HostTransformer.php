@@ -6,6 +6,10 @@ use InvalidArgumentException;
 
 class HostTransformer
 {
+    const HOST_LOCATION_IN_IRAN = 'IN_IRAN';
+
+    const HOST_LOCATION_OUT_IRAN = 'OUT_IRAN';
+
     private bool $haveHost = false;
 
     private ?string $hostProvider = null;
@@ -14,13 +18,9 @@ class HostTransformer
 
     private ?string $hostPassword = null;
 
-    private ?string $hostLocation;
+    private ?string $hostLocation = self::HOST_LOCATION_IN_IRAN;
 
     private bool $hostMostVisit = false;
-
-    const HOST_LOCATION_IN_IRAN = 'IN_IRAN';
-
-    const HOST_LOCATION_OUT_IRAN = 'OUT_IRAN';
 
     public function setHaveHost(bool $haveHost)
     {

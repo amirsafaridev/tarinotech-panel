@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domin\Jobs;
+namespace App\Domain\Jobs;
 
 use App\Foundation\ValueObjects\Requests\FactorItemValues;
 use Modules\Factor\app\Models\FactorItem;

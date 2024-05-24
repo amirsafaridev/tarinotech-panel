@@ -23,7 +23,7 @@
     </div>
 
     <form class="row request-form forms-sample" method="post" action="{{ route('admin.factor.store') }}">
-        <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+        <div class="col-xl-6 col-lg-12 col-md-6 col-12">
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">ایجاد فاکتور</div>
@@ -48,20 +48,12 @@
                         <x-admin.checkbox identify="custom_customer" description="ثبت دستی کارفرما"/>
 
                         <div id="custom_customer_container" style="display: none" class="p-2 mb-2">
-                            <x-admin.select-model
-                                    identify="type_id"
-                                    title="نوع پروژه"
-                                    :items="$types"
-                                    :has-choice-option="false"
-                                    key="id"
-                                    value="title"/>
+                            @include('factor::admin.part.project-form')
 
-                            <x-admin.input identify="project_title" title="عنوان پروژه"/>
-
-                            <x-admin.input identify="customer_fullname" title="نام و نام خانوادگی"/>
-
-                            <x-admin.input identify="customer_mobile" title="شماره موبایل"/>
+                            @include('factor::admin.part.user-form')
                         </div>
+
+
 
                         <x-admin.input identify="expired_at"
                                        title="تاریخ انقضاء"
