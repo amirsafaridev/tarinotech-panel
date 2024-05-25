@@ -76,7 +76,8 @@
                                 <x-admin.input identify="document_id" title="شماره شناسنامه" :old="$user->document_id" />
                             </div>
                             <div class="col-12 col-md-6">
-                                <x-admin.input identify="dob" title="تاریخ تولد" :old="$user->dob->toJalali()->format('Y/m/d')" :is-date-picker="true"/>
+
+                                <x-admin.input identify="dob" title="تاریخ تولد" :old="$user->dob ? $user->dob->toJalali()->format('Y/m/d') : ''" :is-date-picker="true"/>
                             </div>
                         </div>
 
@@ -125,9 +126,9 @@
                             </div>
                         </div>
 
-                        <x-admin.textarea identify="address" rows="5" title="آدرس" :old="$user->address->address" />
+                        <x-admin.textarea identify="address" rows="5" title="آدرس" :old="$user->address?->address" />
 
-                        <x-admin.input identify="postal_code" title="کدپستی" :old="$user->address->postal_code" />
+                        <x-admin.input identify="postal_code" title="کدپستی" :old="$user->address?->postal_code" />
 
                         <x-admin.textarea identify="cellphones" title="شماره های تماس" rows="4" :old="$user->phones->implode('phone',PHP_EOL)" />
 

@@ -74,10 +74,13 @@
                         @endif
                     </td>
                 </tr>
-                <tr>
-                    <td>تاریخ تولد</td>
-                    <td>{{ $user->dob->toJalali()->format(formatJalaliDate()) }}</td>
-                </tr>
+
+                @if($user->dob)
+                    <tr>
+                        <td>تاریخ تولد</td>
+                        <td>{{ $user->dob->toJalali()->format(formatJalaliDate()) }}</td>
+                    </tr>
+                @endif
                 <tr>
                     <td>نوع شخص</td>
                     <td>{{ \Modules\User\app\Enums\PersonType::getDescription($user->person_type) }}</td>
@@ -131,11 +134,11 @@
 
                 <tr>
                     <td>آدرس</td>
-                    <td>{{ $user->address->address }}</td>
+                    <td>{{ $user->address?->address }}</td>
                 </tr>
                 <tr>
                     <td>کد پستی</td>
-                    <td>{{ $user->address->postal_code }}</td>
+                    <td>{{ $user->address?->postal_code }}</td>
                 </tr>
 
                 @if($user->irnic)
