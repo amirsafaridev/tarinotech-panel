@@ -33,6 +33,8 @@ class User extends Authenticatable
 
     protected array $cascadeDeletes = ['projects'];
 
+    protected array $dates = ['deleted_at'];
+
     /**
      * The attributes that are mass assignable.
      *

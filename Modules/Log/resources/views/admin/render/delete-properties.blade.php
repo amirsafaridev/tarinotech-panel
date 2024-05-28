@@ -13,10 +13,15 @@
     </thead>
     <tbody>
     @foreach($oldProperties as $attribute => $oldValue)
-        @unless(in_array($attribute, $excludeAttributes))
+        @unless(in_array($attribute, $excludeAttributes) && isset($oldValue) && is_string($oldValue))
             <tr>
                 <td>{{ formatAttributeName($attribute) }}</td>
-                <td>{{ $oldValue }}</td>
+                @if(!is_array($oldValue))
+                    <td>{{ $oldValue }}</td>
+                @else
+                    <td>{{ json_encode($oldValue) }}</td>
+                @endif
+
             </tr>
         @endunless
     @endforeach
