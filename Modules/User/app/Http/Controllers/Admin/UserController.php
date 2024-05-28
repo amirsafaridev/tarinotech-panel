@@ -174,8 +174,9 @@ class UserController extends Controller
 
             $user->update([
                 'mobile' => uniqid($user->mobile.'_'),
-                'deleted_at' => now(),
             ]);
+
+            $user->delete();
 
             return $this->successDestroyBack(route('admin.user.index'));
 
