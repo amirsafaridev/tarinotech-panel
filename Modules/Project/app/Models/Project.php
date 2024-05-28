@@ -3,6 +3,7 @@
 namespace Modules\Project\app\Models;
 
 use App\Traits\Filterable;
+use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,10 +21,13 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Project extends Model
 {
+    use CascadeSoftDeletes;
     use Filterable;
     use HasFactory;
     use LogsActivity;
     use SoftDeletes;
+
+    protected array $cascadeDeletes = ['factors', 'chats'];
 
     protected $fillable = [
         'title',

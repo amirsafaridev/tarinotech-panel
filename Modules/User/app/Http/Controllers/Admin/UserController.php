@@ -171,7 +171,11 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         try {
-            $user->delete();
+
+            $user->update([
+                'mobile' => uniqid($user->mobile.'_'),
+                'deleted_at' => now(),
+            ]);
 
             return $this->successDestroyBack(route('admin.user.index'));
 

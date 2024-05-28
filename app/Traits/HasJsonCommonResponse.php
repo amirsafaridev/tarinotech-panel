@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App;
 use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
@@ -55,6 +56,26 @@ trait HasJsonCommonResponse
     {
         report($exception);
 
+        if ($exception instanceof QueryException && $exception->getCode() == '23000') {
+            $tableName = $this->extractTableName($exception->errorInfo);
+
+            return back()->with('danger', trans('panel.error_relation_constraint', ['table' => $tableName]));
+        }
+
         return back()->with('danger', trans('panel.error_exception'));
+    }
+
+    protected function extractTableName(array $errorInfo): string
+    {
+        $tableName = 'unknown table';
+
+        if (isset($errorInfo[2])) {
+            preg_match('/FOREIGN KEY \(`.*`\) REFERENCES `(.*)` \(`.*`\)/', $errorInfo[2], $matches);
+            if (isset($matches[1])) {
+                $tableName = $matches[1];
+            }
+        }
+
+        return $tableName;
     }
 }

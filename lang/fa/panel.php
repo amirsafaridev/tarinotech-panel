@@ -71,6 +71,7 @@ return [
     'success_delete' => 'با موفقیت حذف شد.',
     'error_delete' => 'خطا در حذف اطلاعات',
     'error_exception' => 'خطایی رخ داده است!',
+    'error_relation_constraint' => 'نمی‌توان کاربر را حذف کرد زیرا با سوابق جدول :table مرتبط است.',
     'error_update' => 'خطا در ویرایش اطلاعات',
     'dashboard' => [
         'title' => 'داشبورد',
