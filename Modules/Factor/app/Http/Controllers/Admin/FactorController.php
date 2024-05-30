@@ -230,6 +230,7 @@ class FactorController extends Controller
         $projectData = [
             'title' => $request->input('project_title'),
             'price' => $request->input('project_price'),
+            'tax_rate' => config('factor.tax'),
             'type_id' => $request->input('project_type_id'),
             'status_id' => $request->input('project_status_id'),
             'agreement_at' => now(),

@@ -51,6 +51,7 @@ class ProjectFactory extends Factory
             'type_id' => rand(1, 3),
             'status_id' => rand(1, 6),
             'price' => $this->faker->randomElement([10000, 50000, 600000, 80000, 10000000, 200000000]),
+            'tax_rate' => config('factor.tax'),
             'note' => $this->faker->paragraph,
             'agreement_at' => now()->addMonths(rand(1, 5))->startOfMonth(),
             'created_at' => now()->addMonths(rand(1, 5))->startOfMonth(),

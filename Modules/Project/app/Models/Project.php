@@ -35,6 +35,7 @@ class Project extends Model
         'admin_id',
         'user_id',
         'price',
+        'tax_rate',
         'status_id',
         'base_id',
         'type_id',

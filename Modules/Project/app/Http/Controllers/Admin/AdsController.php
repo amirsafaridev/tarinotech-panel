@@ -60,7 +60,10 @@ class AdsController extends Controller
         try {
             DB::beginTransaction();
 
-            $projectAds = ProjectAds::query()->create($this->initialAdsData($request));
+            $projectData = $this->initialAdsData($request);
+            $projectData['tax_rate'] = config('factor.tax');
+            $projectAds = ProjectAds::query()->create();
+
             $projectAds->project()->create($this->initialProjectData($request));
 
             DB::commit();

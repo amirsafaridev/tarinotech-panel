@@ -70,7 +70,9 @@ class WebController extends Controller
         try {
             DB::beginTransaction();
 
-            $projectWeb = ProjectWeb::query()->create($this->initialWebData($request));
+            $projectData = $this->initialWebData($request);
+            $projectData['tax_rate'] = config('factor.tax');
+            $projectWeb = ProjectWeb::query()->create($projectData);
 
             $projectParams = $this->initialProjectData($request);
             $projectParams['status_id'] = $request->input('status_id');
@@ -219,6 +221,7 @@ class WebController extends Controller
 
         $data = [
             'title' => $request->input('title'),
+            'tax_rate' => config('factor.tax'),
             'domain' => $request->input('domain_primary'),
             'admin_id' => $adminId,
             'type_id' => $request->input('type_id'),
@@ -298,9 +301,15 @@ class WebController extends Controller
                     ->setAs('نوع')
             )
             ->addColumn(
-                ColumnOption::new()->setName('type.title')
+                ColumnOption::new()->setName('user.mobile')
                     ->setSortable(false)
-                    ->setAs('نوع')
+                    ->setAs('کارفرما - شماره')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('user.fullname')
+                    ->setSortable(false)
+                    ->setSearchable(false)
+                    ->setAs('کارفرما - نام')
             )
             ->addColumn(
                 ColumnOption::new()->setName('status.title')
@@ -348,6 +357,7 @@ class WebController extends Controller
                     'target_type',
                     'target_id',
                     'admin_id',
+                    'user_id',
                     'created_at',
                 ])
                 ->whereHasMorph('target', [ProjectWeb::class], function ($q) {
@@ -361,6 +371,9 @@ class WebController extends Controller
                     'target.package',
                     'admin' => function (BelongsTo $query) {
                         $query->select('admins.id', 'admins.first_name', 'admins.last_name');
+                    },
+                    'user' => function (BelongsTo $query) {
+                        $query->select('users.id', 'users.first_name', 'users.last_name', 'users.mobile');
                     },
                 ])
                 ->filter([
