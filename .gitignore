@@ -21,6 +21,7 @@ yarn-error.log
 /public/uploads/acf/*
 /public/uploads/avatar/*
 /public/uploads/user/*
+/public/user/*
 /public/uploads/chat/*
 /public/uploads/slider/*
 /http/http-client.env.json
