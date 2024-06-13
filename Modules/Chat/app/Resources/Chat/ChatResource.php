@@ -27,6 +27,7 @@ class ChatResource extends JsonResource
         $data['created_at'] = $this->created_at;
         $data['updated_at'] = $this->updated_at;
         $data['update_ago'] = $this->updated_at->ago();
+        $data['selected'] = false;
         if ($this->relationLoaded('project')) {
             $data['project'] = new ProjectResource($this->project);
         }

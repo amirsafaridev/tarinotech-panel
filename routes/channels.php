@@ -18,9 +18,7 @@ use Modules\User\app\Models\User;
 */
 
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-
-    return true;
-    //return (int) $user->id === (int) $id;
+    return (int) $user->id === (int) $id;
 });
 
 Broadcast::channel('chat', function ($user) {
@@ -33,8 +31,7 @@ Broadcast::channel('public', function ($user) {
 
 Broadcast::channel('chat.{chatId}', function ($user, $chatId) {
 
-    return true;
-    /*$chat = Chat::query()
+    $chat = Chat::query()
         ->findOrFail($chatId);
 
     if ($chat->type === ChatType::Public) {
@@ -45,6 +42,6 @@ Broadcast::channel('chat.{chatId}', function ($user, $chatId) {
         ->where('user_id', $user->id)
         ->where('user_type', $user::class)
         ->where('chat_id', $chatId)
-        ->exists();*/
+        ->exists();
 
 });

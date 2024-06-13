@@ -46,8 +46,6 @@ class ChatUpdate implements ShouldBroadcast
      */
     public function broadcastWith(): array
     {
-        return ['chat' => [
-            'id' => $this->chat->id,
-        ]];
+        return ['chat' => $this->chat];
     }
 }
