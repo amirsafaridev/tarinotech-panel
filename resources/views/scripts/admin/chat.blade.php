@@ -56,12 +56,12 @@
                 console.log(`Subscribed To Private Channel ${chatId}`);
             });
 
-        window.Echo.channel('public-ch')
-            .listen('.test', (e) => {
+        window.Echo.channel('public')
+            .listen('.message', (e) => {
                 console.log(e);
             })
             .subscribed(function () {
-                console.log("subscribed To Channel public-ch");
+                console.log("subscribed To Channel public");
             });
 
     }
