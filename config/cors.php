@@ -21,10 +21,10 @@ return [
 
     'allowed_origins' => [
         env('FRONTEND_URL'),
-        'http://app.tarinotech.com',
         'http://localhost:3000',
-        'http://portal.tarinotech.com',
-        'http://ws.tarinotech.com',
+        'https://app.tarinotech.com',
+        'https://portal.tarinotech.com',
+        'https://ws.tarinotech.com',
     ],
 
     'allowed_origins_patterns' => [],
