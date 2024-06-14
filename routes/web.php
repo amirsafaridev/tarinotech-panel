@@ -44,5 +44,7 @@ Route::get('/echo-permission', function () {
 });
 
 Route::post('/broadcasting/auth/web', function (Illuminate\Http\Request $request) {
+    logger($request->headers);
+
     return Broadcast::auth($request);
 })->middleware(['web', 'admin.auth']);
