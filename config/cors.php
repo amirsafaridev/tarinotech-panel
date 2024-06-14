@@ -24,6 +24,7 @@ return [
         'http://app.tarinotech.com',
         'http://localhost:3000',
         'http://portal.tarinotech.com',
+        'http://ws.tarinotech.com',
     ],
 
     'allowed_origins_patterns' => [],
