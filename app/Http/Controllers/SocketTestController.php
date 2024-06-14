@@ -14,6 +14,11 @@ class SocketTestController extends Controller
 
     public function sendPublic()
     {
-        broadcast(new PublicTest());
+        try {
+            broadcast(new PublicTest());
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+
     }
 }
