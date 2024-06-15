@@ -34,7 +34,7 @@
 
     <script>
         $(document).ready(function () {
-            setupSocketChat(1);
+            setupSocketChat('{{ config('chat.support_chat_id') }}');
         });
     </script>
 @endsection
