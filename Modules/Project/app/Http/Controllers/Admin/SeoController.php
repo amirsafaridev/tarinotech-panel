@@ -63,9 +63,12 @@ class SeoController extends Controller
             DB::beginTransaction();
 
             $projectData = $this->initialSeoData($request);
-            $projectData['tax_rate'] = config('factor.tax');
-            $projectWeb = ProjectSeo::query()->create($projectData);
-            $projectWeb->project()->create($this->initialProjectData($request));
+            $projectSeo = ProjectSeo::query()->create($projectData);
+
+            $projectParams = $this->initialProjectData($request);
+            $projectParams['tax_rate'] = config('factor.tax');
+
+            $projectSeo->project()->create($projectParams);
 
             DB::commit();
 

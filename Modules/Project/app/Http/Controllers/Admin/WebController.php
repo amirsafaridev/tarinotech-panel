@@ -71,12 +71,12 @@ class WebController extends Controller
             DB::beginTransaction();
 
             $projectData = $this->initialWebData($request);
-            $projectData['tax_rate'] = config('factor.tax');
             $projectWeb = ProjectWeb::query()->create($projectData);
 
             $projectParams = $this->initialProjectData($request);
             $projectParams['status_id'] = $request->input('status_id');
             $projectParams['price'] = $request->input('price');
+            $projectParams['tax_rate'] = config('factor.tax');
 
             $agreementAt = $projectParams['agreement_at'];
             if ($agreementAt) {
@@ -221,7 +221,6 @@ class WebController extends Controller
 
         $data = [
             'title' => $request->input('title'),
-            'tax_rate' => config('factor.tax'),
             'domain' => $request->input('domain_primary'),
             'admin_id' => $adminId,
             'type_id' => $request->input('type_id'),
