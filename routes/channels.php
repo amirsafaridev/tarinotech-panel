@@ -31,8 +31,15 @@ Broadcast::channel('public', function ($user) {
 
 Broadcast::channel('chat.{chatId}', function ($user, $chatId) {
 
-    $chat = Chat::query()
-        ->findOrFail($chatId);
+    /** Super Admin */
+    if (hasAdminRole(config('auth.super_admin_role_id'))) {
+        return true;
+    }
+
+    $chat = Chat::query()->find($chatId);
+    if (! $chat) {
+        return false;
+    }
 
     if ($chat->type === ChatType::Public) {
         return true;

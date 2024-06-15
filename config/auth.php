@@ -15,6 +15,8 @@ return [
 
     'otp_expire_in_minute' => env('OTP_EXPIRE_IN_MINUTE', 5),
 
+    'super_admin_role_id' => env('SUPER_ADMIN_ROLE_ID', 1),
+
     'defaults' => [
         'guard' => 'web',
         'passwords' => 'users',
