@@ -334,6 +334,7 @@ class FactorController extends Controller
     {
         try {
             $factors = Factor::query()
+                ->has('project')
                 ->select([
                     'id',
                     'title',
