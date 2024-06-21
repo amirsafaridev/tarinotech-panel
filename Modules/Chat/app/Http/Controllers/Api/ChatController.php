@@ -26,7 +26,9 @@ class ChatController extends Controller
                     $query->where('user_type', User::class)
                         ->where('user_id', auth()->id());
                 })
+                ->whereNot('type', ChatType::Ticket)
                 ->orWhere('type', ChatType::Public)
+
                 ->orderByRaw('CASE WHEN type = '.ChatType::Public.' THEN 0 ELSE 1 END')
                 ->orderBy('created_at', 'desc')
                 ->get();

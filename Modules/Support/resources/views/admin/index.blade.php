@@ -21,7 +21,7 @@
 
     <div class="row">
         <div class="col-md-7">
-            <x-admin.chat/>
+            <x-admin.chat />
         </div>
         <div class="col-md-5">
             <div class="aw-chat aw-chat-height" id="chat-container">

@@ -21,7 +21,7 @@ class TicketController extends Controller
     {
         try {
 
-            $project = Project::query()
+            Project::query()
                 ->where('id', $request->input('project_id'))
                 ->where('user_id', auth()->id())
                 ->orWhereHas('presenter', function ($query) {
@@ -29,17 +29,18 @@ class TicketController extends Controller
                 })
                 ->firstOrFail();
 
-            /*$checkOpenedChat = Chat::query()
+            $checkOpenedChat = Chat::query()
                 ->where('project_id', $request->input('project_id'))
                 ->where('type', ChatType::Ticket)
-                ->where('status', ChatStatus::Open)
+                ->whereNot('status', ChatStatus::Close)
+                ->with('project')
                 ->first();
 
             if ($checkOpenedChat) {
                 $chatResourced = new ChatResource($checkOpenedChat);
 
                 return $this->successResponse($chatResourced, 'مشاهده تیکت');
-            }*/
+            }
 
             $chat = Chat::query()
                 ->create([
@@ -55,7 +56,7 @@ class TicketController extends Controller
                 'seen_at' => now(),
             ]);
 
-            $chatResourced = new ChatResource($chat);
+            $chatResourced = new ChatResource($chat->load('project'));
 
             return $this->successResponse($chatResourced, 'تیکت با موفقیت ایجاد شد.');
         } catch (Exception $exception) {

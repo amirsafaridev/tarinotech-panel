@@ -16,6 +16,7 @@ class Chat extends Component
      */
     public function __construct(
         public ?ChatModel $chat = null,
+        public ?bool $hasEndButton = false
     ) {
 
     }

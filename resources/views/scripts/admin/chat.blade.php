@@ -187,6 +187,7 @@
 
     const btnMessageSend = $('#btn-message-send');
     const btnCancelEdit = $('#btn-cancel-edit');
+    const btnEndChat = $('#btn-end-chat');
 
     const chatId = $('#chat_id');
     const parentId = $('#parent_id');
@@ -211,8 +212,42 @@
         setupReplay();
         setupReplayNavigate();
         setupCancelEdit();
+        setupEndChat();
     })
 
+    function setupEndChat(){
+        btnEndChat.click(function (){
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('admin.chat.close') }}',
+                data: {
+                    'chat_id': chatId
+                },
+                dataType: 'json',
+                success: function (data) {
+                    /*let htmlRows = '';
+                    data.messages.forEach(function (item) {
+                        htmlRows += item.htmlRender;
+                    });
+                    messageContainer.prepend(htmlRows)
+                    if (messagePage === 1) {
+                        messageContainer.scrollTop(messageContainer.prop("scrollHeight"));
+                    }
+                    if (messagePage < data.pagination.last_page) {
+                        messagePage++;
+                        activeMessageScroll();
+                    }*/
+
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                },
+                complete: function () {
+
+                }
+            });
+        })
+    }
 
     function setupCancelEdit() {
         btnCancelEdit.click(function () {

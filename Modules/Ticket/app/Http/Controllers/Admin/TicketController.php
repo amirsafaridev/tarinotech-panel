@@ -13,9 +13,11 @@ use App\Traits\HasDatatable;
 use App\Traits\HasJsonCommonResponse;
 use Exception;
 use Modules\Admin\app\Models\Admin;
+use Modules\Chat\app\Events\Message\NewMessage;
 use Modules\Support\app\Models\Chat;
 use Modules\Support\app\Models\ChatBot;
 use Modules\Support\app\Models\ChatMessage;
+use View;
 use Yajra\DataTables\Facades\DataTables;
 
 class TicketController extends Controller
@@ -53,19 +55,23 @@ class TicketController extends Controller
                 'seen_at' => now(),
             ]);
 
-            $admin = $chat->users()->create([
+            $chat->users()->create([
                 'user_id' => auth()->id(),
-                'user_type' => ChatBot::class,
+                'user_type' => Admin::class,
                 'seen_at' => now(),
             ]);
 
-            ChatMessage::query()
+            $message = ChatMessage::query()
                 ->create([
                     'chat_id' => $chat->id,
                     'user_type' => ChatBot::class,
                     'user_id' => 1,
                     'content' => sprintf('پشتیبان %s اماده پاسخگویی می باشد', auth()->user()->fullname),
                 ]);
+
+            $htmlRender = compressHtml(View::make('support::admin.part.row-message', ['message' => $message, 'reverse' => false]));
+
+            broadcast(new NewMessage($message, $htmlRender));
 
             $chat->update([
                 'status' => ChatStatus::AdminAnswer,

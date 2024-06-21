@@ -23,8 +23,7 @@
 
     <div class="row">
         <div class="col-12">
-            <x-admin.chat :chat="$chat"/>
-
+            <x-admin.chat :chat="$chat" :has-end-button="true"/>
         </div>
     </div>
 @endsection
@@ -36,7 +35,7 @@
 
     <script>
         $(document).ready(function () {
-
-        })
+            setupSocketChat(parseInt('{{ $chat->id }}'));
+        });
     </script>
 @endsection

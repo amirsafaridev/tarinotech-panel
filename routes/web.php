@@ -43,6 +43,17 @@ Route::get('/echo-permission', function () {
     }
 });
 
+Route::get('/chat', function () {
+
+    return \Modules\Support\app\Models\ChatBot::find(1);
+    dd($chatBot);
+
+    return \Modules\Support\app\Models\ChatMessage::query()
+        ->where('chat_id', 14)
+        ->with('user')
+        ->get();
+});
+
 Route::post('/broadcasting/auth/web', function (Illuminate\Http\Request $request) {
     return Broadcast::auth($request);
 })->middleware(['web', 'admin.auth']);

@@ -7,5 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ChatBot extends Model
 {
+    protected $table = 'chat_bots';
+
     use HasFactory;
 }
