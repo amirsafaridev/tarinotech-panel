@@ -5,6 +5,8 @@ namespace Modules\User\app\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Traits\HasApiResponse;
 use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Modules\Admin\app\Models\PresenterProject;
 use Modules\Project\app\Models\Project;
 use Modules\Project\app\Resources\Project\ProjectResource;
@@ -19,7 +21,9 @@ class ProfileController extends Controller
     public function index()
     {
         try {
+
             $user = auth()->user();
+
             $projectsQuery = Project::query()
                 ->with('type');
 
@@ -62,10 +66,12 @@ class ProfileController extends Controller
         }
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
         try {
-            auth()->user()->currentAccessToken()->delete();
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
 
             return $this->successResponse(null, 'با موفقیت خارج شدید!');
         } catch (Exception $exception) {

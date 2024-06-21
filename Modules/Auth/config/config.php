@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'name' => 'Auth',
+    'development_otp' => env('OTP_CODE_DEVELOPMENT', '1234'),
 ];

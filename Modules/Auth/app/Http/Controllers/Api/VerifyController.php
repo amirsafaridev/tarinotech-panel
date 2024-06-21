@@ -40,6 +40,10 @@ class VerifyController extends Controller
 
     private function getOtpCode(string $identify, string $code): ?OtpCode
     {
+        if (app()->isLocal()) {
+            $code = config('auth.development_otp');
+        }
+
         return OtpCode::query()
             ->with('user')
             ->where('identify', $identify)

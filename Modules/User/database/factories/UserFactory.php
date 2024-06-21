@@ -40,7 +40,7 @@ class UserFactory extends Factory
             'official_bill' => $this->faker->boolean,
             'mobile' => $this->faker->unique()->numerify('0935#######'),
             'verify_at' => $this->faker->randomElement([null, $this->faker->date]),
-            'is_block' => $this->faker->boolean,
+            'is_block' => false,
             'user_type' => UserType::getRandomValue(),
             'remember_token' => Str::random(10),
         ];

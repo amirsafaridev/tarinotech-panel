@@ -31,7 +31,9 @@ class LoginController extends Controller
 
             $otp = $this->generateOtp($user, $identify, $request);
 
-            $this->sendOtp($user, $identify, $otp);
+            if (app()->isProduction()) {
+                $this->sendOtp($user, $identify, $otp);
+            }
 
             return $this->successResponse(['code' => $otp], 'کد برای شما ارسال شد');
         } catch (Exception $exception) {
@@ -73,6 +75,10 @@ class LoginController extends Controller
     private function generateOtp($user, $identify, $request): string
     {
         $otp = Helper::randNumeric(4);
+
+        if (app()->isLocal()) {
+            $otp = config('auth.development_otp');
+        }
 
         OtpCode::query()->create([
             'identify' => $identify,

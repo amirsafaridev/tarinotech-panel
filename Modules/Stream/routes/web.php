@@ -16,4 +16,4 @@ use Modules\Stream\app\Http\Middleware\StreamMiddleware;
 */
 
 Route::get('/{path}', [StreamController::class, 'index'])->name('read')
-    ->middleware([StreamMiddleware::class]);
+    ->middleware(['web', StreamMiddleware::class]);

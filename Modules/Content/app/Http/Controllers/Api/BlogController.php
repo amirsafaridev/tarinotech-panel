@@ -39,6 +39,7 @@ class BlogController extends Controller
     public function single(string $slug)
     {
         try {
+
             $blog = Blog::query()
                 ->where('is_publish', true)
                 ->with('category')

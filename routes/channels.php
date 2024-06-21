@@ -2,9 +2,9 @@
 
 use App\Enums\Database\Chat\ChatType;
 use Illuminate\Support\Facades\Broadcast;
+use Modules\Admin\app\Models\Admin;
 use Modules\Support\app\Models\Chat;
 use Modules\Support\app\Models\ChatUser;
-use Modules\User\app\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +32,7 @@ Broadcast::channel('public', function ($user) {
 Broadcast::channel('chat.{chatId}', function ($user, $chatId) {
 
     /** Super Admin */
-    if (hasAdminRole(config('auth.super_admin_role_id'))) {
+    if ($user instanceof Admin && hasAdminRole(config('auth.super_admin_role_id'))) {
         return true;
     }
 

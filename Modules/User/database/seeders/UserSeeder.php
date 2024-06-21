@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        UserFactory::new()->count(50)
+        UserFactory::new()->count(1)
             ->has(AddressFactory::new()->count(1))
             ->has(CompanyFactory::new()->count(1))
             ->has(IrnicFactory::new()->count(1))
