@@ -46,4 +46,9 @@ class Chat extends Model
     {
         return $this->hasOne(ChatMeta::class, 'chat_id');
     }
+
+    public function messages(): HasMany
+    {
+        return $this->hasMany(ChatMessage::class, 'chat_id');
+    }
 }

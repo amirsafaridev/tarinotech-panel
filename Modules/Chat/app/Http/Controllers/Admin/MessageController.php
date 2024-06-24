@@ -2,6 +2,7 @@
 
 namespace Modules\Chat\app\Http\Controllers\Admin;
 
+use App\Enums\Database\Chat\ChatStatus;
 use App\Http\Controllers\Controller;
 use App\Traits\HasJsonCommonResponse;
 use DB;
@@ -20,6 +21,7 @@ use Modules\Support\app\Models\Chat;
 use Modules\Support\app\Models\ChatMessage;
 use Modules\Support\app\Models\ChatMessageAttachment;
 use Modules\Support\app\Models\ChatUser;
+use Symfony\Component\HttpFoundation\Response as HttpResponseCode;
 use View;
 
 class MessageController extends Controller
@@ -79,6 +81,11 @@ class MessageController extends Controller
 
             /* Find Chat */
             $chat = Chat::query()->findOrFail($chatId);
+
+            /* Check Status */
+            if ($chat->status === ChatStatus::Close) {
+                return $this->failure('این گفتگو بسته شده است!', HttpResponseCode::HTTP_CONFLICT);
+            }
 
             /* Create Message */
             $message = ChatMessage::query()->create([

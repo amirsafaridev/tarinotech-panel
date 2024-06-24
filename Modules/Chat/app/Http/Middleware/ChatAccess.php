@@ -19,6 +19,11 @@ class ChatAccess
 
         $chat = Chat::query()->findOrFail($chatId);
 
+        /** Super Admin */
+        if (hasAdminRole(config('auth.super_admin_role_id'))) {
+            return $next($request);
+        }
+
         if ($chat->type === ChatType::Public) {
             return $next($request);
         }
@@ -32,8 +37,6 @@ class ChatAccess
 
     private function userCanAccessChat($chatId): bool
     {
-        return true;
-
         return ChatUser::query()
             ->where('user_id', auth()->id())
             ->where('chat_id', $chatId)

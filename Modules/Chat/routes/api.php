@@ -31,4 +31,5 @@ Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'attachment'], functio
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/', [ChatController::class, 'index']);
+    Route::post('/close', [ChatController::class, 'close']);
 });

@@ -26,6 +26,14 @@ trait HasJsonCommonResponse
         ]);
     }
 
+    protected function failure(string $message, int $code): JsonResponse
+    {
+        return response()->json([
+            'result' => 'error',
+            'message' => $message,
+        ], $code);
+    }
+
     protected function exceptionResponse(Exception $exception): JsonResponse
     {
         report($exception);

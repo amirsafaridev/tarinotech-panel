@@ -21,9 +21,10 @@
 
             <div class="aw-message" id="message-container"></div>
 
+
             <hr class="hr-message">
 
-            <div class="aw-message-action">
+            <div class="aw-message-action @if($chat->status === \App\Enums\Database\Chat\ChatStatus::Close) d-none @endif">
                 <form method="post" id="message-form" action="{{ route('admin.chat.message.store') }}">
                     @csrf
                     <x-admin.input identify="chat_id" type="hidden"/>
@@ -33,9 +34,9 @@
                     <div id="replay-container"></div>
 
                     <div class="position-relative">
-                        <span class="position-absolute top-100 start-50 translate-middle">
-                            <button class="btn btn-sm btn-danger d-none" id="btn-cancel-edit" type="button">انصراف</button>
-                        </span>
+                    <span class="position-absolute top-100 start-50 translate-middle">
+                        <button class="btn btn-sm btn-danger d-none" id="btn-cancel-edit" type="button">انصراف</button>
+                    </span>
                         <x-admin.textarea identify="message" placeholder="پیام خود ار بنویسید" />
                     </div>
 
@@ -62,10 +63,11 @@
                                 <span>پایان گفتکو</span>
                             </button>
                         @endif
-
                     </div>
                 </form>
             </div>
+
+
         </div>
     </div>
 </div>

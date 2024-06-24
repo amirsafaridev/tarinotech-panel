@@ -15,7 +15,6 @@ return new class extends Migration
         Schema::create('chat_bots', function (Blueprint $table) {
             $table->id();
             $table->char('name');
-            $table->char('logo');
             $table->enum('action', ChatBotAction::getValues());
             $table->timestamps();
         });

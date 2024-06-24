@@ -14,6 +14,7 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         //'api/*',
         'admin/chat/message',
+        'admin/chat/close',
         'admin/*/goal',
         'admin/group-goal',
         'admin/ajax/*',

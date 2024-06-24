@@ -221,26 +221,33 @@
                 type: 'POST',
                 url: '{{ route('admin.chat.close') }}',
                 data: {
-                    'chat_id': chatId
+                    'chat_id': chatId.val()
                 },
                 dataType: 'json',
                 success: function (data) {
-                    /*let htmlRows = '';
-                    data.messages.forEach(function (item) {
-                        htmlRows += item.htmlRender;
+                    console.log(data);
+                    $.toast({
+                        ...toastConfig,
+                        text: 'تیکت با موفقیت بسته شد!',
+                        allowToastClose: false,
+                        icon: 'success'
                     });
-                    messageContainer.prepend(htmlRows)
-                    if (messagePage === 1) {
-                        messageContainer.scrollTop(messageContainer.prop("scrollHeight"));
-                    }
-                    if (messagePage < data.pagination.last_page) {
-                        messagePage++;
-                        activeMessageScroll();
-                    }*/
-
+                    setTimeout(function (){
+                        window.location.reload();
+                    },400)
                 },
-                error: function (xhr, status, error) {
-                    console.log(error);
+                error: function (response) {
+                    if (response.status === 422) {
+                        validationErrorPars(response);
+                    }
+                    else{
+                        $.toast({
+                            ...toastConfig,
+                            text: response.responseJSON.message,
+                            allowToastClose: false,
+                            icon: 'warning'
+                        });
+                    }
                 },
                 complete: function () {
 
@@ -367,6 +374,14 @@
             error: function (response) {
                 if (response.status === 422) {
                     validationErrorPars(response);
+                }
+                else{
+                    $.toast({
+                        ...toastConfig,
+                        text: response.responseJSON.message,
+                        allowToastClose: false,
+                        icon: 'warning'
+                    });
                 }
                 btnMessageSend.html(icons.send);
                 btnMessageSend.prop('disabled', false);

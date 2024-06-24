@@ -67,9 +67,11 @@
                     </button>
                 @endif
 
-                <button type="button" class="btn-replay" data-id="{{$message->id}}" data-message="{{str($message->content)->stripTags()->limit(50)}}">
-                    <span class="fal fa-reply text-info"></span>
-                </button>
+                @if($message->user_type !== \Modules\Support\app\Models\ChatBot::class)
+                    <button type="button" class="btn-replay" data-id="{{$message->id}}" data-message="{{str($message->content)->stripTags()->limit(50)}}">
+                        <span class="fal fa-reply text-info"></span>
+                    </button>
+                @endif
             </div>
 
         </div>

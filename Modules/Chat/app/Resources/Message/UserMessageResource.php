@@ -28,7 +28,8 @@ class UserMessageResource extends JsonResource
         if ($this->type === 'Bot') {
             $data['first_name'] = 'تارینوتک';
             $data['last_name'] = '';
-            $data['photo'] = asset('uploads/chat/logo/default.png');
+            $data['action'] = $this->action;
+            $data['photo'] = asset('default/chat.png');
         } else {
             $data['first_name'] = $this->first_name;
             $data['last_name'] = $this->last_name;
