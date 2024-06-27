@@ -30,7 +30,10 @@
     $userCompany = $model->project->user->company->title ?? $fillableString;;
 
     $projectPrice = number_format($model?->project?->price) ?? $fillableString;
-    $isSigned = \Modules\Contract\app\Enums\SignableStatus::Signed === $model?->signable->status ?? false;
+    $isSigned = $model?->signable->status ?? false;
+    if($isSigned){
+        $isSigned = $model->signable->status == \Modules\Contract\app\Enums\SignableStatus::Signed;
+    }
 
     $signSrc='';
 
