@@ -1,6 +1,10 @@
 <?php
 
+use App\Enums\Database\Print\PrintableType;
 use Modules\Project\app\Enums\ProjectBase;
+use Modules\Project\app\Models\ProjectAds;
+use Modules\Project\app\Models\ProjectSeo;
+use Modules\Project\app\Models\ProjectWeb;
 
 if (! function_exists('isValidDateFormat')) {
     /**
@@ -189,5 +193,49 @@ if (! function_exists('hasAdminRole')) {
     function hasAdminRole(int $roleId): bool
     {
         return auth()->user()->hasRole($roleId);
+    }
+}
+
+if (! function_exists('makeRouteSignRequest')) {
+    function makeRouteSignRequest(string $targetType, $targetId): string
+    {
+        switch ($targetType) {
+            case ProjectWeb::class:
+                $route = route('admin.contract.project.web', $targetId);
+                break;
+            case ProjectAds::class:
+                $route = route('admin.contract.project.ads', $targetId);
+                break;
+            case ProjectSeo::class:
+                $route = route('admin.contract.project.seo', $targetId);
+                break;
+            default:
+                $route = '#';
+                break;
+        }
+
+        return $route;
+    }
+}
+
+if (! function_exists('makeRouteContractPreview')) {
+    function makeRouteContractPreview(string $targetType, $targetId): string
+    {
+        switch ($targetType) {
+            case ProjectWeb::class:
+                $route = route('admin.contract.preview', [PrintableType::ProjectWeb, $targetId]);
+                break;
+            case ProjectAds::class:
+                $route = route('admin.contract.preview', [PrintableType::ProjectAds, $targetId]);
+                break;
+            case ProjectSeo::class:
+                $route = route('admin.contract.preview', [PrintableType::ProjectSeo, $targetId]);
+                break;
+            default:
+                $route = '#';
+                break;
+        }
+
+        return $route;
     }
 }

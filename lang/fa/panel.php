@@ -85,6 +85,7 @@ return [
     ],
     'action' => [
         'edit' => 'ویرایش',
+        'printContract' => 'نمایش PDF',
         'manage' => 'مدیریت',
         'info' => 'جزئیات',
         'show' => 'نمایش',

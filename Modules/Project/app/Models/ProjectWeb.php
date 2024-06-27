@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Modules\Contract\app\Models\Signable;
 use Modules\Log\app\Enums\LogNames;
 use Modules\Package\app\Models\Package;
 use Spatie\Activitylog\LogOptions;
@@ -56,10 +57,10 @@ class ProjectWeb extends Model
         return $this->morphToMany(ProjectOption::class, 'target', 'project_option_sets');
     }
 
-    /*public function options()
+    public function signable(): MorphOne
     {
-        return $this->hasManyThrough(ProjectOption::class, ProjectOptionSet::class, 'target_id', 'id', 'id', 'project_option_id');
-    }*/
+        return $this->morphOne(Signable::class, 'target');
+    }
 
     public function getActivitylogOptions(): LogOptions
     {

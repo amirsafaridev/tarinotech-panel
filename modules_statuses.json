@@ -21,5 +21,6 @@
     "Support": true,
     "FreeDay": true,
     "Stream": true,
-    "Content": true
+    "Content": true,
+    "Contract": true
 }

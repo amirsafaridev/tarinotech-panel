@@ -52,6 +52,7 @@ class ProjectController extends Controller
             'type',
             'businessDomain',
             'factors.admin',
+            'target.signable',
         ]);
 
         if ($project->target_type === ProjectWeb::class) {

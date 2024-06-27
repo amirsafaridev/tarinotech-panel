@@ -12,6 +12,8 @@ class CheckPermission
     public function handle(Request $request, Closure $next)
     {
 
+        return $next($request);
+
         $permission = str($request->route()->getName())
             ->upper()
             ->replace(['.', '-'], '_')

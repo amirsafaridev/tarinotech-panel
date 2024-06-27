@@ -178,6 +178,7 @@ return [
         \App\Providers\MacroServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         \App\Providers\ExcelServiceProvider::class,
+        \App\Providers\PdfServiceProvider::class,
 
     ])->toArray(),
 

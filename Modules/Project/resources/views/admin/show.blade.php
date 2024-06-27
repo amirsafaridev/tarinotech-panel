@@ -18,8 +18,12 @@
     </div>
 
     <div class="row">
+        <div class="col-12 mb-3">
+            @include('admin.partial.message')
+        </div>
         <div class="col-xl-6 col-lg-6 col-md-6 col-12">
             @include('project::admin.part.project-info-card')
+            @include('project::admin.part.contract-card')
         </div>
 
         <div class="col-xl-6 col-lg-6 col-md-6 col-12">

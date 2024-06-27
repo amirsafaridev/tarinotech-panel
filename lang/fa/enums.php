@@ -8,6 +8,7 @@ use App\Enums\Database\Facility\FinancialCycle;
 use App\Enums\Database\Facility\PriceType;
 use App\Enums\Database\Facility\WorkCycle;
 use App\Enums\Database\Setting\SettingItems;
+use Modules\Contract\app\Enums\SignableStatus;
 use Modules\Factor\app\Enums\FactorStatus;
 use Modules\Factor\app\Enums\PaymentGateway;
 use Modules\Log\app\Enums\LogEvents;
@@ -199,5 +200,10 @@ return [
     PaymentGateway::class => [
         PaymentGateway::SEPEHR => 'سپهر (صادرات)',
         PaymentGateway::PAYPING => 'پی پینگ',
+    ],
+
+    SignableStatus::class => [
+        SignableStatus::Pending => 'در انتظار',
+        SignableStatus::Signed => 'امضا شده',
     ],
 ];

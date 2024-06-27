@@ -273,6 +273,27 @@
 
 
                 @canany([
+                    'ADMIN_CONTRACT_SIGN_INDEX',
+                ])
+                    <li class="sub-category">
+                        <h3>قرارداد ها</h3>
+                    </li>
+
+                    <li class="slide can-expand">
+                        <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navContract">
+                            <i class="side-menu__icon fal fa-credit-card"></i>
+                            <span class="side-menu__label">قرارداد ها</span><i class="angle fal fa-angle-left"></i>
+                        </a>
+
+                        <ul class="slide-menu">
+                            @can('ADMIN_CONTRACT_SIGN_INDEX')
+                                <li><a href="{{ route('admin.contract.sign.index') }}" class="slide-item">درخواست امضا</a></li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endcanany
+
+                @canany([
                     'ADMIN_FACTOR_INDEX',
                     'ADMIN_FACTOR_CREATE',
                     'ADMIN_FACTOR_CATEGORY_INDEX',

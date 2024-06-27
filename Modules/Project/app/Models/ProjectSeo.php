@@ -5,6 +5,7 @@ namespace Modules\Project\app\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Modules\Contract\app\Models\Signable;
 use Modules\Log\app\Enums\LogNames;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -35,6 +36,11 @@ class ProjectSeo extends Model
     public function project(): MorphOne
     {
         return $this->morphOne(Project::class, 'target');
+    }
+
+    public function signable(): MorphOne
+    {
+        return $this->morphOne(Signable::class, 'target');
     }
 
     public function getActivitylogOptions(): LogOptions
