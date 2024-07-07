@@ -26,7 +26,7 @@
     $signatureBase64 = '';
 
     if ($isSigned) {
-        $signaturePath = 'private/sign/sign.png';
+        $signaturePath = 'private/sign/sign-real.png';
 
         if (Storage::exists($signaturePath)) {
             $signatureContent = Storage::get($signaturePath);
