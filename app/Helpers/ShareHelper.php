@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\Database\Print\PrintableType;
+use Modules\Factor\app\Models\Factor;
 use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Models\ProjectAds;
 use Modules\Project\app\Models\ProjectSeo;
@@ -209,6 +209,9 @@ if (! function_exists('makeRouteSignRequest')) {
             case ProjectSeo::class:
                 $route = route('admin.contract.project.seo', $targetId);
                 break;
+            case Factor::class:
+                $route = route('admin.contract.factor', $targetId);
+                break;
             default:
                 $route = '#';
                 break;
@@ -223,13 +226,10 @@ if (! function_exists('makeRouteContractPreview')) {
     {
         switch ($targetType) {
             case ProjectWeb::class:
-                $route = route('admin.contract.preview', [PrintableType::ProjectWeb, $targetId]);
+                $route = route('admin.contract.web-project.preview', $targetId);
                 break;
-            case ProjectAds::class:
-                $route = route('admin.contract.preview', [PrintableType::ProjectAds, $targetId]);
-                break;
-            case ProjectSeo::class:
-                $route = route('admin.contract.preview', [PrintableType::ProjectSeo, $targetId]);
+            case Factor::class:
+                $route = route('admin.contract.factor.preview', $targetId);
                 break;
             default:
                 $route = '#';

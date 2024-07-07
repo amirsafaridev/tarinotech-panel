@@ -39,9 +39,9 @@
                                        :old="$freeDay->free_at->toJalali()->format('Y/m/d')"
                                        :is-date-picker="true"/>
 
-                        <x-admin.button-submit title="{{ trans('panel.update') }}"/>
+                        <x-admin.button title="{{ trans('panel.update') }}"/>
 
-                        <x-admin.button-delete/>
+                        <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
                     </form>
 
                     <form id="deleteItem" action="{{ route('admin.free-day.destroy',$freeDay->id)  }}" method="post" class="form-inline">

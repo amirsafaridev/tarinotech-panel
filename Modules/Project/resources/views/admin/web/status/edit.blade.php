@@ -57,7 +57,7 @@
 
                     </div>
 
-                    <x-admin.button-submit title="{{ trans('panel.update') }}"/>
+                    <x-admin.button title="{{ trans('panel.update') }}"/>
 
                 </div>
             </div>

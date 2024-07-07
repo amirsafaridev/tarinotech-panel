@@ -69,7 +69,9 @@ class AdsController extends Controller
             $projectAds->project()->create($projectParams);
             DB::commit();
 
-            return $this->successResponse();
+            return $this->successResponse(
+                route('admin.project.ads.index')
+            );
         } catch (Exception $exception) {
             DB::rollBack();
 

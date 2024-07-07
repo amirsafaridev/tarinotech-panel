@@ -68,6 +68,16 @@ class Factor extends Model
         return $this->belongsTo(Admin::class, 'admin_id');
     }
 
+    public function cheque(): HasOne
+    {
+        return $this->hasOne(FactorCheque::class);
+    }
+
+    public function manual(): HasOne
+    {
+        return $this->hasOne(FactorManualInfo::class);
+    }
+
     public function meta(): HasOne
     {
         return $this->hasOne(FactorMeta::class);

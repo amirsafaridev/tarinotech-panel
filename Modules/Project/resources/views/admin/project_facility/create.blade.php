@@ -49,7 +49,7 @@
 
                         <x-admin.textarea identify="description" title="توضیحات" />
 
-                        <x-admin.button-submit/>
+                        <x-admin.button title="{{ trans('panel.create') }}"/>
                     </form>
                 </div>
             </div>

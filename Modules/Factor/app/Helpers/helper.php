@@ -22,6 +22,8 @@ if (! function_exists('factorStatusRender')) {
         switch ($status) {
             case FactorStatus::Paid:
             case FactorStatus::PaidManual:
+            case FactorStatus::PaidWithCheque:
+            case FactorStatus::CustomerOffer:
                 $badgeClass = 'success';
                 break;
 

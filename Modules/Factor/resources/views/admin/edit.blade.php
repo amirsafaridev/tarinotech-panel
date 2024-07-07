@@ -30,10 +30,11 @@
                 </div>
 
                 <div class="card-body pb-4">
+
                     @include('admin.partial.message')
                     <div class="forms-sample">
                         @csrf
-                        <x-admin.input identify="title" title="عنوان فاکتور" :old="$factor->title"/>
+                        <x-admin.input identify="title" title="عنوان فاکتور" :old="$factor->title" :disabled="$isFreeze"/>
 
                         <x-admin.select-model
                                 title="انتخاب پروژه"
@@ -41,6 +42,7 @@
                                 key="id"
                                 value="optionTitle"
                                 :items="$projects"
+                                :disabled="$isFreeze"
                                 :old="$factor->project_id"
                         />
 
@@ -48,18 +50,31 @@
 
                         <x-admin.select-simple identify="status" title="وضعیت"
                                              :items="\Modules\Factor\app\Enums\FactorStatus::asFilteredSelectArray()"
-                                             :old="$factor->status"/>
+                                             :old="$factor->status" :disabled="$isFreeze"/>
+
+
+                        <div id="cheque_container" style="display: none" class="p-2 mb-2">
+                            @include('factor::admin.part.cheque-form')
+                        </div>
+
+                        <div id="manual_container" style="display: none" class="p-2 mb-2">
+                            @include('factor::admin.part.manual-form')
+                        </div>
 
                         <x-admin.input identify="expired_at"
                                        title="تاریخ انقضاء"
                                        old="{{ verta($factor->expired_at)->format('Y/m/d') }}"
-                                       :is-date-picker="true"/>
+                                       :is-date-picker="true" :disabled="$isFreeze"/>
 
-                        <x-admin.button-submit title="به روز رسانی"/>
+                        <x-admin.button title="به روز رسانی" :disabled="$isFreeze"/>
 
-                        <x-admin.button-delete/>
+                        <x-admin.button title="{{ trans('panel.delete') }}"
+                                        type="button"
+                                        color="danger"
+                                        on-click="confirmDelete()"
+                                        :disabled="$isFreeze"/>
 
-                        <button id="btn_add_item" class="btn btn-success" type="button">افزودن آیتم</button>
+                        <button id="btn_add_item" @disabled($isFreeze) class="btn btn-success" type="button">افزودن آیتم</button>
                     </div>
                 </div>
             </div>
@@ -68,7 +83,7 @@
         <div id="factor_item_container" class="col-12">
             @if($factor->items->isNotEmpty())
                 @foreach($factor->items as $index => $item)
-                    @include('factor::admin.item.item',compact('item','index','categories'))
+                    @include('factor::admin.item.item',compact('item','index','categories','isFreeze'))
                 @endforeach
             @endif
         </div>

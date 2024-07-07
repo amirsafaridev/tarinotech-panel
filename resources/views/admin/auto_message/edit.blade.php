@@ -31,7 +31,7 @@
 
                         <x-admin.textarea identify="message" rows="10" title="متن پیام" :old="$sampleMessage->message"/>
 
-                        <x-admin.button-submit title="{{ trans('panel.update') }}"/>
+                        <x-admin.button title="{{ trans('panel.update') }}"/>
 
                     </form>
 

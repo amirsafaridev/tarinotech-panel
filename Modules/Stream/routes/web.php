@@ -16,4 +16,5 @@ use Modules\Stream\app\Http\Middleware\StreamMiddleware;
 */
 
 Route::get('/{path}', [StreamController::class, 'index'])->name('read')
+    ->where('path', '.*')
     ->middleware(['web', StreamMiddleware::class]);

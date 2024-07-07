@@ -22,7 +22,7 @@
     <div class="card-header d-flex justify-content-between align-items-center">
         <div class="d-flex gap-2">
             <div class="card-title">ایتم فاکتور</div>
-            <button class="btn btn-danger btn-sm btn-remove" type="button">حذف ردیف</button>
+            <button class="btn btn-danger btn-sm btn-remove" @disabled($isFreeze ?? false) type="button">حذف ردیف</button>
         </div>
         <h4 class="factor-item-price p-0 m-0">{{ number_format($finalPrice) }}</h4>
     </div>

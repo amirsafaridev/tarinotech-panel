@@ -27,6 +27,10 @@ return new class extends Migration
             $table->foreign('transaction_category_id')
                 ->references('id')
                 ->on('transaction_categories');
+
+            $table->foreign('factor_id')
+                ->references('id')
+                ->on('factors');
         });
     }
 

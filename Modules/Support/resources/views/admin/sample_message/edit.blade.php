@@ -34,9 +34,9 @@
 
                         <x-admin.textarea identify="message" rows="10" title="متن پیام" :old="$sampleMessage->message"/>
 
-                        <x-admin.button-submit title="{{ trans('panel.update') }}"/>
+                        <x-admin.button title="{{ trans('panel.update') }}"/>
 
-                        <x-admin.button-delete/>
+                        <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
                     </form>
 
                     <form id="deleteItem" action="{{ route('admin.support.sample-message.destroy',$sampleMessage->id) }}" method="post" class="form-inline">

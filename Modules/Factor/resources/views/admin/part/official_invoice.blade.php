@@ -1,16 +1,33 @@
+@php
+    $logoPath = 'private/sign/factor-logo.jpg';
+    $logoContent = Storage::get($logoPath);
+    $logoBase64 = 'data:image/jpg;base64,' . base64_encode($logoContent);
+
+    $signPath = 'private/sign/sign-real.png';
+    $signContent = Storage::get($signPath);
+    $signBase64 = 'data:image/png;base64,' . base64_encode($signContent);
+@endphp
 <table class="print-main-table">
     <tbody>
-    <tr class="header-row-bg">
-        <td colspan="3">
-            <p class="text-center p-title">صورت حساب الکترونیکی فروش خدمات شرکت برخط نگاران جهان ارتباط</p>
+    <tr>
+        <td>
+            <img width="120px" src="{{ $logoBase64 }}" alt="">
         </td>
-        <td colspan="1">
-            <p class="text-center p-title">{{ $factor->created_at->toJalali()->format(formatJalaliDate()) }}</p>
+        <td colspan="2" align="center">
+            <p class="text-center p-title">صورت حساب الکترونیکی فروش خدمات شرکت برخط نگاران جهان ارتباط</p>
+
+        </td>
+        <td align="center">
+            <p>شماره فاکتور : ------------</p>
         </td>
     </tr>
+
     <tr class="header-row-bg">
-        <td colspan="4">
+        <td colspan="3">
             <p class="text-right p-title">مشخصات فروشنده</p>
+        </td>
+        <td align="center">
+            <p class="text-center p-title">{{ $factor->created_at->toJalali()->format(formatJalaliDate()) }}</p>
         </td>
     </tr>
     <tr>
@@ -142,7 +159,7 @@
 
     <tr>
         <td colspan="4">
-            <table class="print-main-table inner-table">
+            <table class="print-main-table inner-table" style="width: 100%;">
                 <tbody>
                 <tr>
                     <td>ردیف</td>
@@ -199,6 +216,16 @@
 
                 </tbody>
             </table>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2" valign="center">
+            <span  class="text-center p-title">مهر و امضا فروشنده</span>
+            <img width="120px" style="float: right;margin-bottom: -40px;margin-right: 40px" src="{{ $signBase64 }}" alt="">
+        </td>
+        <td colspan="2" style="padding: 40px">
+            <p  class="text-center p-title">مهر و امضا خریدار</p>
         </td>
     </tr>
     </tbody>

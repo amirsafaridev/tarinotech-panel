@@ -45,7 +45,7 @@
                                     type="button">{{ trans('fields.role.remove_selected') }}</button>
                         </div>
 
-                        <x-admin.button-submit/>
+                        <x-admin.button title="{{ trans('panel.create') }}"/>
                     </form>
                 </div>
             </div>

@@ -49,8 +49,9 @@
                             <button id="btn-de-select" class="btn btn-sm btn-outline-success mx-2" type="button">{{ trans('fields.role.remove_selected') }}</button>
                         </div>
 
-                        <x-admin.button-submit title="{{ trans('panel.update') }}"/>
-                        <x-admin.button-delete/>
+                        <x-admin.button title="{{ trans('panel.update') }}"/>
+
+                        <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
 
                     </form>
 

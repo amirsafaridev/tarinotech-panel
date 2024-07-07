@@ -12,4 +12,6 @@ final class PrintableType extends Enum implements LocalizedEnum
     const ProjectSeo = 'projectSeo';
 
     const ProjectAds = 'projectAds';
+
+    const Factor = 'factor';
 }

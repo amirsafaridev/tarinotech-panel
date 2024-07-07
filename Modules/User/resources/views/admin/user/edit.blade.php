@@ -119,10 +119,16 @@
 
                             <div class="row">
                                 <div class="col-12 col-md-6">
-                                    <x-admin.input identify="company_identify" title="شناسه ملی شرکت" :old="$user->company_identify" :old="$user->company?->identify"/>
+                                    <x-admin.input identify="company_identify" title="شناسه ملی شرکت" :old="$user->company?->identify"/>
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <x-admin.input identify="company_register_id" title="شماره ثبت شرکت" :old="$user->company_register_id" :old="$user->company?->register_id"/>
+                                    <x-admin.input identify="company_register_id" title="شماره ثبت شرکت" :old="$user->company?->register_id"/>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <x-admin.input identify="company_position" title="سمت" :old="$user->company?->position" />
                                 </div>
                             </div>
                         </div>
@@ -163,9 +169,9 @@
 
                         <x-admin.checkbox identify="is_block" description="عدم دسترسی" :old="$user->is_block" />
 
-                        <x-admin.button-submit title="{{ trans('panel.update') }}"/>
+                        <x-admin.button title="{{ trans('panel.update') }}"/>
 
-                        <x-admin.button-delete/>
+                        <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
 
                     </form>
 

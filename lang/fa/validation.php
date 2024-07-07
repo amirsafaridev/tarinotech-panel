@@ -290,5 +290,14 @@ return [
         'logo' => 'تصویر',
         'published_at' => 'تاریخ انتشار',
         'archived_at' => 'تاریخ آرشیو',
+
+        'cheque_amount' => 'مبلغ چک',
+        'cheque_file' => 'تصویر چک',
+        'cheque_identifier' => 'شناسه صیادی',
+        'cheque_payment_date' => 'تاریخ سر رسید',
+        'cheque_registered' => 'ثبت توسط مشتری',
+
+        'manual_file' => 'فایل',
+        'manual_payment_date' => 'تاریخ واریز',
     ],
 ];

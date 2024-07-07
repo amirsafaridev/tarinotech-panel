@@ -242,6 +242,7 @@ class UserController extends Controller
             'identify' => $req->input('company_identify'),
             'register_id' => $req->input('company_register_id'),
             'type' => $req->input('company_type'),
+            'position' => $req->input('company_position'),
             'user_id' => $userId,
         ]);
     }

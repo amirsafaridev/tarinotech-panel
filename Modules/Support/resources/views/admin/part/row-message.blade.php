@@ -24,8 +24,8 @@
                 @foreach($message->attachments as $attachment)
                     @if(in_array($attachment->file_extension,['png','jpg','gif','jpeg']))
                         <div class="d-flex justify-content-between w-full py-1">
-                            <a target="_blank" href="{{ route('stream.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}" class="attachment">
-                                <div class="w-4 h-4 p-3" style="border-radius: 10px;padding:5px;background-color: rgba(255,255,255,0.06);background-image: url('{{ route('stream.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}');background-size: cover">
+                            <a target="_blank" href="{{ route('stream.read',$attachment->file_path) }}" class="attachment">
+                                <div class="w-4 h-4 p-3" style="border-radius: 10px;padding:5px;background-color: rgba(255,255,255,0.06);background-image: url('{{ route('stream.read',$attachment->file_path) }}');background-size: cover">
                                 </div>
                             </a>
                             <div class="d-flex flex-column align-items-end font-12">
@@ -36,21 +36,21 @@
                     @elseif(in_array($attachment->file_extension,['mp3','ogg','wav']))
                         <div class="d-flex justify-content-between w-full py-1">
                             <audio controls class="w-100">
-                                <source src="{{ route('stream.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}" type="audio/mp3">
+                                <source src="{{ route('stream.read',$attachment->file_path) }}" type="audio/mp3">
                                 Your browser does not support the audio tag.
                             </audio>
                         </div>
                     @elseif(in_array($attachment->file_extension,['mp4','mov','avi']))
                         <div class="d-flex justify-content-between w-full py-1">
                             <video controls class="w-100">
-                                <source src="{{ route('stream.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}" type="video/mp4">
-                                <source src="{{ route('stream.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}" type="video/quicktime">
-                                <source src="{{ route('stream.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}" type="video/x-msvideo">
+                                <source src="{{ route('stream.read',$attachment->file_path) }}" type="video/mp4">
+                                <source src="{{ route('stream.read',$attachment->file_path) }}" type="video/quicktime">
+                                <source src="{{ route('stream.read',$attachment->file_path) }}" type="video/x-msvideo">
                                 Your browser does not support the video tag.
                             </video>
                         </div>
                     @else
-                        <a target="_blank" href="{{ route('stream.read',['path'=>str_replace('/','|',$attachment->file_path)]) }}" class="attachment">
+                        <a target="_blank" href="{{ route('stream.read',$attachment->file_path) }}" class="attachment">
                             <span class="fal fa-file"></span>
                         </a>
                     @endif

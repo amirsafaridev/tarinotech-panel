@@ -11,7 +11,6 @@ use App\Traits\HasDatatable;
 use App\Traits\HasJsonCommonResponse;
 use Exception;
 use Illuminate\Http\Request;
-use Modules\Contract\app\Enums\SignableStatus;
 use Modules\Contract\app\Http\Requests\Admin\Signable\UpdateRequest;
 use Modules\Contract\app\Models\Signable;
 use Yajra\DataTables\Facades\DataTables;
@@ -21,9 +20,9 @@ class SignController extends Controller
     use HasDatatable;
     use HasJsonCommonResponse;
 
-    const INDEX_TITLE = 'درخواست های امضا';
+    const INDEX_TITLE = 'درخواست های امضاء';
 
-    const EDIT_TITLE = 'درخواست های امضا - ویرایش';
+    const EDIT_TITLE = 'درخواست های امضاء - ویرایش';
 
     public function index()
     {
@@ -57,12 +56,24 @@ class SignController extends Controller
         }
     }
 
+    public function destroy(Signable $signable)
+    {
+        try {
+            $signable->delete();
+
+            return $this->successDestroyBack(route('admin.contract.sign.index'));
+        } catch (Exception $exception) {
+            return $this->exceptionBack($exception);
+        }
+    }
+
     /**
      * @throws Exception
      */
     protected function prepareItemData(Request $req): array
     {
         $signableData['status'] = $req->input('status');
+        $signableData['note'] = $req->input('note');
         $signableData['sign_at'] = now();
 
         return $signableData;
@@ -89,7 +100,7 @@ class SignController extends Controller
                 ColumnOption::new()->setName('status')->setAs('وضعیت')
             )
             ->addColumn(
-                ColumnOption::new()->setName('sign_at')->setAs('تاریخ امضا')
+                ColumnOption::new()->setName('sign_at')->setAs('تاریخ امضاء')
             )
             ->addColumn(
                 ColumnOption::new()->setName('created_at')->setAs('ایجاد')
@@ -110,7 +121,7 @@ class SignController extends Controller
 
             return DataTables::eloquent($signables)
                 ->editColumn('status', function ($signable) {
-                    return SignableStatus::getDescription($signable->status);
+                    return Helper::renderSignableStatus($signable->status);
                 })
                 ->editColumn('sign_at', function ($signable) {
                     return $signable->sign_at ? $signable->sign_at->toJalali()->format(formatJalaliDateTime()) : '-';
@@ -124,7 +135,9 @@ class SignController extends Controller
 
                     return $actions;
                 })
+                ->rawColumns(['action', 'status'])
                 ->make();
+
         } catch (Exception $exception) {
             return $this->exceptionResponse($exception);
         }

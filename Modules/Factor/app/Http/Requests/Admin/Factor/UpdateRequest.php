@@ -22,7 +22,7 @@ class UpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'project_id' => $this->getProjectIdRule(),
             'title' => 'required|max:255',
             'expired_at' => 'required|jdate',
@@ -41,6 +41,20 @@ class UpdateRequest extends FormRequest
             'customer_fullname' => 'required_if:custom_customer,yes|max:255',
             'customer_mobile' => ['required_if:custom_customer,yes', 'max:255', new IRMobile()],
         ];
+
+        if ($this->input('status') == FactorStatus::PaidWithCheque) {
+            $rules['cheque_amount'] = 'required|integer';
+            $rules['cheque_file'] = 'mimes:img,png,jpeg,pdf|max:10024';
+            $rules['cheque_identifier'] = 'required';
+            $rules['cheque_payment_date'] = 'required|jdate';
+        }
+
+        if ($this->input('status') == FactorStatus::PaidManual) {
+            $rules['manual_file'] = 'mimes:img,png,jpeg,pdf|max:10024';
+            $rules['manual_payment_date'] = 'required|jdate';
+        }
+
+        return $rules;
     }
 
     protected function prepareForValidation()
@@ -60,6 +74,7 @@ class UpdateRequest extends FormRequest
             'custom_customer' => $this->input('custom_customer') === 'on' ? 'yes' : 'no',
             'project_id' => $this->input('project_id') !== '' ? $this->input('project_id') : null,
             'status' => (int) $this->input('status'),
+            'cheque_amount' => str_replace(',', '', $this->input('cheque_amount')),
         ]);
 
     }

@@ -115,6 +115,8 @@ return [
         FactorStatus::OnHold => 'نگه داشته شده',
         FactorStatus::Draft => 'پیش نویس',
         FactorStatus::PaidManual => 'پرداخت شده (دستی)',
+        FactorStatus::PaidWithCheque => 'پرداخت با چک',
+        FactorStatus::CustomerOffer => ' آفر مشتریان',
     ],
 
     SeoAgreementDuration::class => [
@@ -204,6 +206,7 @@ return [
 
     SignableStatus::class => [
         SignableStatus::Pending => 'در انتظار',
-        SignableStatus::Signed => 'امضا شده',
+        SignableStatus::Signed => 'امضاء شده',
+        SignableStatus::Reject => 'رد شده',
     ],
 ];

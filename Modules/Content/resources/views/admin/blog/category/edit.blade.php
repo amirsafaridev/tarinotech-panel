@@ -37,9 +37,9 @@
 
                         <x-admin.input identify="slug" title="اسلاگ" :old="$blogCategory->slug"/>
 
-                        <x-admin.button-submit title="{{ trans('panel.update') }}"/>
+                        <x-admin.button title="{{ trans('panel.update') }}"/>
 
-                        <x-admin.button-delete/>
+                        <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
                     </form>
 
                     <form id="deleteItem" action="{{ route('admin.content.blog.category.destroy',$blogCategory->id) }}" method="post" class="form-inline">

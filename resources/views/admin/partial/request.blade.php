@@ -28,7 +28,7 @@
                         if(response.refresh !== undefined){
                             window.location.reload();
                         }
-                        if(response.back !== undefined){
+                        if(response.back !== null){
                             window.location = response.back;
                         }
                     },1500)

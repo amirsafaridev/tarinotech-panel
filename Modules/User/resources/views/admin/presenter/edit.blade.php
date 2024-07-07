@@ -64,9 +64,9 @@
 
                         <x-admin.checkbox identify="is_block" description="دسترسی داشته باشد" :old="$user->is_block" />
 
-                        <x-admin.button-submit title="{{ trans('panel.update') }}"/>
+                        <x-admin.button title="{{ trans('panel.update') }}"/>
 
-                        <x-admin.button-delete/>
+                        <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
                     </form>
 
                     <form id="deleteItem" action="{{ route('admin.presenter.destroy',$user->id) }}" method="post" class="form-inline">

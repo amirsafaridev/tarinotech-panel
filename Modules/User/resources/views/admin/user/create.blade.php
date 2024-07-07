@@ -116,6 +116,12 @@
                                     <x-admin.input identify="company_register_id" title="شماره ثبت شرکت" />
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <x-admin.input identify="company_position" title="سمت" />
+                                </div>
+                            </div>
                         </div>
 
                         <x-admin.textarea identify="address" rows="5" title="آدرس" />
@@ -143,7 +149,7 @@
 
                         <x-admin.checkbox identify="official_bill" description="درخواست فاکتور رسمی"  />
 
-                        <x-admin.button-submit/>
+                        <x-admin.button title="{{ trans('panel.create') }}"/>
 
 
                     </form>

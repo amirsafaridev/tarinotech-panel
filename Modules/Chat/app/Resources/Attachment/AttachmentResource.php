@@ -18,7 +18,7 @@ class AttachmentResource extends JsonResource
         $data['file_path'] = $this->file_path;
         $data['file_size'] = formatFileSize($this->file_size);
         $data['file_type'] = $this->file_type;
-        $data['src'] = route('stream.read', ['path' => str_replace('/', '|', $this->file_path)]);
+        $data['src'] = route('stream.read', $this->file_path);
         $data['file_extension'] = $this->file_extension;
 
         return $data;

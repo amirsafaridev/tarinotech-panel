@@ -35,7 +35,7 @@
                                 <x-admin.input :identify="$item" :title="SettingItems::getDescription($item)" :old="$settings[$item]"/>
                             @endif
                         @endforeach
-                        <x-admin.button-submit title="{{ trans('panel.update') }}"/>
+                        <x-admin.button title="{{ trans('panel.update') }}"/>
                     </form>
 
                 </div>

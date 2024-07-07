@@ -27,6 +27,8 @@ return new class extends Migration
             $table->dateTime('paid_at')->nullable();
             $table->unsignedTinyInteger('gateway')
                 ->nullable();
+            $table->boolean('is_confirm')
+                ->default(false);
             $table->json('gateway_data');
             $table->timestamps();
             $table->softDeletes();

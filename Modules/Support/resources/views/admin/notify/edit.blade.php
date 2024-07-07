@@ -49,7 +49,7 @@
 
                         <x-admin.input identify="title" title="عنوان" :old="$chat->title"/>
 
-                        <x-admin.button-submit title="{{ trans('panel.update') }}"/>
+                        <x-admin.button title="{{ trans('panel.update') }}"/>
 
                     </form>
 

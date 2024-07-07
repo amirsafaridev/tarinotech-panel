@@ -1,4 +1,5 @@
 <script>
+    const status = $('#status');
     const projectId = $('#project_id');
     const projectInfo = $('#project_info');
     const factorItemContainer = $('#factor_item_container');
@@ -18,7 +19,17 @@
     const projectStatusId = $('#project_status_id');
     const projectPackageId = $('#project_package_id');
 
+    /* Cheque */
+    const chequeContainer = $('#cheque_container');
+    const chequeAmount = $('#cheque_amount');
+
+    /* Manual */
+    const manualContainer = $('#manual_container');
+
     $(document).ready(function () {
+
+        jalaliDatepicker.startWatch();
+
         activeParentUl('{{ route('admin.factor.index') }}');
         jalaliDatepicker.startWatch();
 
@@ -28,19 +39,39 @@
         factorItemSetup();
         factorItemInputType();
 
-        setupCustomCustomer();
-
         applyTypeInput();
 
         /* Custom User | Project */
         @if(isset($types))
+            setupCustomCustomer();
             typeStatusSetup();
             typePackageSetup();
         @endif
+
+        /* Cheque Setup */
+        /* Manual Setup */
+        statusSetup();
     })
+
+    function statusSetup(){
+        status.change(function (){
+            const status = $(this).val();
+            chequeContainer.fadeOut();
+            manualContainer.fadeOut();
+
+            if(parseInt(status) === parseInt('{{ \Modules\Factor\app\Enums\FactorStatus::PaidWithCheque }}')){
+                chequeContainer.fadeIn();
+            }
+            else if(parseInt(status) === parseInt('{{ \Modules\Factor\app\Enums\FactorStatus::PaidManual }}')){
+                manualContainer.fadeIn();
+            }
+        });
+        status.trigger('change');
+    }
 
     function applyTypeInput() {
         makeInputPrice(projectPrice);
+        makeInputPrice(chequeAmount);
     }
 
     function select2Setup() {

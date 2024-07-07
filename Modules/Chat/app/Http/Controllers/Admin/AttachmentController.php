@@ -29,14 +29,15 @@ class AttachmentController extends Controller
             $fileSize = $uploadedFile->getSize();
             $fileExtension = $uploadedFile->getClientOriginalExtension();
 
-            $pathPrefix = 'chat-files/';
+            $pathPrefix = 'chat_files/';
             $filePath = $pathPrefix.$hashedFileName;
 
-            $uploadedFile->storeAs('chat-files', $hashedFileName, 'private');
+            $uploadedFile->storeAs($pathPrefix, $hashedFileName, 'private');
 
             $file = ChatMessageAttachment::query()
                 ->create([
                     'chat_message_id' => null,
+                    //TODO Need Work
                     'type' => 1,
                     'file_type' => $fileType,
                     'file_name' => $originalFileName,

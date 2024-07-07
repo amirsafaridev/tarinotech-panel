@@ -26,7 +26,7 @@
                     <form class="request-form forms-sample" method="post" action="{{ route('admin.factor.category.store') }}">
                         @csrf
                         <x-admin.input identify="title" title="عنوان"/>
-                        <x-admin.button-submit/>
+                        <x-admin.button title="{{ trans('panel.create') }}"/>
                     </form>
                 </div>
             </div>

@@ -30,13 +30,27 @@ class SignableController extends Controller
     private function handleProjectPrint(ProjectWeb|ProjectSeo|ProjectAds $project)
     {
         try {
-            if ($project->signable) {
+            $signable = $project->signable;
+            $userId = auth()->id();
+            $pendingStatus = SignableStatus::Pending;
+
+            if ($signable) {
+                if ($signable->status === SignableStatus::Reject) {
+                    $signable->update([
+                        'make_admin_id' => $userId,
+                        'status' => $pendingStatus,
+                        'created_at' => now(),
+                    ]);
+
+                    return back()->with('success', 'در خواست مجدد ارسال شد.');
+                }
+
                 return back()->with('warning', 'قبلا برای این پروژه در خواست قرارداد داده شده.');
             }
 
             $project->signable()->create([
-                'make_admin_id' => auth()->id(),
-                'status' => SignableStatus::Pending,
+                'make_admin_id' => $userId,
+                'status' => $pendingStatus,
             ]);
 
             return back()->with('success', 'در خواست با موفقیت ثبت شد.');

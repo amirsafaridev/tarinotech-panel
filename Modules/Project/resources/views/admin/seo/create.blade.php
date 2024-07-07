@@ -184,7 +184,7 @@
 
                     <x-admin.textarea identify="note" title="اطلاعات بیشتر (یادداشت)"/>
 
-                    <x-admin.button-submit/>
+                    <x-admin.button title="{{ trans('panel.create') }}"/>
 
                 </div>
             </div>

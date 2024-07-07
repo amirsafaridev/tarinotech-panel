@@ -30,7 +30,9 @@ use Modules\Factor\app\Filters\Factor\StatusFilter;
 use Modules\Factor\app\Http\Requests\Admin\Factor\StoreRequest;
 use Modules\Factor\app\Http\Requests\Admin\Factor\UpdateRequest;
 use Modules\Factor\app\Models\Factor;
+use Modules\Factor\app\Models\FactorCheque;
 use Modules\Factor\app\Models\FactorItem;
+use Modules\Factor\app\Models\FactorManualInfo;
 use Modules\Factor\app\Models\TransactionCategory;
 use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Models\Project;
@@ -98,7 +100,7 @@ class FactorController extends Controller
             $this->updateFinalPrice($factor);
             $this->updateGatewayBaseUser($factor);
 
-            return $this->successResponse();
+            return $this->successResponse(route('admin.factor.index'));
         } catch (Exception $exception) {
 
             DB::rollBack();
@@ -109,18 +111,22 @@ class FactorController extends Controller
 
     public function edit(Factor $factor)
     {
-        $factor->load(['items', 'project', 'meta']);
+        $factor->load(['items', 'project', 'meta', 'cheque', 'manual']);
+
+        $isFreeze = $this->isFreeze($factor);
 
         $title = self::EDIT_TITLE;
         $categories = TransactionCategory::query()->get();
 
-        return view('factor::admin.edit', compact('title', 'factor', 'categories'));
+        return view('factor::admin.edit', compact('title', 'factor', 'categories', 'isFreeze'));
     }
 
     public function update(UpdateRequest $request, Factor $factor)
     {
         try {
-
+            if ($this->isFreeze($factor)) {
+                return $this->failure('این فاکتور قابل ویرایش نیست.', 400);
+            }
             DB::beginTransaction();
             $factor->load('items');
             $updatedItemIds = [];
@@ -145,8 +151,19 @@ class FactorController extends Controller
                     ->delete();
             }
 
-            $updatedAttributes = $this->prepareItemData($request);
+            $updatedAttributes = $this->prepareItemData($request, true);
             $updatedAttributes['status'] = $request->input('status');
+
+            if ($request->input('status') == FactorStatus::PaidWithCheque) {
+                $factorCheques = $this->createOrUpdateCheque($factor, $request);
+                $updatedAttributes['paid_at'] = $factorCheques->payment_date;
+            }
+
+            if ($request->input('status') == FactorStatus::PaidManual) {
+                $factorManualInfos = $this->createOrUpdateManual($factor, $request);
+                $updatedAttributes['paid_at'] = $factorManualInfos->payment_date;
+            }
+
             $factor->update($updatedAttributes);
 
             DB::commit();
@@ -185,15 +202,17 @@ class FactorController extends Controller
         }
     }
 
-    protected function prepareItemData(Request $request): array
+    protected function prepareItemData(Request $request, bool $isEditMode = false): array
     {
         $factorData['title'] = $request->input('title');
 
         $factorData['expired_at'] = Helper::toGregorian($request->input('expired_at'));
         $factorData['status'] = FactorStatus::Pending;
 
-        $factorData['gateway_data'] = [];
-        $factorData['admin_id'] = auth()->id();
+        if (! $isEditMode) {
+            $factorData['gateway_data'] = [];
+            $factorData['admin_id'] = auth()->id();
+        }
 
         $factorData['project_id'] = $request->input('project_id');
 
@@ -311,7 +330,7 @@ class FactorController extends Controller
                 ColumnOption::new()->setName('status')->setAs('وضعیت')
             )
             ->addColumn(
-                ColumnOption::new()->setName('expired_at')->setAs('مهلت پرداخت')
+                ColumnOption::new()->setName('paid_at')->setAs('تاریخ پرداخت')
             )
             ->addColumn(
                 ColumnOption::new()->setName('created_at')->setAs('ایجاد')
@@ -343,7 +362,7 @@ class FactorController extends Controller
                     'final_price',
                     'status',
                     'gateway',
-                    'expired_at',
+                    'paid_at',
                     'created_at',
                 ])
                 ->filter([
@@ -382,8 +401,8 @@ class FactorController extends Controller
                 ->editColumn('created_at', function (Factor $factor) {
                     return $factor->created_at->toJalali()->format(formatJalaliDateTime());
                 })
-                ->editColumn('expired_at', function (Factor $factor) {
-                    return $factor->expired_at?->toJalali()->format(formatJalaliDateTime());
+                ->editColumn('paid_at', function (Factor $factor) {
+                    return $factor->paid_at?->toJalali()->format(formatJalaliDateTime());
                 })
                 ->addColumn('action', function (Factor $factor) {
                     $action = Helper::btnMaker(BtnType::Warning, route('admin.factor.edit', $factor->id), trans('panel.action.edit'));
@@ -396,5 +415,75 @@ class FactorController extends Controller
         } catch (Exception $exception) {
             return $this->exceptionResponse($exception);
         }
+    }
+
+    private function isFreeze(Factor $factor): bool
+    {
+        if (hasAdminRole(1)) {
+            return false;
+        }
+        if (! in_array($factor->status, [
+            FactorStatus::Paid,
+            FactorStatus::PaidWithCheque,
+            FactorStatus::PaidManual,
+        ])) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function createOrUpdateCheque(Factor $factor, UpdateRequest $request): FactorCheque
+    {
+        $amount = $request->input('cheque_amount');
+        $paymentDate = Helper::toGregorian($request->input('cheque_payment_date'));
+        $chequeIdentifier = $request->input('cheque_identifier');
+        $chequeRegistered = $request->has('cheque_registered');
+        $factorId = $factor->id;
+
+        $factorCheque = FactorCheque::firstOrNew(['factor_id' => $factorId]);
+
+        if ($request->hasFile('cheque_file')) {
+            $chequeFilePath = $request->file('cheque_file')->store('cheque_file', 'private');
+        } else {
+            $chequeFilePath = $factorCheque->cheque_file;
+        }
+
+        $chequeData = [
+            'amount' => $amount,
+            'payment_date' => $paymentDate,
+            'cheque_identifier' => $chequeIdentifier,
+            'cheque_file' => $chequeFilePath,
+            'cheque_registered' => $chequeRegistered,
+            'factor_id' => $factorId,
+        ];
+
+        $factorCheque->fill($chequeData)->save();
+
+        return $factorCheque;
+    }
+
+    private function createOrUpdateManual(Factor $factor, UpdateRequest $request): FactorManualInfo
+    {
+        $paymentDate = Helper::toGregorian($request->input('manual_payment_date'));
+        $factorId = $factor->id;
+
+        $factorManualInfo = FactorManualInfo::firstOrNew(['factor_id' => $factorId]);
+
+        if ($request->hasFile('manual_file')) {
+            $filePath = $request->file('manual_file')->store('manual_file', 'private');
+        } else {
+            $filePath = $factorManualInfo->file;
+        }
+
+        $manualData = [
+            'payment_date' => $paymentDate,
+            'file' => $filePath,
+            'factor_id' => $factorId,
+        ];
+
+        $factorManualInfo->fill($manualData)->save();
+
+        return $factorManualInfo;
     }
 }

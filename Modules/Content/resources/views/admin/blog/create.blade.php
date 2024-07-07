@@ -39,7 +39,7 @@
 
                         <x-admin.checkbox identify="is_publish" :checked="true" description="منتشر شود" />
 
-                        <x-admin.button-submit/>
+                        <x-admin.button title="{{ trans('panel.create') }}"/>
                     </form>
                 </div>
             </div>

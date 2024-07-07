@@ -10,17 +10,19 @@ use Illuminate\Http\RedirectResponse;
 
 trait HasJsonCommonResponse
 {
-    protected function successResponse(): JsonResponse
+    protected function successResponse(?string $backNav = null): JsonResponse
     {
         return response()->json([
+            'back' => $backNav,
             'result' => 'success',
             'message' => trans('panel.success_store'),
         ]);
     }
 
-    protected function successUpdateResponse(): JsonResponse
+    protected function successUpdateResponse(?string $backNav = null): JsonResponse
     {
         return response()->json([
+            'back' => $backNav,
             'result' => 'success',
             'message' => trans('panel.success_update'),
         ]);

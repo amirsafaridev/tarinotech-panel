@@ -53,14 +53,12 @@
                             @include('factor::admin.part.user-form')
                         </div>
 
-
-
                         <x-admin.input identify="expired_at"
                                        title="تاریخ انقضاء"
                                        :is-date-picker="true"
                                        old="{{ verta(now()->addDays(3))->format('Y/m/d') }}"/>
 
-                        <x-admin.button-submit/>
+                        <x-admin.button title="{{ trans('panel.create') }}"/>
 
                         <button id="btn_add_item" class="btn btn-success" type="button">افزودن آیتم</button>
                     </div>

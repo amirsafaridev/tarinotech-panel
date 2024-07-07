@@ -19,6 +19,7 @@ class Company extends Model
         'register_id',
         'type',
         'user_id',
+        'position',
     ];
 
     public function getActivitylogOptions(): LogOptions

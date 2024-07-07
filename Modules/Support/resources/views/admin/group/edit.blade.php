@@ -62,9 +62,9 @@
                                               :old="$chat->status"
                                               :enum-class="\App\Enums\Database\Chat\ChatStatus::class"/>
 
-                        <x-admin.button-submit title="{{ trans('panel.update') }}"/>
+                        <x-admin.button title="{{ trans('panel.update') }}"/>
 
-                        <x-admin.button-delete/>
+                        <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
                     </form>
 
                     <form id="deleteItem" action="{{ route('admin.support.group.destroy',$chat->id) }}" method="post" class="form-inline">

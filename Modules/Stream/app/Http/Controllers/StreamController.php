@@ -16,8 +16,7 @@ class StreamController extends Controller
     {
         try {
 
-            $fullPath = str_replace('|', '/', $path);
-            $file = Storage::disk('private')->get($fullPath);
+            $file = Storage::disk('private')->get($path);
 
             if (! $file) {
                 abort(404);
@@ -25,7 +24,7 @@ class StreamController extends Controller
 
             return response($file, 200)
                 ->header('Content-Type', Storage::disk('private')
-                    ->mimeType($fullPath));
+                    ->mimeType($file));
         } catch (Exception $exception) {
             report($exception);
 

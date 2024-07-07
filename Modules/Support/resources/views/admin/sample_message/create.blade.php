@@ -27,7 +27,7 @@
                         @csrf
                         <x-admin.input identify="title" title="عنوان"/>
                         <x-admin.textarea identify="message" rows="10" title="متن پیام"/>
-                        <x-admin.button-submit/>
+                        <x-admin.button title="{{ trans('panel.create') }}"/>
                     </form>
                 </div>
             </div>

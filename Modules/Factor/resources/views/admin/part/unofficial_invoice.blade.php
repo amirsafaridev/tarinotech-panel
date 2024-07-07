@@ -54,8 +54,8 @@
 
 
     <tr>
-        <td colspan="4">
-            <p class="text-right">مشحصات کالا / خدمت مورد معامله</p>
+        <td colspan="4" class="header-row-bg">
+            <p class="text-right p-title">مشحصات کالا / خدمت مورد معامله</p>
         </td>
     </tr>
 

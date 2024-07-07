@@ -35,7 +35,7 @@
 
                         <x-admin.input identify="last_name" :title="trans('fields.admin.last_name')" :old="$admin->last_name" />
 
-                        <x-admin.button-submit title="{{ trans('panel.update') }}"/>
+                        <x-admin.button title="{{ trans('panel.update') }}"/>
 
                     </form>
                 </div>

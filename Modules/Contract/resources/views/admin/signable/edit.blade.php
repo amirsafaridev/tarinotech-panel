@@ -32,12 +32,22 @@
 
                         <x-admin.input identify="id" type="hidden" :old="$signable->id"/>
 
-                        <x-admin.select-enum identify="status" title="وضغیت امضا"
+                        <x-admin.select-enum identify="status" title="وضغیت امضاء"
                                              :enum-class="\Modules\Contract\app\Enums\SignableStatus::class"
                                              :old="$signable->status"
                         />
 
-                        <x-admin.button-submit title="{{ trans('panel.update') }}"/>
+                        <x-admin.textarea identify="note" :rows="6" :old="$signable->note" placeholder="توضیحات"/>
+
+                        <x-admin.button title="{{ trans('panel.update') }}"/>
+
+                        <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
+
+                    </form>
+
+                    <form id="deleteItem" action="{{ route('admin.contract.sign.destroy',$signable->id) }}" method="post" class="form-inline">
+                        @csrf
+                        @method('DELETE')
                     </form>
                 </div>
             </div>

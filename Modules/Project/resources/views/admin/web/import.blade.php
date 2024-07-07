@@ -29,7 +29,7 @@
                         @csrf
                         <x-admin.input identify="file" type="file" title="فایل Excel"/>
 
-                        <x-admin.button-submit title="بارگذاری"/>
+                        <x-admin.button title="بارگذاری"/>
                     </form>
                 </div>
             </div>

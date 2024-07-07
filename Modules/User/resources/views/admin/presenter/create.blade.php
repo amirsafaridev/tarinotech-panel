@@ -58,7 +58,7 @@
 
                         <x-admin.checkbox identify="is_block" description="دسترسی داشته باشد"  />
 
-                        <x-admin.button-submit/>
+                        <x-admin.button title="{{ trans('panel.create') }}"/>
                     </form>
                 </div>
             </div>

@@ -37,8 +37,9 @@
 
                         <x-admin.input identify="price" title="قیمت" :old="$packagePrice->price"/>
 
-                        <x-admin.button-submit title="{{ trans('panel.update') }}"/>
-                        <x-admin.button-delete/>
+                        <x-admin.button title="{{ trans('panel.update') }}"/>
+
+                        <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
 
                     </form>
 

@@ -21,7 +21,8 @@ class PdfService
         $this->mpdf = new Mpdf(array_merge([
             'mode' => 'utf-8',
             'format' => 'A4',
-            'margin_bottom' => 20,
+            'margin_bottom' => 40,
+            'margin_top' => 50,
             'fontDir' => array_merge($fontDirs, [
                 base_path('public/fonts'),
             ]),

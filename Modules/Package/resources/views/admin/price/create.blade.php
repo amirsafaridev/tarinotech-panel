@@ -30,7 +30,7 @@
 
                         <x-admin.input identify="price" title="قیمت"/>
 
-                        <x-admin.button-submit/>
+                        <x-admin.button title="{{ trans('panel.create') }}"/>
                     </form>
                 </div>
             </div>

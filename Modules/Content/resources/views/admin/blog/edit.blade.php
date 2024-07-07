@@ -56,9 +56,9 @@
 
                         <x-admin.checkbox identify="is_publish" :old="$blog->is_publish" description="منتشر شود" />
 
-                        <x-admin.button-submit title="{{ trans('panel.update') }}"/>
+                        <x-admin.button title="{{ trans('panel.update') }}"/>
 
-                        <x-admin.button-delete/>
+                        <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
                     </form>
 
                     <form id="deleteItem" action="{{ route('admin.content.blog.destroy',$blog->id) }}" method="post" class="form-inline">

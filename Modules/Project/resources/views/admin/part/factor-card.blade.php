@@ -96,7 +96,7 @@
                     @endcan
                     <th>درگاه</th>
                     <th>وضعیت</th>
-                    <th>مهلت پرداخت</th>
+                    <th>تاریخ پرداخت</th>
                     <th>ایجاد</th>
                     <th>عملیات</th>
                 </tr>
@@ -120,8 +120,8 @@
                         </td>
                         <td>{!! factorStatusRender($factor->status) !!}</td>
                         <td>
-                            @if($factor->expired_at)
-                                {{ $factor->expired_at->toJalali()->format(formatJalaliDate()) }}
+                            @if($factor->paid_at)
+                                {{ $factor->paid_at->toJalali()->format(formatJalaliDate()) }}
                             @endif
                         </td>
                         <td>

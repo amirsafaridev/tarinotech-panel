@@ -30,7 +30,7 @@
                         <x-admin.input identify="free_at"
                                        title="تاریخ"
                                        :is-date-picker="true"/>
-                        <x-admin.button-submit/>
+                        <x-admin.button title="{{ trans('panel.create') }}"/>
                     </form>
                 </div>
             </div>

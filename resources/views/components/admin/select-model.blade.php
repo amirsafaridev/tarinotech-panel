@@ -5,6 +5,7 @@
 
     <select class="form-control @if ($isSmall) form-control-sm @endif"
             @if ($multiple) multiple @endif
+            @if ($disabled) disabled @endif
             name="{{ $identify }}"
             id="{{ sanitizedIdentify($identify) }}">
 

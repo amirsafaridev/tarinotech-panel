@@ -108,8 +108,9 @@
                                       title="اطلاعات بیشتر (یادداشت)"
                                       :old="$project->note"/>
 
-                    <x-admin.button-submit title="ویرایش"/>
-                    <x-admin.button-delete/>
+                    <x-admin.button title="ویرایش"/>
+
+                    <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
 
                 </div>
             </div>

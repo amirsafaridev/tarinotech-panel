@@ -287,7 +287,7 @@
 
                         <ul class="slide-menu">
                             @can('ADMIN_CONTRACT_SIGN_INDEX')
-                                <li><a href="{{ route('admin.contract.sign.index') }}" class="slide-item">درخواست امضا</a></li>
+                                <li><a href="{{ route('admin.contract.sign.index') }}" class="slide-item">درخواست امضاء</a></li>
                             @endcan
                         </ul>
                     </li>

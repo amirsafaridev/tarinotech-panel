@@ -23,6 +23,8 @@ return new class extends Migration
             $table->unsignedTinyInteger('status')
                 ->default(SignableStatus::Pending);
 
+            $table->text('note')->nullable();
+
             $table->dateTime('sign_at')
                 ->nullable();
 

@@ -25,7 +25,9 @@ class Signable extends Model
         'make_admin_id',
         'sign_admin_id',
         'status',
+        'note',
         'sign_at',
+        'created_at',
     ];
 
     public function target(): MorphTo

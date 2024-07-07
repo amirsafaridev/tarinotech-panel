@@ -56,9 +56,9 @@
 
                         <x-admin.textarea identify="description" title="متن" :old="$slider->description"/>
 
-                        <x-admin.button-submit title="{{ trans('panel.update') }}"/>
+                        <x-admin.button title="{{ trans('panel.update') }}"/>
 
-                        <x-admin.button-delete/>
+                        <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
                     </form>
 
                     <form id="deleteItem" action="{{ route('admin.content.slider.destroy',$slider->id) }}" method="post" class="form-inline">

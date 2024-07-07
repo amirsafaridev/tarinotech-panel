@@ -91,7 +91,9 @@ class WebController extends Controller
 
             DB::commit();
 
-            return $this->successResponse();
+            return $this->successResponse(
+                route('admin.project.web.index')
+            );
 
         } catch (Exception $exception) {
             DB::rollBack();

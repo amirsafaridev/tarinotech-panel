@@ -45,7 +45,7 @@
                                        />
 
                         <x-admin.textarea identify="description" title="متن"/>
-                        <x-admin.button-submit/>
+                        <x-admin.button title="{{ trans('panel.create') }}"/>
                     </form>
                 </div>
             </div>

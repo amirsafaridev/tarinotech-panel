@@ -21,6 +21,10 @@ final class FactorStatus extends Enum implements LocalizedEnum
 
     const PaidManual = 7;
 
+    const PaidWithCheque = 8;
+
+    const CustomerOffer = 9;
+
     public static function asFilteredSelectArray(): array
     {
         $selectItems = collect(parent::asSelectArray())->reject(function ($key, $value) {

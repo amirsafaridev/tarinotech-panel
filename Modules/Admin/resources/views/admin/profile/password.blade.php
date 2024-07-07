@@ -42,7 +42,7 @@
                             <input type="password" class="form-control" name="new_password_rep" id="new_password_rep" value="">
                         </div>
 
-                        <x-admin.button-submit title="{{ trans('panel.update') }}"/>
+                        <x-admin.button title="{{ trans('panel.update') }}"/>
 
                     </form>
                 </div>

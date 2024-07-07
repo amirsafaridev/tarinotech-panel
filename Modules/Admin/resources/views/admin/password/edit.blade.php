@@ -88,7 +88,7 @@
 
                         <x-admin.input identify="password_rep" title="تکرار گذرواژه" type="password"/>
 
-                        <x-admin.button-submit title="به روز رسانی"/>
+                        <x-admin.button title="به روز رسانی"/>
 
                     </form>
 

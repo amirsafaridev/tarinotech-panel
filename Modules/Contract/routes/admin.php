@@ -12,26 +12,36 @@
 */
 
 use App\Enums\Database\Print\PrintableType;
+use Modules\Contract\app\Http\Controllers\Admin\Preview\FactorController;
+use Modules\Contract\app\Http\Controllers\Admin\Preview\WebProjectController;
 use Modules\Contract\app\Http\Controllers\Admin\PreviewController;
 use Modules\Contract\app\Http\Controllers\Admin\SignableController;
 use Modules\Contract\app\Http\Controllers\Admin\SignController;
 
 Route::group(['guard' => 'admin'], function () {
 
-    Route::get('/preview/{targetType}/{targetId}', [PreviewController::class, 'index'])
+    Route::get('/preview/{id}/project-web', [WebProjectController::class, 'index'])
+        ->name('web-project.preview');
+
+    Route::get('/preview/{id}/factor', [FactorController::class, 'index'])
+        ->name('factor.preview');
+
+    /*Route::get('/preview/{targetType}/{targetId}', [PreviewController::class, 'index'])
         ->whereNumber('targetId')
         ->whereIn('targetType', [
             PrintableType::ProjectWeb,
             PrintableType::ProjectSeo,
             PrintableType::ProjectAds,
+            PrintableType::Factor,
         ])
-        ->name('preview');
+        ->name('preview');*/
 
     Route::group(['prefix' => 'sign', 'as' => 'sign.'], function () {
         Route::get('/', [SignController::class, 'index'])->name('index');
         Route::get('/data', [SignController::class, 'data'])->name('data');
         Route::get('/{signable}', [SignController::class, 'edit'])->name('edit');
         Route::patch('/{signable}', [SignController::class, 'update'])->name('update');
+        Route::delete('/{signable}', [SignController::class, 'destroy'])->name('destroy');
     });
 
     Route::group(['prefix' => 'project', 'as' => 'project.'], function () {

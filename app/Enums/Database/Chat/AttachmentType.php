@@ -13,5 +13,5 @@ final class AttachmentType extends Enum implements LocalizedEnum
 
     const Voice = 3;
 
-    const FILE = 4;
+    const File = 4;
 }

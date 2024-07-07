@@ -93,35 +93,12 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center hide-in-print">
-                    <span class="bold">پرینت فاکتور</span>
-                    <button id="btn_print" type="button" class="btn btn-sm btn-success">پرینت فاکتور</button>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        @if($factor->is_official || $factor->project?->user?->official_bill))
-                            @include('factor::admin.part.official_invoice')
-                        @else
-                            @include('factor::admin.part.unofficial_invoice')
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
 @endsection
 @section('script')
     @include('admin.partial.script.global')
     <script>
         $(document).ready(function () {
             activeParentUl('{{ route('admin.factor.index') }}');
-            $('#btn_print').click(function () {
-                printMe();
-            })
         });
     </script>
 @endsection

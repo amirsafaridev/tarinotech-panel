@@ -1,0 +1,83 @@
+<?php
+
+namespace Modules\Contract\app\Http\Controllers\Admin\Preview;
+
+use App\Foundation\Contracts\PrintControllerInterface;
+use App\Http\Controllers\Controller;
+use App\Service\PdfService;
+use Exception;
+use Illuminate\Database\Eloquent\Model;
+use Modules\Factor\app\Models\Factor;
+
+class FactorController extends Controller implements PrintControllerInterface
+{
+    private PdfService $pdfService;
+
+    public function __construct()
+    {
+        $this->pdfService = new PdfService([
+            'orientation' => 'L',
+            'margin_bottom' => 5,
+            'margin_top' => 10,
+        ]);
+    }
+
+    public function index(int $id)
+    {
+        try {
+            $model = $this->findModel($id);
+
+            $this->setupPdfService();
+
+            $viewPath = $this->getViewPath();
+            $view = view($viewPath, compact('model'))->render();
+
+            $viewFilled = $this->fillData($view, $model);
+            $fileName = $this->fileName($model);
+
+            $this->pdfService->writeHtml($viewFilled);
+
+            return $this->pdfService->output($fileName);
+        } catch (Exception $e) {
+            report($e);
+
+            return $e->getMessage();
+        }
+    }
+
+    /**
+     * @return Factor
+     */
+    public function findModel(int $id): Model
+    {
+        return Factor::query()
+            ->with([
+                'project.user',
+                'items',
+            ])
+            ->findOrFail($id);
+    }
+
+    public function fillData(string $view, Model $model): string
+    {
+        return $view;
+    }
+
+    public function getViewPath(): string
+    {
+        return 'contract::admin.pdf.factor';
+    }
+
+    public function setupPdfService(): void
+    {
+        $this->pdfService->setFont('DejaVuSans', 'B', 14);
+    }
+
+    /**
+     * @param  Factor  $model
+     */
+    public function fileName(Model $model): string
+    {
+        return $model->identify.'.pdf';
+    }
+}
