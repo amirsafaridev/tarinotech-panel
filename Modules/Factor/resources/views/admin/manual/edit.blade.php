@@ -44,7 +44,9 @@
 
         <div class="col-xl-9 col-lg-3 col-md-6 col-12">
 
-            @include('factor::admin.part.card-manual-info',['factor' => $factor])
+            @if($factor->manual)
+                @include('factor::admin.part.card-manual-info',['factor' => $factor])
+            @endif
 
             @include('factor::admin.part.card-info',['factor' => $factor])
 
