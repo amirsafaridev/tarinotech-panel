@@ -3,7 +3,6 @@
 namespace Modules\Factor\app\Http\Controllers\Admin;
 
 use App\Domain\Jobs\FactorItemCreateJob;
-use App\Domain\Jobs\FactorItemUpdateJob;
 use App\Enums\General\BtnType;
 use App\Filters\Admin\Admin\AdminFilter;
 use App\Foundation\ValueObjects\Datatable\ColumnOption;
@@ -28,12 +27,8 @@ use Modules\Factor\app\Filters\Factor\PriceFilter;
 use Modules\Factor\app\Filters\Factor\ProjectFilter;
 use Modules\Factor\app\Filters\Factor\StatusFilter;
 use Modules\Factor\app\Http\Requests\Admin\Factor\StoreRequest;
-use Modules\Factor\app\Http\Requests\Admin\Factor\UpdateRequest;
 use Modules\Factor\app\Models\Factor;
-use Modules\Factor\app\Models\FactorCheque;
 use Modules\Factor\app\Models\FactorItem;
-use Modules\Factor\app\Models\FactorManualInfo;
-use Modules\Factor\app\Models\TransactionCategory;
 use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Models\Project;
 use Modules\Project\app\Models\ProjectWeb;
@@ -49,8 +44,6 @@ class FactorController extends Controller
     const INDEX_TITLE = 'فاکتور ها';
 
     const CREATE_TITLE = 'فاکتور ها - ایجاد';
-
-    const EDIT_TITLE = 'فاکتور ها - ویرایش';
 
     const SHOW_TITLE = 'فاکتور ها - نمایش';
 
@@ -109,80 +102,11 @@ class FactorController extends Controller
         }
     }
 
-    public function edit(Factor $factor)
-    {
-        $factor->load(['items', 'project', 'meta', 'cheque', 'manual']);
-
-        $isFreeze = $this->isFreeze($factor);
-
-        $title = self::EDIT_TITLE;
-        $categories = TransactionCategory::query()->get();
-
-        return view('factor::admin.edit', compact('title', 'factor', 'categories', 'isFreeze'));
-    }
-
-    public function update(UpdateRequest $request, Factor $factor)
-    {
-        try {
-            if ($this->isFreeze($factor)) {
-                return $this->failure('این فاکتور قابل ویرایش نیست.', 400);
-            }
-            DB::beginTransaction();
-            $factor->load('items');
-            $updatedItemIds = [];
-            foreach ($request->input('item') as $item) {
-                $factorItemValues = $this->setItemValues($factor, $item);
-                $action = $item['action'];
-                if ($action === 'store') {
-                    resolve(FactorItemCreateJob::class)
-                        ->handle($factorItemValues);
-                } else {
-                    $updatedItemIds[] = $item['id'];
-                    resolve(FactorItemUpdateJob::class)
-                        ->handle($factorItemValues, $item['id']);
-                }
-            }
-
-            $currentItemIds = $factor->items->pluck('id')->toArray();
-            $deletedItemIds = array_diff($currentItemIds, $updatedItemIds);
-            if (count($deletedItemIds)) {
-                FactorItem::query()
-                    ->whereIn('id', $deletedItemIds)
-                    ->delete();
-            }
-
-            $updatedAttributes = $this->prepareItemData($request, true);
-            $updatedAttributes['status'] = $request->input('status');
-
-            if ($request->input('status') == FactorStatus::PaidWithCheque) {
-                $factorCheques = $this->createOrUpdateCheque($factor, $request);
-                $updatedAttributes['paid_at'] = $factorCheques->payment_date;
-            }
-
-            if ($request->input('status') == FactorStatus::PaidManual) {
-                $factorManualInfos = $this->createOrUpdateManual($factor, $request);
-                $updatedAttributes['paid_at'] = $factorManualInfos->payment_date;
-            }
-
-            $factor->update($updatedAttributes);
-
-            DB::commit();
-
-            $this->updateFinalPrice($factor);
-
-            return $this->successUpdateResponse();
-        } catch (Exception $exception) {
-            DB::rollBack();
-
-            return $this->exceptionResponse($exception);
-        }
-    }
-
     public function show(Factor $factor)
     {
         $title = self::SHOW_TITLE;
 
-        $factor->load(['items.category', 'project.user', 'admin', 'meta.type.base']);
+        $factor->load(['items.category', 'project.user', 'admin', 'meta.type.base', 'manual', 'cheque']);
 
         return view('factor::admin.show', compact('title', 'factor'));
     }
@@ -202,17 +126,15 @@ class FactorController extends Controller
         }
     }
 
-    protected function prepareItemData(Request $request, bool $isEditMode = false): array
+    protected function prepareItemData(Request $request): array
     {
         $factorData['title'] = $request->input('title');
 
         $factorData['expired_at'] = Helper::toGregorian($request->input('expired_at'));
         $factorData['status'] = FactorStatus::Pending;
 
-        if (! $isEditMode) {
-            $factorData['gateway_data'] = [];
-            $factorData['admin_id'] = auth()->id();
-        }
+        $factorData['gateway_data'] = [];
+        $factorData['admin_id'] = auth()->id();
 
         $factorData['project_id'] = $request->input('project_id');
 
@@ -353,7 +275,6 @@ class FactorController extends Controller
     {
         try {
             $factors = Factor::query()
-                ->has('project')
                 ->select([
                     'id',
                     'title',
@@ -372,6 +293,7 @@ class FactorController extends Controller
                     AdminFilter::class,
                     GatewayFilter::class,
                 ])
+                ->has('project')
                 ->with([
                     'admin' => function ($query) {
                         $query->select('admins.id', 'admins.first_name', 'admins.last_name');
@@ -415,75 +337,5 @@ class FactorController extends Controller
         } catch (Exception $exception) {
             return $this->exceptionResponse($exception);
         }
-    }
-
-    private function isFreeze(Factor $factor): bool
-    {
-        if (hasAdminRole(1)) {
-            return false;
-        }
-        if (! in_array($factor->status, [
-            FactorStatus::Paid,
-            FactorStatus::PaidWithCheque,
-            FactorStatus::PaidManual,
-        ])) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private function createOrUpdateCheque(Factor $factor, UpdateRequest $request): FactorCheque
-    {
-        $amount = $request->input('cheque_amount');
-        $paymentDate = Helper::toGregorian($request->input('cheque_payment_date'));
-        $chequeIdentifier = $request->input('cheque_identifier');
-        $chequeRegistered = $request->has('cheque_registered');
-        $factorId = $factor->id;
-
-        $factorCheque = FactorCheque::firstOrNew(['factor_id' => $factorId]);
-
-        if ($request->hasFile('cheque_file')) {
-            $chequeFilePath = $request->file('cheque_file')->store('cheque_file', 'private');
-        } else {
-            $chequeFilePath = $factorCheque->cheque_file;
-        }
-
-        $chequeData = [
-            'amount' => $amount,
-            'payment_date' => $paymentDate,
-            'cheque_identifier' => $chequeIdentifier,
-            'cheque_file' => $chequeFilePath,
-            'cheque_registered' => $chequeRegistered,
-            'factor_id' => $factorId,
-        ];
-
-        $factorCheque->fill($chequeData)->save();
-
-        return $factorCheque;
-    }
-
-    private function createOrUpdateManual(Factor $factor, UpdateRequest $request): FactorManualInfo
-    {
-        $paymentDate = Helper::toGregorian($request->input('manual_payment_date'));
-        $factorId = $factor->id;
-
-        $factorManualInfo = FactorManualInfo::firstOrNew(['factor_id' => $factorId]);
-
-        if ($request->hasFile('manual_file')) {
-            $filePath = $request->file('manual_file')->store('manual_file', 'private');
-        } else {
-            $filePath = $factorManualInfo->file;
-        }
-
-        $manualData = [
-            'payment_date' => $paymentDate,
-            'file' => $filePath,
-            'factor_id' => $factorId,
-        ];
-
-        $factorManualInfo->fill($manualData)->save();
-
-        return $factorManualInfo;
     }
 }

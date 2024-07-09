@@ -39,6 +39,7 @@ class Factor extends Model
         'gateway_data',
         'gateway',
         'paid_at',
+        'is_confirm',
     ];
 
     protected $casts = [

@@ -7,7 +7,6 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Route;
 use Modules\Contract\app\Enums\SignableStatus;
 use Modules\User\app\Enums\PersonType;
 use Verta;
@@ -35,6 +34,15 @@ class Helper
         };
     }
 
+    public static function renderBoolean(int $status): string
+    {
+        return match ($status) {
+            1 => '<span class="badge bg-success"><i class="fal fa-check-circle"></i></span>',
+            0 => '<span class="badge bg-danger"><i class="fal fa-close"></i></span>',
+            default => '<span class="badge bg-info">ندارد</span>',
+        };
+    }
+
     public static function renderSignableStatus(int $type): string
     {
         return match ($type) {
@@ -58,22 +66,6 @@ class Helper
         }
 
         return $number;
-    }
-
-    public static function getRouteSmall(): string
-    {
-        $routeName = Route::currentRouteName();
-        if (str($routeName)->contains('admin.admin')) {
-            return 'admin/admin';
-        }
-
-        if (str($routeName)->contains('admin.meet')) {
-            return 'admin/meet';
-        }
-
-        $routeParts = explode('.', $routeName);
-
-        return $routeParts[1];
     }
 
     public static function permissionReadAble($permission): string

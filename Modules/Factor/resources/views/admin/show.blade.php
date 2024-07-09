@@ -1,72 +1,5 @@
 @extends('admin.master')
 @section('title') {{ $title }} @endsection
-@section('head')
-    <style>
-        .print-main-table {
-            padding: 0;
-            margin: 0;
-            width: 100%;
-            font-size: 16px;
-        }
-
-        .print-main-table table, .print-main-table th, .print-main-table td {
-            border: 1px solid #686868;
-        }
-
-        .print-main-table td {
-            padding: 10px;
-        }
-
-        .print-main-table p {
-            padding: 0;
-            margin: 0;
-        }
-
-        @media print {
-            .jumps-prevent {
-                display: none;
-            }
-
-            .rtl .app-content {
-                margin: 0;
-            }
-
-            .hide-in-print {
-                display: none !important;
-            }
-
-            .print-main-table .p-title {
-                font-weight: bold;
-                font-size: 18px;
-            }
-
-            .print-main-table .f-bold {
-                font-weight: bold;
-            }
-
-            .print-main-table .header-row-bg {
-                background-color: #f3f3f3;
-            }
-
-            .print-main-table table, .print-main-table th, .print-main-table td {
-                border: 1px solid #686868;
-                color: black;
-            }
-
-            .print-main-table td {
-                padding: 10px;
-            }
-
-            .card, .app-content, .page-main {
-                background-color: white !important;
-            }
-
-            .side-app {
-                padding: 0 !important;
-            }
-        }
-    </style>
-@endsection
 @section('content')
     <div class="page-header">
         <h1 class="page-title">{{ $title }}</h1>
@@ -87,6 +20,15 @@
 
         <div class="col-12 col-md-6 mb-3">
             @include('factor::admin.part.card-project',['factor' => $factor])
+
+            @if($factor->manual)
+                @include('factor::admin.part.card-manual-info',['factor' => $factor])
+            @endif
+
+            @if($factor->cheque)
+                @include('factor::admin.part.card-cheque-info',['factor' => $factor])
+            @endif
+
             @if($factor->items->isNotEmpty())
                 @include('factor::admin.part.card-items',['items' => $factor->items])
             @endif

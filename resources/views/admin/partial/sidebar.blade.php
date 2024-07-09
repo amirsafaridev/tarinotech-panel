@@ -297,6 +297,9 @@
                     'ADMIN_FACTOR_INDEX',
                     'ADMIN_FACTOR_CREATE',
                     'ADMIN_FACTOR_CATEGORY_INDEX',
+                    'ADMIN_FACTOR_STATUS_INDEX',
+                    'ADMIN_FACTOR_MANUAL_INDEX',
+                    'ADMIN_FACTOR_CUSTOMER_INDEX'
                 ])
                     <li class="sub-category">
                         <h3>امور مالی</h3>
@@ -311,6 +314,14 @@
                         <ul class="slide-menu">
                             @can('ADMIN_FACTOR_INDEX')
                                 <li><a href="{{ route('admin.factor.index') }}" class="slide-item">لیست</a></li>
+                            @endcan
+
+                            @can('ADMIN_FACTOR_MANUAL_INDEX')
+                                <li><a href="{{ route('admin.factor.manual.index') }}" class="slide-item">لیست تایید (پرداخت دستی)</a></li>
+                            @endcan
+
+                            @can('ADMIN_FACTOR_CUSTOMER_INDEX')
+                                <li><a href="{{ route('admin.factor.customer-offer.index') }}" class="slide-item">لیست تایید (آفر مشتریان)</a></li>
                             @endcan
 
                             @can('ADMIN_FACTOR_CREATE')
@@ -428,7 +439,6 @@
                         </ul>
                     </li>
                 @endcanany
-
 
                 <li class="sub-category">
                     <h3>پروفایل من</h3>
