@@ -34,6 +34,9 @@
                     @include('admin.partial.message')
                     <div class="forms-sample">
                         @csrf
+
+                        <x-admin.input identify="id" :old="$factor->id"/>
+
                         <x-admin.input identify="title" title="عنوان فاکتور" :old="$factor->title" :disabled="$isFreeze"/>
 
                         <x-admin.select-model

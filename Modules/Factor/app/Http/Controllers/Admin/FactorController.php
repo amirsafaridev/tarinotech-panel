@@ -281,6 +281,7 @@ class FactorController extends Controller
                     'admin_id',
                     'project_id',
                     'final_price',
+                    'is_confirm',
                     'status',
                     'gateway',
                     'paid_at',
@@ -305,7 +306,8 @@ class FactorController extends Controller
 
             return DataTables::eloquent($factors)
                 ->editColumn('status', function (Factor $factor) {
-                    return factorStatusRender($factor->status);
+
+                    return factorStatusRender($factor->status, $factor->is_confirm);
                 })
                 ->editColumn('final_price', function (Factor $factor) {
                     return number_format($factor->final_price);

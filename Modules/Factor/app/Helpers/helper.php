@@ -14,17 +14,20 @@ if (! function_exists('calcPercentOfPrice')) {
 }
 
 if (! function_exists('factorStatusRender')) {
-    function factorStatusRender(int $status): string
+    function factorStatusRender(int $status, ?int $isConfirm = null): string
     {
         $statusTitle = FactorStatus::getDescription($status);
         $badgeClass = '';
 
         switch ($status) {
             case FactorStatus::Paid:
-            case FactorStatus::PaidManual:
             case FactorStatus::PaidWithCheque:
-            case FactorStatus::CustomerOffer:
                 $badgeClass = 'success';
+                break;
+
+            case FactorStatus::PaidManual:
+            case FactorStatus::CustomerOffer:
+                $badgeClass = $isConfirm ? 'success' : 'gray';
                 break;
 
             case FactorStatus::Pending:
