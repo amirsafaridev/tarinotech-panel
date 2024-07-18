@@ -2,7 +2,7 @@
     <div class="card-header d-flex justify-content-between">
         <h3 class="card-title">قرارداد</h3>
         <div>
-            <a class="btn btn-sm btn-info" href="{{ makeRouteContractPreview($project->target_type,$project->target_id) }}">PDF</a>
+            <a class="btn btn-sm btn-info" target="_blank" href="{{ makeRouteContractPreview($project->target_type,$project->target_id) }}">PDF</a>
             <a class="btn btn-sm btn-success" href="{{ makeRouteSignRequest($project->target_type,$project->target_id) }}">درخواست امضاء</a>
         </div>
     </div>

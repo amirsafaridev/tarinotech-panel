@@ -14,7 +14,7 @@ interface PrintControllerInterface
 
     public function getViewPath(): string;
 
-    public function setupPdfService(): void;
+    public function setupPdfService(Model $model = null): void;
 
     public function fileName(Model $model): string;
 }

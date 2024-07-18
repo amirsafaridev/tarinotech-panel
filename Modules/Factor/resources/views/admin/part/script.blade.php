@@ -22,6 +22,8 @@
     /* Cheque */
     const chequeContainer = $('#cheque_container');
     const chequeAmount = $('#cheque_amount');
+    const chequeIdentifier = $('#cheque_identifier');
+
 
     /* Manual */
     const manualContainer = $('#manual_container');
@@ -72,6 +74,7 @@
     function applyTypeInput() {
         makeInputPrice(projectPrice);
         makeInputPrice(chequeAmount);
+        makeInputNumber(chequeIdentifier);
     }
 
     function select2Setup() {

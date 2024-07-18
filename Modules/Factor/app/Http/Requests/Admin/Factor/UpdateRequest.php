@@ -45,7 +45,7 @@ class UpdateRequest extends FormRequest
         if ($this->input('status') == FactorStatus::PaidWithCheque) {
             $rules['cheque_amount'] = 'required|integer';
             $rules['cheque_file'] = 'mimes:img,png,jpeg,pdf|max:10024';
-            $rules['cheque_identifier'] = 'required';
+            $rules['cheque_identifier'] = 'required|digits:16';
             $rules['cheque_payment_date'] = 'required|jdate';
         }
 

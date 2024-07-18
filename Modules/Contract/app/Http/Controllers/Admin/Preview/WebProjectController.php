@@ -13,10 +13,18 @@ use Modules\Project\app\Models\ProjectWeb;
 class WebProjectController extends Controller implements PrintControllerInterface
 {
     const EMPTY_PLACEHOLDER = '--------------';
-
-    public function __construct(private PdfService $pdfService)
+    private PdfService $pdfService;
+    public function __construct()
     {
-
+        $this->pdfService = new PdfService([
+            'margin_left' => 0,
+            'margin_right' => 0,
+            'margin_top' => 35,
+            'margin_bottom' => 40,
+            'nonPrintMargin' => 0,
+            'margin_header' => 0,
+            'margin_footer' => 0,
+        ]);
     }
 
     public function index(int $id)
@@ -24,7 +32,7 @@ class WebProjectController extends Controller implements PrintControllerInterfac
         try {
             $model = $this->findModel($id);
 
-            $this->setupPdfService();
+            $this->setupPdfService($model);
 
             $viewPath = $this->getViewPath();
             $view = view($viewPath, compact('model'))->render();
@@ -92,12 +100,12 @@ class WebProjectController extends Controller implements PrintControllerInterfac
         return 'contract::admin.pdf.web-project';
     }
 
-    public function setupPdfService(): void
+    public function setupPdfService(Model $model = null): void
     {
         $header = view('contract::admin.pdf.header')->render();
-        $footer = view('contract::admin.pdf.footer')->render();
-        $this->pdfService->getMpdfInstance()->SetHeader($header);
-        $this->pdfService->getMpdfInstance()->SetFooter($footer);
+        $footer = view('contract::admin.pdf.footer',compact('model'))->render();
+        $this->pdfService->getMpdfInstance()->SetHTMLHeader($header);
+        $this->pdfService->getMpdfInstance()->SetHTMLFooter($footer);
         $this->pdfService->setFont('DejaVuSans', 'B', 14);
     }
 

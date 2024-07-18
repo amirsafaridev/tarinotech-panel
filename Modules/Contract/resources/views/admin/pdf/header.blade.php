@@ -1,6 +1,6 @@
 <table style="width: 100%;border-bottom: 2px solid #192373">
     <tr>
-        <td valign="center" style="padding: 20px 0px">
+        <td valign="center" style="padding: 10px">
             <img width="180" src="./sign/logo-header.jpg" alt="">
         </td>
         <td width="20%">

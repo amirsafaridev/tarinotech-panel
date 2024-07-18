@@ -79,7 +79,7 @@
                 <tr>
                     <td>پرینت</td>
                     <td>
-                        <a class="btn btn-sm btn-info" href="{{ makeRouteContractPreview(\Modules\Factor\app\Models\Factor::class,$factor->id) }}">پرینت فاکتور</a>
+                        <a class="btn btn-sm btn-info" target="_blank" href="{{ makeRouteContractPreview(\Modules\Factor\app\Models\Factor::class,$factor->id) }}">پرینت فاکتور</a>
                     </td>
                 </tr>
 
