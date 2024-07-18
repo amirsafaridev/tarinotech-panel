@@ -47,12 +47,22 @@ class FactorUpdateController extends Controller
 
             $this->syncAttributes($request, $factor);
 
+            $finalPrice = $this->updateFinalPrice($factor);
+
             $updatedAttributes = $this->prepareItemData($request, true);
             $updatedAttributes['status'] = $request->input('status');
 
             if ($request->input('status') == FactorStatus::PaidWithCheque) {
+
+                if ($finalPrice != $request->input('cheque_amount')) {
+                    DB::rollBack();
+
+                    return $this->failure('مبلغ چک باید برابر با مجموع آیتم فاکتور مشخص شده باشد.', 400);
+                }
+
                 $factorCheques = $this->createOrUpdateCheque($factor, $request);
                 $updatedAttributes['paid_at'] = $factorCheques->payment_date;
+
             }
 
             if ($request->input('status') == FactorStatus::PaidManual) {
@@ -63,8 +73,6 @@ class FactorUpdateController extends Controller
             $factor->update($updatedAttributes);
 
             DB::commit();
-
-            $this->updateFinalPrice($factor);
 
             return $this->successUpdateResponse();
         } catch (Exception $exception) {
@@ -86,13 +94,15 @@ class FactorUpdateController extends Controller
 
     private function updateFinalPrice(Factor $factor)
     {
-        $itemPrice = FactorItem::query()
+        $finalPrice = FactorItem::query()
             ->where('factor_id', $factor->id)
             ->sum('final_price');
 
         $factor->update([
-            'final_price' => $itemPrice,
+            'final_price' => $finalPrice,
         ]);
+
+        return $finalPrice;
     }
 
     private function isFreeze(Factor $factor): bool

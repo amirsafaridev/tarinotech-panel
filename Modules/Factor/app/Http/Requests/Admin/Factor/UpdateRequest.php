@@ -2,7 +2,6 @@
 
 namespace Modules\Factor\app\Http\Requests\Admin\Factor;
 
-use App\Rules\ChequeAmountMatchesFactorTotal;
 use App\Rules\IRMobile;
 use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Foundation\Http\FormRequest;
@@ -44,8 +43,7 @@ class UpdateRequest extends FormRequest
         ];
 
         if ($this->input('status') == FactorStatus::PaidWithCheque) {
-            $factorId = $this->input('id');
-            $rules['cheque_amount'] = ['required', 'integer', new ChequeAmountMatchesFactorTotal($factorId)];
+            $rules['cheque_amount'] = 'required|integer';
             $rules['cheque_file'] = 'mimes:img,png,jpeg,pdf|max:10024';
             $rules['cheque_identifier'] = 'required|digits:16';
             $rules['cheque_payment_date'] = 'required|jdate';
