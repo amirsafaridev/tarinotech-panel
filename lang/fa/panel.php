@@ -89,6 +89,8 @@ return [
         'manage' => 'مدیریت',
         'info' => 'جزئیات',
         'show' => 'نمایش',
+        'change_status' => 'تغییر وضعیت',
+        'auto_factor' => 'فاکتور اتوماتیک',
         'change_password' => 'تغییر گذر واژه',
     ],
     'setting' => [

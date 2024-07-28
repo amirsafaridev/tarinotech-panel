@@ -105,6 +105,30 @@ class Project extends Model
         return $this->hasMany(Factor::class, 'project_id');
     }
 
+    public static function findSeoTarget($projectId): ?self
+    {
+        return self::query()
+            ->whereHasMorph('target', [ProjectSeo::class])
+            ->with('target')
+            ->findOrFail($projectId);
+    }
+
+    public static function findWebTarget($projectId): ?self
+    {
+        return self::query()
+            ->whereHasMorph('target', [ProjectWeb::class])
+            ->with('target')
+            ->findOrFail($projectId);
+    }
+
+    public static function findAdsTarget($projectId): ?self
+    {
+        return self::query()
+            ->whereHasMorph('target', [ProjectAds::class])
+            ->with('target')
+            ->findOrFail($projectId);
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

@@ -2,12 +2,15 @@
 
 namespace Modules\Project\app\Http\Controllers\Admin;
 
+use App\Domain\Jobs\SeoProjectFactorMakeJob;
 use App\Enums\Database\Role\PermissionName;
-use App\Enums\General\BtnType;
+use App\Enums\General\DropdownItemColor;
 use App\Filters\Admin\Admin\AdminFilter;
 use App\Filters\Admin\Project\StatusFilter;
 use App\Foundation\ValueObjects\Datatable\ColumnOption;
 use App\Foundation\ValueObjects\Datatable\DatatableBase;
+use App\Foundation\ValueObjects\Datatable\Dropdown;
+use App\Foundation\ValueObjects\Datatable\DropdownItem;
 use App\Foundation\ValueObjects\Datatable\ExternalFilter;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
@@ -70,11 +73,14 @@ class SeoController extends Controller
 
             $projectSeo->project()->create($projectParams);
 
+            $seoFactorMakeJob = resolve(SeoProjectFactorMakeJob::class);
+            $seoFactorMakeJob->handle($projectSeo);
+
             DB::commit();
 
-            return $this->successResponse(
-                route('admin.project.seo.index')
-            );
+            /* return $this->successResponse(
+                 route('admin.project.seo.index')
+             );*/
         } catch (Exception $exception) {
             DB::rollBack();
 
@@ -84,7 +90,7 @@ class SeoController extends Controller
 
     public function edit($projectId)
     {
-        $project = $this->getOrFailProject($projectId);
+        $project = Project::findSeoTarget($projectId);
 
         $title = self::EDIT_TITLE;
 
@@ -94,7 +100,7 @@ class SeoController extends Controller
     public function update(UpdateRequest $request, $projectId)
     {
         try {
-            $project = $this->getOrFailProject($projectId);
+            $project = Project::findSeoTarget($projectId);
 
             DB::beginTransaction();
             $project->update($this->initialProjectData($request));
@@ -112,7 +118,7 @@ class SeoController extends Controller
     public function destroy($projectId)
     {
         try {
-            $project = $this->getOrFailProject($projectId);
+            $project = Project::findSeoTarget($projectId);
             $project->delete();
 
             return $this->successDestroyBack(route('admin.project.seo.index'));
@@ -134,7 +140,7 @@ class SeoController extends Controller
             'admin_id' => auth()->id(),
             'user_id' => $request->input('user_id'),
             'status_id' => $request->input('status_id'),
-            'base_id' => ProjectBase::Web,
+            'base_id' => ProjectBase::Seo,
             'price' => $request->input('price'),
             'type_id' => $request->input('type_id'),
             'note' => $request->input('note'),
@@ -180,14 +186,6 @@ class SeoController extends Controller
         $host->setHostProvider($req->input('host_provider'));
 
         return $host;
-    }
-
-    private function getOrFailProject($projectId)
-    {
-        return Project::query()
-            ->whereHasMorph('target', [ProjectSeo::class])
-            ->with('target')
-            ->findOrFail($projectId);
     }
 
     public function getDataRoute(): string
@@ -298,10 +296,29 @@ class SeoController extends Controller
                     return number_format($project->target->price_monthly);
                 })
                 ->addColumn('action', function ($project) {
-                    $actions = Helper::btnMaker(BtnType::Warning, route('admin.project.seo.edit', $project->id), trans('panel.action.edit'));
-                    $actions .= Helper::btnMaker(BtnType::Info, route('admin.project.manage', $project->id), trans('panel.action.show'));
 
-                    return $actions;
+                    return (new Dropdown())
+                        ->add(
+                            (new DropdownItem())
+                                ->setTargetBlank(true)
+                                ->setTitle(trans('panel.action.edit'))
+                                ->setLink(route('admin.project.seo.edit', $project->id))
+                        )
+                        ->add(
+                            (new DropdownItem())
+                                ->setTargetBlank(true)
+                                ->setTitle(trans('panel.action.show'))
+                                ->setLink(route('admin.project.manage', $project->id))
+                        )
+                        ->add(
+                            (new DropdownItem())
+                                ->setTargetBlank(true)
+                                ->setTitle(trans('panel.action.auto_factor'))
+                                ->setLink(route('admin.project.seo.auto-factor', $project->id))
+                        )
+                        ->setButtonColor(DropdownItemColor::Success())
+                        ->render();
+
                 })
                 ->rawColumns(['action'])
                 ->make();

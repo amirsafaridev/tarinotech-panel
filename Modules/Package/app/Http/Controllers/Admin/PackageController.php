@@ -24,9 +24,8 @@ class PackageController extends Controller
     public function index()
     {
         $title = self::INDEX_TITLE;
-
         $packages = Package::query()
-            ->with(['finalPrice', 'type'])
+            ->with(['finalPrice', 'type.base'])
             ->get();
 
         return view('package::admin.index', compact('title', 'packages'));

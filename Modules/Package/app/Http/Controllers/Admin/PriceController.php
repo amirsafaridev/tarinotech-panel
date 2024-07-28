@@ -18,7 +18,7 @@ class PriceController extends Controller
         $routeUpdate = route('admin.package-price.update', [$package->id, $packagePrice->id]);
         $routeDestroy = route('admin.package-price.destroy', [$package->id, $packagePrice->id]);
 
-        return view('admin.package_price.edit', compact('title', 'routeUpdate', 'routeDestroy', 'package', 'packagePrice'));
+        return view('package::admin.price.edit', compact('title', 'routeUpdate', 'routeDestroy', 'package', 'packagePrice'));
     }
 
     public function update(UpdateRequest $request, Package $package, PackagePrice $packagePrice)

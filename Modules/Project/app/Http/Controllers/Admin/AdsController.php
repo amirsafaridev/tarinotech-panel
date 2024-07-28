@@ -81,7 +81,7 @@ class AdsController extends Controller
 
     public function edit($projectId)
     {
-        $project = $this->getOrFailProject($projectId);
+        $project = Project::findAdsTarget($projectId);
 
         $title = self::EDIT_TITLE;
 
@@ -91,7 +91,7 @@ class AdsController extends Controller
     public function update(UpdateRequest $request, $projectId)
     {
         try {
-            $project = $this->getOrFailProject($projectId);
+            $project = Project::findAdsTarget($projectId);
 
             DB::beginTransaction();
             $project->update($this->initialProjectData($request));
@@ -109,7 +109,7 @@ class AdsController extends Controller
     public function destroy($projectId)
     {
         try {
-            $project = $this->getOrFailProject($projectId);
+            $project = Project::findAdsTarget($projectId);
             $project->delete();
 
             return $this->successDestroyBack(route('admin.project.ads.index'));
@@ -157,14 +157,6 @@ class AdsController extends Controller
             'field_activity' => $req->input('field_activity'),
             'designed_by' => $req->input('designed_by'),
         ];
-    }
-
-    private function getOrFailProject($projectId)
-    {
-        return Project::query()
-            ->whereHasMorph('target', [ProjectAds::class])
-            ->with('target')
-            ->findOrFail($projectId);
     }
 
     public function getDataRoute(): string

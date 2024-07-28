@@ -8,6 +8,7 @@ use Modules\Project\app\Http\Controllers\Admin\OptionController;
 use Modules\Project\app\Http\Controllers\Admin\ProjectController;
 use Modules\Project\app\Http\Controllers\Admin\ProjectRenewalController;
 use Modules\Project\app\Http\Controllers\Admin\SeoController;
+use Modules\Project\app\Http\Controllers\Admin\SeoFactorController;
 use Modules\Project\app\Http\Controllers\Admin\StatusController;
 use Modules\Project\app\Http\Controllers\Admin\TypeController;
 use Modules\Project\app\Http\Controllers\Admin\WebController;
@@ -96,6 +97,7 @@ Route::group(['guard' => 'admin'], function () {
 
         Route::group([], function () {
             Route::get('/{projectId}', [SeoController::class, 'edit'])->name('edit');
+            Route::get('/{projectId}/auto-factor', [SeoFactorController::class, 'make'])->name('auto-factor');
             Route::patch('/{projectId}', [SeoController::class, 'update'])->name('update');
             Route::delete('/{projectId}', [SeoController::class, 'destroy'])->name('destroy');
 

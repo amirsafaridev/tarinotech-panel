@@ -5,34 +5,37 @@ namespace App\Domain\Jobs;
 use Modules\Factor\app\Enums\FactorStatus;
 use Modules\Factor\app\Enums\PaymentGateway;
 use Modules\Factor\app\Models\Factor;
-use Modules\Factor\app\Models\TransactionCategory;
-use Modules\Project\app\Models\Project;
+use Modules\Project\app\Models\ProjectSeo;
 use Modules\User\app\Enums\PersonType;
 
-class AutoFactorMakerJob
+class SeoProjectFactorMakeJob
 {
-    public function handle(Project $project)
+    public function handle(ProjectSeo $projectSeo)
     {
         $taxRate = config('factor.tax');
+
+        $agreementDuration = round($projectSeo->agreement_duration / 30);
+
+        $project = $projectSeo->project;
         $originalPrice = $project->price;
 
-        $transactionCategories = TransactionCategory::query()
-            ->get()
-            ->keyBy('id')
-            ->toArray();
+        $monthlyPrice = $originalPrice / $agreementDuration;
 
-        $factorDetails = [
-            ['title' => $transactionCategories[2]['title'], 'percentage' => 30, 'category_id' => 2],
-            ['title' => $transactionCategories[3]['title'], 'percentage' => 40, 'category_id' => 3],
-            ['title' => $transactionCategories[4]['title'], 'percentage' => 30, 'category_id' => 4],
-        ];
+        $data = $project->agreement_at;
 
-        foreach ($factorDetails as $factorDetail) {
-            $factorTitle = $factorDetail['title'];
-            $factorPercentage = $factorDetail['percentage'];
-            $categoryId = $factorDetail['category_id'];
+        $accumulatedTotal = 0;
 
-            $price = calcPercentOfPrice($factorPercentage, $originalPrice);
+        for ($month = 1; $month <= $agreementDuration; $month++) {
+            $factorTitle = $this->getJalaliFormattedDate($data);
+
+            $categoryId = 6;
+
+            if ($month == $agreementDuration) {
+                $price = $originalPrice - $accumulatedTotal;
+            } else {
+                $price = round($monthlyPrice, 2);
+            }
+
             $taxAmount = $price * $taxRate;
             $totalPrice = $price + $taxAmount;
 
@@ -67,6 +70,15 @@ class AutoFactorMakerJob
                 'discount' => 0,
                 'final_price' => $totalPrice,
             ]);
+
+            $accumulatedTotal += $price;
+
+            $data->addMonth();
         }
+    }
+
+    protected function getJalaliFormattedDate(mixed $data): string
+    {
+        return $data->toJalali()->format('d').' '.$data->toJalali()->formatWord('F');
     }
 }

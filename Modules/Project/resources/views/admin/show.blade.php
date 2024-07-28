@@ -24,7 +24,7 @@
         <div class="col-xl-6 col-lg-6 col-md-6 col-12">
             @include('project::admin.part.project-info-card')
 
-            @if($project->target_type  === \Modules\Project\app\Models\ProjectWeb::class))
+            @if($project->target_type  === \Modules\Project\app\Models\ProjectWeb::class)
                 @include('project::admin.part.contract-card')
             @endif
 

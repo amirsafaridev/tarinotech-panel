@@ -2,14 +2,16 @@
 
 namespace Modules\Project\app\Http\Controllers\Admin;
 
-use App\Domain\Jobs\AutoFactorMakerJob;
+use App\Domain\Jobs\WebProjectFactorMakerJob;
 use App\Enums\Database\Role\PermissionName;
 use App\Enums\Database\Role\RoleName;
-use App\Enums\General\BtnType;
+use App\Enums\General\DropdownItemColor;
 use App\Filters\Admin\Admin\AdminFilter;
 use App\Filters\Admin\Package\PackageID;
 use App\Foundation\ValueObjects\Datatable\ColumnOption;
 use App\Foundation\ValueObjects\Datatable\DatatableBase;
+use App\Foundation\ValueObjects\Datatable\Dropdown;
+use App\Foundation\ValueObjects\Datatable\DropdownItem;
 use App\Foundation\ValueObjects\Datatable\ExternalFilter;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
@@ -86,7 +88,7 @@ class WebController extends Controller
             $project = $projectWeb->project()->create($projectParams);
             $projectWeb->options()->attach($request->input('options'));
 
-            $autoMakeFactor = resolve(AutoFactorMakerJob::class);
+            $autoMakeFactor = resolve(WebProjectFactorMakerJob::class);
             $autoMakeFactor->handle($project);
 
             DB::commit();
@@ -104,7 +106,7 @@ class WebController extends Controller
 
     public function edit($projectId)
     {
-        $project = $this->getOrFailProject($projectId);
+        $project = Project::findWebTarget($projectId);
 
         $title = self::EDIT_TITLE;
 
@@ -114,7 +116,7 @@ class WebController extends Controller
     public function update(UpdateRequest $request, $projectId)
     {
         try {
-            $project = $this->getOrFailProject($projectId);
+            $project = Project::findWebTarget($projectId);
 
             DB::beginTransaction();
 
@@ -143,7 +145,7 @@ class WebController extends Controller
     public function destroy($projectId)
     {
         try {
-            $project = $this->getOrFailProject($projectId);
+            $project = Project::findWebTarget($projectId);
             $project->delete();
 
             return $this->successDestroyBack(route('admin.project.web.index'));
@@ -264,14 +266,6 @@ class WebController extends Controller
             'sample' => $sample->toArray(),
             'working_days' => $request->input('working_days'),
         ];
-    }
-
-    private function getOrFailProject($projectId): Project
-    {
-        return Project::query()
-            ->whereHasMorph('target', [ProjectWeb::class])
-            ->with('target.options')
-            ->findOrFail($projectId);
     }
 
     public function getDataRoute(): string
@@ -395,11 +389,28 @@ class WebController extends Controller
                     return number_format($project->price);
                 })
                 ->addColumn('action', function ($project) {
-                    $actions = Helper::btnMaker(BtnType::Warning, route('admin.project.web.edit', $project->id), trans('panel.action.edit'));
-                    $actions .= Helper::btnMaker(BtnType::Info, route('admin.project.manage', $project->id), trans('panel.action.show'));
-                    $actions .= Helper::btnMaker(BtnType::Success, route('admin.project.web.edit.status', $project->id), 'تغییر وضعیت');
 
-                    return $actions;
+                    return (new Dropdown())
+                        ->add(
+                            (new DropdownItem())
+                                ->setTargetBlank(true)
+                                ->setTitle(trans('panel.action.edit'))
+                                ->setLink(route('admin.project.web.edit', $project->id))
+                        )
+                        ->add(
+                            (new DropdownItem())
+                                ->setTargetBlank(true)
+                                ->setTitle(trans('panel.action.show'))
+                                ->setLink(route('admin.project.manage', $project->id))
+                        )
+                        ->add(
+                            (new DropdownItem())
+                                ->setTargetBlank(true)
+                                ->setTitle(trans('panel.action.change_status'))
+                                ->setLink(route('admin.project.web.edit.status', $project->id))
+                        )
+                        ->setButtonColor(DropdownItemColor::Success())
+                        ->render();
                 })
                 ->rawColumns(['action'])
                 ->make();
