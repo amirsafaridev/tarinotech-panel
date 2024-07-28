@@ -78,9 +78,9 @@ class SeoController extends Controller
 
             DB::commit();
 
-            /* return $this->successResponse(
-                 route('admin.project.seo.index')
-             );*/
+            return $this->successResponse(
+                route('admin.project.seo.index')
+            );
         } catch (Exception $exception) {
             DB::rollBack();
 
