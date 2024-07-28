@@ -10,6 +10,21 @@ use Modules\User\app\Enums\PersonType;
 
 class SeoProjectFactorMakeJob
 {
+    protected array $monthNames = [
+        1 => 'اول',
+        2 => 'دوم',
+        3 => 'سوم',
+        4 => 'چهارم',
+        5 => 'پنجم',
+        6 => 'ششم',
+        7 => 'هفتم',
+        8 => 'هشتم',
+        9 => 'نهم',
+        10 => 'دهم',
+        11 => 'یازدهم',
+        12 => 'دوازدهم',
+    ];
+
     public function handle(ProjectSeo $projectSeo)
     {
         $taxRate = config('factor.tax');
@@ -21,12 +36,12 @@ class SeoProjectFactorMakeJob
 
         $monthlyPrice = $originalPrice / $agreementDuration;
 
-        $data = $project->agreement_at;
+        $data = \Verta::parse($project->agreement_at);
 
         $accumulatedTotal = 0;
 
         for ($month = 1; $month <= $agreementDuration; $month++) {
-            $factorTitle = $this->getJalaliFormattedDate($data);
+            $factorTitle = $this->getJalaliFormattedDate($data, $month);
 
             $categoryId = 6;
 
@@ -54,10 +69,12 @@ class SeoProjectFactorMakeJob
                 'admin_id' => $project->admin_id,
                 'project_id' => $project->id,
                 'final_price' => $totalPrice,
-                'status' => FactorStatus::Draft,
+                'status' => FactorStatus::Pending,
                 'is_official' => $isOfficial,
                 'gateway' => $gateway,
                 'gateway_data' => [],
+                'created_at' => $data,
+                'updated_at' => $data,
             ]);
 
             $factor->items()->create([
@@ -69,16 +86,22 @@ class SeoProjectFactorMakeJob
                 'tax_amount' => $taxAmount,
                 'discount' => 0,
                 'final_price' => $totalPrice,
+                'created_at' => $data,
+                'updated_at' => $data,
             ]);
 
             $accumulatedTotal += $price;
 
-            $data->addMonth();
+            $data = $data->addMonth();
         }
     }
 
-    protected function getJalaliFormattedDate(mixed $data): string
+    protected function getJalaliFormattedDate($data, $month): string
     {
-        return $data->toJalali()->format('d').' '.$data->toJalali()->formatWord('F');
+        // $jalaliDate = $data->toJalali();
+        $monthName = $data->formatWord('F');
+        $monthNumber = $this->monthNames[$month] ?? $month;
+
+        return "سئو ماه {$monthNumber} ({$monthName})";
     }
 }

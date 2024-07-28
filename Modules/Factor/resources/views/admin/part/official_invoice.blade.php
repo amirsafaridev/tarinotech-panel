@@ -222,7 +222,9 @@
     <tr>
         <td colspan="2" valign="center">
             <span  class="text-center p-title">مهر و امضا فروشنده</span>
-            <img width="120px" style="float: right;margin-bottom: -40px;margin-right: 40px" src="{{ $signBase64 }}" alt="">
+            @if($isSigned)
+                <img width="120px" style="float: right;margin-bottom: -40px;margin-right: 40px" src="{{ $signBase64 }}" alt="">
+            @endif
         </td>
         <td colspan="2" style="padding: 40px">
             <p  class="text-center p-title">مهر و امضا خریدار</p>
