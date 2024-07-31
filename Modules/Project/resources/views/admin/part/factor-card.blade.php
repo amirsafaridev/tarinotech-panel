@@ -74,7 +74,7 @@
 
                                         @endphp
                                         <h2 class="mb-0 number-font">{{ number_format($project->price + $totalTax ) }}</h2>
-                                        <p class="text-white mb-0">مبلغ کل پروژه (ریال)</p>
+                                        <p class="text-white mb-0">مبلغ کل قرارداد + ارزش افزوده (ریال)</p>
                                     </div>
                                     <div class="ms-auto"><i class="fa fa-envelope-o text-white fs-30 me-2 mt-2"></i>
                                     </div>

@@ -145,7 +145,7 @@ class WebController extends Controller
     public function destroy($projectId)
     {
         try {
-            $project = Project::findWebTarget($projectId);
+            $project = $this->getOrFailProject($projectId);
             $project->delete();
 
             return $this->successDestroyBack(route('admin.project.web.index'));

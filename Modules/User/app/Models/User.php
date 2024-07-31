@@ -16,6 +16,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Modules\Auth\app\Models\Login;
+use Modules\Contract\app\Models\UserSignable;
 use Modules\Log\app\Enums\LogNames;
 use Modules\Project\app\Models\Project;
 use Spatie\Activitylog\LogOptions;
@@ -153,6 +154,12 @@ class User extends Authenticatable
     public function setEmailAttribute($value)
     {
         $this->attributes['email'] = $value !== '' ? $value : null;
+    }
+
+    public function signables(): HasMany
+    {
+
+        return $this->hasMany(UserSignable::class);
     }
 
     public function getActivitylogOptions(): LogOptions
