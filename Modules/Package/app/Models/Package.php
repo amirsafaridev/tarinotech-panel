@@ -20,6 +20,7 @@ class Package extends Model
     protected $fillable = [
         'title',
         'type_id',
+        'contract_attachment',
     ];
 
     public function prices(): HasMany

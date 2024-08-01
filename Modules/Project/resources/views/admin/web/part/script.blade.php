@@ -16,6 +16,8 @@
         domainSetup();
         hostSetup();
         workingDaysCalcSetup();
+
+        CKEDITOR.replace( 'contract_attachment',{height:400});
     })
 
     function applyTypeInput() {

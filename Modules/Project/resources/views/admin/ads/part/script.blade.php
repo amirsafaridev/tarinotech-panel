@@ -6,6 +6,8 @@
         jalaliDatepicker.startWatch();
         select2Setup();
         typeStatusSetup();
+
+        CKEDITOR.replace( 'contract_attachment',{height:400});
     })
 
 

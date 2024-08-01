@@ -4,32 +4,47 @@
  */
 
 CKEDITOR.editorConfig = function (config) {
-    // Define changes to default configuration here.
-    // For complete reference see:
-    // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html
+    // Set right-to-left text direction and language to Persian.
+    config.rtl = true;
+    config.language = 'fa';
 
-    // The toolbar groups arrangement, optimized for a single toolbar row.
+    // Toolbar groups arrangement, optimized for a single toolbar row.
     config.toolbarGroups = [
-        {name: 'document', groups: ['mode', 'document', 'doctools']},
-        {name: 'clipboard', groups: ['clipboard', 'undo']},
-        {name: 'editing', groups: ['find', 'selection', 'spellchecker']},
-        {name: 'forms'},
-        {name: 'basicstyles', groups: ['basicstyles', 'cleanup']},
-        {name: 'paragraph', groups: ['list', 'blocks', 'align', 'bidi']},
-        {name: 'links'},
-        {name: 'insert'},
-        {name: 'styles'},
-        {name: 'tools'},
-        {name: 'others'},
+        { name: 'document', groups: ['mode', 'document', 'doctools'] },
+        { name: 'clipboard', groups: ['clipboard', 'undo'] },
+        { name: 'editing', groups: ['find', 'selection', 'spellchecker'] },
+        { name: 'forms' },
+        { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+        { name: 'paragraph', groups: ['list', 'blocks', 'align', 'bidi'] },
+        { name: 'links' },
+        { name: 'insert' },
+        { name: 'styles' },
+        { name: 'tools' },
+        { name: 'others' }
     ];
 
-    // The default plugins included in the basic setup define some buttons that
-    // are not needed in a basic editor. They are removed here.
+    // Remove unnecessary buttons.
     config.removeButtons = 'Undo,Redo,Anchor,Underline,Strike,Subscript,Superscript';
 
-    // Dialog windows are also simplified.
+    // Simplify dialog windows.
     config.removeDialogTabs = 'link:advanced';
 
-	config.rtl = true;
-	config.language = 'fa';
+    // Include the table plugin.
+    config.extraPlugins = 'table';
+
+    // Add the Table button to the insert toolbar group.
+    config.toolbar = [
+        { name: 'document', items: ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates'] },
+        { name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'] },
+        { name: 'editing', items: ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt'] },
+        { name: 'forms', items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'] },
+        { name: 'basicstyles', items: ['Bold', 'Italic', 'Strike', 'RemoveFormat'] },
+        { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl'] },
+        { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
+        { name: 'insert', items: ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe'] },
+        { name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize'] },
+        { name: 'colors', items: ['TextColor', 'BGColor'] },
+        { name: 'tools', items: ['Maximize', 'ShowBlocks'] },
+        { name: 'others', items: ['-'] }
+    ];
 };

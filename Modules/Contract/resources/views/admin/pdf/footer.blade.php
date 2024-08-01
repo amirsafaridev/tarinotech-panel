@@ -17,8 +17,8 @@
 
 @endphp
 <table style="width: 100%">
-    <tr >
-        <td valign="top" width="50%" style="padding-right: 35px">
+    <tr>
+        <td valign="top" width="50%" style="padding-right: 70px">
             <table>
                 <tr valign="top">
                     <td>مهر و امضای نماینده کارفرما</td>
@@ -28,7 +28,7 @@
                 </tr>
             </table>
         </td>
-        <td width="50%" style="padding-left: 35px">
+        <td width="50%" style="padding-right: 70px">
             <table>
                 <tr>
                     <td>مهر و امضای نماینده مجری</td>

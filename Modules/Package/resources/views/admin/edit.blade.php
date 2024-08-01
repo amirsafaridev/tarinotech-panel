@@ -40,6 +40,9 @@
 
                         <x-admin.input identify="price" title="قیمت" :old="$package->finalPrice?->price"/>
 
+                        <x-admin.textarea identify="contract_attachment" title="پیوست قرارداد"  :old="$package->contract_attachment"/>
+
+
                         <x-admin.button title="{{ trans('panel.update') }}"/>
 
                         <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
@@ -63,14 +66,17 @@
     @include('admin.partial.loader.script',[
         'load'=>[
             \App\Enums\Assets\ScriptLoader::Alert(),
+             \App\Enums\Assets\ScriptLoader::CKEditor(),
         ],
     ])
     @include('admin.partial.request')
+    @include('admin.partial.ckeditor')
     @include('admin.partial.script.global')
     <script>
         $(document).ready(function (){
             makeInputPrice($('#price'));
             activeParentUl('{{ route('admin.package.index') }}');
+            CKEDITOR.replace( 'contract_attachment',{height:400});
         })
     </script>
 @endsection

@@ -10,6 +10,8 @@
         select2Setup();
         hostSetup();
         typeStatusSetup();
+
+        CKEDITOR.replace( 'contract_attachment',{height:400});
     });
 
     function applyTypeInput(){

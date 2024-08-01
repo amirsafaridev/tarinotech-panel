@@ -61,7 +61,7 @@ class PreviewController extends Controller
         $orEmpty = fn ($value) => $value ?? self::EMPTY_PLACEHOLDER;
 
         $replacements = [
-            PlaceHolderKeys::ALPHA_DATE => $orEmpty($model->project?->agreement_at?->toJalali()->formatWord('Y.m F')),
+            PlaceHolderKeys::ALPHA_DATE => $orEmpty($model->project?->agreement_at?->toJalali()->formatWord('d F Y')),
             PlaceHolderKeys::USER_COMPANY_REGISTER_ID => $orEmpty($model->project?->user?->company?->register_id),
             PlaceHolderKeys::USER_COMPANY_POSITION => $orEmpty($model->project?->user?->company?->position),
             PlaceHolderKeys::USER_COMPANY => $orEmpty($model->project?->user?->company?->name),

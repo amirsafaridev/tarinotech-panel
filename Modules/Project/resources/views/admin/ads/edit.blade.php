@@ -108,6 +108,10 @@
                                       title="اطلاعات بیشتر (یادداشت)"
                                       :old="$project->note"/>
 
+                    <x-admin.textarea identify="contract_attachment"
+                                      title="پیوست قرارداد"
+                                      :old="$project->contract_attachment"/>
+
                     <x-admin.button title="ویرایش"/>
 
                     <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
@@ -126,9 +130,11 @@
         \App\Enums\Assets\ScriptLoader::Datepicker(),
         \App\Enums\Assets\ScriptLoader::Select2(),
         \App\Enums\Assets\ScriptLoader::Alert(),
+        \App\Enums\Assets\ScriptLoader::CKEditor(),
     ]])
     @include('admin.partial.request')
     @include('admin.partial.script.global')
+    @include('admin.partial.ckeditor')
     @include('project::admin.ads.part.script')
 
     <script>

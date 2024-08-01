@@ -47,6 +47,7 @@ class Project extends Model
         'note',
         'business_domain_id',
         'business_domain',
+        'contract_attachment',
     ];
 
     protected $casts = [

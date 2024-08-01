@@ -253,6 +253,8 @@
 
                     <x-admin.textarea identify="note" title="اطلاعات بیشتر (یادداشت)"/>
 
+                    <x-admin.textarea identify="contract_attachment" title="پیوست قرارداد"/>
+
                     <x-admin.button title="{{ trans('panel.create') }}"/>
 
                 </div>
@@ -265,9 +267,11 @@
         \App\Enums\Assets\ScriptLoader::Select2(),
         \App\Enums\Assets\ScriptLoader::Datepicker(),
         \App\Enums\Assets\ScriptLoader::Alert(),
+        \App\Enums\Assets\ScriptLoader::CKEditor(),
     ]])
     @include('admin.partial.request')
     @include('admin.partial.script.global')
+    @include('admin.partial.ckeditor')
     @include('project::admin.web.part.script')
     <script>
         $(document).ready(function () {

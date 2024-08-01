@@ -115,6 +115,7 @@ class PackageController extends Controller
     {
         $item['title'] = $request->input('title');
         $item['type_id'] = $request->input('type_id');
+        $item['contract_attachment'] = $request->input('contract_attachment');
 
         return $item;
     }

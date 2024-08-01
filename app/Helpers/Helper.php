@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Modules\Contract\app\Enums\SignableStatus;
+use Modules\Contract\app\Enums\UserSignableStatus;
 use Modules\User\app\Enums\PersonType;
 use Verta;
 
@@ -49,6 +50,16 @@ class Helper
             SignableStatus::Pending => '<span class="badge bg-info">در انتظار</span>',
             SignableStatus::Signed => '<span class="badge bg-success">امضاء شده</span>',
             SignableStatus::Reject => '<span class="badge bg-danger">رد شده</span>',
+            default => '<span class="badge bg-info">ندارد</span>',
+        };
+    }
+
+    public static function renderUserSignableStatus(int $type): string
+    {
+        return match ($type) {
+            UserSignableStatus::Pending => '<span class="badge bg-info">در انتظار</span>',
+            UserSignableStatus::Uploaded => '<span class="badge bg-success">آپلود شده</span>',
+            UserSignableStatus::Reject => '<span class="badge bg-danger">رد شده</span>',
             default => '<span class="badge bg-info">ندارد</span>',
         };
     }

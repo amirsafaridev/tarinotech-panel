@@ -231,6 +231,7 @@ class WebController extends Controller
             'user_id' => $request->input('user_id'),
             'base_id' => ProjectBase::Web,
             'note' => $request->input('note'),
+            'contract_attachment' => $request->input('contract_attachment'),
             'business_domain_id' => $request->input('business_domain_id'),
             'business_domain' => $request->input('business_domain'),
         ];

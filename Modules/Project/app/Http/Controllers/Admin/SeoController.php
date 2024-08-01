@@ -144,6 +144,7 @@ class SeoController extends Controller
             'price' => $request->input('price'),
             'type_id' => $request->input('type_id'),
             'note' => $request->input('note'),
+            'contract_attachment' => $request->input('contract_attachment'),
         ];
 
         if (! empty($agreementAt)) {

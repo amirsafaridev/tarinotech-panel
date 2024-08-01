@@ -25,7 +25,8 @@
             @include('project::admin.part.project-info-card')
 
             @if($project->target_type  === \Modules\Project\app\Models\ProjectWeb::class)
-                @include('project::admin.part.contract-card')
+                @include('project::admin.part.signable-card')
+                @include('project::admin.part.user-signable-card')
             @endif
 
         </div>

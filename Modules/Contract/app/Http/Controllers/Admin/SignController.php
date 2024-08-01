@@ -11,8 +11,12 @@ use App\Traits\HasDatatable;
 use App\Traits\HasJsonCommonResponse;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Modules\Contract\app\Enums\SignableStatus;
 use Modules\Contract\app\Http\Requests\Admin\Signable\UpdateRequest;
 use Modules\Contract\app\Models\Signable;
+use Modules\Contract\app\Models\UserSignable;
+use Modules\Project\app\Models\ProjectWeb;
 use Yajra\DataTables\Facades\DataTables;
 
 class SignController extends Controller
@@ -46,11 +50,19 @@ class SignController extends Controller
     public function update(UpdateRequest $request, Signable $signable)
     {
         try {
+            DB::beginTransaction();
             $item = $this->prepareItemData($request);
             $signable->update($item);
 
+            if ($this->shouldCreateUserSignable($request, $signable)) {
+                $this->createUserSignable($signable);
+            }
+
+            DB::commit();
+
             return $this->successUpdateResponse();
         } catch (Exception $exception) {
+            DB::rollBack();
 
             return $this->exceptionResponse($exception);
         }
@@ -67,9 +79,6 @@ class SignController extends Controller
         }
     }
 
-    /**
-     * @throws Exception
-     */
     protected function prepareItemData(Request $req): array
     {
         $signableData['status'] = $req->input('status');
@@ -141,5 +150,22 @@ class SignController extends Controller
         } catch (Exception $exception) {
             return $this->exceptionResponse($exception);
         }
+    }
+
+    private function shouldCreateUserSignable(UpdateRequest $request, Signable $signable): bool
+    {
+        return $request->input('status') === SignableStatus::Signed &&
+            $signable->target_type === ProjectWeb::class;
+    }
+
+    private function createUserSignable(Signable $signable): void
+    {
+        UserSignable::query()->firstOrCreate(
+            [
+                'target_type' => $signable->target_type,
+                'target_id' => $signable->target_id,
+                'user_id' => $signable->target->project->user_id,
+            ]
+        );
     }
 }

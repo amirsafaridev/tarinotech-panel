@@ -9,7 +9,7 @@ final class UserSignableStatus extends Enum implements LocalizedEnum
 {
     const Pending = 1;
 
-    const Signed = 2;
+    const Uploaded = 2;
 
     const Reject = 3;
 }

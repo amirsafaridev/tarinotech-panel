@@ -19,7 +19,7 @@
     </div>
 
     <div class="row">
-        <div class="col-xl-4 col-lg-6 col-md-6 col-12">
+        <div class="col-lg-6 col-md-6 col-12">
             <div class="card">
                 <div class="card-body pb-4">
                     @include('admin.partial.message')
@@ -35,6 +35,8 @@
 
                         <x-admin.input identify="price" title="قیمت"/>
 
+                        <x-admin.textarea identify="contract_attachment" title="پیوست قرارداد"/>
+
                         <x-admin.button title="{{ trans('panel.create') }}"/>
                     </form>
                 </div>
@@ -43,12 +45,19 @@
     </div>
 @endsection
 @section('script')
+    @include('admin.partial.loader.script',[
+        'load'=>[
+             \App\Enums\Assets\ScriptLoader::CKEditor(),
+        ],
+    ])
     @include('admin.partial.request')
+    @include('admin.partial.ckeditor')
     @include('admin.partial.script.global')
     <script>
         $(document).ready(function (){
             activeParentUl('{{ route('admin.package.index') }}');
             makeInputPrice($('#price'));
+            CKEDITOR.replace( 'contract_attachment',{height:400});
         })
     </script>
 @endsection

@@ -13,7 +13,9 @@ use Modules\Project\app\Models\ProjectWeb;
 class WebProjectController extends Controller implements PrintControllerInterface
 {
     const EMPTY_PLACEHOLDER = '--------------';
+
     private PdfService $pdfService;
+
     public function __construct()
     {
         $this->pdfService = new PdfService([
@@ -74,7 +76,7 @@ class WebProjectController extends Controller implements PrintControllerInterfac
         $orEmpty = fn ($value) => $value ?? self::EMPTY_PLACEHOLDER;
 
         $replacements = [
-            PlaceHolderKeys::ALPHA_DATE => $orEmpty($model->project?->agreement_at?->toJalali()->formatWord('Y.m F')),
+            PlaceHolderKeys::ALPHA_DATE => $orEmpty($model->project?->agreement_at?->toJalali()->formatWord('d F Y')),
             PlaceHolderKeys::USER_COMPANY_REGISTER_ID => $orEmpty($model->project?->user?->company?->register_id),
             PlaceHolderKeys::USER_COMPANY_POSITION => $orEmpty($model->project?->user?->company?->position),
             PlaceHolderKeys::USER_COMPANY => $orEmpty($model->project?->user?->company?->name),
@@ -100,10 +102,10 @@ class WebProjectController extends Controller implements PrintControllerInterfac
         return 'contract::admin.pdf.web-project';
     }
 
-    public function setupPdfService(Model $model = null): void
+    public function setupPdfService(?Model $model = null): void
     {
-        $header = view('contract::admin.pdf.header')->render();
-        $footer = view('contract::admin.pdf.footer',compact('model'))->render();
+        $header = view('contract::admin.pdf.header', compact('model'))->render();
+        $footer = view('contract::admin.pdf.footer', compact('model'))->render();
         $this->pdfService->getMpdfInstance()->SetHTMLHeader($header);
         $this->pdfService->getMpdfInstance()->SetHTMLFooter($footer);
         $this->pdfService->setFont('DejaVuSans', 'B', 14);

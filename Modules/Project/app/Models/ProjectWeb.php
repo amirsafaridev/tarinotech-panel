@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Modules\Contract\app\Models\Signable;
+use Modules\Contract\app\Models\UserSignable;
 use Modules\Log\app\Enums\LogNames;
 use Modules\Package\app\Models\Package;
 use Spatie\Activitylog\LogOptions;
@@ -60,6 +61,11 @@ class ProjectWeb extends Model
     public function signable(): MorphOne
     {
         return $this->morphOne(Signable::class, 'target');
+    }
+
+    public function userSignable(): MorphOne
+    {
+        return $this->morphOne(UserSignable::class, 'target');
     }
 
     public function getActivitylogOptions(): LogOptions

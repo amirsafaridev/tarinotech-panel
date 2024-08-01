@@ -123,6 +123,13 @@
     <p>اين قرارداد تابع قوانين جمهوري اسلامي ايران مي باشد.</p>
     <p>این قرار داد در تاریخ (بحروف) ALPHA_DATE در 14 ماده در دو نسخه یکسان به انضمام برگه سفارش که هر یک به‌ تنهایی اعتبار یکسان دارند تنظیم و به امضای اقای معین تقی زاده به سمت نماینده مجری و USER_COMPANY_POSITION به سمت نماینده كارفرما رسید.</p>
 
+    @if($model?->package)
+        {!! $model?->package->contract_attachment !!}
+    @endif
+
+    @if($model?->project)
+        {!! $model?->project->contract_attachment !!}
+    @endif
 </div>
 </body>
 </html>
