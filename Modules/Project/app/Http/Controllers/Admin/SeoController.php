@@ -6,7 +6,7 @@ use App\Domain\Jobs\SeoProjectFactorMakeJob;
 use App\Enums\Database\Role\PermissionName;
 use App\Enums\General\DropdownItemColor;
 use App\Filters\Admin\Admin\AdminFilter;
-use App\Filters\Admin\Project\StatusFilter;
+use App\Filters\Admin\Package\PackageID;
 use App\Foundation\ValueObjects\Datatable\ColumnOption;
 use App\Foundation\ValueObjects\Datatable\DatatableBase;
 use App\Foundation\ValueObjects\Datatable\Dropdown;
@@ -22,6 +22,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
 use Modules\Project\app\Enums\ProjectBase;
+use Modules\Project\app\Filters\StatusFilter;
 use Modules\Project\app\Filters\TypeFilter;
 use Modules\Project\app\Http\Requests\Admin\Seo\StoreRequest;
 use Modules\Project\app\Http\Requests\Admin\Seo\UpdateRequest;
@@ -177,6 +178,7 @@ class SeoController extends Controller
             'price_monthly' => $req->input('price_monthly'),
             'due_date_payments' => $req->input('due_date_payments'),
             'designed_by' => $req->input('designed_by'),
+            'package_id' => $req->input('package_id'),
         ];
     }
 
@@ -202,6 +204,12 @@ class SeoController extends Controller
             )
             ->addColumn(
                 ColumnOption::new()->setName('title')->setAs('عنوان')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('target.package.title')
+                    ->setSearchable(false)
+                    ->setSortable(false)
+                    ->setAs('پکیج')
             )
             ->addColumn(
                 ColumnOption::new()
@@ -267,11 +275,16 @@ class SeoController extends Controller
                     'admin_id',
                     'created_at',
                 ])
-                ->whereHasMorph('target', [ProjectSeo::class])
+                ->whereHasMorph('target', [ProjectSeo::class], function ($q) {
+                    $q->filter([
+                        PackageID::class,
+                        StatusFilter::class,
+                    ]);
+                })
                 ->with([
                     'type.base',
                     'status.type',
-                    'target',
+                    'target.package',
                     'admin' => function (BelongsTo $query) {
                         $query->select('admins.id', 'admins.first_name', 'admins.last_name');
                     },
@@ -292,6 +305,9 @@ class SeoController extends Controller
                 })
                 ->editColumn('price', function (Project $project) {
                     return number_format($project->price);
+                })
+                ->editColumn('target.package.title', function (Project $project) {
+                    return $project->target?->package?->title ?? '-';
                 })
                 ->editColumn('target.price_monthly', function (Project $project) {
                     return number_format($project->target->price_monthly);

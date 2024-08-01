@@ -144,6 +144,17 @@
                 <div class="card-body pb-4">
 
                     <div class="row">
+
+                        <div class="col-12 col-md-6">
+                            <x-admin.select-model
+                                    identify="package_id"
+                                    title="پکیج انتخابی"
+                                    :items="$packages"
+                                    key="id"
+                                    value="title"
+                                    :old="$project->target->package_id"/>
+                        </div>
+
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="agreement_at"
                                            title="تاریخ قرارداد"
@@ -161,9 +172,6 @@
                         </div>
 
 
-                    </div>
-
-                    <div class="row">
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="field_activity"
                                            title="زمینه فعالیت"
@@ -176,9 +184,8 @@
                                                :old="number_format($project->price)"/>
                             </div>
                         @endif
-                    </div>
 
-                    <div class="row">
+
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="price_monthly"
                                            title="پرداختی ماهیانه (ریال)"
@@ -191,9 +198,6 @@
                                            :old="$project->target->due_date_payments"/>
                         </div>
 
-                    </div>
-
-                    <div class="row">
                         <div class="col-12 col-md-6">
                             <x-admin.select-enum
                                     identify="designed_by"

@@ -32,17 +32,17 @@ class StoreRequest extends FormRequest
         ];
     }
 
-    protected function prepareForValidation()
-    {
-        $this->merge([
-            'designed_by' => (int) $this->input('designed_by'),
-        ]);
-    }
-
     public function messages(): array
     {
         return [
             '' => '',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'designed_by' => (int) $this->input('designed_by'),
+        ]);
     }
 }

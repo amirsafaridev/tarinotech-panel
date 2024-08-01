@@ -133,6 +133,16 @@
                 <div class="card-body pb-4">
 
                     <div class="row">
+
+                        <div class="col-12 col-md-6">
+                            <x-admin.select-model
+                                    identify="package_id"
+                                    title="پکیج انتخابی"
+                                    :items="$packages"
+                                    key="id"
+                                    value="title"/>
+                        </div>
+
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="agreement_at"
                                            title="تاریخ قرارداد"
@@ -147,20 +157,14 @@
                                     :enum-class="\Modules\Project\app\Enums\SeoAgreementDuration::class"/>
                         </div>
 
-
-                    </div>
-
-                    <div class="row">
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="field_activity" title="زمینه فعالیت"/>
                         </div>
+
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="price" title="قیمت (ریال)"/>
                         </div>
 
-                    </div>
-
-                    <div class="row">
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="price_monthly" title="پرداختی ماهیانه (ریال)"/>
                         </div>
@@ -170,9 +174,6 @@
                                            title="تاریخ سررسید پرداخت ها"/>
                         </div>
 
-                    </div>
-
-                    <div class="row">
                         <div class="col-12 col-md-6">
                             <x-admin.select-enum
                                     identify="designed_by"

@@ -13,6 +13,7 @@
             <option value="">انتخاب گزینه</option>
         @endif
 
+        {{ $items }}
         @if ($items->isNotEmpty())
             @foreach ($items as $item)
                 @php

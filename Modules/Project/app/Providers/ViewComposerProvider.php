@@ -78,9 +78,7 @@ class ViewComposerProvider extends ServiceProvider
                 ->get();
 
             $statuses = ProjectStatus::query()
-                ->whereHas('type', function ($q) {
-                    $q->where('base_id', ProjectBase::Ads);
-                })
+                ->adsBase()
                 ->with('type')
                 ->get();
 
@@ -101,9 +99,7 @@ class ViewComposerProvider extends ServiceProvider
                 ->get();
 
             $statuses = ProjectStatus::query()
-                ->whereHas('type', function ($q) {
-                    $q->where('base_id', ProjectBase::Web);
-                })
+                ->webBase()
                 ->with('type')
                 ->get();
 
@@ -131,9 +127,7 @@ class ViewComposerProvider extends ServiceProvider
                 ->get();
 
             $statuses = ProjectStatus::query()
-                ->whereHas('type', function ($q) {
-                    $q->where('base_id', ProjectBase::Web);
-                })
+                ->webBase()
                 ->with('type')
                 ->get();
 
@@ -154,13 +148,17 @@ class ViewComposerProvider extends ServiceProvider
                 ->get();
 
             $statuses = ProjectStatus::query()
-                ->whereHas('type', function ($q) {
-                    $q->where('base_id', ProjectBase::Seo);
-                })
+                ->seoBase()
                 ->with('type')
                 ->get();
 
-            $view->with(compact('types', 'statuses'));
+            $packages = Package::query()
+                ->whereHas('type', function ($q) {
+                    $q->where('base_id', ProjectBase::Seo);
+                })
+                ->get();
+
+            $view->with(compact('types', 'statuses', 'packages'));
         });
     }
 

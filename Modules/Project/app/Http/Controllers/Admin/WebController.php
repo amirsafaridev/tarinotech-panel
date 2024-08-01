@@ -359,6 +359,7 @@ class WebController extends Controller
                 ->whereHasMorph('target', [ProjectWeb::class], function ($q) {
                     $q->filter([
                         PackageID::class,
+                        StatusFilter::class,
                     ]);
                 })
                 ->with([
