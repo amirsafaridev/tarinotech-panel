@@ -17,16 +17,60 @@ class AdminApplyScope
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (hasAdminPermission(PermissionName::PROJECT_SELF)) {
-            Project::addGlobalScope('project_self_scope', function (Builder $builder) {
-                $builder->where('admin_id', auth()->id());
-            });
+        if ($this->hasProjectSelfPermission()) {
+            if (! $this->shouldSkipProjectScope($request->route()->getName())) {
+                $this->applyProjectScope();
+            }
 
-            Factor::addGlobalScope('factor_self_scope', function (Builder $builder) {
-                $builder->where('admin_id', auth()->id());
-            });
+            $this->applyFactorScope();
         }
 
         return $next($request);
+    }
+
+    /**
+     * Check if the current admin has the PROJECT_SELF permission.
+     */
+    private function hasProjectSelfPermission(): bool
+    {
+        return hasAdminPermission(PermissionName::PROJECT_SELF);
+    }
+
+    /**
+     * Apply the project scope to the Project model.
+     */
+    private function applyProjectScope(): void
+    {
+        Project::addGlobalScope('project_self_scope', function (Builder $builder) {
+            $builder->where('admin_id', auth()->id());
+        });
+    }
+
+    /**
+     * Apply the factor scope to the Factor model.
+     */
+    private function applyFactorScope(): void
+    {
+        Factor::addGlobalScope('factor_self_scope', function (Builder $builder) {
+            $builder->where('admin_id', auth()->id());
+        });
+    }
+
+    /**
+     * Determine if the project scope should be skipped for the given route name.
+     */
+    private function shouldSkipProjectScope(?string $routeName): bool
+    {
+        $skippedRoutes = [
+            'admin.factor.*',
+        ];
+
+        foreach ($skippedRoutes as $pattern) {
+            if (fnmatch($pattern, $routeName)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

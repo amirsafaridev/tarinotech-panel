@@ -48,22 +48,21 @@ Route::group(['guard' => 'admin'], function () {
         Route::patch('/{factor}', [FactorManualController::class, 'update'])->name('update');
     });
 
-    /* FACTOR ROUTES & REMOVE SELF PROJECT SCOPE */
-    Route::group(['middleware' => 'admin.scope.remove.project.self'], function () {
-        Route::get('/', [FactorController::class, 'index'])->name('index');
-        Route::get('/data', [FactorController::class, 'data'])->name('data');
-        Route::get('/create', [FactorController::class, 'create'])->name('create');
-        Route::post('/', [FactorController::class, 'store'])->name('store');
+    /* FACTOR ROUTES */
 
-        Route::group([], function () {
-            Route::get('/{factor}', [FactorUpdateController::class, 'index'])->name('edit');
-            Route::get('/{factor}/show', [FactorController::class, 'show'])->name('show');
+    Route::get('/', [FactorController::class, 'index'])->name('index');
+    Route::get('/data', [FactorController::class, 'data'])->name('data');
+    Route::get('/create', [FactorController::class, 'create'])->name('create');
+    Route::post('/', [FactorController::class, 'store'])->name('store');
 
-            Route::put('/{factor}', [FactorUpdateController::class, 'update'])->name('update');
-            Route::delete('/{factor}', [FactorController::class, 'destroy'])->name('destroy');
-        })->whereNumber('factor');
+    Route::group([], function () {
+        Route::get('/{factor}', [FactorUpdateController::class, 'index'])->name('edit');
+        Route::get('/{factor}/show', [FactorController::class, 'show'])->name('show');
 
-        Route::get('/view/item', [MakeViewController::class, 'getItem'])->name('item.view');
-    });
+        Route::put('/{factor}', [FactorUpdateController::class, 'update'])->name('update');
+        Route::delete('/{factor}', [FactorController::class, 'destroy'])->name('destroy');
+    })->whereNumber('factor');
+
+    Route::get('/view/item', [MakeViewController::class, 'getItem'])->name('item.view');
 
 });
