@@ -185,7 +185,7 @@ if (! function_exists('makeUiStar')) {
 if (! function_exists('hasAdminPermission')) {
     function hasAdminPermission(string $permissionName): bool
     {
-        return auth()->user()->hasPermissionTo($permissionName);
+        return auth('admin')->user()->hasPermissionTo($permissionName);
     }
 }
 
