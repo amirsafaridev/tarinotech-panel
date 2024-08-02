@@ -14,4 +14,9 @@ class SignableAttachment extends Model
     {
         return $this->morphTo();
     }
+
+    public function user(): MorphTo
+    {
+        return $this->morphTo();
+    }
 }

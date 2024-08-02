@@ -36,12 +36,12 @@ class SeoProjectFactorMakeJob
 
         $monthlyPrice = $originalPrice / $agreementDuration;
 
-        $data = \Verta::parse($project->agreement_at);
+        $date = \Verta::parse($project->agreement_at);
 
         $accumulatedTotal = 0;
 
         for ($month = 1; $month <= $agreementDuration; $month++) {
-            $factorTitle = $this->getJalaliFormattedDate($data, $month);
+            $factorTitle = $this->getJalaliFormattedDate($date, $date->month);
 
             $categoryId = 6;
 
@@ -73,8 +73,8 @@ class SeoProjectFactorMakeJob
                 'is_official' => $isOfficial,
                 'gateway' => $gateway,
                 'gateway_data' => [],
-                'created_at' => $data,
-                'updated_at' => $data,
+                'created_at' => $date,
+                'updated_at' => $date,
             ]);
 
             $factor->items()->create([
@@ -86,13 +86,13 @@ class SeoProjectFactorMakeJob
                 'tax_amount' => $taxAmount,
                 'discount' => 0,
                 'final_price' => $totalPrice,
-                'created_at' => $data,
-                'updated_at' => $data,
+                'created_at' => $date,
+                'updated_at' => $date,
             ]);
 
             $accumulatedTotal += $price;
 
-            $data = $data->addMonth();
+            $date = $date->addMonth();
         }
     }
 

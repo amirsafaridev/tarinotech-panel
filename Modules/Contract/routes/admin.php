@@ -11,12 +11,11 @@
 |
 */
 
-use App\Enums\Database\Print\PrintableType;
 use Modules\Contract\app\Http\Controllers\Admin\Preview\FactorController;
 use Modules\Contract\app\Http\Controllers\Admin\Preview\WebProjectController;
-use Modules\Contract\app\Http\Controllers\Admin\PreviewController;
 use Modules\Contract\app\Http\Controllers\Admin\SignableController;
 use Modules\Contract\app\Http\Controllers\Admin\SignController;
+use Modules\Contract\app\Http\Controllers\Admin\UserSignController;
 
 Route::group(['guard' => 'admin'], function () {
 
@@ -26,15 +25,10 @@ Route::group(['guard' => 'admin'], function () {
     Route::get('/preview/{id}/factor', [FactorController::class, 'index'])
         ->name('factor.preview');
 
-    /*Route::get('/preview/{targetType}/{targetId}', [PreviewController::class, 'index'])
-        ->whereNumber('targetId')
-        ->whereIn('targetType', [
-            PrintableType::ProjectWeb,
-            PrintableType::ProjectSeo,
-            PrintableType::ProjectAds,
-            PrintableType::Factor,
-        ])
-        ->name('preview');*/
+    Route::group(['prefix' => 'sign/user', 'as' => 'sign.user.'], function () {
+        Route::get('/{user_signable}', [UserSignController::class, 'edit'])->name('edit');
+        Route::patch('/{user_signable}', [UserSignController::class, 'update'])->name('update');
+    });
 
     Route::group(['prefix' => 'sign', 'as' => 'sign.'], function () {
         Route::get('/', [SignController::class, 'index'])->name('index');

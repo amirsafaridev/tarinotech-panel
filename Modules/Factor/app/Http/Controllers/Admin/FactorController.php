@@ -302,7 +302,8 @@ class FactorController extends Controller
                     'project' => function ($query) {
                         $query->select('projects.id', 'projects.title', 'projects.domain');
                     },
-                ]);
+                ])
+                ->withoutGlobalScope('project_self_scope');
 
             return DataTables::eloquent($factors)
                 ->editColumn('status', function (Factor $factor) {
