@@ -294,7 +294,7 @@ class FactorController extends Controller
                     AdminFilter::class,
                     GatewayFilter::class,
                 ])
-                ->has('project')
+                //->has('project')
                 ->with([
                     'admin' => function ($query) {
                         $query->select('admins.id', 'admins.first_name', 'admins.last_name');
