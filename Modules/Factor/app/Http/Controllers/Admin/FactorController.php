@@ -19,7 +19,6 @@ use App\Traits\HasDatatable;
 use App\Traits\HasJsonCommonResponse;
 use DB;
 use Exception;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Modules\Factor\app\Enums\FactorStatus;
 use Modules\Factor\app\Enums\PaymentGateway;
@@ -295,9 +294,7 @@ class FactorController extends Controller
                     AdminFilter::class,
                     GatewayFilter::class,
                 ])
-                ->whereHas('project', function (Builder $q) {
-                    $q->withoutGlobalScope('project_self_scope');
-                })
+                ->has('project')
                 ->with([
                     'admin' => function ($query) {
                         $query->select('admins.id', 'admins.first_name', 'admins.last_name');
