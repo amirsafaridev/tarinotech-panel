@@ -10,6 +10,7 @@ use App\Http\Middleware\GlobalRequestTransform;
 use App\Http\Middleware\IsPresenterUser;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Http\Middleware\RemoveProjectSelfScope;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
 use App\Http\Middleware\ValidateSignature;
@@ -110,5 +111,6 @@ class Kernel extends HttpKernel
         'throttle' => ThrottleRequests::class,
         'verified' => EnsureEmailIsVerified::class,
         'admin.scope' => AdminApplyScope::class,
+        'admin.scope.remove.project.self' => RemoveProjectSelfScope::class,
     ];
 }

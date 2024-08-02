@@ -21,6 +21,7 @@ class AdminApplyScope
             Project::addGlobalScope('project_self_scope', function (Builder $builder) {
                 $builder->where('admin_id', auth()->id());
             });
+
             Factor::addGlobalScope('factor_self_scope', function (Builder $builder) {
                 $builder->where('admin_id', auth()->id());
             });

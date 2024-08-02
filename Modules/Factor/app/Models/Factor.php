@@ -53,7 +53,7 @@ class Factor extends Model
 
     public function project(): BelongsTo
     {
-        return $this->belongsTo(Project::class)->withoutGlobalScope('project_self_scope');
+        return $this->belongsTo(Project::class);
     }
 
     public function items(): HasMany

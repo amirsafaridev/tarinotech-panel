@@ -30,6 +30,7 @@ class ViewComposerProvider extends ServiceProvider
         view()->composer(['factor::admin.create', 'factor::admin.edit'], function ($view) {
 
             $projects = Project::query()
+                ->withoutGlobalScope('project_self_scope')
                 ->select(['id', 'domain', 'title', 'base_id'])
                 ->with('base')
                 ->get()
