@@ -2,8 +2,13 @@
 
 namespace Modules\Project\app\Providers;
 
+use App\Enums\Database\Role\PermissionName;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Routing\Route as RouteIlluminate;
 use Illuminate\Support\Facades\Route;
+use Modules\Factor\app\Models\Factor;
+use Modules\Project\app\Models\Project;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -20,6 +25,8 @@ class RouteServiceProvider extends ServiceProvider
     public function boot(): void
     {
         parent::boot();
+
+        $this->bindAdminModels();
     }
 
     /**
@@ -58,5 +65,51 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware(['web', 'admin.auth', 'acl', 'admin.scope'])
             ->as('admin.project.')
             ->group(module_path('Project', '/routes/admin.php'));
+    }
+
+    private function bindAdminModels(): void
+    {
+        $this->bindProjectModel();
+        $this->bindFactorModel();
+    }
+
+    private function bindProjectModel()
+    {
+        Route::bind('project', function ($value, RouteIlluminate $route) {
+
+            if ($this->isAdminRoute($route)) {
+
+                Project::addGlobalScope('project_self_scope', function (Builder $builder) {
+                    $builder->where('admin_id', auth('admin')->id());
+                });
+
+            }
+
+            return Project::findOrFail($value);
+        });
+    }
+
+    private function bindFactorModel()
+    {
+        Route::bind('factor', function ($value, RouteIlluminate $route) {
+
+            if ($this->isAdminRoute($route) && $this->hasProjectSelfPermission()) {
+                Factor::addGlobalScope('project_self_scope', function (Builder $builder) {
+                    $builder->where('admin_id', auth('admin')->id());
+                });
+            }
+
+            return Factor::findOrFail($value);
+        });
+    }
+
+    private function hasProjectSelfPermission(): bool
+    {
+        return hasAdminPermission(PermissionName::PROJECT_SELF);
+    }
+
+    protected function isAdminRoute(RouteIlluminate $route): bool
+    {
+        return str_starts_with($route->getName(), 'admin.');
     }
 }
