@@ -85,7 +85,7 @@ class RouteServiceProvider extends ServiceProvider
 
             }
 
-            return Project::findOrFail($value);
+            return Project::query()->findOrFail($value);
         });
     }
 
@@ -99,7 +99,7 @@ class RouteServiceProvider extends ServiceProvider
                 });
             }
 
-            return Factor::findOrFail($value);
+            return Factor::query()->findOrFail($value);
         });
     }
 
