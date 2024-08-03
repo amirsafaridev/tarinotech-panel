@@ -77,7 +77,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::bind('project', function ($value, RouteIlluminate $route) {
 
-            if ($this->isAdminRoute($route) && hasAdminPermission(PermissionName::PROJECT_SELF)) {
+            if ($this->isAdminRoute($route) && $this->hasProjectSelfPermission()) {
 
                 Project::addGlobalScope('project_self_scope', function (Builder $builder) {
                     $builder->where('admin_id', auth('admin')->id());
