@@ -118,7 +118,9 @@
                                 {{ \Modules\Factor\app\Enums\PaymentGateway::getDescription($factor->gateway) }}
                             @endif
                         </td>
-                        <td>{!! factorStatusRender($factor->status) !!}</td>
+                        <td>
+                            {!! factorStatusRender($factor->status,$factor->is_confirm) !!}
+                        </td>
                         <td>
                             @if($factor->paid_at)
                                 {{ $factor->paid_at->toJalali()->format(formatJalaliDate()) }}
