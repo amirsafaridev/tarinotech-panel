@@ -69,6 +69,8 @@ class PaymentController extends Controller
 
     public function verifySepehr()
     {
+        $title = 'نتیجه تراکنش';
+
         try {
             $identify = request('invoiceid');
 
@@ -94,7 +96,7 @@ class PaymentController extends Controller
                 'paid_at' => now(),
             ]);
 
-            return view('payment::web.sepehr-success', compact('factor'));
+            return view('payment::web.sepehr-success', compact('title', 'factor'));
 
         } catch (Exception $exception) {
 
