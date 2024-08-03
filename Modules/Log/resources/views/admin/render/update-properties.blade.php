@@ -14,15 +14,23 @@
     </thead>
     <tbody>
     @foreach($oldProperties as $attribute => $oldValue)
-        @unless(in_array($attribute, $excludeAttributes))
-            @if(isset($newProperties[$attribute]) && $oldValue != $newProperties[$attribute])
-                <tr>
-                    <td>{{ formatAttributeName($attribute) }}</td>
-                    <td>{{ $oldValue }}</td>
-                    <td>{{ $newProperties[$attribute] ?? 'Not set' }}</td>
-                </tr>
-            @endif
-        @endunless
+        @if($attribute == 'id')
+            <tr>
+                <td>{{ formatAttributeName($attribute) }}</td>
+                <td>{{ $oldValue }}</td>
+                <td>{{ $newProperties[$attribute] ?? 'Not set' }}</td>
+            </tr>
+        @else
+            @unless(in_array($attribute, $excludeAttributes))
+                @if(isset($newProperties[$attribute]) && $oldValue != $newProperties[$attribute])
+                    <tr>
+                        <td>{{ formatAttributeName($attribute) }}</td>
+                        <td>{{ $oldValue }}</td>
+                        <td>{{ $newProperties[$attribute] ?? 'Not set' }}</td>
+                    </tr>
+                @endif
+            @endunless
+        @endif
     @endforeach
     </tbody>
 </table>
