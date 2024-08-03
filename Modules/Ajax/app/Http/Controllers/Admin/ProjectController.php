@@ -18,6 +18,7 @@ class ProjectController extends Controller
 
         $projectId = $request->get('projectId');
         $project = Project::query()
+            ->withoutGlobalScope('project_self_scope')
             ->with(['user', 'base'])
             ->findOrFail($projectId);
 
