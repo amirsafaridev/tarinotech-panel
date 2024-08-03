@@ -16,7 +16,7 @@ class RedirectIfAdmin
         if (Auth::guard($guard)->check()) {
             Auth::shouldUse($guard);
 
-            return redirect()->route('admin.home');
+            return redirect()->route('admin.dashboard.index');
         }
 
         return $next($request);

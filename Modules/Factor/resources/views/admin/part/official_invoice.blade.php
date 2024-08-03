@@ -134,7 +134,7 @@
         <td width="50%" colspan="2">
             <p>
                 <span>نام شخص {{ \Modules\User\app\Enums\PersonType::getDescription($factor->project->user->person_type) }} :</span>
-                <span>{{ $factor->project->user->first_name }} {{ $factor->project->user->last_name }}</span>
+                <span>{{ $factor->project->user->company?->name }}</span>
             </p>
         </td>
         <td width="50%" colspan="2">

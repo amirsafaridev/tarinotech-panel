@@ -63,6 +63,7 @@ class AdminApplyScope
     {
         $skippedRoutes = [
             'admin.factor.*',
+            'admin.contract.factor.preview',
         ];
 
         foreach ($skippedRoutes as $pattern) {

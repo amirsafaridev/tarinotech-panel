@@ -68,7 +68,7 @@ class FactorController extends Controller implements PrintControllerInterface
         return 'contract::admin.pdf.factor';
     }
 
-    public function setupPdfService(Model $model = null): void
+    public function setupPdfService(?Model $model = null): void
     {
         $this->pdfService->setFont('DejaVuSans', 'B', 14);
     }
