@@ -107,7 +107,7 @@
     <tr>
         <td width="25%">
             <p>
-                <span>شماره ثبت :</span>
+                <span>کد اقتصادی :</span>
                 <span>{{ $factor->project->user->economic_code }}</span>
             </p>
         </td>
