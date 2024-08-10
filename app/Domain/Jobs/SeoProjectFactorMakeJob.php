@@ -42,7 +42,7 @@ class SeoProjectFactorMakeJob
 
         for ($month = 1; $month <= $agreementDuration; $month++) {
 
-            $factorTitle = $this->getJalaliFormattedDate($date);
+            $factorTitle = $this->getJalaliFormattedDate($date, $month);
 
             $categoryId = 6;
 
@@ -97,13 +97,11 @@ class SeoProjectFactorMakeJob
         }
     }
 
-    protected function getJalaliFormattedDate($data): string
+    protected function getJalaliFormattedDate($data, $monthNumber): string
     {
         $data = verta($data);
-        $month = $data->month;
         $monthName = $data->formatWord('F');
-        $monthNumber = $this->monthNames[$month] ?? $month;
 
-        return "سئو ماه {$monthNumber} ({$monthName})";
+        return "سئو ماه {$this->monthNames[$monthNumber]} ({$monthName})";
     }
 }
