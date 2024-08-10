@@ -12,6 +12,7 @@
 */
 
 use Modules\Contract\app\Http\Controllers\Admin\Preview\FactorController;
+use Modules\Contract\app\Http\Controllers\Admin\Preview\SeoProjectController;
 use Modules\Contract\app\Http\Controllers\Admin\Preview\WebProjectController;
 use Modules\Contract\app\Http\Controllers\Admin\SignableController;
 use Modules\Contract\app\Http\Controllers\Admin\SignController;
@@ -21,6 +22,9 @@ Route::group(['guard' => 'admin'], function () {
 
     Route::get('/preview/{id}/project-web', [WebProjectController::class, 'index'])
         ->name('web-project.preview');
+
+    Route::get('/preview/{id}/project-seo', [SeoProjectController::class, 'index'])
+        ->name('seo-project.preview');
 
     Route::get('/preview/{id}/factor', [FactorController::class, 'index'])
         ->name('factor.preview');
@@ -40,7 +44,7 @@ Route::group(['guard' => 'admin'], function () {
 
     Route::group(['prefix' => 'project', 'as' => 'project.'], function () {
         Route::get('/web/{projectWeb}', [SignableController::class, 'web'])->name('web');
-        Route::get('/seo/{projectAds}', [SignableController::class, 'ads'])->name('ads');
-        Route::get('/ads/{projectSeo}', [SignableController::class, 'seo'])->name('seo');
+        Route::get('/ads/{projectAds}', [SignableController::class, 'ads'])->name('ads');
+        Route::get('/seo/{projectSeo}', [SignableController::class, 'seo'])->name('seo');
     });
 });

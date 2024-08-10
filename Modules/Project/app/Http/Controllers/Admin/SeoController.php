@@ -93,7 +93,7 @@ class SeoController extends Controller
     {
         $project = Project::findSeoTarget($projectId);
 
-        $title = self::EDIT_TITLE;
+        $title = self::EDIT_TITLE.' - '.$project->title;
 
         return view('project::admin.seo.edit', compact('title', 'project'));
     }

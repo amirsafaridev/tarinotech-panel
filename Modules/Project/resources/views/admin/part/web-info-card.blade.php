@@ -162,12 +162,6 @@
                 <td>{{ $project->target->working_days }}</td>
             </tr>
 
-            <tr>
-                <td colspan="2">
-                    <button type="button" onclick="printMe()" class="btn btn-primary" >پرینت</button>
-                </td>
-            </tr>
-
             </tbody>
         </table>
     </div>

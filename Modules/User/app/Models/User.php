@@ -63,6 +63,9 @@ class User extends Authenticatable
 
         'knowledge_way_id',
         'knowledge_way',
+
+        'brand',
+        'economic_code',
     ];
 
     /**

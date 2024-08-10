@@ -8,9 +8,10 @@ use App\Service\PdfService;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Contract\app\Enums\PlaceHolderKeys;
+use Modules\Project\app\Models\ProjectSeo;
 use Modules\Project\app\Models\ProjectWeb;
 
-class WebProjectController extends Controller implements PrintControllerInterface
+class SeoProjectController extends Controller implements PrintControllerInterface
 {
     const EMPTY_PLACEHOLDER = '--------------';
 
@@ -57,7 +58,7 @@ class WebProjectController extends Controller implements PrintControllerInterfac
      */
     public function findModel(int $id): Model
     {
-        return ProjectWeb::query()
+        return ProjectSeo::query()
             ->with([
                 'project.user',
                 'package',
@@ -90,6 +91,10 @@ class WebProjectController extends Controller implements PrintControllerInterfac
             PlaceHolderKeys::PROJECT_PRICE => $orEmpty(number_format($model->project?->price)),
             PlaceHolderKeys::PROJECT_TYPE => $orEmpty($model->package?->title),
             PlaceHolderKeys::PROJECT_TIME_WORK => $orEmpty($model->working_days),
+            PlaceHolderKeys::PROJECT_DOMAIN => $orEmpty($model->project->domain),
+            PlaceHolderKeys::SEO_KEYWORD_COUNT => $orEmpty($model->keywords_count),
+            PlaceHolderKeys::SEO_AMOUNT_CONTENT => $orEmpty($model->amount_content),
+            PlaceHolderKeys::SEO_KEYWORDS => $orEmpty($model->keywords),
             PlaceHolderKeys::USER_ECONOMIC_CODE => $orEmpty($model->project?->user?->economic_code),
         ];
 
@@ -101,7 +106,7 @@ class WebProjectController extends Controller implements PrintControllerInterfac
 
     public function getViewPath(): string
     {
-        return 'contract::admin.pdf.web-project';
+        return 'contract::admin.pdf.seo-project';
     }
 
     public function setupPdfService(?Model $model = null): void

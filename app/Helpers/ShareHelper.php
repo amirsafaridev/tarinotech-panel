@@ -228,6 +228,9 @@ if (! function_exists('makeRouteContractPreview')) {
             case ProjectWeb::class:
                 $route = route('admin.contract.web-project.preview', $targetId);
                 break;
+            case ProjectSeo::class:
+                $route = route('admin.contract.seo-project.preview', $targetId);
+                break;
             case Factor::class:
                 $route = route('admin.contract.factor.preview', $targetId);
                 break;

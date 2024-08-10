@@ -107,22 +107,25 @@
     <tr>
         <td width="25%">
             <p>
-                <span>شماره اقتصادی :</span>
-                <span>-</span>
+                <span>شماره ثبت :</span>
+                <span>{{ $factor->project->user->economic_code }}</span>
             </p>
         </td>
-        <td width="25%">
-            <p>
-                <span>شماره / شماره ملی :</span>
-                <span>{{ $factor->project->user->national_id }}</span>
-            </p>
-        </td>
-        <td width="25%">
-            <p>
-                <span>شناسه ملی :</span>
-                <span>{{ $factor->project->user->company?->identify }}</span>
-            </p>
-        </td>
+        @if($factor->project->user_type === \Modules\User\app\Enums\PersonType::Person)
+            <td width="25%">
+                <p>
+                    <span>شماره / شماره ملی :</span>
+                    <span>{{ $factor->project->user->national_id }}</span>
+                </p>
+            </td>
+        @else
+            <td width="25%">
+                <p>
+                    <span>شناسه ملی :</span>
+                    <span>{{ $factor->project->user->company?->identify }}</span>
+                </p>
+            </td>
+        @endif
         <td width="25%">
             <p>
                 <span>کدپستی :</span>
@@ -133,7 +136,7 @@
     <tr>
         <td width="50%" colspan="2">
             <p>
-                <span>نام شخص {{ \Modules\User\app\Enums\PersonType::getDescription($factor->project->user->person_type) }} :</span>
+                <span>نام شخص حقیقی/حقوقی :</span>
                 <span>{{ $factor->project->user->company?->name }}</span>
             </p>
         </td>

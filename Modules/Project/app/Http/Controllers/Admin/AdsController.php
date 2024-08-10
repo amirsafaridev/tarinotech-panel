@@ -83,7 +83,7 @@ class AdsController extends Controller
     {
         $project = Project::findAdsTarget($projectId);
 
-        $title = self::EDIT_TITLE;
+        $title = self::EDIT_TITLE.' - '.$project->title;
 
         return view('project::admin.ads.edit', compact('title', 'project'));
     }

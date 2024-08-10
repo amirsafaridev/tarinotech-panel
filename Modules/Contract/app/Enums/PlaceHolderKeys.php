@@ -15,7 +15,11 @@ final class PlaceHolderKeys extends Enum implements LocalizedEnum
 
     const USER_COMPANY_REGISTER_ID = 'USER_COMPANY_REGISTER_ID';
 
+    const USER_COMPANY_IDENTIFY = 'USER_COMPANY_IDENTIFY';
+
     const USER_ADDRESS = 'USER_ADDRESS';
+
+    const USER_ECONOMIC_CODE = 'USER_ECONOMIC_CODE';
 
     const USER_TEL = 'USER_TEL';
 
@@ -31,5 +35,13 @@ final class PlaceHolderKeys extends Enum implements LocalizedEnum
 
     const PROJECT_PRICE = 'PROJECT_PRICE';
 
+    const PROJECT_DOMAIN = 'PROJECT_DOMAIN';
+
     const PROJECT_TIME_WORK = 'PROJECT_TIME_WORK';
+
+    const SEO_KEYWORD_COUNT = 'SEO_KEYWORD_COUNT';
+
+    const SEO_AMOUNT_CONTENT = 'SEO_AMOUNT_CONTENT';
+
+    const SEO_KEYWORDS = 'SEO_KEYWORDS';
 }

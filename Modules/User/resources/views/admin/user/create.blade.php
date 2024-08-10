@@ -119,6 +119,15 @@
 
                             <div class="row">
                                 <div class="col-12 col-md-6">
+                                    <x-admin.input identify="economic_code" title="کد اقتصادی" />
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <x-admin.input identify="brand" title="نام برند" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 col-md-6">
                                     <x-admin.input identify="company_position" title="سمت" />
                                 </div>
                             </div>

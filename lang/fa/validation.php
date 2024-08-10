@@ -299,5 +299,8 @@ return [
 
         'manual_file' => 'فایل',
         'manual_payment_date' => 'تاریخ واریز',
+
+        'economic_code' => 'کد اقتصادی',
+        'brand' => 'نام برند',
     ],
 ];

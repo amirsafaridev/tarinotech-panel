@@ -36,12 +36,13 @@ class SeoProjectFactorMakeJob
 
         $monthlyPrice = $originalPrice / $agreementDuration;
 
-        $date = \Verta::parse($project->agreement_at);
+        $date = $project->agreement_at;
 
         $accumulatedTotal = 0;
 
         for ($month = 1; $month <= $agreementDuration; $month++) {
-            $factorTitle = $this->getJalaliFormattedDate($date, $date->month);
+
+            $factorTitle = $this->getJalaliFormattedDate($date);
 
             $categoryId = 6;
 
@@ -96,9 +97,10 @@ class SeoProjectFactorMakeJob
         }
     }
 
-    protected function getJalaliFormattedDate($data, $month): string
+    protected function getJalaliFormattedDate($data): string
     {
-        // $jalaliDate = $data->toJalali();
+        $data = verta($data);
+        $month = $data->month;
         $monthName = $data->formatWord('F');
         $monthNumber = $this->monthNames[$month] ?? $month;
 

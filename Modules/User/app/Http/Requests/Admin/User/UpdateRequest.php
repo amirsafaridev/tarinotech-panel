@@ -43,6 +43,10 @@ class UpdateRequest extends FormRequest
 
             'knowledge_way_id' => 'required|integer|exists:knowledge_ways,id',
             'knowledge_way' => 'max:255',
+
+            'economic_code' => 'string|max:255',
+            'brand' => 'string|max:255',
+
             'communications' => 'array',
 
         ];

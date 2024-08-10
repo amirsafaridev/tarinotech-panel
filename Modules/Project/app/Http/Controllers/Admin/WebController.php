@@ -108,7 +108,7 @@ class WebController extends Controller
     {
         $project = Project::findWebTarget($projectId);
 
-        $title = self::EDIT_TITLE;
+        $title = self::EDIT_TITLE.' - '.$project->title;
 
         return view('project::admin.web.edit', compact('title', 'project'));
     }

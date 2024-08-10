@@ -43,7 +43,7 @@ class ProjectController extends Controller
     public function manage(Project $project)
     {
 
-        $title = self::SHOW_TITLE;
+        $title = self::SHOW_TITLE.' - '.$project->title;
 
         $project->load([
             'admin',

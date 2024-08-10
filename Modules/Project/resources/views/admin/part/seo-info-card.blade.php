@@ -71,12 +71,6 @@
                 <td>{{ \Modules\Project\app\Enums\ProjectDesignBy::getDescription($project->target->designed_by) }}</td>
             </tr>
 
-            <tr>
-                <td colspan="2">
-                    <button type="button" onclick="printMe()" class="btn btn-primary" >پرینت</button>
-                </td>
-            </tr>
-
             </tbody>
         </table>
     </div>

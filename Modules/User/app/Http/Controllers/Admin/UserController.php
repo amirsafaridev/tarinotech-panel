@@ -203,6 +203,10 @@ class UserController extends Controller
 
         $userData['knowledge_way_id'] = $req->input('knowledge_way_id');
         $userData['knowledge_way'] = $req->input('knowledge_way');
+
+        $userData['economic_code'] = $req->input('economic_code');
+        $userData['brand'] = $req->input('brand');
+
         $userData['mobile'] = $req->input('mobile');
 
         $dob = $req->input('dob');
