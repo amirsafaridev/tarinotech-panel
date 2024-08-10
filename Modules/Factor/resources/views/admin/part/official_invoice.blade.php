@@ -143,7 +143,7 @@
         <td width="50%" colspan="2">
             <p>
                 <span>نام بنگاه اقتصادی :</span>
-                <span>{{ $factor->project->user->company?->name }}</span>
+                <span>{{ $factor->project->user->brand }}</span>
             </p>
         </td>
     </tr>

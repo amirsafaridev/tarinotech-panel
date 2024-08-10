@@ -44,9 +44,9 @@ class WebController extends Controller
 
     const CREATE_TITLE = 'پروژه های وب - ایجاد';
 
-    const EDIT_TITLE = 'پروژه های وب - ویرایش';
+    const EDIT_TITLE = 'ویرایش';
 
-    const SHOW_TITLE = 'پروژه های وب - نمایش';
+    const SHOW_TITLE = 'نمایش';
 
     public function index()
     {

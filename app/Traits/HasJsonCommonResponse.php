@@ -57,6 +57,12 @@ trait HasJsonCommonResponse
             ->with('success', trans('panel.success_delete'));
     }
 
+    protected function successBack($route, $message): RedirectResponse
+    {
+        return redirect($route)
+            ->with('success', $message);
+    }
+
     protected function errorBack($message): RedirectResponse
     {
         return redirect()->with('danger', $message);

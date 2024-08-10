@@ -33,9 +33,9 @@ class AdsController extends Controller
 
     const CREATE_TITLE = 'پروژه های ادز - ایجاد';
 
-    const EDIT_TITLE = 'پروژه های ادز - ویرایش';
+    const EDIT_TITLE = 'ویرایش';
 
-    const SHOW_TITLE = 'پروژه های ادز - نمایش';
+    const SHOW_TITLE = 'نمایش';
 
     public function index()
     {

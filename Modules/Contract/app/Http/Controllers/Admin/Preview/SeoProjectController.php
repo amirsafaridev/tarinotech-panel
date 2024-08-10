@@ -70,7 +70,7 @@ class SeoProjectController extends Controller implements PrintControllerInterfac
     }
 
     /**
-     * @param  ProjectWeb  $model
+     * @param  ProjectSeo  $model
      */
     public function fillData(string $view, Model $model): string
     {
@@ -96,6 +96,9 @@ class SeoProjectController extends Controller implements PrintControllerInterfac
             PlaceHolderKeys::SEO_AMOUNT_CONTENT => $orEmpty($model->amount_content),
             PlaceHolderKeys::SEO_KEYWORDS => $orEmpty($model->keywords),
             PlaceHolderKeys::USER_ECONOMIC_CODE => $orEmpty($model->project?->user?->economic_code),
+            PlaceHolderKeys::SEO_MONTHLY_PAYMENT_DOUBLE => $orEmpty(number_format($model->price_monthly * 2)),
+            PlaceHolderKeys::SEO_MONTHLY_PAYMENT => $orEmpty(number_format($model->price_monthly)),
+            PlaceHolderKeys::SEO_AGREEMENT_DURATION => $orEmpty(round($model->agreement_duration / 30)),
         ];
 
         $keys = array_keys($replacements);

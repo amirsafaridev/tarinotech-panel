@@ -51,7 +51,7 @@ class WebProjectFactorMakerJob
                 'admin_id' => $project->admin_id,
                 'project_id' => $project->id,
                 'final_price' => $totalPrice,
-                'status' => FactorStatus::Draft,
+                'status' => FactorStatus::Pending,
                 'is_official' => $isOfficial,
                 'gateway' => $gateway,
                 'gateway_data' => [],

@@ -27,7 +27,7 @@ class ProjectController extends Controller
 
     const INDEX_TITLE = 'پروژه ها';
 
-    const SHOW_TITLE = 'پروژه ها - نمایش';
+    const SHOW_TITLE = 'نمایش';
 
     public function index()
     {

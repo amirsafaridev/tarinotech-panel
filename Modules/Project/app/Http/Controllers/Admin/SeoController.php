@@ -39,9 +39,9 @@ class SeoController extends Controller
 
     const CREATE_TITLE = 'پروژه های سئو - ایجاد';
 
-    const EDIT_TITLE = 'پروژه های سئو - ویرایش';
+    const EDIT_TITLE = 'ویرایش';
 
-    const SHOW_TITLE = 'پروژه های سئو - نمایش';
+    const SHOW_TITLE = 'نمایش';
 
     public function index()
     {

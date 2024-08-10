@@ -44,4 +44,10 @@ final class PlaceHolderKeys extends Enum implements LocalizedEnum
     const SEO_AMOUNT_CONTENT = 'SEO_AMOUNT_CONTENT';
 
     const SEO_KEYWORDS = 'SEO_KEYWORDS';
+
+    const SEO_MONTHLY_PAYMENT = 'SEO_MONTHLY_PAYMENT';
+
+    const SEO_AGREEMENT_DURATION = 'SEO_AGREEMENT_DURATION';
+
+    const SEO_MONTHLY_PAYMENT_DOUBLE = 'SEO_MONTHLY_PAYMENT_DOUBLE';
 }

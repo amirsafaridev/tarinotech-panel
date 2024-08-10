@@ -20,7 +20,7 @@ class SeoFactorController extends Controller
             $seoFactorMakeJob = resolve(SeoProjectFactorMakeJob::class);
             $seoFactorMakeJob->handle($project->target);
 
-            return $this->successDestroyBack(route('admin.project.manage', $project->id));
+            return $this->successBack(route('admin.project.manage', $project->id), 'فاکتور خودکار با موفقیت ایجاد شد.');
 
         } catch (Exception $exception) {
             return $this->exceptionBack($exception);

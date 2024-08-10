@@ -20,7 +20,7 @@ class WebFactorController extends Controller
             $autoMakeFactor = resolve(WebProjectFactorMakerJob::class);
             $autoMakeFactor->handle($project);
 
-            return $this->successDestroyBack(route('admin.project.manage', $project->id));
+            return $this->successBack(route('admin.project.manage', $project->id), 'فاکتور خودکار با موفقیت ایجاد شد.');
 
         } catch (Exception $exception) {
             return $this->exceptionBack($exception);
