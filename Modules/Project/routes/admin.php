@@ -12,6 +12,7 @@ use Modules\Project\app\Http\Controllers\Admin\SeoFactorController;
 use Modules\Project\app\Http\Controllers\Admin\StatusController;
 use Modules\Project\app\Http\Controllers\Admin\TypeController;
 use Modules\Project\app\Http\Controllers\Admin\WebController;
+use Modules\Project\app\Http\Controllers\Admin\WebFactorController;
 use Modules\Project\app\Http\Controllers\Admin\WebImportController;
 use Modules\Project\app\Http\Controllers\Admin\WebStatusController;
 
@@ -83,6 +84,7 @@ Route::group(['guard' => 'admin'], function () {
             Route::patch('/{projectId}/status', [WebStatusController::class, 'update'])->name('update.status');
 
             Route::get('/{projectId}', [WebController::class, 'edit'])->name('edit');
+            Route::get('/{projectId}/auto-factor', [WebFactorController::class, 'make'])->name('auto-factor');
             Route::patch('/{projectId}', [WebController::class, 'update'])->name('update');
             Route::delete('/{projectId}', [WebController::class, 'destroy'])->name('destroy');
         })->whereNumber('projectId');

@@ -2,7 +2,6 @@
 
 namespace Modules\Project\app\Http\Controllers\Admin;
 
-use App\Domain\Jobs\WebProjectFactorMakerJob;
 use App\Enums\Database\Role\PermissionName;
 use App\Enums\Database\Role\RoleName;
 use App\Enums\General\DropdownItemColor;
@@ -85,11 +84,8 @@ class WebController extends Controller
                 $projectParams['renewal_at'] = Carbon::parse($agreementAt)->addYear()
                     ->format('Y-m-d');
             }
-            $project = $projectWeb->project()->create($projectParams);
+            $projectWeb->project()->create($projectParams);
             $projectWeb->options()->attach($request->input('options'));
-
-            $autoMakeFactor = resolve(WebProjectFactorMakerJob::class);
-            $autoMakeFactor->handle($project);
 
             DB::commit();
 
@@ -410,6 +406,12 @@ class WebController extends Controller
                                 ->setTargetBlank(true)
                                 ->setTitle(trans('panel.action.change_status'))
                                 ->setLink(route('admin.project.web.edit.status', $project->id))
+                        )
+                        ->add(
+                            (new DropdownItem())
+                                ->setTargetBlank(true)
+                                ->setTitle(trans('panel.action.auto_factor'))
+                                ->setLink(route('admin.project.web.auto-factor', $project->id))
                         )
                         ->setButtonColor(DropdownItemColor::Success())
                         ->render();
