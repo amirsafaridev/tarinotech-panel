@@ -12,4 +12,6 @@ final class UserSignableStatus extends Enum implements LocalizedEnum
     const Uploaded = 2;
 
     const Reject = 3;
+
+    const Accepted = 4;
 }

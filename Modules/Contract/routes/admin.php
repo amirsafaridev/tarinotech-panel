@@ -14,6 +14,7 @@
 use Modules\Contract\app\Http\Controllers\Admin\Preview\FactorController;
 use Modules\Contract\app\Http\Controllers\Admin\Preview\SeoProjectController;
 use Modules\Contract\app\Http\Controllers\Admin\Preview\WebProjectController;
+use Modules\Contract\app\Http\Controllers\Admin\SignableAttachmentController;
 use Modules\Contract\app\Http\Controllers\Admin\SignableController;
 use Modules\Contract\app\Http\Controllers\Admin\SignController;
 use Modules\Contract\app\Http\Controllers\Admin\UserSignController;
@@ -46,5 +47,10 @@ Route::group(['guard' => 'admin'], function () {
         Route::get('/web/{projectWeb}', [SignableController::class, 'web'])->name('web');
         Route::get('/ads/{projectAds}', [SignableController::class, 'ads'])->name('ads');
         Route::get('/seo/{projectSeo}', [SignableController::class, 'seo'])->name('seo');
+    });
+
+    Route::group(['prefix' => 'attachment', 'as' => 'attachment.'], function () {
+        Route::post('/upload', [SignableAttachmentController::class, 'upload'])->name('upload');
+        Route::DELETE('/destroy', [SignableAttachmentController::class, 'destroy'])->name('destroy');
     });
 });

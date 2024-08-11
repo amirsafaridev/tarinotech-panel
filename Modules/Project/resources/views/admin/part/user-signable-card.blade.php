@@ -10,6 +10,9 @@
                     <th>وضعیت</th>
                     <th>درخواست</th>
                     <th>آخرین تغییر</th>
+                    @can('ADMIN_CONTRACT_SIGN_USER_EDIT')
+                        <th>عملیات</th>
+                    @endcan
                 </tr>
                 </thead>
                 <tbody>
@@ -17,6 +20,11 @@
                     <td>{!! \App\Helpers\Helper::renderUserSignableStatus($project->target->userSignable->status) !!}</td>
                     <td>{{ $project->target->userSignable->created_at->toJalali()->format(formatJalaliDateTime())  }}</td>
                     <td>{{ $project->target->userSignable->updated_at->toJalali()->format(formatJalaliDateTime())  }}</td>
+                    @can('ADMIN_CONTRACT_SIGN_USER_EDIT')
+                        <td>
+                            <a class="btn btn-sm btn-warning" href="{{ route('admin.contract.sign.user.edit',$project->target->userSignable->id) }}">ویرایش</a>
+                        </td>
+                    @endcan
                 </tr>
                 </tbody>
             </table>

@@ -5,6 +5,7 @@
         'load'=>[
             \App\Enums\Assets\StyleLoader::Toast(),
             \App\Enums\Assets\StyleLoader::Alert(),
+            \App\Enums\Assets\StyleLoader::Dropzone(),
         ]
     ])
 @endsection
@@ -26,18 +27,18 @@
             <div class="card">
                 <div class="card-body pb-3">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ route('admin.contract.sign.update',$signable->id) }}">
+                    <form id="userSignableForm" class="request-form forms-sample" method="post" action="{{ route('admin.contract.sign.user.update',$userSignable->id) }}">
                         @csrf
                         @method('PATCH')
 
-                        <x-admin.input identify="id" type="hidden" :old="$signable->id"/>
+                        <x-admin.input identify="id" type="hidden" :old="$userSignable->id"/>
 
                         <x-admin.select-enum identify="status" title="وضغیت امضاء"
-                                             :enum-class="\Modules\Contract\app\Enums\SignableStatus::class"
-                                             :old="$signable->status"
+                                             :enum-class="\Modules\Contract\app\Enums\UserSignableStatus::class"
+                                             :old="$userSignable->status"
                         />
 
-                        <x-admin.textarea identify="note" :rows="6" :old="$signable->note" placeholder="توضیحات"/>
+                        <x-admin.textarea identify="note" :rows="6" :old="$userSignable->note" placeholder="توضیحات"/>
 
                         <x-admin.button title="{{ trans('panel.update') }}"/>
 
@@ -45,7 +46,20 @@
 
                     </form>
 
-                    <form id="deleteItem" action="{{ route('admin.contract.sign.destroy',$signable->id) }}" method="post" class="form-inline">
+
+                    <div class="card mt-5 no-shadow-card">
+                        <div class="card-header">
+                            <h5 class="card-title">بارگذاری پیوست‌ها</h5>
+                            <p class="card-text">لطفاً فایل‌های تصویری خود را اینجا بارگذاری کنید. حداکثر اندازه فایل مجاز ۱۰ مگابایت است.</p>
+                        </div>
+                        <div class="card-body">
+                            <form action="{{ route('admin.contract.attachment.upload') }}" class="dropzone" id="myDropzone">
+                            </form>
+                        </div>
+                    </div>
+
+
+                    <form id="deleteItem" action="{{ route('admin.contract.sign.destroy',$userSignable->id) }}" method="post" class="form-inline">
                         @csrf
                         @method('DELETE')
                     </form>
@@ -57,12 +71,14 @@
 @section('script')
     @include('admin.partial.loader.script',['load'=>[
     \App\Enums\Assets\ScriptLoader::Alert(),
+    \App\Enums\Assets\ScriptLoader::Dropzone(),
     ]])
     @include('admin.partial.request')
 
     <script>
         $(document).ready(function () {
-            activeParentUl('{{ route('admin.contract.sign.index') }}');
+
         })
     </script>
+    @include('contract::admin.user_signable.part.script')
 @endsection

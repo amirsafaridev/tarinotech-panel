@@ -33,3 +33,7 @@
 @if (in_array(\App\Enums\Assets\StyleLoader::Acf(),$load))
     <link rel="stylesheet" href="{{ asset('res-admin/assets/css/acf.css') }}">
 @endif
+
+@if (in_array(\App\Enums\Assets\StyleLoader::Dropzone(),$load))
+    <link rel="stylesheet" href="{{ asset('res-admin/assets/plugins/dropzone/dropzone.min.css') }}">
+@endif

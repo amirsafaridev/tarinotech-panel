@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('signable_attachments', function (Blueprint $table) {
             $table->ulid();
-            $table->morphs('target');
+            $table->nullableMorphs('target');
 
             $table->char('file_type');
             $table->char('file_extension');

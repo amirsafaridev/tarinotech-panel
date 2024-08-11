@@ -14,6 +14,7 @@ use BenSampo\Enum\Enum;
  * @method static static Quill()
  * @method static static Datepicker()
  * @method static static Acf()
+ * @method static static Dropzone()
  */
 final class StyleLoader extends Enum
 {
@@ -34,4 +35,6 @@ final class StyleLoader extends Enum
     const Acf = 8;
 
     const CellPhone = 9;
+
+    const Dropzone = 10;
 }

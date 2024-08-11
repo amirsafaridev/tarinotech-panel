@@ -16,6 +16,7 @@ class UserSignable extends Model
         'target_id',
         'user_id',
         'status',
+        'note',
     ];
 
     public function target(): MorphTo

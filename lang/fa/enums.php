@@ -9,6 +9,7 @@ use App\Enums\Database\Facility\PriceType;
 use App\Enums\Database\Facility\WorkCycle;
 use App\Enums\Database\Setting\SettingItems;
 use Modules\Contract\app\Enums\SignableStatus;
+use Modules\Contract\app\Enums\UserSignableStatus;
 use Modules\Factor\app\Enums\FactorStatus;
 use Modules\Factor\app\Enums\PaymentGateway;
 use Modules\Log\app\Enums\LogEvents;
@@ -208,5 +209,12 @@ return [
         SignableStatus::Pending => 'در انتظار',
         SignableStatus::Signed => 'امضاء شده',
         SignableStatus::Reject => 'رد شده',
+    ],
+
+    UserSignableStatus::class => [
+        UserSignableStatus::Pending => 'در انتظار',
+        UserSignableStatus::Uploaded => 'آپلود شده',
+        UserSignableStatus::Reject => 'رد شده',
+        UserSignableStatus::Accepted => 'قبول شده',
     ],
 ];

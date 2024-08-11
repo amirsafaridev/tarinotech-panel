@@ -13,9 +13,12 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Modules\Contract\app\Enums\SignableStatus;
-use Modules\Contract\app\Http\Requests\Admin\Signable\UpdateRequest;
+use Modules\Contract\app\Http\Requests\Admin\UserSignable\UpdateRequest;
 use Modules\Contract\app\Models\Signable;
+use Modules\Contract\app\Models\SignableAttachment;
 use Modules\Contract\app\Models\UserSignable;
+use Modules\Project\app\Models\ProjectAds;
+use Modules\Project\app\Models\ProjectSeo;
 use Modules\Project\app\Models\ProjectWeb;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -40,23 +43,27 @@ class UserSignController extends Controller
 
     }
 
-    public function edit(Signable $signable)
+    public function edit(UserSignable $userSignable)
     {
         $title = self::EDIT_TITLE;
 
-        return view('contract::admin.user_signable.edit', compact('title', 'signable'));
+        $relationshipsToLoad = $this->determineRelationshipsToLoad($userSignable);
+        $userSignable->load($relationshipsToLoad);
+
+        return view('contract::admin.user_signable.edit', compact('title', 'userSignable'));
     }
 
-    public function update(UpdateRequest $request, Signable $signable)
+    public function update(UpdateRequest $request, UserSignable $userSignable)
     {
         try {
             DB::beginTransaction();
-            $item = $this->prepareItemData($request);
-            $signable->update($item);
 
-            if ($this->shouldCreateUserSignable($request, $signable)) {
-                $this->createUserSignable($signable);
-            }
+            // Prepare the data for updating the UserSignable model
+            $itemData = $this->prepareItemData($request);
+            $userSignable->update($itemData);
+
+            // Update attachments if any are provided
+            $this->updateAttachments($request->input('attachments'), $userSignable);
 
             DB::commit();
 
@@ -68,11 +75,27 @@ class UserSignController extends Controller
         }
     }
 
+    /**
+     * Update attachments based on the provided IDs.
+     */
+    protected function updateAttachments(?array $attachmentIds, UserSignable $userSignable): void
+    {
+        if (empty($attachmentIds)) {
+            return;
+        }
+
+        SignableAttachment::query()->whereIn('ulid', $attachmentIds)
+            ->update([
+                'target_type' => UserSignable::class,
+                'target_id' => $userSignable->id,
+                'is_used' => true,
+            ]);
+    }
+
     protected function prepareItemData(Request $req): array
     {
         $signableData['status'] = $req->input('status');
         $signableData['note'] = $req->input('note');
-        $signableData['sign_at'] = now();
 
         return $signableData;
     }
@@ -156,5 +179,19 @@ class UserSignController extends Controller
                 'user_id' => $signable->target->project->user_id,
             ]
         );
+    }
+
+    private function determineRelationshipsToLoad($userSignable): array
+    {
+        $relationshipsToLoad = ['attachments'];
+
+        if (in_array($userSignable->target_type, [ProjectWeb::class, ProjectSeo::class])) {
+            $relationshipsToLoad[] = 'target.project';
+            $relationshipsToLoad[] = 'target.package';
+        } elseif ($userSignable->target_type === ProjectAds::class) {
+            $relationshipsToLoad[] = 'target.project';
+        }
+
+        return $relationshipsToLoad;
     }
 }

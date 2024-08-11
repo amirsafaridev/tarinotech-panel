@@ -49,3 +49,7 @@
 @if (in_array(\App\Enums\Assets\ScriptLoader::Toast(),$load))
     <script type="text/javascript" src="{{asset('res-admin/assets/plugins/toast/jquery.toast.min.js')}}"></script>
 @endif
+
+@if (in_array(\App\Enums\Assets\ScriptLoader::Dropzone(),$load))
+    <script type="text/javascript" src="{{asset('res-admin/assets/plugins/dropzone/dropzone.min.js.js')}}"></script>
+@endif
