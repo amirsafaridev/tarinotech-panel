@@ -274,6 +274,7 @@
 
                 @canany([
                     'ADMIN_CONTRACT_SIGN_INDEX',
+                    'ADMIN_CONTRACT_SIGN_USER_INDEX',
                 ])
                     <li class="sub-category">
                         <h3>قرارداد ها</h3>
@@ -288,6 +289,9 @@
                         <ul class="slide-menu">
                             @can('ADMIN_CONTRACT_SIGN_INDEX')
                                 <li><a href="{{ route('admin.contract.sign.index') }}" class="slide-item">درخواست امضاء</a></li>
+                            @endcan
+                            @can('ADMIN_CONTRACT_SIGN_INDEX')
+                                <li><a href="{{ route('admin.contract.sign.user.index') }}" class="slide-item">درخواست امضاء کارفرما</a></li>
                             @endcan
                         </ul>
                     </li>

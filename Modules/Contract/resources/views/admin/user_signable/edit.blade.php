@@ -8,6 +8,22 @@
             \App\Enums\Assets\StyleLoader::Dropzone(),
         ]
     ])
+    <style>
+        .card-img-container {
+            width: 100%;
+            height: 200px; /* Fixed height for all images */
+            overflow: hidden; /* Hide overflow to crop the image */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-img-top {
+            object-fit: cover; /* Ensures the image covers the container */
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 @endsection
 @section('content')
 
@@ -16,7 +32,7 @@
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.contract.sign.index') }}">درخواست ها</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.contract.sign.user.index') }}">درخواست ها</a></li>
                 <li class="breadcrumb-item active">ویرایش</li>
             </ol>
         </div>
@@ -46,8 +62,27 @@
 
                     </form>
 
+                    <div class="row mt-5">
+                        @foreach($userSignable->attachments as $attachment)
+                            <div class="col-md-4 mb-3">
+                                <div class="card">
+                                    <div class="card-img-container">
+                                        <img src="{{ route('stream.read', $attachment->file_path) }}" class="card-img-top" alt="Attachment Image">
+                                    </div>
+                                    <div class="card-body d-flex gap-2">
+                                        <a href="{{ route('stream.read', $attachment->file_path) }}" target="_blank" class="btn btn-primary btn-sm">
+                                            دانلود
+                                        </a>
+                                        <button class="btn btn-outline-danger btn-sm btn-attachment-delete" data-id="{{ $attachment->ulid }}">
+                                            حذف
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
 
-                    <div class="card mt-5 no-shadow-card">
+                    <div class="card mt-5">
                         <div class="card-header">
                             <h5 class="card-title">بارگذاری پیوست‌ها</h5>
                             <p class="card-text">لطفاً فایل‌های تصویری خود را اینجا بارگذاری کنید. حداکثر اندازه فایل مجاز ۱۰ مگابایت است.</p>
@@ -74,11 +109,5 @@
     \App\Enums\Assets\ScriptLoader::Dropzone(),
     ]])
     @include('admin.partial.request')
-
-    <script>
-        $(document).ready(function () {
-
-        })
-    </script>
     @include('contract::admin.user_signable.part.script')
 @endsection

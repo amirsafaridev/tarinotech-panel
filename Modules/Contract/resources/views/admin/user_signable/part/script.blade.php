@@ -2,6 +2,13 @@
     const userSignableForm = $('#userSignableForm');
     const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
+    // Document ready function
+    $(document).ready(function() {
+        handleAttachmentDeletion();
+        activeParentUl('{{ route('admin.contract.sign.user.index') }}');
+
+    });
+
     Dropzone.options.myDropzone = {
         paramName: "file",
         maxFilesize: 10, // Maximum file size in MB
@@ -63,5 +70,37 @@
 
     function handleError(file, errorMessage) {
         console.log("خطا در آپلود فایل: ", errorMessage);
+    }
+
+    function handleAttachmentDeletion() {
+        $('.btn-attachment-delete').on('click', function() {
+            const attachmentId = $(this).data('id');
+            const $deleteButton = $(this);
+
+            if (confirm('آیا مطمئن هستید که می‌خواهید این پیوست را حذف کنید؟')) {
+                // Display loading state
+                $deleteButton.prop('disabled', true).html('در حال حذف...');
+
+                $.ajax({
+                    url: '{{ route('admin.contract.attachment.destroy') }}',
+                    type: 'POST',
+                    data: {
+                        id: attachmentId,
+                        _method: 'DELETE',
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        // Remove the card for the deleted attachment
+                        $deleteButton.closest('.col-md-4').remove();
+                        alert('پیوست با موفقیت حذف شد.');
+                    },
+                    error: function(xhr) {
+                        alert('خطا در حذف پیوست.');
+                        // Revert loading state in case of error
+                        $deleteButton.prop('disabled', false).html('حذف');
+                    }
+                });
+            }
+        });
     }
 </script>

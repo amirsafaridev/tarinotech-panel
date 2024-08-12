@@ -2,6 +2,8 @@
 
 namespace App\Domain\Jobs;
 
+use Exception;
+use Hekmatinasser\Verta\Verta;
 use Modules\Factor\app\Enums\FactorStatus;
 use Modules\Factor\app\Enums\PaymentGateway;
 use Modules\Factor\app\Models\Factor;
@@ -27,80 +29,101 @@ class SeoProjectFactorMakeJob
 
     public function handle(ProjectSeo $projectSeo)
     {
-        $taxRate = config('factor.tax');
+        try {
+            $taxRate = config('factor.tax');
+            $agreementDuration = $this->calculateAgreementDuration($projectSeo->agreement_duration);
+            $monthlyPrice = $this->calculateMonthlyPrice($projectSeo->project->price, $agreementDuration);
 
-        $agreementDuration = round($projectSeo->agreement_duration / 30);
+            $jalaliDate = Verta::instance($projectSeo->project->agreement_at);
+            $accumulatedTotal = 0;
 
-        $project = $projectSeo->project;
-        $originalPrice = $project->price;
+            for ($month = 1; $month <= $agreementDuration; $month++) {
+                $price = $this->calculatePrice($month, $agreementDuration, $monthlyPrice, $projectSeo->project->price, $accumulatedTotal);
+                $taxAmount = $this->calculateTaxAmount($price, $taxRate);
+                $totalPrice = $this->calculateTotalPrice($price, $taxAmount);
 
-        $monthlyPrice = $originalPrice / $agreementDuration;
+                $factorTitle = $this->getJalaliFormattedDate($jalaliDate, $month);
 
-        $date = $project->agreement_at;
+                $this->createFactor($projectSeo, $jalaliDate, $factorTitle, $totalPrice, $taxRate, $price, $taxAmount, $month);
 
-        $accumulatedTotal = 0;
-
-        for ($month = 1; $month <= $agreementDuration; $month++) {
-
-            $factorTitle = $this->getJalaliFormattedDate($date, $month);
-
-            $categoryId = 6;
-
-            if ($month == $agreementDuration) {
-                $price = $originalPrice - $accumulatedTotal;
-            } else {
-                $price = round($monthlyPrice, 2);
+                $accumulatedTotal += $price;
+                $jalaliDate = $jalaliDate->addMonth();
             }
-
-            $taxAmount = $price * $taxRate;
-            $totalPrice = $price + $taxAmount;
-
-            $isOfficial = false;
-            $gateway = PaymentGateway::PAYPING;
-
-            if ($user = $project->user) {
-                if ($user->person_type === PersonType::Legal || $user->official_bill) {
-                    $isOfficial = true;
-                    $gateway = PaymentGateway::SEPEHR;
-                }
-            }
-
-            $factor = Factor::query()->create([
-                'title' => $factorTitle,
-                'admin_id' => $project->admin_id,
-                'project_id' => $project->id,
-                'final_price' => $totalPrice,
-                'status' => FactorStatus::Pending,
-                'is_official' => $isOfficial,
-                'gateway' => $gateway,
-                'gateway_data' => [],
-                'created_at' => $date,
-                'updated_at' => $date,
-            ]);
-
-            $factor->items()->create([
-                'factor_id' => $factor->id,
-                'title' => $factorTitle,
-                'transaction_category_id' => $categoryId,
-                'price' => $price,
-                'tax_rate' => $taxRate,
-                'tax_amount' => $taxAmount,
-                'discount' => 0,
-                'final_price' => $totalPrice,
-                'created_at' => $date,
-                'updated_at' => $date,
-            ]);
-
-            $accumulatedTotal += $price;
-
-            $date = $date->addMonth();
+        } catch (Exception $e) {
+            report($e);
         }
     }
 
-    protected function getJalaliFormattedDate($data, $monthNumber): string
+    protected function calculateAgreementDuration(int $agreementDurationInDays): int
     {
-        $data = verta($data);
-        $monthName = $data->formatWord('F');
+        return round($agreementDurationInDays / 30);
+    }
+
+    protected function calculateMonthlyPrice(float $totalPrice, int $durationInMonths): float
+    {
+        return $totalPrice / $durationInMonths;
+    }
+
+    protected function calculatePrice(int $currentMonth, int $agreementDuration, float $monthlyPrice, float $originalPrice, float $accumulatedTotal): float
+    {
+        return ($currentMonth == $agreementDuration) ? $originalPrice - $accumulatedTotal : round($monthlyPrice, 2);
+    }
+
+    protected function calculateTaxAmount(float $price, float $taxRate): float
+    {
+        return $price * $taxRate;
+    }
+
+    protected function calculateTotalPrice(float $price, float $taxAmount): float
+    {
+        return $price + $taxAmount;
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function createFactor(ProjectSeo $projectSeo, Verta $jalaliDate, string $factorTitle, float $totalPrice, float $taxRate, float $price, float $taxAmount, int $month): void
+    {
+        $factor = Factor::query()->create([
+            'title' => $factorTitle,
+            'admin_id' => $projectSeo->project->admin_id,
+            'project_id' => $projectSeo->project->id,
+            'final_price' => $totalPrice,
+            'status' => FactorStatus::Pending,
+            'is_official' => $this->determineIsOfficial($projectSeo->project->user),
+            'gateway' => $this->determinePaymentGateway($projectSeo->project->user),
+            'gateway_data' => [],
+            'created_at' => $jalaliDate->datetime(),
+            'updated_at' => $jalaliDate->datetime(),
+        ]);
+
+        $factor->items()->create([
+            'factor_id' => $factor->id,
+            'title' => $factorTitle,
+            'transaction_category_id' => 6,
+            'price' => $price,
+            'tax_rate' => $taxRate,
+            'tax_amount' => $taxAmount,
+            'discount' => 0,
+            'final_price' => $totalPrice,
+            'created_at' => $jalaliDate->datetime(),
+            'updated_at' => $jalaliDate->datetime(),
+        ]);
+    }
+
+    protected function determineIsOfficial($user): bool
+    {
+        return $user && ($user->person_type === PersonType::Legal || $user->official_bill);
+    }
+
+    protected function determinePaymentGateway($user): string
+    {
+        return $this->determineIsOfficial($user) ? PaymentGateway::SEPEHR : PaymentGateway::PAYPING;
+    }
+
+    protected function getJalaliFormattedDate(Verta $date, int $monthNumber): string
+    {
+        $monthName = $date->formatWord('F');
 
         return "سئو ماه {$this->monthNames[$monthNumber]} ({$monthName})";
     }

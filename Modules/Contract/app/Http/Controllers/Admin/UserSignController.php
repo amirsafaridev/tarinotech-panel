@@ -12,9 +12,7 @@ use App\Traits\HasJsonCommonResponse;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Modules\Contract\app\Enums\SignableStatus;
 use Modules\Contract\app\Http\Requests\Admin\UserSignable\UpdateRequest;
-use Modules\Contract\app\Models\Signable;
 use Modules\Contract\app\Models\SignableAttachment;
 use Modules\Contract\app\Models\UserSignable;
 use Modules\Project\app\Models\ProjectAds;
@@ -27,9 +25,9 @@ class UserSignController extends Controller
     use HasDatatable;
     use HasJsonCommonResponse;
 
-    const INDEX_TITLE = 'درخواست های امضاء';
+    const INDEX_TITLE = 'درخواست های امضاء کارفرما';
 
-    const EDIT_TITLE = 'درخواست های امضاء - ویرایش';
+    const EDIT_TITLE = 'درخواست های امضاء کارفرما - ویرایش';
 
     public function index()
     {
@@ -67,7 +65,7 @@ class UserSignController extends Controller
 
             DB::commit();
 
-            return $this->successUpdateResponse();
+            return $this->successUpdateResponse(route('admin.contract.sign.user.edit', $userSignable->id));
         } catch (Exception $exception) {
             DB::rollBack();
 
@@ -102,7 +100,7 @@ class UserSignController extends Controller
 
     public function getDataRoute(): string
     {
-        return route('admin.contract.sign.data');
+        return route('admin.contract.sign.user.data');
     }
 
     public function getDataTable(): array
@@ -112,16 +110,13 @@ class UserSignController extends Controller
                 ColumnOption::new()->setName('id')->setAs('شناسه')
             )
             ->addColumn(
-                ColumnOption::new()->setName('make_admin.fullname')->setAs('درخواست کننده')
-            )
-            ->addColumn(
                 ColumnOption::new()->setName('target.project.domain')->setAs('پروژه')
             )
             ->addColumn(
-                ColumnOption::new()->setName('status')->setAs('وضعیت')
+                ColumnOption::new()->setName('user.mobile')->setAs('کارفرما')
             )
             ->addColumn(
-                ColumnOption::new()->setName('sign_at')->setAs('تاریخ امضاء')
+                ColumnOption::new()->setName('status')->setAs('وضعیت')
             )
             ->addColumn(
                 ColumnOption::new()->setName('created_at')->setAs('ایجاد')
@@ -137,24 +132,19 @@ class UserSignController extends Controller
     public function data()
     {
         try {
-            $signables = Signable::query()
-                ->with(['target.project', 'makeAdmin']);
+            $signables = UserSignable::query()
+                ->with(['target.project', 'user']);
 
             return DataTables::eloquent($signables)
                 ->editColumn('status', function ($signable) {
-                    return Helper::renderSignableStatus($signable->status);
-                })
-                ->editColumn('sign_at', function ($signable) {
-                    return $signable->sign_at ? $signable->sign_at->toJalali()->format(formatJalaliDateTime()) : '-';
+                    return Helper::renderUserSignableStatus($signable->status);
                 })
                 ->editColumn('created_at', function ($signable) {
                     return $signable->created_at->toJalali()->format(formatJalaliDateTime());
                 })
-                ->addColumn('action', function (Signable $signable) {
-                    $actions = Helper::btnMaker(BtnType::Info, makeRouteContractPreview($signable->target_type, $signable->target_id), trans('panel.action.printContract'));
-                    $actions .= Helper::btnMaker(BtnType::Warning, route('admin.contract.sign.edit', $signable->id), trans('panel.action.edit'));
+                ->addColumn('action', function (UserSignable $signable) {
+                    return Helper::btnMaker(BtnType::Warning, route('admin.contract.sign.user.edit', $signable->id), trans('panel.action.edit'));
 
-                    return $actions;
                 })
                 ->rawColumns(['action', 'status'])
                 ->make();
@@ -162,23 +152,6 @@ class UserSignController extends Controller
         } catch (Exception $exception) {
             return $this->exceptionResponse($exception);
         }
-    }
-
-    private function shouldCreateUserSignable(UpdateRequest $request, Signable $signable): bool
-    {
-        return $request->input('status') === SignableStatus::Signed &&
-            $signable->target_type === ProjectWeb::class;
-    }
-
-    private function createUserSignable(Signable $signable): void
-    {
-        UserSignable::query()->firstOrCreate(
-            [
-                'target_type' => $signable->target_type,
-                'target_id' => $signable->target_id,
-                'user_id' => $signable->target->project->user_id,
-            ]
-        );
     }
 
     private function determineRelationshipsToLoad($userSignable): array

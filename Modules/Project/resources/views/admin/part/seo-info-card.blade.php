@@ -36,7 +36,7 @@
 
             <tr>
                 <td>مدت قرارداد</td>
-                <td>{{ $project->target->agreement_duration }}</td>
+                <td>{{ round($project->target->agreement_duration / 30) }} ماه</td>
             </tr>
 
             <tr>
@@ -58,7 +58,7 @@
 
             <tr>
                 <td>پرداختی ماهیانه (ریال)</td>
-                <td>{{ $project->target->price_monthly }}</td>
+                <td>{{ number_format($project->target->price_monthly) }} ریال</td>
             </tr>
 
             <tr>

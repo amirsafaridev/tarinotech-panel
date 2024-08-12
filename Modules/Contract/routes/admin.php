@@ -31,6 +31,8 @@ Route::group(['guard' => 'admin'], function () {
         ->name('factor.preview');
 
     Route::group(['prefix' => 'sign/user', 'as' => 'sign.user.'], function () {
+        Route::get('/', [UserSignController::class, 'index'])->name('index');
+        Route::get('/data', [UserSignController::class, 'data'])->name('data');
         Route::get('/{user_signable}', [UserSignController::class, 'edit'])->name('edit');
         Route::patch('/{user_signable}', [UserSignController::class, 'update'])->name('update');
     });
