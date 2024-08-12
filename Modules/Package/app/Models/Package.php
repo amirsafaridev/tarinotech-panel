@@ -21,6 +21,10 @@ class Package extends Model
         'title',
         'type_id',
         'contract_attachment',
+        'min_contract_price',
+        'seo_keywords_count',
+        'seo_agreement_duration',
+        'seo_amount_content',
     ];
 
     public function prices(): HasMany

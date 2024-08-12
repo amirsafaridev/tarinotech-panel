@@ -34,6 +34,7 @@
                         <x-admin.input identify="title" title="عنوان"/>
 
                         <x-admin.input identify="price" title="قیمت"/>
+                        
 
                         <x-admin.textarea identify="contract_attachment" title="پیوست قرارداد"/>
 
