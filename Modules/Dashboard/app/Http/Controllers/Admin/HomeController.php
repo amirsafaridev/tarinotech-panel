@@ -12,23 +12,15 @@ class HomeController extends Controller
 {
     public function index()
     {
+        // Cache the dashboard data for 3 minutes (180 seconds)
+        $data = cache()->remember('dashboard', 180, function () {
+            $data['admins_count'] = Admin::count();
 
-        $data = cache()->remember('dashboard', 0, function () {
-            $data['admins_count'] = Admin::query()->count();
+            $projects = Project::select('id', 'base_id')->get();
 
-            $projects = Project::query()
-                ->select('id', 'base_id')
-                ->get();
-
-            $data['project_web_count'] = $projects
-                ->where('base_id', ProjectBase::Web)
-                ->count();
-            $data['project_seo_count'] = $projects
-                ->where('base_id', ProjectBase::Seo)
-                ->count();
-            $data['project_ads_count'] = $projects
-                ->where('base_id', ProjectBase::Ads)
-                ->count();
+            $data['project_web_count'] = $projects->where('base_id', ProjectBase::Web)->count();
+            $data['project_seo_count'] = $projects->where('base_id', ProjectBase::Seo)->count();
+            $data['project_ads_count'] = $projects->where('base_id', ProjectBase::Ads)->count();
 
             return $data;
         });
