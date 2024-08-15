@@ -20,6 +20,27 @@
             </tr>
 
             <tr>
+                <td>قیمت پکیج پروژه در زمان عقد قرارداد (ریال)</td>
+                <td>
+                    @php
+                        $packagePrice = 0;
+                        if ($project
+                            && $project->target
+                            && $project->target->package
+                            && $project->agreement_at
+                        ) {
+                            $packagePriceResult = $project->target->package->getPriceForDate($project->agreement_at);
+                            if ($packagePriceResult && $packagePriceResult->getPrice()) {
+                                $packagePrice = $packagePriceResult->getPrice()->price;
+                            }
+                        }
+                    @endphp
+                    {{ number_format($packagePrice) }}
+                </td>
+            </tr>
+
+
+            <tr>
                 <td>تعداد صفحات</td>
                 <td>{{ $project->target->pages }}</td>
             </tr>

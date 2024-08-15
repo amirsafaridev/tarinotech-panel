@@ -14,6 +14,30 @@
                 <td>{{ $project->target->id }}</td>
             </tr>
 
+            @if($project->target->package)
+                <tr>
+                    <td>پکیج</td>
+                    <td>{{ $project->target->package->title }}</td>
+                </tr>
+
+                <tr>
+                    <td>قیمت پکیج پروژه در زمان عقد قرارداد (ریال)</td>
+                    <td>
+                        @php
+                            $packagePrice = 0;
+                            if ($project->agreement_at) {
+                                $packagePriceResult = $project->target->package->getPriceForDate($project->agreement_at);
+                                if ($packagePriceResult && $packagePriceResult->getPrice()) {
+                                    $packagePrice = $packagePriceResult->getPrice()->price;
+                                }
+                            }
+                        @endphp
+                        {{ number_format($packagePrice) }}
+                    </td>
+                </tr>
+            @endif
+
+
             <tr>
                 <td>زمینه فعالیت</td>
                 <td>{{ $project->target->field_activity }}</td>
