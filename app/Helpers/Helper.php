@@ -58,9 +58,9 @@ class Helper
     {
         return match ($type) {
             UserSignableStatus::Pending => '<span class="badge bg-info">در انتظار</span>',
-            UserSignableStatus::Uploaded => '<span class="badge bg-success">آپلود شده</span>',
+            UserSignableStatus::Uploaded => '<span class="badge bg-info">آپلود شده</span>',
             UserSignableStatus::Reject => '<span class="badge bg-danger">رد شده</span>',
-            UserSignableStatus::Accepted => '<span class="badge bg-danger">قبول شده</span>',
+            UserSignableStatus::Accepted => '<span class="badge bg-success">قبول شده</span>',
             default => '<span class="badge bg-info">ندارد</span>',
         };
     }
