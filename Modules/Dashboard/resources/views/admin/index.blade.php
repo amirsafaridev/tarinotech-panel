@@ -86,7 +86,7 @@
                         <div class="mb-0 pt-5">
                             <span>پروژه های ادوورز</span>
                             <span class="float-end">
-                                <a class="btn btn-sm btn-light" href="{{ route('admin.project.seo.index') }}">{{ trans('panel.dashboard.show_link') }}</a>
+                                <a class="btn btn-sm btn-light" href="{{ route('admin.project.ads.index') }}">{{ trans('panel.dashboard.show_link') }}</a>
                             </span>
                         </div>
                     </div>
