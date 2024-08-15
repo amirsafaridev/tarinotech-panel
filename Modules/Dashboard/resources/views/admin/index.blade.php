@@ -36,7 +36,63 @@
                 </div>
             </div>
         </div>
-        <!-- COL END -->
+
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-order">
+                        <h2 class="text-end">
+                            <i class="fal fa-globe icon-size float-start text-success text-success-shadow p-3"></i>
+                            <span>{{ number_format($data['project_web_count']) }}</span>
+                        </h2>
+                        <div class="mb-0 pt-5">
+                            <span>پروژه های وب</span>
+                            <span class="float-end">
+                                <a class="btn btn-sm btn-light" href="{{ route('admin.project.web.index') }}">{{ trans('panel.dashboard.show_link') }}</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-order">
+                        <h2 class="text-end">
+                            <i class="fal fa-list-numeric icon-size float-start text-info text-info-shadow p-3"></i>
+                            <span>{{ number_format($data['project_seo_count']) }}</span>
+                        </h2>
+                        <div class="mb-0 pt-5">
+                            <span>پروژه های سئو</span>
+                            <span class="float-end">
+                                <a class="btn btn-sm btn-light" href="{{ route('admin.project.seo.index') }}">{{ trans('panel.dashboard.show_link') }}</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-order">
+                        <h2 class="text-end">
+                            <i class="fal fa-bullhorn icon-size float-start text-warning text-warning-shadow p-3"></i>
+                            <span>{{ number_format($data['project_ads_count']) }}</span>
+                        </h2>
+                        <div class="mb-0 pt-5">
+                            <span>پروژه های ادوورز</span>
+                            <span class="float-end">
+                                <a class="btn btn-sm btn-light" href="{{ route('admin.project.seo.index') }}">{{ trans('panel.dashboard.show_link') }}</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="row">
