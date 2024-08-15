@@ -133,7 +133,8 @@ class UserSignController extends Controller
     {
         try {
             $signables = UserSignable::query()
-                ->with(['target.project', 'user']);
+                ->with(['target.project', 'user'])
+                ->whereHas('target');
 
             return DataTables::eloquent($signables)
                 ->editColumn('status', function ($signable) {
