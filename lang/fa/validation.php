@@ -302,5 +302,10 @@ return [
 
         'economic_code' => 'کد اقتصادی',
         'brand' => 'نام برند',
+        'minimum_price_percent' => 'حداقل مبلغ (درصد)',
+
+        'seo_keywords_count' => 'تعداد کلمات سئو شدنی',
+        'seo_agreement_duration' => 'مدت قرارداد',
+        'seo_amount_content' => 'میزان تولید محتوا',
     ],
 ];

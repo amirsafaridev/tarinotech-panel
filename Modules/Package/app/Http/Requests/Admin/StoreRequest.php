@@ -19,17 +19,43 @@ class StoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'type_id' => 'required|exists:project_types,id',
-            'title' => 'required|max:255',
-            'price' => 'required|numeric',
+        $commonRules = [
+            'base_id' => ['required'],
+            'type_id' => ['required', 'integer', 'exists:project_types,id'],
+            'title' => ['required', 'max:255'],
+            'price' => ['required', 'numeric'],
+            'minimum_price_percent' => ['required', 'numeric', 'between:0,100'],
         ];
+
+        $seoRules = [
+            'seo_keywords_count' => ['required', 'numeric'],
+            'seo_agreement_duration' => ['required', 'numeric'],
+            'seo_amount_content' => ['required', 'numeric'],
+        ];
+
+        if ($this->input('base_id') == 2) {
+            $rules = array_merge($commonRules, $seoRules);
+        } else {
+            $rules = $commonRules;
+        }
+
+        return $rules;
     }
 
     protected function prepareForValidation()
     {
-        $this->merge([
-            'price' => str_replace(',', '', $this->input('price')),
-        ]);
+        $fieldsToClean = [
+            'price',
+            'minimum_price_percent',
+            'seo_keywords_count',
+            'seo_agreement_duration',
+            'seo_amount_content',
+        ];
+
+        foreach ($fieldsToClean as $field) {
+            $this->merge([
+                $field => str_replace(',', '', $this->$field),
+            ]);
+        }
     }
 }

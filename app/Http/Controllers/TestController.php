@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
 use Modules\Admin\app\Models\Admin;
 use Modules\Admin\app\Notifications\Admin\SendPasswordByEmail;
+use Modules\Package\app\Models\Package;
 use Modules\Project\app\Imports\ProjectWebImport;
 use Modules\User\app\Imports\UserImport;
 use Modules\User\app\Models\User;
@@ -20,9 +21,18 @@ class TestController extends Controller
     public function index()
     {
         $this->dieInProduction();
-        $startDate = '2023-10-01';
+        $startDate = '2024-08-12';
 
         return date('m-d', strtotime($startDate));
+    }
+
+    public function packagePrice()
+    {
+        $package = Package::find(1);
+
+        return $package
+            ->getPriceForDate('2024-08-12 14:25')
+            ->toArray();
     }
 
     public function sendEmail()

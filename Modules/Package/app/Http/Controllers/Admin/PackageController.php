@@ -115,6 +115,14 @@ class PackageController extends Controller
     {
         $item['title'] = $request->input('title');
         $item['type_id'] = $request->input('type_id');
+        $item['minimum_price_percent'] = $request->input('minimum_price_percent');
+
+        if ($request->input('base_id') == 2) {
+            $item['seo_keywords_count'] = $request->input('seo_keywords_count');
+            $item['seo_agreement_duration'] = $request->input('seo_agreement_duration');
+            $item['seo_amount_content'] = $request->input('seo_amount_content');
+        }
+
         $item['contract_attachment'] = $request->input('contract_attachment');
 
         return $item;

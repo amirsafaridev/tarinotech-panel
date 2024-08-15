@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/test', [TestController::class, 'index']);
+Route::get('/test/package-price', [TestController::class, 'packagePrice']);
 Route::get('/test/import', [TestController::class, 'import']);
 Route::get('/test/importProject', [TestController::class, 'importProject']);
 Route::get('/test/phpinfo', [TestController::class, 'phpInfo']);

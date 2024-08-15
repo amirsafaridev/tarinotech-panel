@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::table('packages', function (Blueprint $table) {
             $table->after('contract_attachment', function (Blueprint $table) {
-                $table->unsignedInteger('min_contract_price')->default(0);
-                $table->unsignedTinyInteger('seo_keywords_count')->default(0);
+                $table->unsignedDecimal('minimum_price_percent')->default(0);
+                $table->unsignedInteger('seo_keywords_count')->default(0);
                 $table->unsignedInteger('seo_agreement_duration')->default(0);
-                $table->string('seo_amount_content')->nullable();
+                $table->unsignedInteger('seo_amount_content')->default(0);
             });
         });
     }
@@ -27,7 +27,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('packages', function (Blueprint $table) {
-            $table->dropColumn('min_contract_price');
+            $table->dropColumn('minimum_price_percent');
             $table->dropColumn('seo_keywords_count');
             $table->dropColumn('seo_agreement_duration');
             $table->dropColumn('seo_amount_content');

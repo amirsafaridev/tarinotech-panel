@@ -11,7 +11,8 @@
         <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a
+                            href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.package.index') }}">پکیج ها</a></li>
                 <li class="breadcrumb-item active">ایجاد</li>
             </ol>
@@ -26,15 +27,17 @@
                     <form class="request-form forms-sample" method="post" action="{{ route('admin.package.store') }}">
                         @csrf
 
-                        <x-admin.select-model identify="type_id"
-                                              :items="$types"
-                                              key="id"
-                                              value="path"/>
+                        <x-admin.select-model identify="base_id" title="پایه پروژه"/>
+
+                        <x-admin.select-model identify="type_id" title="تایپ پروژه"/>
 
                         <x-admin.input identify="title" title="عنوان"/>
 
                         <x-admin.input identify="price" title="قیمت"/>
-                        
+
+                        <x-admin.input identify="minimum_price_percent" title="حداقل مبلغ (درصد)"/>
+
+                        @include('package::admin.part.seo-fields')
 
                         <x-admin.textarea identify="contract_attachment" title="پیوست قرارداد"/>
 
@@ -55,10 +58,11 @@
     @include('admin.partial.ckeditor')
     @include('admin.partial.script.global')
     <script>
-        $(document).ready(function (){
+        $(document).ready(function () {
             activeParentUl('{{ route('admin.package.index') }}');
             makeInputPrice($('#price'));
-            CKEDITOR.replace( 'contract_attachment',{height:400});
-        })
+            CKEDITOR.replace('contract_attachment', { height: 400 });
+        });
     </script>
+    @include('package::admin.part.script')
 @endsection

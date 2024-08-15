@@ -2,6 +2,8 @@
 
 namespace Modules\Package\app\Models;
 
+use App\Foundation\ValueObjects\PackagePriceResult;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,7 +23,7 @@ class Package extends Model
         'title',
         'type_id',
         'contract_attachment',
-        'min_contract_price',
+        'minimum_price_percent',
         'seo_keywords_count',
         'seo_agreement_duration',
         'seo_amount_content',
@@ -40,6 +42,41 @@ class Package extends Model
     public function finalPrice(): HasOne
     {
         return $this->hasOne(PackagePrice::class)->orderByDesc('id');
+    }
+
+    public function getPriceForDate($date): PackagePriceResult
+    {
+        $date = Carbon::parse($date);
+
+        $priceRecord = $this->prices()
+            ->where('start_at', '<=', $date)
+            ->where('end_at', '>=', $date)
+            ->first();
+
+        if (! $priceRecord) {
+            $priceRecord = $this->prices()
+                ->whereNull('end_at')
+                ->orderBy('start_at', 'desc')
+                ->first();
+        }
+
+        $percentPrice = 0;
+        if ($priceRecord) {
+            $price = $priceRecord->price;
+            if ($this->minimum_price_percent > 0) {
+                $discountAmount = $price * ($this->minimum_price_percent / 100);
+                $percentPrice = $price - round($discountAmount);
+            } else {
+                $percentPrice = $price;
+            }
+        }
+
+        $packagePriceResult = new PackagePriceResult();
+
+        return $packagePriceResult
+            ->setPrice($priceRecord)
+            ->setMinimumPrice($percentPrice)
+            ->setPercentPrice($this->minimum_price_percent);
     }
 
     public function getActivitylogOptions(): LogOptions

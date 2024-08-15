@@ -12,13 +12,13 @@ class ProjectBaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $types = ['طراحی سایت', 'سئو', 'تبلیغات ادورز'];
+        $bases = ['طراحی سایت', 'سئو', 'تبلیغات ادورز'];
 
         $dataToInsert = [];
 
-        foreach ($types as $type) {
+        foreach ($bases as $base) {
             $dataToInsert[] = [
-                'title' => $type,
+                'title' => $base,
                 'created_at' => now(),
                 'updated_at' => now(),
             ];

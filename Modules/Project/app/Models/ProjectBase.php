@@ -19,7 +19,7 @@ class ProjectBase extends Model
 
     public function types(): HasMany
     {
-        return $this->hasMany(ProjectType::class, 'project_base_id');
+        return $this->hasMany(ProjectType::class, 'base_id');
     }
 
     public function getActivitylogOptions(): LogOptions

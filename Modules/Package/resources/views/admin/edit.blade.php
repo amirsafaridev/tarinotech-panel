@@ -30,15 +30,17 @@
                         @csrf
                         @method('PATCH')
 
-                        <x-admin.select-model identify="type_id"
-                                              :items="$types"
-                                              key="id"
-                                              value="path"
-                                              :old="$package->type_id"/>
+                        <x-admin.select-model identify="base_id" title="پایه پروژه"/>
+
+                        <x-admin.select-model identify="type_id" title="تایپ پروژه"/>
 
                         <x-admin.input identify="title" title="عنوان" :old="$package->title"/>
 
                         <x-admin.input identify="price" title="قیمت" :old="$package->finalPrice?->price"/>
+
+                        <x-admin.input identify="minimum_price_percent" title="حداقل مبلغ (درصد)" :old="$package->minimum_price_percent"/>
+
+                        @include('package::admin.part.seo-fields')
 
                         <x-admin.textarea identify="contract_attachment" title="پیوست قرارداد"  :old="$package->contract_attachment"/>
 
@@ -74,9 +76,10 @@
     @include('admin.partial.script.global')
     <script>
         $(document).ready(function (){
-            makeInputPrice($('#price'));
             activeParentUl('{{ route('admin.package.index') }}');
             CKEDITOR.replace( 'contract_attachment',{height:400});
         })
     </script>
+    @include('package::admin.part.script')
+
 @endsection
