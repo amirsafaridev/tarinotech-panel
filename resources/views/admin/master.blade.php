@@ -19,9 +19,9 @@
     <link href="{{ asset('res-admin/assets/font-awesome/css/solid.css') }}" rel="stylesheet" />
 
     @if(app()->isLocal())
-        <link href="{{ asset('res-admin/assets/css/style.css?u=1') }}" rel="stylesheet" />
+        <link href="{{ asset('res-admin/assets/css/style.css?u=2') }}" rel="stylesheet" />
     @else
-        <link href="{{ asset('res-admin/assets/css/style.min.css') }}" rel="stylesheet" />
+        <link href="{{ asset('res-admin/assets/css/style.min.css?u=2') }}" rel="stylesheet" />
     @endif
 
     <link href="{{ asset('res-admin/assets/css/custom.css') }}" rel="stylesheet" />
