@@ -123,14 +123,21 @@
                             :old="$project->target->keywords_count"
                     />
 
-                    <x-admin.select-simple
-                            identify="keywords[]"
-                            :multiple="true"
-                            description="در هر خط یک کلمه کلیدی با اولویت وارد کنید."
-                            title="لیست کلمات قراردادی"
-                            :items="$project->target->keywords"
-                            :old="$project->target->keywords"
-                    />
+
+                    <div class="form-group">
+                        <label for="keywords" class="form-label">لیست کلمات قراردادی</label>
+                        <select class="form-control"
+                                name="keywords[]"
+                                multiple="multiple"
+                                id="keywords">
+                            <option value="">انتخاب گزینه</option>
+                            @foreach ($project->target->keywords as $keyword)
+                                <option selected="selected"  value="{{ $keyword }}">
+                                    {{ $keyword }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
                 </div>
             </div>
