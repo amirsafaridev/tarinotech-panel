@@ -2,9 +2,12 @@
 
 namespace Modules\Project\app\Http\Requests\Admin\Seo;
 
+use App\Helpers\Helper;
+use App\Rules\PriceGreaterThanMinimum;
 use BenSampo\Enum\Rules\EnumKey;
 use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\Package\app\Models\Package;
 use Modules\Project\app\Enums\ProjectDesignBy;
 use Modules\Project\app\Enums\SeoHostLocation;
 
@@ -23,26 +26,33 @@ class StoreRequest extends FormRequest
      */
     public function rules(): array
     {
+        $packageId = $this->input('package_id');
+        $date = Helper::toGregorian($this->input('agreement_at'));
 
-        return [
+        $package = null;
+        if (is_numeric($packageId)) {
+            $package = Package::find($packageId);
+        }
+
+        $rules = [
             'title' => 'required|max:255',
             'domain_primary' => 'required|max:255',
-
             'user_id' => 'required|exists:users,id',
             'status_id' => 'required|exists:project_statuses,id',
-            'package_id' => 'required|exists:packages,id',
-
-            'price' => 'required|integer',
+            'package_id' => 'required|integer',
             'due_date_payments' => 'required|integer|min:1',
             'agreement_at' => 'required|jdate',
             'designed_by' => ['required', new EnumValue(ProjectDesignBy::class)],
-
-            /* Host */
             'host_location' => ['required', new EnumKey(SeoHostLocation::class)],
             'host_provider' => 'required_if:host_location,'.SeoHostLocation::OUT_COMPANY,
-
             'keywords' => 'required|array',
         ];
+
+        if ($package && $date) {
+            $rules['price'] = ['required', 'integer', new PriceGreaterThanMinimum($package, $date)];
+        }
+
+        return $rules;
     }
 
     public function messages(): array
