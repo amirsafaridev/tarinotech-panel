@@ -247,6 +247,7 @@ class SeoController extends Controller
             ->addColumn(
                 ColumnOption::new()->setName('target.price_monthly')
                     ->setSortable(false)
+                    ->setSearchable(false)
                     ->setAs('پرداخت ماهیانه')
             )
             ->addColumn(
