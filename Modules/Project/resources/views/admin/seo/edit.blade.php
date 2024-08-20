@@ -123,10 +123,12 @@
                             :old="$project->target->keywords_count"
                     />
 
-                    <x-admin.textarea
-                            identify="keywords"
+                    <x-admin.select-simple
+                            identify="keywords[]"
+                            :multiple="true"
                             description="در هر خط یک کلمه کلیدی با اولویت وارد کنید."
                             title="لیست کلمات قراردادی"
+                            :items="$project->target->keywords"
                             :old="$project->target->keywords"
                     />
 

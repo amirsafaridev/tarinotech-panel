@@ -106,15 +106,18 @@
                     <x-admin.input
                             identify="amount_content"
                             title="میزان تولید محتوا"
+                            :read-only="true"
                     />
 
                     <x-admin.input
                             identify="keywords_count"
                             title="تعداد کلمات سئو شدنی"
+                            :read-only="true"
                     />
 
-                    <x-admin.textarea
-                            identify="keywords"
+                    <x-admin.select-simple
+                            identify="keywords[]"
+                            :multiple="true"
                             description="در هر خط یک کلمه کلیدی با اولویت وارد کنید."
                             title="لیست کلمات قراردادی"
                     />
@@ -154,7 +157,8 @@
                                     identify="agreement_duration"
                                     title="مدت قرارداد"
                                     :with-option="false"
-                                    :enum-class="\Modules\Project\app\Enums\SeoAgreementDuration::class"/>
+                                    :enum-class="\Modules\Project\app\Enums\SeoAgreementDuration::class"
+                                    :read-only="true"/>
                         </div>
 
                         <div class="col-12 col-md-6">
@@ -166,7 +170,7 @@
                         </div>
 
                         <div class="col-12 col-md-6">
-                            <x-admin.input identify="price_monthly" title="پرداختی ماهیانه (ریال)"/>
+                            <x-admin.input identify="price_monthly" title="پرداختی ماهیانه (ریال)" :read-only="true"/>
                         </div>
                         <div class="col-12 col-md-6">
                             <x-admin.input identify="due_date_payments"
@@ -207,7 +211,6 @@
     <script>
         $(document).ready(function () {
             activeParentUl('{{ route('admin.project.seo.index') }}');
-
         })
     </script>
 @endsection

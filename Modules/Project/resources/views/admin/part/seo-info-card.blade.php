@@ -71,7 +71,7 @@
             @if($project->target->keywords)
                 <tr>
                     <td>لیست کلمات قراردادی</td>
-                    <td>{{ implode(', ',explode(PHP_EOL,$project->target->keywords)) }}</td>
+                    <td>{{ implode(', ',$project->target->keywords) }}</td>
                 </tr>
             @endif
 

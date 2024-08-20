@@ -21,6 +21,8 @@ use DB;
 use Exception;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
+use InvalidArgumentException;
+use Modules\Package\app\Models\Package;
 use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Filters\StatusFilter;
 use Modules\Project\app\Filters\TypeFilter;
@@ -67,6 +69,9 @@ class SeoController extends Controller
             DB::beginTransaction();
 
             $projectData = $this->initialSeoData($request);
+
+            $projectData = $this->prepareProjectDataFromPackage($projectData, $request);
+
             $projectSeo = ProjectSeo::query()->create($projectData);
 
             $projectParams = $this->initialProjectData($request);
@@ -189,6 +194,27 @@ class SeoController extends Controller
         $host->setHostProvider($req->input('host_provider'));
 
         return $host;
+    }
+
+    protected function prepareProjectDataFromPackage(array $projectData, StoreRequest $request): array
+    {
+        $package = Package::query()->find($request->get('package_id'));
+
+        $projectData['keywords_count'] = $package->seo_keywords_count;
+        $projectData['agreement_duration'] = $package->seo_agreement_duration;
+        $projectData['amount_content'] = $package->seo_amount_content;
+
+        $monthlyDuration = $package->seo_agreement_duration / 30;
+
+        if ($monthlyDuration <= 0) {
+            throw new InvalidArgumentException('مدت زمان توافق باید بیشتر از صفر باشد.');
+        }
+
+        $pricePerMonth = $request->get('price') / $monthlyDuration;
+
+        $projectData['price_monthly'] = round($pricePerMonth);
+
+        return $projectData;
     }
 
     public function getDataRoute(): string

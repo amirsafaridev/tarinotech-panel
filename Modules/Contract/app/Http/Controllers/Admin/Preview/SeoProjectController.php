@@ -94,7 +94,7 @@ class SeoProjectController extends Controller implements PrintControllerInterfac
             PlaceHolderKeys::PROJECT_DOMAIN => $orEmpty($model->project->domain),
             PlaceHolderKeys::SEO_KEYWORD_COUNT => $orEmpty($model->keywords_count),
             PlaceHolderKeys::SEO_AMOUNT_CONTENT => $orEmpty($model->amount_content),
-            PlaceHolderKeys::SEO_KEYWORDS => $orEmpty($model->keywords),
+            PlaceHolderKeys::SEO_KEYWORDS => $orEmpty(implode(', ', $model->keywords)),
             PlaceHolderKeys::USER_ECONOMIC_CODE => $orEmpty($model->project?->user?->economic_code),
             PlaceHolderKeys::SEO_MONTHLY_PAYMENT_DOUBLE => $orEmpty(number_format($model->price_monthly * 2)),
             PlaceHolderKeys::SEO_MONTHLY_PAYMENT => $orEmpty(number_format($model->price_monthly)),

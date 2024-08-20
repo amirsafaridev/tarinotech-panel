@@ -151,6 +151,8 @@
 
 <script src="{{ asset('res-admin/assets/js/sticky.js') }}"></script>
 
+<script src="{{ asset('res-admin/assets/plugins/blockUI/jquery.blockUI.js.js') }}"></script>
+
 <script src="{{ asset('res-admin/assets/js/custom.js') }}"></script>
 
 

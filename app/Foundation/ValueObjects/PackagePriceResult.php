@@ -54,6 +54,7 @@ class PackagePriceResult
             'price' => $this->price,
             'percentPrice' => $this->percentPrice,
             'minimumPrice' => $this->minimumPrice,
+            'minimumPriceFormatted' => sprintf('%s (ریال)', number_format($this->minimumPrice)),
         ];
     }
 }

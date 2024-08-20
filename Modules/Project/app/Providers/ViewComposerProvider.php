@@ -142,14 +142,16 @@ class ViewComposerProvider extends ServiceProvider
             'project::admin.seo.create',
             'project::admin.seo.edit',
         ], function ($view) {
+
+            \Log::info('aaa');
+
             $types = ProjectType::query()
-                ->where('base_id', ProjectBase::Seo)
-                ->with(['base', 'statuses.type'])
+                ->with('statuses')
                 ->get();
 
             $statuses = ProjectStatus::query()
                 ->seoBase()
-                ->with('type')
+                ->with('type.base')
                 ->get();
 
             $packages = Package::query()

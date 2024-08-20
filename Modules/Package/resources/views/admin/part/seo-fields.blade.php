@@ -19,7 +19,13 @@
             }
         @endphp
         <x-admin.input identify="seo_keywords_count" title="تعداد کلمات سئو شدنی" :old="$seoKeywordsCount" />
-        <x-admin.input identify="seo_agreement_duration" title="مدت قرارداد" :old="$seoAgreementDuration"/>
+
+        <x-admin.select-enum
+                identify="seo_agreement_duration"
+                title="مدت قرارداد"
+                :with-option="false"
+                :enum-class="\Modules\Project\app\Enums\SeoAgreementDuration::class" :old="$seoAgreementDuration"/>
+
         <x-admin.input identify="seo_amount_content" title="میزان تولید محتوا" :old="$seoAmountContent"/>
     </div>
 </div>

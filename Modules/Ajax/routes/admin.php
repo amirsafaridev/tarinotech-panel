@@ -18,5 +18,6 @@ Route::group(['guard' => 'admin'], function () {
     Route::get('/admin/remote-select', [AdminController::class, 'remoteSelect'])->name('admin.remote-select');
 
     Route::get('/package/by-type', [PackageController::class, 'byType'])->name('package.by-type');
+    Route::post('/package/current-price', [PackageController::class, 'currentPrice'])->name('package.current-price');
 
 });

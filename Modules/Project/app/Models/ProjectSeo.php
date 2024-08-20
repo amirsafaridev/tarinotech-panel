@@ -37,6 +37,7 @@ class ProjectSeo extends Model
 
     protected $casts = [
         'host' => 'json',
+        'keywords' => 'array',
     ];
 
     public function project(): MorphOne

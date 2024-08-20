@@ -21,7 +21,7 @@ class ProjectType extends Model
         'base_id',
     ];
 
-    protected $appends = ['path'];
+    //protected $appends = ['path'];
 
     protected function path(): Attribute
     {

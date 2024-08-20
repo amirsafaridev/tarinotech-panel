@@ -25,7 +25,9 @@
                 url: url,
                 data: postData,
                 success: function (response) {
-                    showToast(response.message, 'success');
+                    if(response.message){
+                        showToast(response.message, 'success');
+                    }
                     resolve(response);
                 },
                 error: function (response) {
@@ -152,5 +154,41 @@
 
     function printMe(){
         window.print();
+    }
+
+    function blockUI(){
+        const $messageContainer = $('<div></div>')
+            .css({
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center'
+            });
+
+        const $loadingImage = $('<img>')
+            .attr('src', "{{ asset('res-admin/assets/images/loading.gif') }}");
+
+        const $loadingText = $('<h4></h4>')
+            .text('لطفا منتظر بمانید...');
+
+        $messageContainer.append($loadingImage).append($loadingText);
+
+        const messageHtml = $messageContainer.prop('outerHTML');
+
+        $.blockUI({
+            message: messageHtml,
+            css: {
+                padding:        10,
+                textAlign:      'center',
+                color:          '#000',
+                border:         '0px',
+                backgroundColor:'#fff',
+                cursor:         'wait',
+                borderRadius:   '8px'
+            },
+        });
+    }
+    function unblockUI(){
+        $.unblockUI();
     }
 </script>
