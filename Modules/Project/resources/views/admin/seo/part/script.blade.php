@@ -31,7 +31,8 @@
         CKEDITOR.replace('contract_attachment', {height: 400});
 
         if(editMode){
-            packageId.trigger('change')
+            packageId.trigger('change');
+            keywordsSetup();
         }
     });
 
