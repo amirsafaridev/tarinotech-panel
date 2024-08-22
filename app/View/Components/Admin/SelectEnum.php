@@ -22,6 +22,8 @@ class SelectEnum extends Component
         public bool $multiple = false,
         public bool $withOption = true,
         public bool $isSmall = false,
+        public bool $disabled = false,
+
     ) {
 
     }

@@ -104,46 +104,6 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">اطلاعات سئو</h3>
-                    <div class="card-options">
-                        <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i
-                                    class="fal fa-chevron-up"></i></a>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <x-admin.input
-                            identify="amount_content"
-                            title="میزان تولید محتوا"
-                            :old="$project->target->amount_content"
-                    />
-
-                    <x-admin.input
-                            identify="keywords_count"
-                            title="تعداد کلمات سئو شدنی"
-                            :old="$project->target->keywords_count"
-                    />
-
-
-                    <div class="form-group">
-                        <label for="keywords" class="form-label">لیست کلمات قراردادی</label>
-                        <select class="form-control"
-                                name="keywords[]"
-                                multiple="multiple"
-                                id="keywords">
-                            <option value="">انتخاب گزینه</option>
-                            @foreach ($project->target->keywords as $keyword)
-                                <option selected="selected"  value="{{ $keyword }}">
-                                    {{ $keyword }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
                     <h3 class="card-title">اطلاعات قرارداد</h3>
                     <div class="card-options">
                         <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i
@@ -228,6 +188,46 @@
                     <x-admin.button title="ویرایش"/>
 
                     <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">اطلاعات سئو</h3>
+                    <div class="card-options">
+                        <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i
+                                    class="fal fa-chevron-up"></i></a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <x-admin.input
+                            identify="amount_content"
+                            title="میزان تولید محتوا"
+                            :old="$project->target->amount_content"
+                    />
+
+                    <x-admin.input
+                            identify="keywords_count"
+                            title="تعداد کلمات سئو شدنی"
+                            :old="$project->target->keywords_count"
+                    />
+
+
+                    <div class="form-group">
+                        <label for="keywords" class="form-label">لیست کلمات قراردادی</label>
+                        <select class="form-control"
+                                name="keywords[]"
+                                multiple="multiple"
+                                id="keywords">
+                            <option value="">انتخاب گزینه</option>
+                            @foreach ($project->target->keywords as $keyword)
+                                <option selected="selected"  value="{{ $keyword }}">
+                                    {{ $keyword }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
                 </div>
             </div>

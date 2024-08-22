@@ -96,37 +96,6 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">اطلاعات سئو</h3>
-                    <div class="card-options">
-                        <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i
-                                    class="fal fa-chevron-up"></i></a>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <x-admin.input
-                            identify="amount_content"
-                            title="میزان تولید محتوا"
-                            :read-only="true"
-                    />
-
-                    <x-admin.input
-                            identify="keywords_count"
-                            title="تعداد کلمات سئو شدنی"
-                            :read-only="true"
-                    />
-
-                    <x-admin.select-simple
-                            identify="keywords[]"
-                            :multiple="true"
-                            description="در هر خط یک کلمه کلیدی با اولویت وارد کنید."
-                            title="لیست کلمات قراردادی"
-                    />
-
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
                     <h3 class="card-title">اطلاعات قرارداد</h3>
                     <div class="card-options">
                         <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i
@@ -192,6 +161,37 @@
                     <x-admin.textarea identify="contract_attachment" title="پیوست قرارداد"/>
 
                     <x-admin.button title="{{ trans('panel.create') }}"/>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">اطلاعات سئو</h3>
+                    <div class="card-options">
+                        <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i
+                                    class="fal fa-chevron-up"></i></a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <x-admin.input
+                            identify="amount_content"
+                            title="میزان تولید محتوا"
+                            :read-only="true"
+                    />
+
+                    <x-admin.input
+                            identify="keywords_count"
+                            title="تعداد کلمات سئو شدنی"
+                            :read-only="true"
+                    />
+
+                    <x-admin.select-simple
+                            identify="keywords[]"
+                            :multiple="true"
+                            description="در هر خط یک کلمه کلیدی با اولویت وارد کنید."
+                            title="لیست کلمات قراردادی"
+                    />
 
                 </div>
             </div>
