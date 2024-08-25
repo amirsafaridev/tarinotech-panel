@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between">
-        <h3 class="card-title">قرارداد - مشتری</h3>
+        <h3 class="card-title">قرارداد - کارفرما</h3>
     </div>
     <div class="card-body">
         @if($project?->target?->userSignable)
