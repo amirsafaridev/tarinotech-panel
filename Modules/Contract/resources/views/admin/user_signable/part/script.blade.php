@@ -12,7 +12,7 @@
     Dropzone.options.myDropzone = {
         paramName: "file",
         maxFilesize: 10, // Maximum file size in MB
-        acceptedFiles: "image/*", // Accept only image files
+        acceptedFiles: "image/*,application/pdf", // Accept image files and PDF files
         dictDefaultMessage: "فایل‌ها را اینجا بکشید و رها کنید یا برای آپلود کلیک کنید",
         dictFileTooBig: "اندازه فایل بزرگ‌تر از حد مجاز است. حداکثر اندازه: 10 مگابایت.",
         dictInvalidFileType: "این نوع فایل مجاز نیست.",
