@@ -39,6 +39,15 @@ if (! function_exists('isFormatDate')) {
     }
 }
 
+if (! function_exists('cleanDomainUrl')) {
+    function cleanDomainUrl($url): string
+    {
+        $url = preg_replace('/^https?:\/\//', '', $url);
+
+        return rtrim($url, '/');
+    }
+}
+
 if (! function_exists('isJalaliDate')) {
     function isJalaliDate($date): bool
     {

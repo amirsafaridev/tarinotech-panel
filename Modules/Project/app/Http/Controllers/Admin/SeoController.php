@@ -344,6 +344,9 @@ class SeoController extends Controller
                 ->editColumn('target.price_monthly', function (Project $project) {
                     return number_format($project->target->price_monthly);
                 })
+                ->editColumn('domain', function (Project $project) {
+                    return cleanDomainUrl($project->domain);
+                })
                 ->addColumn('action', function ($project) {
 
                     return (new Dropdown())

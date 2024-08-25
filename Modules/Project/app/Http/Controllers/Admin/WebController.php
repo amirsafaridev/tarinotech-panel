@@ -386,6 +386,9 @@ class WebController extends Controller
                 ->editColumn('price', function (Project $project) {
                     return number_format($project->price);
                 })
+                ->editColumn('domain', function (Project $project) {
+                    return cleanDomainUrl($project->domain);
+                })
                 ->addColumn('action', function ($project) {
 
                     return (new Dropdown())

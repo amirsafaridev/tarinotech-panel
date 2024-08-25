@@ -242,6 +242,9 @@ class AdsController extends Controller
                 ->editColumn('created_at', function (Project $project) {
                     return $project->created_at->toJalali()->format('Y/m/d');
                 })
+                ->editColumn('domain', function (Project $project) {
+                    return cleanDomainUrl($project->domain);
+                })
                 ->addColumn('action', function ($project) {
                     $actions = Helper::btnMaker(BtnType::Warning, route('admin.project.ads.edit', $project->id), trans('panel.action.edit'));
                     $actions .= Helper::btnMaker(BtnType::Info, route('admin.project.manage', $project->id), trans('panel.action.show'));
