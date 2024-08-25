@@ -43,6 +43,19 @@
             <div class="card">
                 <div class="card-body pb-3">
                     @include('admin.partial.message')
+
+
+                    <div class="card mt-5">
+                        <div class="card-header">
+                            <h5 class="card-title">بارگذاری پیوست‌ها</h5>
+                            <p class="card-text">لطفاً فایل‌های تصویری خود را اینجا بارگذاری کنید. حداکثر اندازه فایل مجاز ۱۰ مگابایت است.</p>
+                        </div>
+                        <div class="card-body">
+                            <form action="{{ route('admin.contract.attachment.upload') }}" class="dropzone" id="myDropzone">
+                            </form>
+                        </div>
+                    </div>
+
                     <form id="userSignableForm" class="request-form forms-sample" method="post" action="{{ route('admin.contract.sign.user.update',$userSignable->id) }}">
                         @csrf
                         @method('PATCH')
@@ -61,17 +74,6 @@
                         <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
 
                     </form>
-
-                    <div class="card mt-5">
-                        <div class="card-header">
-                            <h5 class="card-title">بارگذاری پیوست‌ها</h5>
-                            <p class="card-text">لطفاً فایل‌های تصویری خود را اینجا بارگذاری کنید. حداکثر اندازه فایل مجاز ۱۰ مگابایت است.</p>
-                        </div>
-                        <div class="card-body">
-                            <form action="{{ route('admin.contract.attachment.upload') }}" class="dropzone" id="myDropzone">
-                            </form>
-                        </div>
-                    </div>
 
                     <div class="row mt-5">
                         @foreach($userSignable->attachments as $attachment)
