@@ -105,7 +105,7 @@ class SignController extends Controller
                     ->setSortable(false)
             )
             ->addColumn(
-                ColumnOption::new()->setName('make_admin.last_name')->setAs('نام خانوادگی کارشناس')
+                ColumnOption::new()->setName('make_admin.last_name')->setAs('کارشناس')
                     ->setSearchable(false)
                     ->setSortable(false)
             )
@@ -141,7 +141,7 @@ class SignController extends Controller
         try {
             $signables = Signable::query()
                 ->with(['target.project.user', 'makeAdmin'])
-                ->whereHas('target.project');
+                ->whereHas('target.project.user');
 
             return DataTables::eloquent($signables)
                 ->editColumn('status', function ($signable) {
