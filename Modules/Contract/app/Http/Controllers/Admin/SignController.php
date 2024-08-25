@@ -100,10 +100,24 @@ class SignController extends Controller
                 ColumnOption::new()->setName('id')->setAs('شناسه')
             )
             ->addColumn(
-                ColumnOption::new()->setName('make_admin.fullname')->setAs('درخواست کننده')
+                ColumnOption::new()->setName('target.project.domain')->setAs('پروژه')
+                    ->setSearchable(false)
+                    ->setSortable(false)
             )
             ->addColumn(
-                ColumnOption::new()->setName('target.project.domain')->setAs('پروژه')
+                ColumnOption::new()->setName('make_admin.last_name')->setAs('نام خانوادگی کارشناس')
+                    ->setSearchable(false)
+                    ->setSortable(false)
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('target.project.user.first_name')->setAs('نام')
+                    ->setSearchable(false)
+                    ->setSortable(false)
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('target.project.user.last_name')->setAs('نام خانوادگی')
+                    ->setSearchable(false)
+                    ->setSortable(false)
             )
             ->addColumn(
                 ColumnOption::new()->setName('status')->setAs('وضعیت')
@@ -126,7 +140,7 @@ class SignController extends Controller
     {
         try {
             $signables = Signable::query()
-                ->with(['target.project', 'makeAdmin'])
+                ->with(['target.project.user', 'makeAdmin'])
                 ->whereHas('target.project');
 
             return DataTables::eloquent($signables)
