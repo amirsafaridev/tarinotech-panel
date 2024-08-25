@@ -125,7 +125,7 @@
                             <x-admin.select-enum
                                     identify="agreement_duration"
                                     title="مدت قرارداد"
-                                    :with-option="false"
+                                    :with-option="true"
                                     :enum-class="\Modules\Project\app\Enums\SeoAgreementDuration::class"
                                     :disabled="true"/>
                         </div>
