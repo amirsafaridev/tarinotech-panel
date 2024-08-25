@@ -27,12 +27,13 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         $packageId = $this->input('package_id');
-        $date = Helper::toGregorian($this->input('agreement_at'));
+        $agreementDate = $this->input('agreement_at');
 
-        $package = null;
-        if (is_numeric($packageId)) {
-            $package = Package::find($packageId);
-        }
+        // Get the package only if package_id is numeric
+        $package = is_numeric($packageId) ? Package::find($packageId) : null;
+
+        // Convert agreement date to Gregorian if it exists
+        $date = $agreementDate ? Helper::toGregorian($agreementDate) : null;
 
         $rules = [
             'title' => 'required|max:255',
@@ -48,6 +49,7 @@ class StoreRequest extends FormRequest
             'keywords' => 'required|array',
         ];
 
+        // Add price validation rule if both package and date are available
         if ($package && $date) {
             $rules['price'] = ['required', 'integer', new PriceGreaterThanMinimum($package, $date)];
         }

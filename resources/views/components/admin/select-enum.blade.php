@@ -3,6 +3,7 @@
     <select class="form-control @if ($isSmall) form-control-sm @endif"
             name="{{ $identify }}"
             id="{{ str_replace('[]', '', $identify) }}"
+            @if ($disabled) disabled @endif
             @if ($multiple) multiple @endif>
         @if ($withOption)
             <option value="">انتخاب گزینه</option>

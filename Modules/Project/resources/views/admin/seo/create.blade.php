@@ -127,7 +127,7 @@
                                     title="مدت قرارداد"
                                     :with-option="false"
                                     :enum-class="\Modules\Project\app\Enums\SeoAgreementDuration::class"
-                                    :read-only="true"/>
+                                    :disabled="true"/>
                         </div>
 
                         <div class="col-12 col-md-6">

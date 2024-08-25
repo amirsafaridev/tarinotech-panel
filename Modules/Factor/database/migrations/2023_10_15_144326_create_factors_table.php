@@ -20,8 +20,10 @@ return new class extends Migration
 
             $table->unsignedBigInteger('admin_id');
             $table->unsignedBigInteger('project_id');
+
             $table->unsignedInteger('final_price')->default(0);
             $table->unsignedTinyInteger('status')->default(FactorStatus::Pending);
+
             $table->boolean('is_official')->default(false);
             $table->dateTime('expired_at')->nullable();
             $table->dateTime('paid_at')->nullable();
