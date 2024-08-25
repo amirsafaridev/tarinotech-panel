@@ -38,7 +38,7 @@
 
                         <x-admin.input identify="price" title="قیمت" :old="$package->finalPrice?->price"/>
 
-                        <x-admin.input identify="minimum_price_percent" title="حداقل مبلغ (درصد)" :old="$package->minimum_price_percent"/>
+                        <x-admin.input identify="minimum_price_percent" title="درصد تخفیف" :old="$package->minimum_price_percent"/>
 
                         @include('package::admin.part.seo-fields')
 

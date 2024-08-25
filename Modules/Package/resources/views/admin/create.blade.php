@@ -35,7 +35,7 @@
 
                         <x-admin.input identify="price" title="قیمت"/>
 
-                        <x-admin.input identify="minimum_price_percent" title="حداقل مبلغ (درصد)"/>
+                        <x-admin.input identify="minimum_price_percent" title="درصد تخفیف"/>
 
                         @include('package::admin.part.seo-fields')
 
