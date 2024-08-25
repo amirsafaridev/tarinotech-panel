@@ -62,12 +62,39 @@
 
                     </form>
 
+                    <div class="card mt-5">
+                        <div class="card-header">
+                            <h5 class="card-title">بارگذاری پیوست‌ها</h5>
+                            <p class="card-text">لطفاً فایل‌های تصویری خود را اینجا بارگذاری کنید. حداکثر اندازه فایل مجاز ۱۰ مگابایت است.</p>
+                        </div>
+                        <div class="card-body">
+                            <form action="{{ route('admin.contract.attachment.upload') }}" class="dropzone" id="myDropzone">
+                            </form>
+                        </div>
+                    </div>
+
                     <div class="row mt-5">
                         @foreach($userSignable->attachments as $attachment)
                             <div class="col-md-4 mb-3">
                                 <div class="card">
                                     <div class="card-img-container">
-                                        <img src="{{ route('stream.read', $attachment->file_path) }}" class="card-img-top" alt="Attachment Image">
+                                    @if(str_contains($attachment->file_type, 'image/'))
+                                        <!-- Render image for image file types -->
+                                            <img src="{{ route('stream.read', $attachment->file_path) }}" class="card-img-top" alt="Attachment Image">
+                                    @elseif($attachment->file_type == 'application/pdf')
+                                        <!-- Render PDF preview box for PDF files -->
+                                            <div class="pdf-preview-container d-flex justify-content-center align-items-center">
+                                                <div class="text-center">
+                                                    <i class="fas fa-file-pdf fa-4x text-danger"></i>
+                                                    <p class="mt-2">PDF Document</p>
+                                                </div>
+                                            </div>
+                                    @else
+                                        <!-- Render placeholder or message for unsupported file types -->
+                                            <div class="text-center">
+                                                <p>Unsupported file type</p>
+                                            </div>
+                                        @endif
                                     </div>
                                     <div class="card-body d-flex gap-2">
                                         <a href="{{ route('stream.read', $attachment->file_path) }}" target="_blank" class="btn btn-primary btn-sm">
@@ -80,18 +107,10 @@
                                 </div>
                             </div>
                         @endforeach
+
                     </div>
 
-                    <div class="card mt-5">
-                        <div class="card-header">
-                            <h5 class="card-title">بارگذاری پیوست‌ها</h5>
-                            <p class="card-text">لطفاً فایل‌های تصویری خود را اینجا بارگذاری کنید. حداکثر اندازه فایل مجاز ۱۰ مگابایت است.</p>
-                        </div>
-                        <div class="card-body">
-                            <form action="{{ route('admin.contract.attachment.upload') }}" class="dropzone" id="myDropzone">
-                            </form>
-                        </div>
-                    </div>
+
 
 
                     <form id="deleteItem" action="{{ route('admin.contract.sign.destroy',$userSignable->id) }}" method="post" class="form-inline">
