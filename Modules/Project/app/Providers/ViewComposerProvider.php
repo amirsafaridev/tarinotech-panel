@@ -159,7 +159,9 @@ class ViewComposerProvider extends ServiceProvider
                 })
                 ->get();
 
-            $view->with(compact('types', 'statuses', 'packages'));
+            $admins = $this->getAdminBaseOnRole();
+
+            $view->with(compact('types', 'statuses', 'packages', 'admins'));
         });
     }
 
