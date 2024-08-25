@@ -50,7 +50,7 @@ class UpdateRequest extends FormRequest
         }
 
         if ($this->input('status') == FactorStatus::PaidManual) {
-            $rules['manual_file'] = 'mimes:img,png,jpeg,pdf|max:10024';
+            $rules['manual_file'] = 'required|mimes:img,png,jpeg,pdf|max:10024';
             $rules['manual_payment_date'] = 'required|jdate';
         }
 
