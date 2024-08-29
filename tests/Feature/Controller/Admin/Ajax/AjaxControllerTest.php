@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Modules\Admin\app\Models\Admin;
+use Modules\Admin\database\factories\AdminFactory;
+use Modules\Admin\database\factories\JobTitleFactory;
 use Modules\FreeDay\app\Models\FreeDay;
 use Tests\TestCase;
 
@@ -18,7 +20,14 @@ class AjaxControllerTest extends TestCase
         $customDate = Carbon::create(2023, 01, 01);
         Carbon::setTestNow($customDate);
 
-        Admin::factory(1)->create();
+        JobTitleFactory::new()
+            ->count(1)
+            ->create();
+
+        AdminFactory::new()
+            ->count(1)
+            ->create();
+
         $admin = Admin::first();
         $this->actingAs($admin, 'admin');
         $this->post(route('admin.ajax.calc.day.work'), [

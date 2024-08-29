@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Macros\ForeignKeyMacros;
 use BenSampo\Enum\Enum;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -22,5 +23,7 @@ class MacroServiceProvider extends ServiceProvider
 
             return $data;
         });
+
+        ForeignKeyMacros::register();
     }
 }

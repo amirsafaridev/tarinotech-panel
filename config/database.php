@@ -97,6 +97,7 @@ return [
             'driver' => 'sqlite',
             'database' => ':memory:',
             'prefix' => '',
+            'foreign_key_constraints' => false,
         ],
 
     ],

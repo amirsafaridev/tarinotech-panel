@@ -140,8 +140,7 @@ class SignController extends Controller
     {
         try {
             $signables = Signable::query()
-                ->with(['target.project.user', 'makeAdmin'])
-                ->whereHas('target.project.user');
+                ->with(['target.project.user', 'makeAdmin']);
 
             return DataTables::eloquent($signables)
                 ->editColumn('status', function ($signable) {
