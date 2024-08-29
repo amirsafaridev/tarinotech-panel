@@ -81,7 +81,7 @@
             }
 
             const agreementDurationValue = parseInt(agreementDuration.val());
-            const monthlyDuration = agreementDurationValue / 30;
+            const monthlyDuration = Math.round(agreementDurationValue / 30);
 
             if (monthlyDuration <= 0 || isNaN(monthlyDuration)) {
                 alert('مدت زمان توافق باید بیشتر از صفر باشد.');
@@ -90,6 +90,9 @@
             }
 
             let pricePerMonth =  Math.round(priceValue / monthlyDuration);
+
+            pricePerMonth = Math.round((pricePerMonth * parseFloat('{{ config('factor.tax') }}')) + pricePerMonth);
+
             priceMonthly.val(pricePerMonth);
             priceMonthly.trigger('click');
         });
