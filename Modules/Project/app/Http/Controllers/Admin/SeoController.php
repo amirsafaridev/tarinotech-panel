@@ -2,7 +2,6 @@
 
 namespace Modules\Project\app\Http\Controllers\Admin;
 
-use App\Domain\Jobs\SeoProjectFactorMakeJob;
 use App\Enums\Database\Role\PermissionName;
 use App\Enums\Database\Role\RoleName;
 use App\Enums\General\DropdownItemColor;
@@ -79,9 +78,6 @@ class SeoController extends Controller
             $projectParams['tax_rate'] = config('factor.tax');
 
             $projectSeo->project()->create($projectParams);
-
-            $seoFactorMakeJob = resolve(SeoProjectFactorMakeJob::class);
-            $seoFactorMakeJob->handle($projectSeo);
 
             DB::commit();
 
