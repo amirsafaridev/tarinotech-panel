@@ -41,6 +41,15 @@
 
                     <x-admin.select-user title="کارفرما"/>
 
+                    @role(\App\Enums\Database\Role\RoleName::SUPER_ADMIN)
+                        <x-admin.select-model
+                                title="کارشناس فروش"
+                                identify="admin_id"
+                                :items="$admins"
+                                key="id"
+                                value="fullName"/>
+                    @endrole
+
                     <x-admin.select-model
                             identify="type_id"
                             title="نوع پروژه"

@@ -209,13 +209,15 @@ class SeoController extends Controller
         $projectData['agreement_duration'] = $package->seo_agreement_duration;
         $projectData['amount_content'] = $package->seo_amount_content;
 
-        $monthlyDuration = $package->seo_agreement_duration / 30;
+        $monthlyDuration = round($package->seo_agreement_duration / 30);
 
         if ($monthlyDuration <= 0) {
             throw new InvalidArgumentException('مدت زمان توافق باید بیشتر از صفر باشد.');
         }
 
-        $pricePerMonth = $request->get('price') / $monthlyDuration;
+        $pricePerMonth = round($request->get('price') / $monthlyDuration);
+
+        $pricePerMonth = ($pricePerMonth * config('factor.tax')) + $pricePerMonth;
 
         $projectData['price_monthly'] = round($pricePerMonth);
 
