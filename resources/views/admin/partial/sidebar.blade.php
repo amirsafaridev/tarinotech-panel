@@ -290,7 +290,7 @@
                             @can('ADMIN_CONTRACT_SIGN_INDEX')
                                 <li><a href="{{ route('admin.contract.sign.index') }}" class="slide-item">درخواست امضاء</a></li>
                             @endcan
-                            @can('ADMIN_CONTRACT_SIGN_INDEX')
+                            @can('ADMIN_CONTRACT_SIGN_USER_INDEX')
                                 <li><a href="{{ route('admin.contract.sign.user.index') }}" class="slide-item">درخواست امضاء کارفرما</a></li>
                             @endcan
                         </ul>
