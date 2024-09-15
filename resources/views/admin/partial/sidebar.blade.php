@@ -303,6 +303,7 @@
                     'ADMIN_FACTOR_CATEGORY_INDEX',
                     'ADMIN_FACTOR_STATUS_INDEX',
                     'ADMIN_FACTOR_MANUAL_INDEX',
+                    'ADMIN_FACTOR_CHEQUE_INDEX',
                     'ADMIN_FACTOR_CUSTOMER_INDEX'
                 ])
                     <li class="sub-category">
@@ -322,6 +323,10 @@
 
                             @can('ADMIN_FACTOR_MANUAL_INDEX')
                                 <li><a href="{{ route('admin.factor.manual.index') }}" class="slide-item">لیست تایید (پرداخت دستی)</a></li>
+                            @endcan
+
+                            @can('ADMIN_FACTOR_CHEQUE_INDEX')
+                                <li><a href="{{ route('admin.factor.cheque.index') }}" class="slide-item">لیست تایید (پرداخت با چک)</a></li>
                             @endcan
 
                             @can('ADMIN_FACTOR_CUSTOMER_INDEX')

@@ -1,5 +1,6 @@
 <?php
 
+use Modules\Factor\app\Http\Controllers\Admin\FactorChequeController;
 use Modules\Factor\app\Http\Controllers\Admin\FactorController;
 use Modules\Factor\app\Http\Controllers\Admin\FactorCustomerOfferController;
 use Modules\Factor\app\Http\Controllers\Admin\FactorManualController;
@@ -48,8 +49,15 @@ Route::group(['guard' => 'admin'], function () {
         Route::patch('/{factor}', [FactorManualController::class, 'update'])->name('update');
     });
 
-    /* FACTOR ROUTES */
+    /* FACTOR CHEQUE ROUTES */
+    Route::group(['prefix' => 'cheque', 'as' => 'cheque.'], function () {
+        Route::get('/', [FactorChequeController::class, 'index'])->name('index');
+        Route::get('/data', [FactorChequeController::class, 'data'])->name('data');
+        Route::get('/{factor}', [FactorChequeController::class, 'edit'])->name('edit');
+        Route::patch('/{factor}', [FactorChequeController::class, 'update'])->name('update');
+    });
 
+    /* FACTOR ROUTES */
     Route::get('/', [FactorController::class, 'index'])->name('index');
     Route::get('/data', [FactorController::class, 'data'])->name('data');
     Route::get('/create', [FactorController::class, 'create'])->name('create');
