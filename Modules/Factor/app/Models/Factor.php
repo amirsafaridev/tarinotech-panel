@@ -40,6 +40,7 @@ class Factor extends Model
         'gateway',
         'paid_at',
         'is_confirm',
+        'serial',
         'created_at',
         'updated_at',
     ];

@@ -10,6 +10,12 @@
                     <td>شناسه</td>
                     <td>{{ $factor->id }}</td>
                 </tr>
+                @if($factor->serial)
+                    <tr>
+                        <td>سریال</td>
+                        <td>{{ $factor->serial }}</td>
+                    </tr>
+                @endif
                 <tr>
                     <td>عنوان</td>
                     <td>{{ $factor->title }}</td>

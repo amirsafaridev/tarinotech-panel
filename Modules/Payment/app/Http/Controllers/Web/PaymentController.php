@@ -2,6 +2,7 @@
 
 namespace Modules\Payment\app\Http\Controllers\Web;
 
+use App\Domain\Jobs\FactorSerialUpdateJob;
 use App\Http\Controllers\Controller;
 use Exception;
 use Modules\Factor\app\Enums\FactorStatus;
@@ -95,6 +96,8 @@ class PaymentController extends Controller
                 'status' => FactorStatus::Paid,
                 'paid_at' => now(),
             ]);
+
+            resolve(FactorSerialUpdateJob::class)->handle($factor);
 
             return view('payment::web.sepehr-success', compact('title', 'factor'));
 

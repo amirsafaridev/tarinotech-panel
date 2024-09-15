@@ -9,7 +9,7 @@ class FactorSerialUpdateJob
 {
     public function handle(Factor $factor)
     {
-        $serial = $this->generateNextFixedNumber($factor);
+        $serial = $this->generateNextFixedNumber();
         $factor->update([
             'serial' => $serial,
         ]);
@@ -23,7 +23,7 @@ class FactorSerialUpdateJob
                 ->max('serial');
             $nextNumber = $lastNumber ? (int) $lastNumber + 1 : 1;
 
-            return str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
+            return str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
         });
     }
 }
