@@ -40,6 +40,7 @@ class Factor extends Model
         'gateway',
         'paid_at',
         'is_confirm',
+        'is_automate',
         'serial',
         'created_at',
         'updated_at',
@@ -49,6 +50,7 @@ class Factor extends Model
         'gateway_data' => 'json',
         'expired_at' => 'date',
         'is_official' => 'boolean',
+        'is_automate' => 'boolean',
         'paid_at' => 'datetime',
     ];
 

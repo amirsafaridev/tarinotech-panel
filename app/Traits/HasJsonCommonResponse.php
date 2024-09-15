@@ -63,9 +63,9 @@ trait HasJsonCommonResponse
             ->with('success', $message);
     }
 
-    protected function errorBack($message): RedirectResponse
+    protected function errorBack(string $message, ?string $route = null): RedirectResponse
     {
-        return redirect()->with('danger', $message);
+        return redirect($route)->with('danger', $message);
     }
 
     protected function exceptionBack(Exception $exception): RedirectResponse

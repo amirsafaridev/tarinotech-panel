@@ -53,6 +53,7 @@ class WebProjectFactorMakerJob
                 'final_price' => $totalPrice,
                 'status' => FactorStatus::Pending,
                 'is_official' => $isOfficial,
+                'is_automate' => true,
                 'gateway' => $gateway,
                 'gateway_data' => [],
             ]);

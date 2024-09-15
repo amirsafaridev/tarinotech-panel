@@ -91,6 +91,7 @@ class SeoProjectFactorMakeJob
             'final_price' => $totalPrice,
             'status' => FactorStatus::Pending,
             'is_official' => $this->determineIsOfficial($projectSeo->project->user),
+            'is_automate' => true,
             'gateway' => $this->determinePaymentGateway($projectSeo->project->user),
             'gateway_data' => [],
             'created_at' => $jalaliDate->datetime(),

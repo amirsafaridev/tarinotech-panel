@@ -6,6 +6,7 @@ use App\Domain\Jobs\WebProjectFactorMakerJob;
 use App\Http\Controllers\Controller;
 use App\Traits\HasJsonCommonResponse;
 use Exception;
+use Modules\Factor\app\Models\Factor;
 use Modules\Project\app\Models\Project;
 
 class WebFactorController extends Controller
@@ -16,6 +17,15 @@ class WebFactorController extends Controller
     {
         try {
             $project = Project::findWebTarget($projectId);
+
+            $automateFactorCheck = Factor::query()
+                ->where('project_id', $projectId)
+                ->where('is_automate', true)
+                ->exists();
+
+            if ($automateFactorCheck) {
+                return $this->errorBack('برای این پروژه قبلا فاکتور خودکار ساخته شده است.', route('admin.project.manage', $project->id));
+            }
 
             $autoMakeFactor = resolve(WebProjectFactorMakerJob::class);
             $autoMakeFactor->handle($project);
