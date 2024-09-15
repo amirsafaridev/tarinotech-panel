@@ -15,7 +15,7 @@
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.factor.cheque.index') }}">فاکتور ها (تایید پرداخت دستی)</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.factor.cheque.index') }}">فاکتور ها (تایید پرداخت با چک)</a></li>
                 <li class="breadcrumb-item active">تایید</li>
             </ol>
         </div>
