@@ -12,7 +12,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Factor::query()->where('status', FactorStatus::Paid)
+        Factor::query()
+            ->withTrashed()
+            ->where('status', FactorStatus::Paid)
             ->where('is_official', true)
             ->chunkById(100, function ($factors) {
                 foreach ($factors as $factor) {
@@ -26,7 +28,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Factor::query()->where('status', FactorStatus::Paid)
+        Factor::query()
+            ->withTrashed()
+            ->where('status', FactorStatus::Paid)
             ->where('is_official', true)
             ->update(['serial' => null]);
     }
