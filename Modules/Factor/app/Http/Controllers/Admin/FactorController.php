@@ -22,9 +22,11 @@ use Exception;
 use Illuminate\Http\Request;
 use Modules\Factor\app\Enums\FactorStatus;
 use Modules\Factor\app\Enums\PaymentGateway;
+use Modules\Factor\app\Filters\Factor\DateFilter;
 use Modules\Factor\app\Filters\Factor\GatewayFilter;
 use Modules\Factor\app\Filters\Factor\PriceFilter;
 use Modules\Factor\app\Filters\Factor\ProjectFilter;
+use Modules\Factor\app\Filters\Factor\ProjectTypeFilter;
 use Modules\Factor\app\Filters\Factor\StatusFilter;
 use Modules\Factor\app\Http\Requests\Admin\Factor\StoreRequest;
 use Modules\Factor\app\Models\Factor;
@@ -268,6 +270,10 @@ class FactorController extends Controller
             ->addExternalFilter(ExternalFilter::new()->setKey('price_to')->isPrice())
             ->addExternalFilter(ExternalFilter::new()->setKey('status'))
             ->addExternalFilter(ExternalFilter::new()->setKey('gateway'))
+            ->addExternalFilter(ExternalFilter::new()->setKey('project_type'))
+            ->addExternalFilter(ExternalFilter::new()->setKey('date_column'))
+            ->addExternalFilter(ExternalFilter::new()->setKey('from_date'))
+            ->addExternalFilter(ExternalFilter::new()->setKey('to_date'))
             ->render();
     }
 
@@ -288,11 +294,13 @@ class FactorController extends Controller
                     'created_at',
                 ])
                 ->filter([
+                    ProjectTypeFilter::class,
                     PriceFilter::class,
                     StatusFilter::class,
                     ProjectFilter::class,
                     AdminFilter::class,
                     GatewayFilter::class,
+                    DateFilter::class,
                 ])
                 ->has('project')
                 ->with([

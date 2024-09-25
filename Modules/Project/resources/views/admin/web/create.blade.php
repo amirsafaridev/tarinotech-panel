@@ -2,8 +2,8 @@
 @section('title') {{ $title }} @endsection
 @section('head')
     @include('admin.partial.loader.style',['load'=>[
-       \App\Enums\Assets\StyleLoader::Toast(),
-       \App\Enums\Assets\StyleLoader::Select2(),
+        \App\Enums\Assets\StyleLoader::Toast(),
+        \App\Enums\Assets\StyleLoader::Select2(),
         \App\Enums\Assets\StyleLoader::Datepicker(),
         \App\Enums\Assets\StyleLoader::Alert(),
    ]])

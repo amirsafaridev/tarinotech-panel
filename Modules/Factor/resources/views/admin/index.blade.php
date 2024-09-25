@@ -1,7 +1,10 @@
 @extends('admin.master')
 @section('title') {{ $title }} @endsection
 @section('head')
-    @include('admin.partial.loader.style',['load'=>[\App\Enums\Assets\StyleLoader::DataTable()]])
+    @include('admin.partial.loader.style',['load'=>[
+        \App\Enums\Assets\StyleLoader::DataTable(),
+        \App\Enums\Assets\StyleLoader::Datepicker(),
+   ]])
 @endsection
 @section('content')
 
@@ -55,7 +58,10 @@
     </div>
 @endsection
 @section('script')
-    @include('admin.partial.loader.script',['load'=>[\App\Enums\Assets\ScriptLoader::DataTable()]])
+    @include('admin.partial.loader.script',['load'=>[
+        \App\Enums\Assets\ScriptLoader::DataTable(),
+        \App\Enums\Assets\ScriptLoader::Datepicker(),
+    ]])
     @include('admin.partial.datatable2')
     @include('admin.partial.script.global')
     <script>
@@ -69,6 +75,8 @@
                     makeInputPrice({{$filter['key']}});
                 @endif
             @endforeach
+
+            jalaliDatepicker.startWatch();
         })
     </script>
 @endsection
