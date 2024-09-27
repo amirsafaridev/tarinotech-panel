@@ -23,9 +23,12 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <div class="card-title">{{ $title }}</div>
-                    @can('ADMIN_FACTOR_CREATE')
-                        <a class="btn btn-primary" href="{{ route('admin.factor.create') }}">ایجاد</a>
-                    @endcan
+                    <div>
+                        @can('ADMIN_FACTOR_CREATE')
+                            <a class="btn btn-primary" href="{{ route('admin.factor.create') }}">ایجاد</a>
+                        @endcan
+                        <button class="btn btn-success datatable-export-button" type="button" id="exportButton">خروجی Excel</button>
+                    </div>
                 </div>
                 <div class="card-body">
                     @include('admin.partial.message')

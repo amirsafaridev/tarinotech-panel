@@ -7,6 +7,9 @@
         language: {
             url: '{{ asset('res-admin/assets/plugins/datatable/persian.json') }}'
         },
+        buttons: [
+            'excel',
+        ],
         ajax: {
             url:'{{ $routeData }}',
             type: 'GET',
@@ -131,5 +134,9 @@
     });
     $('.datatable-apply').click(function (){
         dataTable.ajax.reload();
+    });
+
+    $('.datatable-export-button').on('click', function() {
+        dataTable.button(0).trigger();
     });
 </script>
