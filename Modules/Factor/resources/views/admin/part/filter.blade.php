@@ -85,8 +85,8 @@
 
     @php
         $signItems=[
-            \Modules\Contract\app\Enums\SignableStatus::Pending=>'امضاء نشده',
             \Modules\Contract\app\Enums\SignableStatus::Signed=>'امضاء شده',
+            \Modules\Contract\app\Enums\SignableStatus::Pending=>'امضاء نشده',
         ];
     @endphp
 
@@ -100,8 +100,8 @@
 
     @php
         $signItems=[
-            \Modules\Contract\app\Enums\UserSignableStatus::Pending=>'امضاء نشده',
             \Modules\Contract\app\Enums\UserSignableStatus::Accepted=>'امضاء شده',
+            \Modules\Contract\app\Enums\UserSignableStatus::Pending=>'امضاء نشده',
         ];
     @endphp
 
