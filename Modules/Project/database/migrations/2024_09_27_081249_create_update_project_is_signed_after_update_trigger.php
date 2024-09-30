@@ -1,0 +1,39 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        DB::unprepared('
+            CREATE TRIGGER update_project_is_signed_after_update
+            AFTER UPDATE ON signables
+            FOR EACH ROW
+            BEGIN
+                IF NEW.status = 2 THEN
+                    UPDATE projects
+                    SET is_signed = 1
+                    WHERE target_id = NEW.target_id 
+                    AND RIGHT(target_type, 9) = RIGHT(NEW.target_type, 9);
+                ELSE
+                    UPDATE projects
+                    SET is_signed = 0
+                    WHERE target_id = NEW.target_id 
+                    AND RIGHT(target_type, 9) = RIGHT(NEW.target_type, 9);
+                END IF;
+            END;
+        ');
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        DB::unprepared('DROP TRIGGER IF EXISTS update_project_is_signed_after_update');
+    }
+};

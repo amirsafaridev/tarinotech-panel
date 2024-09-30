@@ -26,6 +26,8 @@ use Modules\Factor\app\Filters\Factor\DateFilter;
 use Modules\Factor\app\Filters\Factor\GatewayFilter;
 use Modules\Factor\app\Filters\Factor\PriceFilter;
 use Modules\Factor\app\Filters\Factor\ProjectFilter;
+use Modules\Factor\app\Filters\Factor\ProjectIsSignFilter;
+use Modules\Factor\app\Filters\Factor\ProjectIsSignUserFilter;
 use Modules\Factor\app\Filters\Factor\ProjectTypeFilter;
 use Modules\Factor\app\Filters\Factor\StatusFilter;
 use Modules\Factor\app\Http\Requests\Admin\Factor\StoreRequest;
@@ -271,6 +273,8 @@ class FactorController extends Controller
             ->addExternalFilter(ExternalFilter::new()->setKey('status'))
             ->addExternalFilter(ExternalFilter::new()->setKey('gateway'))
             ->addExternalFilter(ExternalFilter::new()->setKey('project_type'))
+            ->addExternalFilter(ExternalFilter::new()->setKey('project_is_signed'))
+            ->addExternalFilter(ExternalFilter::new()->setKey('project_is_signed_user'))
             ->addExternalFilter(ExternalFilter::new()->setKey('date_column'))
             ->addExternalFilter(ExternalFilter::new()->setKey('from_date'))
             ->addExternalFilter(ExternalFilter::new()->setKey('to_date'))
@@ -295,6 +299,8 @@ class FactorController extends Controller
                 ])
                 ->filter([
                     ProjectTypeFilter::class,
+                    ProjectIsSignFilter::class,
+                    ProjectIsSignUserFilter::class,
                     PriceFilter::class,
                     StatusFilter::class,
                     ProjectFilter::class,

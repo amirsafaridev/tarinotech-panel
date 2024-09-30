@@ -14,6 +14,8 @@ use App\Traits\HasDatatable;
 use App\Traits\HasJsonCommonResponse;
 use Exception;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Project\app\Filters\IsSignFilter;
+use Modules\Project\app\Filters\IsUserSignFilter;
 use Modules\Project\app\Filters\StatusFilter;
 use Modules\Project\app\Filters\TypeFilter;
 use Modules\Project\app\Models\Project;
@@ -117,6 +119,8 @@ class ProjectController extends Controller
             ->addExternalFilter(ExternalFilter::new()->setKey('admin'))
             ->addExternalFilter(ExternalFilter::new()->setKey('type'))
             ->addExternalFilter(ExternalFilter::new()->setKey('status'))
+            ->addExternalFilter(ExternalFilter::new()->setKey('is_signed'))
+            ->addExternalFilter(ExternalFilter::new()->setKey('is_signed_user'))
             ->render();
     }
 
@@ -138,6 +142,8 @@ class ProjectController extends Controller
                     AdminFilter::class,
                     TypeFilter::class,
                     StatusFilter::class,
+                    IsSignFilter::class,
+                    IsUserSignFilter::class,
                 ])
                 ->with([
                     'type.base',
