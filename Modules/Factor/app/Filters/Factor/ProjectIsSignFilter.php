@@ -15,10 +15,7 @@ class ProjectIsSignFilter extends FilterBase
 
         if (is_numeric($isSigned)) {
             $isSignedCondition = $isSigned == SignableStatus::Signed;
-
-            $query->whereHas('project', function (Builder $query) use ($isSignedCondition) {
-                $query->where('is_signed', $isSignedCondition);
-            });
+            $query->where('projects.is_signed', $isSignedCondition);
         }
 
         return $next($query);

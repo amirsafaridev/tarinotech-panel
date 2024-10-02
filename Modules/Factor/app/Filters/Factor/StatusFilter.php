@@ -13,7 +13,7 @@ class StatusFilter extends FilterBase
         $status = request('status');
 
         if ($status) {
-            $query->where('status', $status);
+            $query->where('factors.status', $status);
         }
 
         return $next($query);

@@ -14,11 +14,11 @@ class PriceFilter extends FilterBase
         $to = str_replace(',', '', request('price_to'));
 
         if ($from) {
-            $query->where('final_price', '>=', $from);
+            $query->where('factors.final_price', '>=', $from);
         }
 
         if ($to) {
-            $query->where('final_price', '<=', $to);
+            $query->where('factors.final_price', '<=', $to);
         }
 
         return $next($query);

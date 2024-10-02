@@ -2,7 +2,6 @@
 @section('title') {{ $title }} @endsection
 @section('head')
     @include('admin.partial.loader.style',['load'=>[
-        \App\Enums\Assets\StyleLoader::DataTable(),
         \App\Enums\Assets\StyleLoader::Datepicker(),
    ]])
 @endsection
@@ -18,7 +17,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <form class="row" action="{{ route('admin.factor.index') }}">
         <div class="col-xl-12 col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
@@ -27,7 +26,7 @@
                         @can('ADMIN_FACTOR_CREATE')
                             <a class="btn btn-primary" href="{{ route('admin.factor.create') }}">ایجاد</a>
                         @endcan
-                        <button class="btn btn-success datatable-export-button" type="button" id="exportButton">خروجی Excel</button>
+                        <button class="btn btn-success datatable-export-button" type="submit" name="export" value="true" id="exportButton">خروجی Excel</button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -37,48 +36,73 @@
                         <table id="data-table" class="table">
                             <thead>
                             <tr>
-                                @foreach ($dataTable['columns'] as $column)
-                                    <th>{{ $column['as'] }}</th>
-                                @endforeach
+                                <td>شناسه</td>
+                                <td>عنوان</td>
+                                <td>کارشناس</td>
+                                <td>پروژه</td>
+                                <td>مبلغ (ریال)</td>
+                                <td>درگاه پرداخت</td>
+                                <td>وضعیت</td>
+                                <td>تاریخ پرداخت</td>
+                                <td>ایجاد</td>
+                                <td>عملیات</td>
                             </tr>
                             </thead>
 
                             <tfoot>
                             <tr>
-                                @foreach ($dataTable['columns'] as $column)
-                                    <th>{{ $column['as'] }}</th>
-                                @endforeach
+                                <td>شناسه</td>
+                                <td>عنوان</td>
+                                <td>کارشناس</td>
+                                <td>پروژه</td>
+                                <td>مبلغ (ریال)</td>
+                                <td>درگاه پرداخت</td>
+                                <td>وضعیت</td>
+                                <td>تاریخ پرداخت</td>
+                                <td>ایجاد</td>
+                                <td>عملیات</td>
                             </tr>
                             </tfoot>
 
                             <tbody>
+                            @if($factors->isNotEmpty())
+                                @foreach($factors as $factor)
+                                    <tr>
+                                        <td>{{ $factor->id }}</td>
+                                        <td>{{ $factor->title }}</td>
+                                        <td>{{ $factor->admin_first_name }} {{ $factor->admin_last_name }}</td>
+                                        <td>{{ $factor->project_title }}</td>
+                                        <td>{{ number_format($factor->final_price) }}</td>
+                                        <td>{{ \Modules\Factor\app\Enums\PaymentGateway::getDescription($factor->gateway) }}</td>
+                                        <td>{!! factorStatusRender($factor->status, $factor->is_confirm) !!}</td>
+                                        <td>{{ $factor->paid_at ?  $factor->paid_at->toJalali()->format(formatJalaliDateTime()) : ''}}</td>
+                                        <td>{{ $factor->created_at->toJalali()->format(formatJalaliDateTime()) }}</td>
+                                        <td class="d-flex gap-2">
+                                            <a class="btn btn-sm btn-warning" target="_blank" href="{{ route('admin.factor.edit',$factor->id) }}">{{ __('panel.action.edit') }}</a>
+                                            <a class="btn btn-sm btn-info" target="_blank" href="{{ route('admin.factor.show',$factor->id) }}">{{ __('panel.action.show') }}</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
                             </tbody>
                         </table>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        {{ $factors->links() }}
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 @endsection
 @section('script')
     @include('admin.partial.loader.script',['load'=>[
-        \App\Enums\Assets\ScriptLoader::DataTable(),
         \App\Enums\Assets\ScriptLoader::Datepicker(),
     ]])
-    @include('admin.partial.datatable2')
     @include('admin.partial.script.global')
     <script>
         $(document).ready(function (){
-            @foreach ($dataTable['externalFilters'] as $filter)
-                const {{ $filter['key'] }} = $('#{{$filter['key']}}');
-                {{$filter['key']}}.change(function (){
-                    dataTable.ajax.reload();
-                });
-                @if($filter['type'] === 'price')
-                    makeInputPrice({{$filter['key']}});
-                @endif
-            @endforeach
-
             jalaliDatepicker.startWatch();
         })
     </script>

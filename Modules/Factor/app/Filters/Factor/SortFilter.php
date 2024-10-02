@@ -10,7 +10,7 @@ class SortFilter extends FilterBase
 {
     public function handle(Builder $query, Closure $next)
     {
-        $allowedSortKeys = ['created_at', 'final_price'];
+        $allowedSortKeys = ['factors.created_at', 'factors.final_price'];
         $allowedSortOrders = ['desc', 'asc'];
 
         $sortParam = request('sort');
@@ -24,7 +24,7 @@ class SortFilter extends FilterBase
         [$sortKey, $sortOrder] = explode('-', $sortParam);
 
         if (! in_array($sortKey, $allowedSortKeys) || ! in_array($sortOrder, $allowedSortOrders)) {
-            $query->orderByDesc('id');
+            $query->orderByDesc('factors.id');
 
             return $next($query);
         }

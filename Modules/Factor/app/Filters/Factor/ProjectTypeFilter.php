@@ -13,9 +13,7 @@ class ProjectTypeFilter extends FilterBase
         $projectType = request('project_type');
 
         if ($projectType && is_numeric($projectType)) {
-            $query->whereHas('project', function (Builder $query) use ($projectType) {
-                $query->where('base_id', $projectType);
-            });
+            $query->where('projects.base_id', $projectType);
         }
 
         return $next($query);

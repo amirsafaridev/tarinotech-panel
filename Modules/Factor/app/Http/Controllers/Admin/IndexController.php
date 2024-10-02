@@ -3,11 +3,7 @@
 namespace Modules\Factor\app\Http\Controllers\Admin;
 
 use App\Domain\Jobs\FactorItemCreateJob;
-use App\Enums\General\BtnType;
 use App\Filters\Admin\Admin\AdminFilter;
-use App\Foundation\ValueObjects\Datatable\ColumnOption;
-use App\Foundation\ValueObjects\Datatable\DatatableBase;
-use App\Foundation\ValueObjects\Datatable\ExternalFilter;
 use App\Foundation\ValueObjects\Requests\FactorItemValues;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
@@ -15,13 +11,15 @@ use App\Service\Json\WebProject\DomainTransformer;
 use App\Service\Json\WebProject\HostTransformer;
 use App\Service\Json\WebProject\LanguageTransformer;
 use App\Service\Json\WebProject\SampleTransformer;
-use App\Traits\HasDatatable;
 use App\Traits\HasJsonCommonResponse;
+use Carbon\Carbon;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Modules\Factor\app\Enums\FactorStatus;
 use Modules\Factor\app\Enums\PaymentGateway;
+use Modules\Factor\app\Exports\Admin\Report\DatatableExport;
 use Modules\Factor\app\Filters\Factor\DateFilter;
 use Modules\Factor\app\Filters\Factor\GatewayFilter;
 use Modules\Factor\app\Filters\Factor\PriceFilter;
@@ -29,6 +27,7 @@ use Modules\Factor\app\Filters\Factor\ProjectFilter;
 use Modules\Factor\app\Filters\Factor\ProjectIsSignFilter;
 use Modules\Factor\app\Filters\Factor\ProjectIsSignUserFilter;
 use Modules\Factor\app\Filters\Factor\ProjectTypeFilter;
+use Modules\Factor\app\Filters\Factor\SortFilter;
 use Modules\Factor\app\Filters\Factor\StatusFilter;
 use Modules\Factor\app\Http\Requests\Admin\Factor\StoreRequest;
 use Modules\Factor\app\Models\Factor;
@@ -38,11 +37,9 @@ use Modules\Project\app\Models\Project;
 use Modules\Project\app\Models\ProjectWeb;
 use Modules\User\app\Enums\PersonType;
 use Modules\User\app\Models\User;
-use Yajra\DataTables\Facades\DataTables;
 
-class FactorController extends Controller
+class IndexController extends Controller
 {
-    use HasDatatable;
     use HasJsonCommonResponse;
 
     const INDEX_TITLE = 'فاکتور ها';
@@ -57,11 +54,67 @@ class FactorController extends Controller
     {
         $title = self::INDEX_TITLE;
 
-        $routeData = $this->getDataRoute();
+        $factors = Factor::query()
+            ->select([
+                'factors.title',
+                'factors.id',
+                'factors.identify',
+                'factors.final_price',
+                'factors.status',
+                'factors.is_official',
+                'factors.is_automate',
+                'factors.is_confirm',
+                'factors.created_at',
+                'factors.paid_at',
+                'factors.gateway',
+                'admins.first_name as admin_first_name',
+                'admins.last_name as admin_last_name',
+                'projects.title as project_title',
+                'projects.id as project_id',
+                'projects.base_id as project_base_id',
+                'projects.domain as project_domain',
+                'projects.is_signed as project_is_signed',
+                'projects.is_signed_user as project_is_signed_user',
+                'users.first_name as user_first_name',
+                'users.last_name as user_last_name',
+            ])
+            ->join('admins', 'factors.id', '=', 'admins.id')
+            ->join('projects', 'factors.project_id', '=', 'projects.id')
+            ->join('users', 'projects.user_id', '=', 'users.id')
 
-        $dataTable = $this->getDataTable();
+            ->filter([
+                ProjectTypeFilter::class,
+                ProjectIsSignFilter::class,
+                ProjectIsSignUserFilter::class,
+                PriceFilter::class,
+                StatusFilter::class,
+                ProjectFilter::class,
+                AdminFilter::class,
+                GatewayFilter::class,
+                DateFilter::class,
+                SortFilter::class,
+            ]);
 
-        return view('factor::admin.index', compact('title', 'routeData', 'dataTable'));
+        if (request('export')) {
+            return $this->export($factors->get());
+        }
+
+        $factors = $factors->paginate(3);
+
+        return view('factor::admin.index', compact('title', 'factors'));
+    }
+
+    public function export($factors)
+    {
+        try {
+            $fileName = 'Factor-'.Carbon::now()->format('Y-m-d').'.xlsx';
+
+            return Excel::download(new DatatableExport(collect($factors)), $fileName);
+        } catch (Exception $exception) {
+            report($exception);
+
+            return back()->with('danger', 'خطا در هنگام صادر کردن اطلاعات');
+        }
     }
 
     public function create()
@@ -219,139 +272,5 @@ class FactorController extends Controller
             ->setTransactionCategoryId($item['transaction_category_id'])
             ->setPrice($item['price'])
             ->setDiscount($item['discount']);
-    }
-
-    public function getDataRoute(): string
-    {
-        return route('admin.factor.data');
-    }
-
-    public function getDataTable(): array
-    {
-        return (new DatatableBase())
-            ->addColumn(
-                ColumnOption::new()->setName('id')->setAs('شناسه')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('title')->setAs('عنوان')
-            )
-            ->addColumn(
-                ColumnOption::new()
-                    ->setName('admin.fullname')->setAs('کارشناس')
-                    ->setSearchable(false)
-                    ->setSortable(false)
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('project.title')
-                    ->setAs('پروژه')
-                    ->setSortable(false)
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('final_price')->setAs('مبلغ (ریال)')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('gateway')->setAs('درگاه پرداخت')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('status')->setAs('وضعیت')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('paid_at')->setAs('تاریخ پرداخت')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('created_at')->setAs('ایجاد')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('action')
-                    ->setAs('عملیات')
-                    ->removeAction()
-            )
-            ->addExternalFilter(ExternalFilter::new()->setKey('project'))
-            ->addExternalFilter(ExternalFilter::new()->setKey('admin'))
-            ->addExternalFilter(ExternalFilter::new()->setKey('price_from')->isPrice())
-            ->addExternalFilter(ExternalFilter::new()->setKey('price_to')->isPrice())
-            ->addExternalFilter(ExternalFilter::new()->setKey('status'))
-            ->addExternalFilter(ExternalFilter::new()->setKey('gateway'))
-            ->addExternalFilter(ExternalFilter::new()->setKey('project_type'))
-            ->addExternalFilter(ExternalFilter::new()->setKey('project_is_signed'))
-            ->addExternalFilter(ExternalFilter::new()->setKey('project_is_signed_user'))
-            ->addExternalFilter(ExternalFilter::new()->setKey('date_column'))
-            ->addExternalFilter(ExternalFilter::new()->setKey('from_date'))
-            ->addExternalFilter(ExternalFilter::new()->setKey('to_date'))
-            ->render();
-    }
-
-    public function data()
-    {
-        try {
-            $factors = Factor::query()
-                ->select([
-                    'id',
-                    'title',
-                    'admin_id',
-                    'project_id',
-                    'final_price',
-                    'is_confirm',
-                    'status',
-                    'gateway',
-                    'paid_at',
-                    'created_at',
-                ])
-                ->filter([
-                    ProjectTypeFilter::class,
-                    ProjectIsSignFilter::class,
-                    ProjectIsSignUserFilter::class,
-                    PriceFilter::class,
-                    StatusFilter::class,
-                    ProjectFilter::class,
-                    AdminFilter::class,
-                    GatewayFilter::class,
-                    DateFilter::class,
-                ])
-                ->has('project')
-                ->with([
-                    'admin' => function ($query) {
-                        $query->select('admins.id', 'admins.first_name', 'admins.last_name');
-                    },
-                    'project' => function ($query) {
-                        $query->select('projects.id', 'projects.title', 'projects.domain');
-                    },
-                ]);
-
-            return DataTables::eloquent($factors)
-                ->editColumn('status', function (Factor $factor) {
-
-                    return factorStatusRender($factor->status, $factor->is_confirm);
-                })
-                ->editColumn('final_price', function (Factor $factor) {
-                    return number_format($factor->final_price);
-                })
-                ->editColumn('project.title', function (Factor $factor) {
-                    return $factor->project_id ? $factor->project->title : 'پروژه ندارد';
-                })
-                ->editColumn('gateway', function (Factor $factor) {
-                    if ($factor->gateway) {
-                        return PaymentGateway::getDescription($factor->gateway);
-                    }
-
-                    return '';
-                })
-                ->editColumn('created_at', function (Factor $factor) {
-                    return $factor->created_at->toJalali()->format(formatJalaliDateTime());
-                })
-                ->editColumn('paid_at', function (Factor $factor) {
-                    return $factor->paid_at?->toJalali()->format(formatJalaliDateTime());
-                })
-                ->addColumn('action', function (Factor $factor) {
-                    $action = Helper::btnMaker(BtnType::Warning, route('admin.factor.edit', $factor->id), trans('panel.action.edit'));
-                    $action .= Helper::btnMaker(BtnType::Info, route('admin.factor.show', $factor->id), trans('panel.action.show'));
-
-                    return $action;
-                })
-                ->rawColumns(['action', 'status'])
-                ->make();
-        } catch (Exception $exception) {
-            return $this->exceptionResponse($exception);
-        }
     }
 }

@@ -13,11 +13,12 @@ class ProjectFilter extends FilterBase
         $project = request('project');
 
         if ($project) {
-            $query->whereHas('project', function (Builder $query) use ($project) {
-                $query->where('title', 'like', '%'.$project.'%')
-                    ->orWhere('domain', 'like', '%'.$project.'%');
 
+            $query->where(function ($query) use ($project) {
+                $query->where('projects.title', 'like', '%'.$project.'%')
+                    ->orWhere('projects.domain', 'like', '%'.$project.'%');
             });
+
         }
 
         return $next($query);

@@ -22,12 +22,6 @@ class CheckPermission
             'ADMIN_ADMIN_PROFILE_PASSWORD',
             'ADMIN_ADMIN_PROFILE_PASSWORD_UPDATE',
             'ADMIN_ADMIN_PROFILE_LOGOUT',
-            'ADMIN_ROLE_EDIT', // Must Delete
-            'ADMIN_ROLE_UPDATE', // Must Delete
-            'ADMIN_ADMIN_EDIT', // Must Delete
-            'ADMIN_ADMIN_UPDATE', // Must Delete
-            'ADMIN_PERMISSION_SYNC', // Must Delete
-            'ADMIN_PERMISSION_INDEX', // Must Delete
         ];
         if (in_array($permission, $allowPermissions) || $request->user('admin')->hasPermissionTo($permission)) {
             return $next($request);

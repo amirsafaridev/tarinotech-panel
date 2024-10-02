@@ -13,7 +13,7 @@ class GatewayFilter extends FilterBase
         $gateway = request('gateway');
 
         if (is_numeric($gateway)) {
-            $query->where('gateway', $gateway);
+            $query->where('factors.gateway', $gateway);
         }
 
         return $next($query);

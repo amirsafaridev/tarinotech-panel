@@ -17,7 +17,7 @@ use Modules\Factor\app\Models\FactorManualInfo;
 use Modules\Factor\app\Models\TransactionCategory;
 use Modules\Factor\app\Traits\WithAttributeChange;
 
-class FactorUpdateController extends Controller
+class UpdateController extends Controller
 {
     use HasJsonCommonResponse;
     use WithAttributeChange;

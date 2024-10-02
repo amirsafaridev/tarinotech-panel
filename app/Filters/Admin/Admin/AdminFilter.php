@@ -15,12 +15,10 @@ class AdminFilter extends FilterBase
         $admin = request('admin');
 
         if ($admin) {
-            $query->whereHas('admin', function (Builder $query) use ($admin) {
-                $query
-                    ->where('first_name', 'like', '%'.$admin.'%')
-                    ->orWhere('last_name', 'like', '%'.$admin.'%')
-                    ->orWhere('email', 'like', '%'.$admin.'%');
-
+            $query->where(function ($query) use ($admin) {
+                $query->where('admins.first_name', 'like', '%'.$admin.'%')
+                    ->orWhere('admins.last_name', 'like', '%'.$admin.'%')
+                    ->orWhere('admins.email', 'like', '%'.$admin.'%');
             });
         }
 

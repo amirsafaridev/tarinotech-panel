@@ -18,7 +18,7 @@ use Modules\Factor\app\Models\Factor;
 use Modules\Factor\app\Models\FactorStatusForward;
 use Yajra\DataTables\Facades\DataTables;
 
-class FactorStatusController extends Controller
+class StatusController extends Controller
 {
     use HasDatatable;
     use HasJsonCommonResponse;

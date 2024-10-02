@@ -19,7 +19,7 @@ use Modules\Factor\app\Filters\Factor\ProjectFilter;
 use Modules\Factor\app\Models\Factor;
 use Yajra\DataTables\Facades\DataTables;
 
-class FactorManualController extends Controller
+class ManualController extends Controller
 {
     use HasDatatable;
     use HasJsonCommonResponse;

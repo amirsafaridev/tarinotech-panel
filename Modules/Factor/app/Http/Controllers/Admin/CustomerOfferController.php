@@ -19,14 +19,14 @@ use Modules\Factor\app\Filters\Factor\ProjectFilter;
 use Modules\Factor\app\Models\Factor;
 use Yajra\DataTables\Facades\DataTables;
 
-class FactorChequeController extends Controller
+class CustomerOfferController extends Controller
 {
     use HasDatatable;
     use HasJsonCommonResponse;
 
-    const INDEX_TITLE = 'فاکتور ها (تایید پرداخت با چک)';
+    const INDEX_TITLE = 'فاکتور ها ( آفر مشتریان)';
 
-    const EDIT_TITLE = 'فاکتور ها (تایید پرداخت با چک) - ویرایش';
+    const EDIT_TITLE = 'فاکتور ها ( آفر مشتریان) - ویرایش';
 
     public function index()
     {
@@ -36,24 +36,23 @@ class FactorChequeController extends Controller
 
         $dataTable = $this->getDataTable();
 
-        return view('factor::admin.cheque.index', compact('title', 'routeData', 'dataTable'));
+        return view('factor::admin.customer_offer.index', compact('title', 'routeData', 'dataTable'));
     }
 
     public function edit(Factor $factor)
     {
-        $this->isChequePayFactor($factor);
-
-        $factor->load('cheque');
+        $this->isCustomerOfferFactor($factor);
 
         $title = self::EDIT_TITLE;
 
-        return view('factor::admin.cheque.edit', compact('title', 'factor'));
+        return view('factor::admin.customer_offer.edit', compact('title', 'factor'));
     }
 
     public function update(Request $request, Factor $factor)
     {
         try {
-            $this->isChequePayFactor($factor);
+
+            $this->isCustomerOfferFactor($factor);
 
             $updatedAttributes = $this->prepareItemData($request);
 
@@ -75,7 +74,7 @@ class FactorChequeController extends Controller
 
     public function getDataRoute(): string
     {
-        return route('admin.factor.cheque.data');
+        return route('admin.factor.customer-offer.data');
     }
 
     public function getDataTable(): array
@@ -142,7 +141,7 @@ class FactorChequeController extends Controller
                     AdminFilter::class,
                 ])
                 ->has('project')
-                ->where('status', FactorStatus::PaidWithCheque)
+                ->where('status', FactorStatus::CustomerOffer)
                 ->with([
                     'admin' => function ($query) {
                         $query->select('admins.id', 'admins.first_name', 'admins.last_name');
@@ -169,7 +168,7 @@ class FactorChequeController extends Controller
                     return $factor->paid_at?->toJalali()->format(formatJalaliDateTime());
                 })
                 ->addColumn('action', function (Factor $factor) {
-                    return Helper::btnMaker(BtnType::Warning, route('admin.factor.cheque.edit', $factor->id), trans('panel.action.edit'));
+                    return Helper::btnMaker(BtnType::Warning, route('admin.factor.customer-offer.edit', $factor->id), trans('panel.action.edit'));
                 })
                 ->rawColumns(['action', 'is_confirm'])
                 ->make();
@@ -178,9 +177,9 @@ class FactorChequeController extends Controller
         }
     }
 
-    protected function isChequePayFactor(Factor $factor): void
+    protected function isCustomerOfferFactor(Factor $factor): void
     {
-        if ($factor->status !== FactorStatus::PaidWithCheque) {
+        if ($factor->status !== FactorStatus::CustomerOffer) {
             abort(404);
         }
     }
