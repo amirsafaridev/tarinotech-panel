@@ -75,12 +75,9 @@ class IndexController extends Controller
                 'projects.domain as project_domain',
                 'projects.is_signed as project_is_signed',
                 'projects.is_signed_user as project_is_signed_user',
-                'users.first_name as user_first_name',
-                'users.last_name as user_last_name',
             ])
             ->join('admins', 'factors.id', '=', 'admins.id')
             ->join('projects', 'factors.project_id', '=', 'projects.id')
-            ->join('users', 'projects.user_id', '=', 'users.id')
 
             ->filter([
                 ProjectTypeFilter::class,
