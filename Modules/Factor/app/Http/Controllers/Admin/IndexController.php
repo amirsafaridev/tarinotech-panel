@@ -76,11 +76,11 @@ class IndexController extends Controller
                 'projects.is_signed as project_is_signed',
                 'projects.is_signed_user as project_is_signed_user',
             ])
-            ->join('admins', 'factors.id', '=', 'admins.id')
+            ->join('admins', 'factors.admin_id', '=', 'admins.id')
             ->join('projects', 'factors.project_id', '=', 'projects.id')
 
             ->filter([
-                /*ProjectTypeFilter::class,
+                ProjectTypeFilter::class,
                 ProjectIsSignFilter::class,
                 ProjectIsSignUserFilter::class,
                 PriceFilter::class,
@@ -88,7 +88,7 @@ class IndexController extends Controller
                 ProjectFilter::class,
                 AdminFilter::class,
                 GatewayFilter::class,
-                DateFilter::class,*/
+                DateFilter::class,
                 SortFilter::class,
             ]);
 
