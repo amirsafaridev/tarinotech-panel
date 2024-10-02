@@ -26,8 +26,7 @@
                         @can('ADMIN_FACTOR_CREATE')
                             <a class="btn btn-primary" href="{{ route('admin.factor.create') }}">ایجاد</a>
                         @endcan
-                        <button class="btn btn-success datatable-export-button" type="submit" name="export" value="true" id="exportButton">خروجی Excel</button>
-                    </div>
+                            <a class="btn btn-success datatable-export-button" href="{{ request()->fullUrlWithQuery(['export' => 'true']) }}" id="exportButton">خروجی Excel</a>                    </div>
                 </div>
                 <div class="card-body">
                     @include('admin.partial.message')

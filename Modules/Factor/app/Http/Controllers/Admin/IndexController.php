@@ -27,6 +27,7 @@ use Modules\Factor\app\Filters\Factor\ProjectFilter;
 use Modules\Factor\app\Filters\Factor\ProjectIsSignFilter;
 use Modules\Factor\app\Filters\Factor\ProjectIsSignUserFilter;
 use Modules\Factor\app\Filters\Factor\ProjectTypeFilter;
+use Modules\Factor\app\Filters\Factor\SearchFilter;
 use Modules\Factor\app\Filters\Factor\SortFilter;
 use Modules\Factor\app\Filters\Factor\StatusFilter;
 use Modules\Factor\app\Http\Requests\Admin\Factor\StoreRequest;
@@ -90,6 +91,7 @@ class IndexController extends Controller
                 GatewayFilter::class,
                 DateFilter::class,
                 SortFilter::class,
+                SearchFilter::class,
             ]);
 
         if (request('export')) {

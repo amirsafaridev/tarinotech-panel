@@ -2,9 +2,9 @@
 
     <div class="col-12 col-md-3 col-xl-2">
         <x-admin.input
-                identify="title"
+                identify="search"
                 title="عنوان"
-                :old="request('title')"
+                :old="request('search')"
                 :is-small="true"
         />
     </div>
