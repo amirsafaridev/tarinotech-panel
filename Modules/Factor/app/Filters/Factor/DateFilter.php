@@ -17,7 +17,7 @@ class DateFilter extends FilterBase
         $toDate = request('to_date');
 
         $validator = Validator::make(request()->all(), [
-            'date_column' => 'in:created_at,paid_at',
+            'date_column' => 'in:factors.created_at,factors.paid_at',
             'from_date' => 'nullable|jdate',
             'to_date' => 'nullable|jdate|after_or_equal:from_date',
         ]);
