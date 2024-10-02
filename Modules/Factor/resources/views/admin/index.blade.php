@@ -73,7 +73,7 @@
                                         <td>{{ $factor->admin_first_name }} {{ $factor->admin_last_name }}</td>
                                         <td>{{ $factor->project_title }}</td>
                                         <td>{{ number_format($factor->final_price) }}</td>
-                                        <td>{{ \Modules\Factor\app\Enums\PaymentGateway::getDescription($factor->gateway) }}</td>
+                                        <td>{{ $factor->gateway ? \Modules\Factor\app\Enums\PaymentGateway::getDescription($factor->gateway) : 'نامشخص' }}</td>
                                         <td>{!! factorStatusRender($factor->status, $factor->is_confirm) !!}</td>
                                         <td>{{ $factor->paid_at ?  $factor->paid_at->toJalali()->format(formatJalaliDateTime()) : ''}}</td>
                                         <td>{{ $factor->created_at->toJalali()->format(formatJalaliDateTime()) }}</td>
