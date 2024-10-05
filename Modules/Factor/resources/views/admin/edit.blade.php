@@ -51,8 +51,8 @@
 
                         <div id="project_info" class="mb-3"></div>
 
-                        <x-admin.select-simple identify="status" title="وضعیت"
-                                             :items="\Modules\Factor\app\Enums\FactorStatus::asFilteredSelectArray()"
+                        <x-admin.select-enum identify="status" title="وضعیت"
+                                             :enum-class="\Modules\Factor\app\Enums\FactorStatus::class"
                                              :old="$factor->status" :disabled="$isFreeze"/>
 
 

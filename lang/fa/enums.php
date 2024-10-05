@@ -109,7 +109,7 @@ return [
     ],
 
     FactorStatus::class => [
-        FactorStatus::Paid => 'پرداخت شده',
+        FactorStatus::Paid => 'پرداخت شده (آنلاین)',
         FactorStatus::Pending => 'در انتظار پرداخت',
         FactorStatus::Expired => 'منقضی شده',
         FactorStatus::Lock => 'در حال پرداخت',
