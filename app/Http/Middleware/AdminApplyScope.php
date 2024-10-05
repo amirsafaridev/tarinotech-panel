@@ -52,7 +52,7 @@ class AdminApplyScope
     private function applyFactorScope(): void
     {
         Factor::addGlobalScope('factor_self_scope', function (Builder $builder) {
-            $builder->where('admin_id', auth()->id());
+            $builder->where('factors.admin_id', auth()->id());
         });
     }
 
