@@ -70,7 +70,6 @@ Route::group(['guard' => 'admin'], function () {
 
     Route::group(['as' => 'web.', 'prefix' => 'web'], function () {
         Route::get('/', [WebController::class, 'index'])->name('index');
-        Route::get('/data', [WebController::class, 'data'])->name('data');
         Route::get('/create', [WebController::class, 'create'])->name('create');
 
         /* Import */
@@ -94,7 +93,6 @@ Route::group(['guard' => 'admin'], function () {
 
     Route::group(['as' => 'seo.', 'prefix' => 'seo'], function () {
         Route::get('/', [SeoController::class, 'index'])->name('index');
-        Route::get('/data', [SeoController::class, 'data'])->name('data');
         Route::get('/create', [SeoController::class, 'create'])->name('create');
 
         Route::group([], function () {
@@ -110,7 +108,6 @@ Route::group(['guard' => 'admin'], function () {
 
     Route::group(['as' => 'ads.', 'prefix' => 'ads'], function () {
         Route::get('/', [AdsController::class, 'index'])->name('index');
-        Route::get('/data', [AdsController::class, 'data'])->name('data');
         Route::get('/create', [AdsController::class, 'create'])->name('create');
 
         Route::group([], function () {

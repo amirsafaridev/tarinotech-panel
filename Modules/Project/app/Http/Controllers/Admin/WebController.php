@@ -4,42 +4,32 @@ namespace Modules\Project\app\Http\Controllers\Admin;
 
 use App\Enums\Database\Role\PermissionName;
 use App\Enums\Database\Role\RoleName;
-use App\Enums\General\DropdownItemColor;
-use App\Filters\Admin\Admin\AdminFilter;
-use App\Filters\Admin\Package\PackageID;
-use App\Foundation\ValueObjects\Datatable\ColumnOption;
-use App\Foundation\ValueObjects\Datatable\DatatableBase;
-use App\Foundation\ValueObjects\Datatable\Dropdown;
-use App\Foundation\ValueObjects\Datatable\DropdownItem;
-use App\Foundation\ValueObjects\Datatable\ExternalFilter;
+use App\Filters\Admin\Admin\AdminJoinedFilter;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Service\Json\WebProject\DomainTransformer;
 use App\Service\Json\WebProject\HostTransformer;
 use App\Service\Json\WebProject\LanguageTransformer;
 use App\Service\Json\WebProject\SampleTransformer;
-use App\Traits\HasDatatable;
-use App\Traits\HasJsonCommonResponse;
 use Carbon\Carbon;
 use Crypt;
 use DB;
 use Exception;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
 use Modules\Project\app\Enums\ProjectBase;
+use Modules\Project\app\Filters\IsSignFilter;
+use Modules\Project\app\Filters\IsUserSignFilter;
+use Modules\Project\app\Filters\Project\DateFilter;
+use Modules\Project\app\Filters\Project\SortFilter;
 use Modules\Project\app\Filters\StatusFilter;
-use Modules\Project\app\Filters\TypeFilter;
+use Modules\Project\app\Filters\Web\PackageFilter;
 use Modules\Project\app\Http\Requests\Admin\Web\StoreRequest;
 use Modules\Project\app\Http\Requests\Admin\Web\UpdateRequest;
 use Modules\Project\app\Models\Project;
 use Modules\Project\app\Models\ProjectWeb;
-use Yajra\DataTables\Facades\DataTables;
 
 class WebController extends Controller
 {
-    use HasDatatable;
-    use HasJsonCommonResponse;
-
     const INDEX_TITLE = 'پروژه های وب';
 
     const CREATE_TITLE = 'پروژه های وب - ایجاد';
@@ -52,11 +42,54 @@ class WebController extends Controller
     {
         $title = self::INDEX_TITLE;
 
-        $routeData = $this->getDataRoute();
+        $selectedColumns = collect([
+            'projects.id',
+            'projects.title',
+            'projects.admin_id',
+            'projects.price',
+            'projects.domain',
+            'projects.created_at',
+            'projects.is_signed',
+            'projects.is_signed_user',
+            'admins.first_name as admin_first_name',
+            'admins.last_name as admin_last_name',
+            'users.first_name as user_first_name',
+            'users.last_name as user_last_name',
+            'project_types.title as project_types_title',
+            'project_bases.title as project_bases_title',
+            'project_statuses.title as project_statuses_title',
+            'packages.title as packages_title',
+        ]);
 
-        $dataTable = $this->getDataTable();
+        if (hasAdminPermission(PermissionName::PROJECT_PRICE_SHOW)) {
+            $selectedColumns->add('projects.price');
+        }
 
-        return view('project::admin.web.index', compact('title', 'routeData', 'dataTable'));
+        $projects = Project::query()
+            ->select($selectedColumns->toArray())
+            ->join('admins', 'projects.admin_id', '=', 'admins.id')
+            ->join('users', 'projects.user_id', '=', 'users.id')
+            ->join('project_types', 'projects.type_id', '=', 'project_types.id')
+            ->join('project_bases', 'projects.base_id', '=', 'project_bases.id')
+            ->join('project_statuses', 'projects.status_id', '=', 'project_statuses.id')
+            ->join('project_webs', function ($join) {
+                $join->on('projects.target_id', '=', 'project_webs.id')
+                    ->where('projects.target_type', '=', ProjectWeb::class);
+            })
+            ->join('packages', 'project_webs.package_id', '=', 'packages.id')
+            ->filter([
+                AdminJoinedFilter::class,
+                StatusFilter::class,
+                IsSignFilter::class,
+                IsUserSignFilter::class,
+                DateFilter::class,
+                PackageFilter::class,
+                SortFilter::class,
+            ]);
+
+        $projects = $projects->paginate();
+
+        return view('project::admin.web.index', compact('title', 'projects'));
     }
 
     public function create()
@@ -263,166 +296,5 @@ class WebController extends Controller
             'sample' => $sample->toArray(),
             'working_days' => $request->input('working_days'),
         ];
-    }
-
-    public function getDataRoute(): string
-    {
-        return route('admin.project.web.data');
-    }
-
-    public function getDataTable(): array
-    {
-        return (new DatatableBase())
-            ->addColumn(
-                ColumnOption::new()->setName('id')->setAs('شناسه')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('title')->setAs('عنوان')
-            )
-            ->addColumn(
-                ColumnOption::new()
-                    ->setName('admin.fullname')
-                    ->setSearchable(false)
-                    ->setSortable(false)
-                    ->setAs('نام کارشناس فروش')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('target.package.title')
-                    ->setSearchable(false)
-                    ->setSortable(false)
-                    ->setAs('نوع')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('user.mobile')
-                    ->setSortable(false)
-                    ->setAs('کارفرما - شماره')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('user.fullname')
-                    ->setSortable(false)
-                    ->setSearchable(false)
-                    ->setAs('کارفرما - نام')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('status.title')
-                    ->setSortable(false)
-                    ->setAs('وضعیت')
-            )
-            ->addColumn(
-                ColumnOption::new()
-                    ->setName('price')
-                    ->setAs('قیمت')
-                    ->setVisible(
-                        hasAdminPermission(PermissionName::PROJECT_PRICE_SHOW)
-                    )
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('domain')->setAs('دامنه')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('created_at')->setAs('ایجاد')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('action')
-                    ->setAs('عملیات')
-                    ->removeAction()
-            )
-            ->addExternalFilter(ExternalFilter::new()->setKey('admin'))
-            ->addExternalFilter(ExternalFilter::new()->setKey('type'))
-            ->addExternalFilter(ExternalFilter::new()->setKey('status'))
-            ->addExternalFilter(ExternalFilter::new()->setKey('package_id'))
-            ->render();
-    }
-
-    public function data()
-    {
-        try {
-
-            $projects = Project::query()
-                ->select([
-                    'id',
-                    'title',
-                    'price',
-                    'domain',
-                    'type_id',
-                    'status_id',
-                    'target_type',
-                    'target_id',
-                    'admin_id',
-                    'user_id',
-                    'created_at',
-                ])
-                ->whereHasMorph('target', [ProjectWeb::class], function ($q) {
-                    $q->filter([
-                        PackageID::class,
-                        StatusFilter::class,
-                    ]);
-                })
-                ->with([
-                    'type.base',
-                    'status.type',
-                    'target.package',
-                    'admin' => function (BelongsTo $query) {
-                        $query->select('admins.id', 'admins.first_name', 'admins.last_name', 'admins.email');
-                    },
-                    'user' => function (BelongsTo $query) {
-                        $query->select('users.id', 'users.first_name', 'users.last_name', 'users.mobile');
-                    },
-                ])
-                ->filter([
-                    AdminFilter::class,
-                    TypeFilter::class,
-                    StatusFilter::class,
-                ]);
-
-            if (hasAdminPermission(PermissionName::PROJECT_PRICE_SHOW)) {
-                $projects->addSelect('price');
-            }
-
-            return DataTables::eloquent($projects)
-                ->editColumn('created_at', function (Project $project) {
-                    return $project->created_at->toJalali()->format('Y/m/d');
-                })
-                ->editColumn('price', function (Project $project) {
-                    return number_format($project->price);
-                })
-                ->editColumn('domain', function (Project $project) {
-                    return cleanDomainUrl($project->domain);
-                })
-                ->addColumn('action', function ($project) {
-
-                    return (new Dropdown())
-                        ->add(
-                            (new DropdownItem())
-                                ->setTargetBlank(true)
-                                ->setTitle(trans('panel.action.edit'))
-                                ->setLink(route('admin.project.web.edit', $project->id))
-                        )
-                        ->add(
-                            (new DropdownItem())
-                                ->setTargetBlank(true)
-                                ->setTitle(trans('panel.action.show'))
-                                ->setLink(route('admin.project.manage', $project->id))
-                        )
-                        ->add(
-                            (new DropdownItem())
-                                ->setTargetBlank(true)
-                                ->setTitle(trans('panel.action.change_status'))
-                                ->setLink(route('admin.project.web.edit.status', $project->id))
-                        )
-                        ->add(
-                            (new DropdownItem())
-                                ->setTargetBlank(true)
-                                ->setTitle(trans('panel.action.auto_factor'))
-                                ->setLink(route('admin.project.web.auto-factor', $project->id))
-                        )
-                        ->setButtonColor(DropdownItemColor::Success())
-                        ->render();
-                })
-                ->rawColumns(['action'])
-                ->make();
-        } catch (Exception $exception) {
-            return $this->exceptionResponse($exception);
-        }
     }
 }
