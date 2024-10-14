@@ -54,7 +54,8 @@ class ProjectController extends Controller
             'project_statuses.title as project_statuses_title',
         ]);
 
-        if (hasAdminPermission(PermissionName::PROJECT_PRICE_SHOW)) {
+        $hasPricePermission = hasAdminPermission(PermissionName::PROJECT_PRICE_SHOW);
+        if ($hasPricePermission) {
             $selectedColumns->add('projects.price');
         }
 
@@ -81,7 +82,7 @@ class ProjectController extends Controller
 
         $projects = $projects->paginate();
 
-        return view('project::admin.index', compact('title', 'projects'));
+        return view('project::admin.index', compact('title', 'projects', 'hasPricePermission'));
     }
 
     private function export($factors)

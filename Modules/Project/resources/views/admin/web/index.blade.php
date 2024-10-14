@@ -43,7 +43,9 @@
                                 <td>کارشناس</td>
                                 <td>پکیج</td>
                                 <td>وضعیت</td>
-                                <td>قیمت</td>
+                                @if($hasPricePermission)
+                                    <td>قیمت</td>
+                                @endif
                                 <td>دامنه</td>
                                 <td>ایجاد</td>
                                 <td>عملیات</td>
@@ -57,7 +59,9 @@
                                 <td>کارشناس</td>
                                 <td>پکیج</td>
                                 <td>وضعیت</td>
-                                <td>قیمت</td>
+                                @if($hasPricePermission)
+                                    <td>قیمت</td>
+                                @endif
                                 <td>دامنه</td>
                                 <td>ایجاد</td>
                                 <td>عملیات</td>
@@ -73,7 +77,9 @@
                                         <td>{{ $project->admin_first_name }} {{ $project->admin_last_name }}</td>
                                         <td>{{ $project->packages_title }}</td>
                                         <td>{{ $project->project_statuses_title }}</td>
-                                        <td>{{ number_format($project->price) }}</td>
+                                        @if($hasPricePermission)
+                                            <td>{{ number_format($project->price) }}</td>
+                                        @endif
                                         <td>{{ $project->domain }}</td>
                                         <td>{{ $project->created_at->toJalali()->format(formatJalaliDate()) }}</td>
                                         <td class="d-flex gap-2">

@@ -61,7 +61,8 @@ class WebController extends Controller
             'packages.title as packages_title',
         ]);
 
-        if (hasAdminPermission(PermissionName::PROJECT_PRICE_SHOW)) {
+        $hasPricePermission = hasAdminPermission(PermissionName::PROJECT_PRICE_SHOW);
+        if ($hasPricePermission) {
             $selectedColumns->add('projects.price');
         }
 
@@ -89,7 +90,7 @@ class WebController extends Controller
 
         $projects = $projects->paginate();
 
-        return view('project::admin.web.index', compact('title', 'projects'));
+        return view('project::admin.web.index', compact('title', 'projects', 'hasPricePermission'));
     }
 
     public function create()

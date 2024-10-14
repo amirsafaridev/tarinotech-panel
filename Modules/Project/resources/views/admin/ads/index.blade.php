@@ -38,7 +38,6 @@
                                 <td>کارشناس</td>
                                 <td>ضمینه فعالیت</td>
                                 <td>وضعیت</td>
-                                <td>قیمت</td>
                                 <td>دامنه</td>
                                 <td>ایجاد</td>
                                 <td>عملیات</td>
@@ -52,7 +51,6 @@
                                 <td>کارشناس</td>
                                 <td>ضمینه فعالیت</td>
                                 <td>وضعیت</td>
-                                <td>قیمت</td>
                                 <td>دامنه</td>
                                 <td>ایجاد</td>
                                 <td>عملیات</td>
@@ -68,7 +66,6 @@
                                         <td>{{ $project->admin_first_name }} {{ $project->admin_last_name }}</td>
                                         <td>{{ $project->project_ads_field_activity }}</td>
                                         <td>{{ $project->project_statuses_title }}</td>
-                                        <td>{{ number_format($project->price) }}</td>
                                         <td>{{ $project->domain }}</td>
                                         <td>{{ $project->created_at->toJalali()->format(formatJalaliDate()) }}</td>
                                         <td class="d-flex gap-2">

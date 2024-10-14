@@ -53,7 +53,8 @@ class AdsController extends Controller
             'project_ads.field_activity as project_ads_field_activity',
         ]);
 
-        if (hasAdminPermission(PermissionName::PROJECT_PRICE_SHOW)) {
+        $hasPricePermission = hasAdminPermission(PermissionName::PROJECT_PRICE_SHOW);
+        if ($hasPricePermission) {
             $selectedColumns->add('projects.price');
         }
 
@@ -79,7 +80,7 @@ class AdsController extends Controller
 
         $projects = $projects->paginate();
 
-        return view('project::admin.ads.index', compact('title', 'projects'));
+        return view('project::admin.ads.index', compact('title', 'projects', 'hasPricePermission'));
     }
 
     public function create()

@@ -59,7 +59,8 @@ class SeoController extends Controller
             'project_seo.price_monthly as project_seo_price_monthly',
         ]);
 
-        if (hasAdminPermission(PermissionName::PROJECT_PRICE_SHOW)) {
+        $hasPricePermission = hasAdminPermission(PermissionName::PROJECT_PRICE_SHOW);
+        if ($hasPricePermission) {
             $selectedColumns->add('projects.price');
         }
 
@@ -87,7 +88,7 @@ class SeoController extends Controller
 
         $projects = $projects->paginate();
 
-        return view('project::admin.seo.index', compact('title', 'projects'));
+        return view('project::admin.seo.index', compact('title', 'projects', 'hasPricePermission'));
     }
 
     public function create()
