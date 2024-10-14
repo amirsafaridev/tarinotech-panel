@@ -17,6 +17,7 @@ use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Filters\IsSignFilter;
 use Modules\Project\app\Filters\IsUserSignFilter;
 use Modules\Project\app\Filters\Project\DateFilter;
+use Modules\Project\app\Filters\Project\SearchFilter;
 use Modules\Project\app\Filters\Project\SortFilter;
 use Modules\Project\app\Filters\Seo\PackageFilter;
 use Modules\Project\app\Filters\StatusFilter;
@@ -77,6 +78,7 @@ class SeoController extends Controller
             })
             ->join('packages', 'project_seo.package_id', '=', 'packages.id')
             ->filter([
+                SearchFilter::class,
                 AdminJoinedFilter::class,
                 StatusFilter::class,
                 IsSignFilter::class,

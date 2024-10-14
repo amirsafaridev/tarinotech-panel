@@ -3,28 +3,21 @@
 namespace Modules\Project\app\Http\Controllers\Admin;
 
 use App\Enums\Database\Role\PermissionName;
-use App\Enums\General\BtnType;
-use App\Filters\Admin\Admin\AdminFilter;
 use App\Filters\Admin\Admin\AdminJoinedFilter;
-use App\Foundation\ValueObjects\Datatable\ColumnOption;
-use App\Foundation\ValueObjects\Datatable\DatatableBase;
-use App\Foundation\ValueObjects\Datatable\ExternalFilter;
-use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Maatwebsite\Excel\Facades\Excel;
 use Modules\Project\app\Exports\Admin\Report\ProjectDatatableExport;
 use Modules\Project\app\Filters\IsSignFilter;
 use Modules\Project\app\Filters\IsUserSignFilter;
 use Modules\Project\app\Filters\Project\DateFilter;
+use Modules\Project\app\Filters\Project\SearchFilter;
 use Modules\Project\app\Filters\Project\SortFilter;
 use Modules\Project\app\Filters\StatusFilter;
 use Modules\Project\app\Filters\TypeFilter;
 use Modules\Project\app\Models\Project;
 use Modules\Project\app\Models\ProjectWeb;
-use Yajra\DataTables\Facades\DataTables;
 
 class ProjectController extends Controller
 {
@@ -67,6 +60,7 @@ class ProjectController extends Controller
             ->join('project_bases', 'projects.base_id', '=', 'project_bases.id')
             ->join('project_statuses', 'projects.status_id', '=', 'project_statuses.id')
             ->filter([
+                SearchFilter::class,
                 AdminJoinedFilter::class,
                 TypeFilter::class,
                 StatusFilter::class,
@@ -119,114 +113,5 @@ class ProjectController extends Controller
         }
 
         return view('project::admin.show', compact('title', 'project'));
-    }
-
-    public function getDataRoute(): string
-    {
-        return route('admin.project.data');
-    }
-
-    public function getDataTable(): array
-    {
-
-        return (new DatatableBase())
-            ->addColumn(
-                ColumnOption::new()->setName('id')->setAs('شناسه')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('title')->setAs('عنوان')
-            )
-            ->addColumn(
-                ColumnOption::new()
-                    ->setName('admin.fullname')
-                    ->setSearchable(false)
-                    ->setSortable(false)
-                    ->setAs('نام کارشناس فروش')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('type.title')
-                    ->setSortable(false)
-                    ->setAs('نوع')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('status.title')
-                    ->setSortable(false)
-                    ->setAs('وضعیت')
-            )
-            ->addColumn(
-                ColumnOption::new()
-                    ->setName('price')
-                    ->setAs('قیمت')
-                    ->setVisible(
-                        hasAdminPermission(PermissionName::PROJECT_PRICE_SHOW)
-                    )
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('domain')->setAs('دامنه')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('created_at')->setAs('ایجاد')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('action')
-                    ->setAs('عملیات')
-                    ->removeAction()
-            )
-            ->addExternalFilter(ExternalFilter::new()->setKey('admin'))
-            ->addExternalFilter(ExternalFilter::new()->setKey('type'))
-            ->addExternalFilter(ExternalFilter::new()->setKey('status'))
-            ->addExternalFilter(ExternalFilter::new()->setKey('is_signed'))
-            ->addExternalFilter(ExternalFilter::new()->setKey('is_signed_user'))
-            ->render();
-    }
-
-    public function data()
-    {
-        try {
-
-            $projects = Project::query()
-                ->select([
-                    'id',
-                    'title',
-                    'domain',
-                    'type_id',
-                    'status_id',
-                    'admin_id',
-                    'created_at',
-                ])
-                ->filter([
-                    AdminFilter::class,
-                    TypeFilter::class,
-                    StatusFilter::class,
-                    IsSignFilter::class,
-                    IsUserSignFilter::class,
-                ])
-                ->with([
-                    'type.base',
-                    'status.type',
-                    'admin' => function (BelongsTo $query) {
-                        $query->select('admins.id', 'admins.first_name', 'admins.last_name');
-                    },
-                ]);
-
-            if (hasAdminPermission(PermissionName::PROJECT_PRICE_SHOW)) {
-                $projects->addSelect('price');
-            }
-
-            return DataTables::eloquent($projects)
-                ->editColumn('created_at', function (Project $project) {
-                    return $project->created_at->toJalali()->format('Y/m/d');
-                })
-                ->editColumn('price', function (Project $project) {
-                    return number_format($project->price);
-                })
-                ->addColumn('action', function ($project) {
-                    return Helper::btnMaker(BtnType::Success, route('admin.project.manage', $project->id), trans('panel.action.manage'));
-                })
-                ->rawColumns(['action'])
-                ->make();
-        } catch (Exception $exception) {
-            return $this->exceptionResponse($exception);
-        }
     }
 }

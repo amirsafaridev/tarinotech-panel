@@ -13,6 +13,7 @@ use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Filters\IsSignFilter;
 use Modules\Project\app\Filters\IsUserSignFilter;
 use Modules\Project\app\Filters\Project\DateFilter;
+use Modules\Project\app\Filters\Project\SearchFilter;
 use Modules\Project\app\Filters\Project\SortFilter;
 use Modules\Project\app\Filters\StatusFilter;
 use Modules\Project\app\Http\Requests\Admin\Ads\StoreRequest;
@@ -70,6 +71,7 @@ class AdsController extends Controller
                     ->where('projects.target_type', '=', ProjectAds::class);
             })
             ->filter([
+                SearchFilter::class,
                 AdminJoinedFilter::class,
                 StatusFilter::class,
                 IsSignFilter::class,
@@ -193,10 +195,5 @@ class AdsController extends Controller
             'field_activity' => $req->input('field_activity'),
             'designed_by' => $req->input('designed_by'),
         ];
-    }
-
-    public function getDataRoute(): string
-    {
-        return route('admin.project.ads.data');
     }
 }

@@ -20,6 +20,7 @@ use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Filters\IsSignFilter;
 use Modules\Project\app\Filters\IsUserSignFilter;
 use Modules\Project\app\Filters\Project\DateFilter;
+use Modules\Project\app\Filters\Project\SearchFilter;
 use Modules\Project\app\Filters\Project\SortFilter;
 use Modules\Project\app\Filters\StatusFilter;
 use Modules\Project\app\Filters\Web\PackageFilter;
@@ -79,6 +80,7 @@ class WebController extends Controller
             })
             ->join('packages', 'project_webs.package_id', '=', 'packages.id')
             ->filter([
+                SearchFilter::class,
                 AdminJoinedFilter::class,
                 StatusFilter::class,
                 IsSignFilter::class,
