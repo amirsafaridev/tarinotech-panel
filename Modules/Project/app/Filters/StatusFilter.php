@@ -12,7 +12,7 @@ class StatusFilter extends FilterBase
     {
         $status = request('status');
         if (is_numeric($status)) {
-            $query->where('status_id', $status);
+            $query->where('projects.status_id', $status);
         }
 
         return $next($query);

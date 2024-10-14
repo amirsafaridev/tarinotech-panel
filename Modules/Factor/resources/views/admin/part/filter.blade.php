@@ -23,6 +23,7 @@
                 identify="admin"
                 title="کارشناس"
                 :is-small="true"
+                :old="request('admin')"
                 />
     </div>
 
@@ -166,7 +167,6 @@
 
     <div class="col-12 col-md-3 col-xl-2">
         <button class="btn btn-primary btn-sm">فیلتر</button>
-
     </div>
 
 </div>

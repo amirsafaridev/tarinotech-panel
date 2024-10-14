@@ -363,7 +363,7 @@ class WebController extends Controller
                     'status.type',
                     'target.package',
                     'admin' => function (BelongsTo $query) {
-                        $query->select('admins.id', 'admins.first_name', 'admins.last_name');
+                        $query->select('admins.id', 'admins.first_name', 'admins.last_name', 'admins.email');
                     },
                     'user' => function (BelongsTo $query) {
                         $query->select('users.id', 'users.first_name', 'users.last_name', 'users.mobile');

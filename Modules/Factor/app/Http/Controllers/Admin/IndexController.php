@@ -3,7 +3,7 @@
 namespace Modules\Factor\app\Http\Controllers\Admin;
 
 use App\Domain\Jobs\FactorItemCreateJob;
-use App\Filters\Admin\Admin\AdminFilter;
+use App\Filters\Admin\Admin\AdminJoinedFilter;
 use App\Foundation\ValueObjects\Requests\FactorItemValues;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
@@ -87,7 +87,7 @@ class IndexController extends Controller
                 PriceFilter::class,
                 StatusFilter::class,
                 ProjectFilter::class,
-                AdminFilter::class,
+                AdminJoinedFilter::class,
                 GatewayFilter::class,
                 DateFilter::class,
                 SortFilter::class,
@@ -103,7 +103,7 @@ class IndexController extends Controller
         return view('factor::admin.index', compact('title', 'factors'));
     }
 
-    public function export($factors)
+    private function export($factors)
     {
         try {
             $fileName = 'Factor-'.Carbon::now()->format('Y-m-d').'.xlsx';

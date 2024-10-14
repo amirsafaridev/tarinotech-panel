@@ -12,7 +12,7 @@ class TypeFilter extends FilterBase
     {
         $typeId = request('type');
         if (is_numeric($typeId)) {
-            $query->where('type_id', $typeId);
+            $query->where('projects.type_id', $typeId);
         }
 
         return $next($query);

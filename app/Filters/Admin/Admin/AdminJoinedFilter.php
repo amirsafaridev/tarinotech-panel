@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 use function request;
 
-class AdminFilter extends FilterBase
+class AdminJoinedFilter extends FilterBase
 {
     public function handle(Builder $query, Closure $next)
     {
@@ -16,9 +16,9 @@ class AdminFilter extends FilterBase
 
         if ($admin) {
             $query->where(function ($query) use ($admin) {
-                $query->where('first_name', 'like', '%'.$admin.'%')
-                    ->orWhere('last_name', 'like', '%'.$admin.'%')
-                    ->orWhere('email', 'like', '%'.$admin.'%');
+                $query->where('admins.first_name', 'like', '%'.$admin.'%')
+                    ->orWhere('admins.last_name', 'like', '%'.$admin.'%')
+                    ->orWhere('admins.email', 'like', '%'.$admin.'%');
             });
         }
 

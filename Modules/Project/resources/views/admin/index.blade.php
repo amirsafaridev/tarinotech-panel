@@ -1,7 +1,9 @@
 @extends('admin.master')
 @section('title') {{ $title }} @endsection
 @section('head')
-    @include('admin.partial.loader.style',['load'=>[\App\Enums\Assets\StyleLoader::DataTable()]])
+    @include('admin.partial.loader.style',['load'=>[
+        \App\Enums\Assets\StyleLoader::Datepicker(),
+   ]])
 @endsection
 @section('content')
 
@@ -15,9 +17,13 @@
         </div>
     </div>
 
-    <div class="row">
+    <form class="row" action="{{ route('admin.project.index') }}">
         <div class="col-xl-12 col-lg-12">
             <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div class="card-title">{{ $title }}</div>
+                    <a class="btn btn-success datatable-export-button" href="{{ request()->fullUrlWithQuery(['export' => 'true']) }}" id="exportButton">خروجی Excel</a>
+                </div>
                 <div class="card-body">
                     @include('admin.partial.message')
                     @include('project::admin.part.filter')
@@ -25,44 +31,70 @@
                         <table id="data-table" class="table">
                             <thead>
                             <tr>
-                                @foreach ($dataTable['columns'] as $column)
-                                    <th>{{ $column['as'] }}</th>
-                                @endforeach
+                                <td>شناسه</td>
+                                <td>عنوان</td>
+                                <td>کارشناس</td>
+                                <td>نوع</td>
+                                <td>وضعیت</td>
+                                <td>قیمت</td>
+                                <td>دامنه</td>
+                                <td>ایجاد</td>
+                                <td>عملیات</td>
                             </tr>
                             </thead>
 
                             <tfoot>
                             <tr>
-                                @foreach ($dataTable['columns'] as $column)
-                                    <th>{{ $column['as'] }}</th>
-                                @endforeach
+                                <td>شناسه</td>
+                                <td>عنوان</td>
+                                <td>کارشناس</td>
+                                <td>نوع</td>
+                                <td>وضعیت</td>
+                                <td>قیمت</td>
+                                <td>دامنه</td>
+                                <td>ایجاد</td>
+                                <td>عملیات</td>
                             </tr>
                             </tfoot>
 
                             <tbody>
+                            @if($projects->isNotEmpty())
+                                @foreach($projects as $project)
+                                    <tr>
+                                        <td>{{ $project->id }}</td>
+                                        <td>{{ $project->title }}</td>
+                                        <td>{{ $project->admin_first_name }} {{ $project->admin_last_name }}</td>
+                                        <td>{{ $project->project_types_title }}</td>
+                                        <td>{{ $project->project_statuses_title }}</td>
+                                        <td>{{ number_format($project->price) }}</td>
+                                        <td>{{ $project->domain }}</td>
+                                        <td>{{ $project->created_at->toJalali()->format(formatJalaliDate()) }}</td>
+                                        <td class="d-flex gap-2">
+                                            <a class="btn btn-sm btn-success" target="_blank" href="{{ route('admin.project.manage',$project->id) }}">{{ __('panel.action.manage') }}</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
                             </tbody>
                         </table>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        {{ $projects->links() }}
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 @endsection
 @section('script')
-    @include('admin.partial.loader.script',['load'=>[\App\Enums\Assets\ScriptLoader::DataTable()]])
-    @include('admin.partial.datatable2')
+    @include('admin.partial.loader.script',['load'=>[
+       \App\Enums\Assets\ScriptLoader::Datepicker(),
+   ]])
     @include('admin.partial.script.global')
     <script>
         $(document).ready(function (){
-            @foreach ($dataTable['externalFilters'] as $filter)
-            const {{ $filter['key'] }} = $('#{{$filter['key']}}');
-            {{$filter['key']}}.change(function (){
-                dataTable.ajax.reload();
-            });
-            @if($filter['type'] === 'price')
-            makeInputPrice({{$filter['key']}});
-            @endif
-            @endforeach
+            jalaliDatepicker.startWatch();
         })
     </script>
 @endsection
