@@ -127,5 +127,6 @@ Route::group(['guard' => 'admin'], function () {
 
     Route::get('/', [ProjectController::class, 'index'])->name('index');
     Route::get('/data', [ProjectController::class, 'data'])->name('data');
+    Route::get('/{project}/print', [ProjectController::class, 'print'])->name('print');
     Route::get('/{project}', [ProjectController::class, 'manage'])->name('manage');
 });

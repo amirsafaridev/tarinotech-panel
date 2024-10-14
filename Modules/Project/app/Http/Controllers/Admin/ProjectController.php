@@ -5,6 +5,7 @@ namespace Modules\Project\app\Http\Controllers\Admin;
 use App\Enums\Database\Role\PermissionName;
 use App\Filters\Admin\Admin\AdminJoinedFilter;
 use App\Http\Controllers\Controller;
+use App\Service\PdfService;
 use Carbon\Carbon;
 use Exception;
 use Maatwebsite\Excel\Facades\Excel;
@@ -97,6 +98,42 @@ class ProjectController extends Controller
 
         $title = self::SHOW_TITLE.' - '.$project->title;
 
+        $this->getProjectWithRelation($project);
+
+        if ($project->target_type === ProjectWeb::class) {
+            $project->load('target.options');
+        }
+
+        return view('project::admin.show', compact('title', 'project'));
+    }
+
+    public function print(Project $project, PdfService $pdfService)
+    {
+        try {
+            $this->getProjectWithRelation($project);
+
+            $this->setupPdfService($pdfService);
+
+            $view = view('project::admin.pdf.show', compact('project'))->render();
+
+            $pdfService->writeHtml($view);
+
+            return $pdfService->output(str($project->title)->replace(' ', ''), 'I');
+        } catch (Exception $e) {
+            report($e);
+
+            return $e->getMessage();
+        }
+    }
+
+    private function setupPdfService(PdfService $service)
+    {
+        $service->setFont('DejaVuSans', 'B', 14);
+        $service->setMargins(0, 0, 10);
+    }
+
+    protected function getProjectWithRelation(Project $project): void
+    {
         $project->load([
             'admin',
             'user',
@@ -107,11 +144,5 @@ class ProjectController extends Controller
             'target.signable',
             'target.userSignable.attachments',
         ]);
-
-        if ($project->target_type === ProjectWeb::class) {
-            $project->load('target.options');
-        }
-
-        return view('project::admin.show', compact('title', 'project'));
     }
 }

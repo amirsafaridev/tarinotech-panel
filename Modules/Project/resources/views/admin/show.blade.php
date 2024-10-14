@@ -6,7 +6,11 @@
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">پروژه - نمایش</h1>
+        <div class="d-flex gap-2">
+            <h1 class="page-title">پروژه - نمایش</h1>
+            <a class="btn btn-success btn-sm" href="{{ route('admin.project.print',$project->id) }}">پرینت</a>
+        </div>
+
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a
