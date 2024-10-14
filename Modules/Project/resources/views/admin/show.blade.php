@@ -8,7 +8,9 @@
     <div class="page-header">
         <div class="d-flex gap-2">
             <h1 class="page-title">پروژه - نمایش</h1>
-            <a class="btn btn-success btn-sm" href="{{ route('admin.project.print',$project->id) }}">پرینت</a>
+            @can('ADMIN_PROJECT_PRINT')
+                <a class="btn btn-success btn-sm" href="{{ route('admin.project.print',$project->id) }}">پرینت</a>
+            @endcan
         </div>
 
         <div>
