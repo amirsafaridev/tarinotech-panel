@@ -8,6 +8,7 @@ use App\Filters\Admin\Admin\AdminJoinedFilter;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Service\Json\SeoProject\HostTransformer;
+use App\Traits\HasJsonCommonResponse;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -28,6 +29,8 @@ use Modules\Project\app\Models\ProjectSeo;
 
 class SeoController extends Controller
 {
+    use HasJsonCommonResponse;
+
     const INDEX_TITLE = 'پروژه های سئو';
 
     const CREATE_TITLE = 'پروژه های سئو - ایجاد';

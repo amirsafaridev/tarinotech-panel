@@ -6,6 +6,7 @@ use App\Enums\Database\Role\PermissionName;
 use App\Filters\Admin\Admin\AdminJoinedFilter;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
+use App\Traits\HasJsonCommonResponse;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -23,6 +24,8 @@ use Modules\Project\app\Models\ProjectAds;
 
 class AdsController extends Controller
 {
+    use HasJsonCommonResponse;
+
     const INDEX_TITLE = 'پروژه های ادز';
 
     const CREATE_TITLE = 'پروژه های ادز - ایجاد';

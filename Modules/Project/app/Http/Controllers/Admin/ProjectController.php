@@ -6,6 +6,7 @@ use App\Enums\Database\Role\PermissionName;
 use App\Filters\Admin\Admin\AdminJoinedFilter;
 use App\Http\Controllers\Controller;
 use App\Service\PdfService;
+use App\Traits\HasJsonCommonResponse;
 use Carbon\Carbon;
 use Exception;
 use Maatwebsite\Excel\Facades\Excel;
@@ -22,6 +23,8 @@ use Modules\Project\app\Models\ProjectWeb;
 
 class ProjectController extends Controller
 {
+    use HasJsonCommonResponse;
+
     const INDEX_TITLE = 'پروژه ها';
 
     const SHOW_TITLE = 'نمایش';

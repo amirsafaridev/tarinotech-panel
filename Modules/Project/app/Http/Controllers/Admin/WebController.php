@@ -11,6 +11,7 @@ use App\Service\Json\WebProject\DomainTransformer;
 use App\Service\Json\WebProject\HostTransformer;
 use App\Service\Json\WebProject\LanguageTransformer;
 use App\Service\Json\WebProject\SampleTransformer;
+use App\Traits\HasJsonCommonResponse;
 use Carbon\Carbon;
 use Crypt;
 use DB;
@@ -31,6 +32,8 @@ use Modules\Project\app\Models\ProjectWeb;
 
 class WebController extends Controller
 {
+    use HasJsonCommonResponse;
+
     const INDEX_TITLE = 'پروژه های وب';
 
     const CREATE_TITLE = 'پروژه های وب - ایجاد';
