@@ -79,7 +79,7 @@ class SeoController extends Controller
                 $join->on('projects.target_id', '=', 'project_seo.id')
                     ->where('projects.target_type', '=', ProjectSeo::class);
             })
-            ->join('packages', 'project_seo.package_id', '=', 'packages.id')
+            ->leftJoin('packages', 'project_seo.package_id', '=', 'packages.id')
             ->filter([
                 SearchFilter::class,
                 AdminJoinedFilter::class,
