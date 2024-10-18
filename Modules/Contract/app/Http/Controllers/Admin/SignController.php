@@ -13,10 +13,12 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Modules\Contract\app\Enums\SignableStatus;
+use Modules\Contract\app\Http\Controllers\Admin\Preview\WebProjectController;
 use Modules\Contract\app\Http\Requests\Admin\Signable\UpdateRequest;
 use Modules\Contract\app\Models\Signable;
 use Modules\Contract\app\Models\UserSignable;
 use Modules\Project\app\Models\ProjectWeb;
+use Throwable;
 use Yajra\DataTables\Facades\DataTables;
 
 class SignController extends Controller
@@ -43,19 +45,34 @@ class SignController extends Controller
     public function edit(Signable $signable)
     {
         $title = self::EDIT_TITLE;
+        $signable->load('files');
 
         return view('contract::admin.signable.edit', compact('title', 'signable'));
     }
 
+    /**
+     * @throws Throwable
+     */
     public function update(UpdateRequest $request, Signable $signable)
     {
         try {
             DB::beginTransaction();
+            $oldStatus = $request->input('status');
             $item = $this->prepareItemData($request);
             $signable->update($item);
 
             if ($this->shouldCreateUserSignable($request, $signable)) {
                 $this->createUserSignable($signable);
+            }
+
+            if ($signable->target_type === ProjectWeb::class &&
+                $signable->status === SignableStatus::Signed &&
+                $oldStatus != $signable->status) {
+                $storePath = resolve(WebProjectController::class)
+                    ->saveToDisk($signable->target_id);
+                $signable->files()->create([
+                    'file_path' => $storePath,
+                ]);
             }
 
             DB::commit();

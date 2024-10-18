@@ -12,12 +12,15 @@ use App\Traits\HasJsonCommonResponse;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Modules\Contract\app\Enums\UserSignableStatus;
+use Modules\Contract\app\Http\Controllers\Admin\Preview\WebProjectController;
 use Modules\Contract\app\Http\Requests\Admin\UserSignable\UpdateRequest;
 use Modules\Contract\app\Models\SignableAttachment;
 use Modules\Contract\app\Models\UserSignable;
 use Modules\Project\app\Models\ProjectAds;
 use Modules\Project\app\Models\ProjectSeo;
 use Modules\Project\app\Models\ProjectWeb;
+use Throwable;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserSignController extends Controller
@@ -51,17 +54,32 @@ class UserSignController extends Controller
         return view('contract::admin.user_signable.edit', compact('title', 'userSignable'));
     }
 
+    /**
+     * @throws Throwable
+     */
     public function update(UpdateRequest $request, UserSignable $userSignable)
     {
         try {
             DB::beginTransaction();
 
             // Prepare the data for updating the UserSignable model
+            $oldStatus = $request->input('status');
+
             $itemData = $this->prepareItemData($request);
             $userSignable->update($itemData);
 
             // Update attachments if any are provided
             $this->updateAttachments($request->input('attachments'), $userSignable);
+
+            if ($userSignable->target_type === ProjectWeb::class
+                && $oldStatus != $userSignable->status
+                && $userSignable->status === UserSignableStatus::Accepted) {
+                $storePath = resolve(WebProjectController::class)
+                    ->saveToDisk($userSignable->target_id);
+                $userSignable->files()->create([
+                    'file_path' => $storePath,
+                ]);
+            }
 
             DB::commit();
 
@@ -169,7 +187,7 @@ class UserSignController extends Controller
 
     private function determineRelationshipsToLoad($userSignable): array
     {
-        $relationshipsToLoad = ['attachments'];
+        $relationshipsToLoad = ['attachments', 'files'];
 
         if (in_array($userSignable->target_type, [ProjectWeb::class, ProjectSeo::class])) {
             $relationshipsToLoad[] = 'target.project';

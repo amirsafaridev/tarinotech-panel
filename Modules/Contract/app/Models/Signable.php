@@ -5,6 +5,7 @@ namespace Modules\Contract\app\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Modules\Admin\app\Models\Admin;
 
@@ -28,6 +29,8 @@ class Signable extends Model
         'note',
         'sign_at',
         'created_at',
+        'file_path',
+        'file_updated_at',
     ];
 
     public function target(): MorphTo
@@ -38,5 +41,10 @@ class Signable extends Model
     public function makeAdmin(): BelongsTo
     {
         return $this->belongsTo(Admin::class, 'make_admin_id');
+    }
+
+    public function files(): MorphMany
+    {
+        return $this->morphMany(SignableFile::class, 'signable')->latest();
     }
 }

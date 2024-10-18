@@ -16,7 +16,8 @@ class SearchFilter extends FilterBase
             $query->where(function (Builder $query) use ($search) {
                 $query
                     ->where('projects.title', 'like', '%'.$search.'%')
-                    ->orWhere('projects.id', 'like', '%'.$search.'%');
+                    ->orWhere('projects.id', 'like', '%'.$search.'%')
+                    ->orWhere('projects.domain', 'like', '%'.$search.'%');
 
             });
         }

@@ -35,4 +35,9 @@ class UserSignable extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function files(): MorphMany
+    {
+        return $this->morphMany(SignableFile::class, 'signable');
+    }
 }

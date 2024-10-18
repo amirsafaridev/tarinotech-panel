@@ -75,7 +75,7 @@
 
                     </form>
 
-                    <div class="row mt-5">
+                    <div class="row mt-5 mb-5">
                         @foreach($userSignable->attachments as $attachment)
                             <div class="col-md-4 mb-3">
                                 <div class="card">
@@ -109,16 +109,35 @@
                                 </div>
                             </div>
                         @endforeach
-
                     </div>
-
-
-
 
                     <form id="deleteItem" action="{{ route('admin.contract.sign.destroy',$userSignable->id) }}" method="post" class="form-inline">
                         @csrf
                         @method('DELETE')
                     </form>
+
+                    @if($userSignable->files)
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>تاریخ</th>
+                                <th>دانلود</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($userSignable->files as $file)
+                                <tr>
+                                    <td>{{ $file->created_at->toJalali()->format(formatJalaliDateTime()) }}</td>
+                                    <td>
+                                        <a class="btn btn-success btn-sm" href="">دانلود PDF</a>
+                                        <button class="btn btn-outline-danger btn-sm">حذف</button>
+                                    </td>
+                                </tr>
+
+                            @endforeach
+                            </tbody>
+                        </table>
+                    @endif
                 </div>
             </div>
         </div>

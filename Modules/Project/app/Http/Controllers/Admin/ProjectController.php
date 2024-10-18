@@ -20,6 +20,7 @@ use Modules\Project\app\Filters\StatusFilter;
 use Modules\Project\app\Filters\TypeFilter;
 use Modules\Project\app\Models\Project;
 use Modules\Project\app\Models\ProjectWeb;
+use Mpdf\MpdfException;
 
 class ProjectController extends Controller
 {
@@ -129,6 +130,9 @@ class ProjectController extends Controller
         }
     }
 
+    /**
+     * @throws MpdfException
+     */
     private function setupPdfService(PdfService $service)
     {
         $service->setFont('DejaVuSans', 'B', 14);
@@ -144,8 +148,9 @@ class ProjectController extends Controller
             'type',
             'businessDomain',
             'factors.admin',
-            'target.signable',
+            'target.signable.files',
             'target.userSignable.attachments',
+            'target.userSignable.files',
         ]);
     }
 }

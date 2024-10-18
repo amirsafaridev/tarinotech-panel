@@ -5,6 +5,7 @@ namespace App\Service;
 use Mpdf\Config\ConfigVariables;
 use Mpdf\Config\FontVariables;
 use Mpdf\Mpdf;
+use Mpdf\MpdfException;
 
 class PdfService
 {
@@ -38,24 +39,41 @@ class PdfService
         ], $config));
     }
 
-    public function setFont($family, $style = '', $size = 0)
+    /**
+     * @throws MpdfException
+     */
+    public function setFont($family, $style = '', $size = 0): void
     {
         $this->mpdf->SetFont($family, $style, $size);
     }
 
-    public function setMargins($left, $right, $top)
+    public function setMargins($left, $right, $top): void
     {
         $this->mpdf->SetMargins($left, $right, $top);
     }
 
-    public function writeHtml($html)
+    /**
+     * @throws MpdfException
+     */
+    public function writeHtml($html): void
     {
         $this->mpdf->WriteHTML($html);
     }
 
-    public function output($filename = '', $dest = 'I')
+    /**
+     * @throws MpdfException
+     */
+    public function output($filename = '', $dest = 'I'): ?string
     {
         return $this->mpdf->Output($filename, $dest);
+    }
+
+    /**
+     * @throws MpdfException
+     */
+    public function outputFile($filename = ''): ?string
+    {
+        return $this->mpdf->Output($filename, 'S');
     }
 
     public function getMpdfInstance(): Mpdf

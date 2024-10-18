@@ -7,8 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Service\PdfService;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Modules\Contract\app\Enums\PlaceHolderKeys;
 use Modules\Project\app\Models\ProjectWeb;
+use Throwable;
 
 class WebProjectController extends Controller implements PrintControllerInterface
 {
@@ -29,26 +31,45 @@ class WebProjectController extends Controller implements PrintControllerInterfac
         ]);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function index(int $id)
     {
         try {
             $model = $this->findModel($id);
-
-            $this->setupPdfService($model);
-
-            $viewPath = $this->getViewPath();
-            $view = view($viewPath, compact('model'))->render();
-
-            $viewFilled = $this->fillData($view, $model);
-            $fileName = $this->fileName($model);
-
-            $this->pdfService->writeHtml($viewFilled);
+            $fileName = $this->getPreparedHtml($model);
 
             return $this->pdfService->output($fileName);
         } catch (Exception $e) {
             report($e);
 
             return $e->getMessage();
+        }
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function saveToDisk(int $id)
+    {
+        try {
+            $model = $this->findModel($id);
+            $this->getPreparedHtml($model);
+
+            $pdfContent = $this->pdfService->outputFile('save_contact');
+
+            $timestamp = now()->format('Y-m-d_H-i-s');
+            $fileName = sprintf('web_contract_project_%s_contract_%s.pdf', $model->id, $timestamp);
+            $filePath = 'contracts/'.$fileName;
+
+            Storage::disk('private')->put($filePath, $pdfContent);
+
+            return 'app/'.$filePath;
+        } catch (Exception $e) {
+            report($e);
+
+            return 'An error occurred: '.$e->getMessage();
         }
     }
 
@@ -119,5 +140,24 @@ class WebProjectController extends Controller implements PrintControllerInterfac
     public function fileName(Model $model): string
     {
         return $model->id.'.pdf';
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function getPreparedHtml(ProjectWeb $model): string
+    {
+
+        $this->setupPdfService($model);
+
+        $viewPath = $this->getViewPath();
+        $view = view($viewPath, compact('model'))->render();
+
+        $viewFilled = $this->fillData($view, $model);
+        $fileName = $this->fileName($model);
+
+        $this->pdfService->writeHtml($viewFilled);
+
+        return $fileName;
     }
 }

@@ -17,7 +17,7 @@ class PreviewController extends Controller
 {
     const EMPTY_PLACEHOLDER = '--------------';
 
-    public function __construct(private PdfService $pdfService)
+    public function __construct(private readonly PdfService $pdfService)
     {
     }
 

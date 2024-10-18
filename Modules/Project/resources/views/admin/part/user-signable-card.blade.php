@@ -30,6 +30,25 @@
             </table>
         @endif
 
-        <p>ضمیمه ها</p>
+        @if($project->target?->userSignable?->files)
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>تاریخ</th>
+                    <th>دانلود</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($project->target->userSignable->files as $file)
+                    <tr>
+                        <td>{{ $file->created_at->toJalali()->format(formatJalaliDateTime()) }}</td>
+                        <td>
+                            <a class="btn btn-success btn-sm" href="">دانلود PDF</a>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        @endif
     </div>
 </div>
