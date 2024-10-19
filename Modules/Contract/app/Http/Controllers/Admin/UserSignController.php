@@ -2,9 +2,11 @@
 
 namespace Modules\Contract\app\Http\Controllers\Admin;
 
-use App\Enums\General\BtnType;
+use App\Enums\General\DropdownItemColor;
 use App\Foundation\ValueObjects\Datatable\ColumnOption;
 use App\Foundation\ValueObjects\Datatable\DatatableBase;
+use App\Foundation\ValueObjects\Datatable\Dropdown;
+use App\Foundation\ValueObjects\Datatable\DropdownItem;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Traits\HasDatatable;
@@ -31,6 +33,8 @@ class UserSignController extends Controller
     const INDEX_TITLE = 'درخواست های امضاء کارفرما';
 
     const EDIT_TITLE = 'درخواست های امضاء کارفرما - ویرایش';
+
+    const EDIT_SHOW = 'درخواست های امضاء کارفرما - نمایش';
 
     public function index()
     {
@@ -63,7 +67,7 @@ class UserSignController extends Controller
             DB::beginTransaction();
 
             // Prepare the data for updating the UserSignable model
-            $oldStatus = $request->input('status');
+            $oldStatus = $userSignable->status;
 
             $itemData = $this->prepareItemData($request);
             $userSignable->update($itemData);
@@ -74,6 +78,7 @@ class UserSignController extends Controller
             if ($userSignable->target_type === ProjectWeb::class
                 && $oldStatus != $userSignable->status
                 && $userSignable->status === UserSignableStatus::Accepted) {
+
                 $storePath = resolve(WebProjectController::class)
                     ->saveToDisk($userSignable->target_id);
                 $userSignable->files()->create([
@@ -89,6 +94,16 @@ class UserSignController extends Controller
 
             return $this->exceptionResponse($exception);
         }
+    }
+
+    public function show(UserSignable $userSignable)
+    {
+        $title = self::EDIT_SHOW;
+
+        $relationshipsToLoad = $this->determineRelationshipsToLoad($userSignable);
+        $userSignable->load($relationshipsToLoad);
+
+        return view('contract::admin.user_signable.show', compact('title', 'userSignable'));
     }
 
     /**
@@ -174,7 +189,22 @@ class UserSignController extends Controller
                     return $signable->created_at->toJalali()->format(formatJalaliDateTime());
                 })
                 ->addColumn('action', function (UserSignable $signable) {
-                    return Helper::btnMaker(BtnType::Warning, route('admin.contract.sign.user.edit', $signable->id), trans('panel.action.edit'));
+
+                    return (new Dropdown())
+                        ->add(
+                            (new DropdownItem())
+                                ->setTargetBlank(true)
+                                ->setTitle(trans('panel.action.edit'))
+                                ->setLink(route('admin.contract.sign.user.edit', $signable->id))
+                        )
+                        ->add(
+                            (new DropdownItem())
+                                ->setTargetBlank(true)
+                                ->setTitle(trans('panel.action.show'))
+                                ->setLink(route('admin.contract.sign.user.show', $signable->id))
+                        )
+                        ->setButtonColor(DropdownItemColor::Success())
+                        ->render();
 
                 })
                 ->rawColumns(['action', 'status'])

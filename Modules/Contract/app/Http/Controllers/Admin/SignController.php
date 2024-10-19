@@ -57,8 +57,8 @@ class SignController extends Controller
     {
         try {
             DB::beginTransaction();
-            $oldStatus = $request->input('status');
             $item = $this->prepareItemData($request);
+            $oldStatus = $signable->status;
             $signable->update($item);
 
             if ($this->shouldCreateUserSignable($request, $signable)) {
@@ -67,7 +67,7 @@ class SignController extends Controller
 
             if ($signable->target_type === ProjectWeb::class &&
                 $signable->status === SignableStatus::Signed &&
-                $oldStatus != $signable->status) {
+                $oldStatus != $request->input('status')) {
                 $storePath = resolve(WebProjectController::class)
                     ->saveToDisk($signable->target_id);
                 $signable->files()->create([

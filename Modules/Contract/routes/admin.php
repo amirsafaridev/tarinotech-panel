@@ -16,6 +16,7 @@ use Modules\Contract\app\Http\Controllers\Admin\Preview\SeoProjectController;
 use Modules\Contract\app\Http\Controllers\Admin\Preview\WebProjectController;
 use Modules\Contract\app\Http\Controllers\Admin\SignableAttachmentController;
 use Modules\Contract\app\Http\Controllers\Admin\SignableController;
+use Modules\Contract\App\Http\Controllers\Admin\SignableFileController;
 use Modules\Contract\app\Http\Controllers\Admin\SignController;
 use Modules\Contract\app\Http\Controllers\Admin\UserSignController;
 
@@ -34,6 +35,7 @@ Route::group(['guard' => 'admin'], function () {
         Route::get('/', [UserSignController::class, 'index'])->name('index');
         Route::get('/data', [UserSignController::class, 'data'])->name('data');
         Route::get('/{user_signable}', [UserSignController::class, 'edit'])->name('edit');
+        Route::get('/{user_signable}/show', [UserSignController::class, 'show'])->name('show');
         Route::patch('/{user_signable}', [UserSignController::class, 'update'])->name('update');
     });
 
@@ -54,5 +56,10 @@ Route::group(['guard' => 'admin'], function () {
     Route::group(['prefix' => 'attachment', 'as' => 'attachment.'], function () {
         Route::post('/upload', [SignableAttachmentController::class, 'upload'])->name('upload');
         Route::DELETE('/destroy', [SignableAttachmentController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::group(['prefix' => 'file', 'as' => 'file.'], function () {
+        Route::get('/{signable_file}/download', [SignableFileController::class, 'download'])->name('download');
+        Route::DELETE('/{signable_file}/destroy', [SignableFileController::class, 'destroy'])->name('destroy');
     });
 });

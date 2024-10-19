@@ -84,13 +84,14 @@
     $('.request-form').ajaxForm(options);
     function confirmDelete() {
         swal({
-            title: "حذف",
-            text: "آیا مطمئن هستید که میخواهید این مورد را حذف کنید؟",
+            title: 'آیا مطمئن هستید؟',
+            text: "این عمل قابل بازگشت نیست!",
             type: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#ff0f3b",
-            confirmButtonText: "حذف",
-            cancelButtonText: "صرفه نظر",
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#ff0f3b',
+            confirmButtonText: 'بله، حذف کن!',
+            cancelButtonText: 'خیر، انصراف',
             closeOnConfirm: false
         }, function(){
             $('#deleteItem').submit();

@@ -7,15 +7,22 @@
             <table>
                 <tr>
                     <td style="color: #192373;font-weight: 600;font-size: 14px">تاریخ</td>
-                    <td>.................</td>
+                    <td>{{ $model->project?->agreement_at?->toJalali()->format('d F Y') }}</td>
                 </tr>
                 <tr>
                     <td style="color: #192373;font-weight: 600;font-size: 14px">شماره</td>
-                    <td>.................</td>
+                    <td>{{ $model->signable?->id }}</td>
+
                 </tr>
                 <tr>
                     <td style="color: #192373;font-weight: 600;font-size: 14px">پیوست</td>
-                    <td>.................</td>
+                    <td>
+                        @if(!empty($model->project?->contract_attachment))
+                            <span>دارد</span>
+                        @else
+                            <span>ندارد</span>
+                        @endif
+                    </td>
                 </tr>
             </table>
         </td>

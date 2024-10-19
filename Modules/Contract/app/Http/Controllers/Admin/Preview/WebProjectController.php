@@ -38,6 +38,7 @@ class WebProjectController extends Controller implements PrintControllerInterfac
     {
         try {
             $model = $this->findModel($id);
+
             $fileName = $this->getPreparedHtml($model);
 
             return $this->pdfService->output($fileName);
@@ -65,7 +66,7 @@ class WebProjectController extends Controller implements PrintControllerInterfac
 
             Storage::disk('private')->put($filePath, $pdfContent);
 
-            return 'app/'.$filePath;
+            return $filePath;
         } catch (Exception $e) {
             report($e);
 

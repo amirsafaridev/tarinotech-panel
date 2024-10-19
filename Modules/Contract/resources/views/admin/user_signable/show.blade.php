@@ -1,13 +1,6 @@
 @extends('admin.master')
 @section('title') {{ $title }} @endsection
 @section('head')
-    @include('admin.partial.loader.style',[
-        'load'=>[
-            \App\Enums\Assets\StyleLoader::Toast(),
-            \App\Enums\Assets\StyleLoader::Alert(),
-            \App\Enums\Assets\StyleLoader::Dropzone(),
-        ]
-    ])
     <style>
         .card-img-container {
             width: 100%;
@@ -43,38 +36,6 @@
             <div class="card">
                 <div class="card-body pb-3">
                     @include('admin.partial.message')
-
-
-                    <div class="card mt-5">
-                        <div class="card-header">
-                            <h5 class="card-title">بارگذاری پیوست‌ها</h5>
-                            <p class="card-text">لطفاً فایل‌های تصویری خود را اینجا بارگذاری کنید. حداکثر اندازه فایل مجاز ۱۰ مگابایت است.</p>
-                        </div>
-                        <div class="card-body">
-                            <form action="{{ route('admin.contract.attachment.upload') }}" class="dropzone" id="myDropzone">
-                            </form>
-                        </div>
-                    </div>
-
-                    <form id="userSignableForm" class="request-form forms-sample" method="post" action="{{ route('admin.contract.sign.user.update',$userSignable->id) }}">
-                        @csrf
-                        @method('PATCH')
-
-                        <x-admin.input identify="id" type="hidden" :old="$userSignable->id"/>
-
-                        <x-admin.select-enum identify="status" title="وضغیت امضاء"
-                                             :enum-class="\Modules\Contract\app\Enums\UserSignableStatus::class"
-                                             :old="$userSignable->status"
-                        />
-
-                        <x-admin.textarea identify="note" :rows="6" :old="$userSignable->note" placeholder="توضیحات"/>
-
-                        <x-admin.button title="{{ trans('panel.update') }}"/>
-
-                        <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
-
-                    </form>
-
                     <div class="row mt-5 mb-5">
                         @foreach($userSignable->attachments as $attachment)
                             <div class="col-md-4 mb-3">
@@ -102,19 +63,11 @@
                                         <a href="{{ route('stream.read', $attachment->file_path) }}" target="_blank" class="btn btn-primary btn-sm">
                                             دانلود
                                         </a>
-                                        <button class="btn btn-outline-danger btn-sm btn-attachment-delete" data-id="{{ $attachment->ulid }}">
-                                            حذف
-                                        </button>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
                     </div>
-
-                    <form id="deleteItem" action="{{ route('admin.contract.sign.destroy',$userSignable->id) }}" method="post" class="form-inline">
-                        @csrf
-                        @method('DELETE')
-                    </form>
 
                     @if($userSignable->files)
                         <table class="table table-striped">
@@ -130,11 +83,6 @@
                                     <td>{{ $file->created_at->toJalali()->format(formatJalaliDateTime()) }}</td>
                                     <td>
                                         <a href="{{ route('admin.contract.file.download', $file->id) }}" class="btn btn-success btn-sm">دانلود PDF</a>
-                                        <form action="{{ route('admin.contract.file.destroy', $file->id) }}" method="POST" class="d-inline" id="delete-form-{{ $file->id }}">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="button" class="btn btn-outline-danger btn-sm" onclick="confirmFileDelete({{ $file->id }})">حذف</button>
-                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
@@ -147,28 +95,4 @@
     </div>
 @endsection
 @section('script')
-    @include('admin.partial.loader.script',['load'=>[
-    \App\Enums\Assets\ScriptLoader::Alert(),
-    \App\Enums\Assets\ScriptLoader::Dropzone(),
-    ]])
-    @include('admin.partial.request')
-    @include('contract::admin.user_signable.part.script')
-
-    <script>
-        function confirmFileDelete(fileId) {
-            swal({
-                title: 'آیا مطمئن هستید؟',
-                text: "این عمل قابل بازگشت نیست!",
-                type: "warning",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#ff0f3b',
-                confirmButtonText: 'بله، حذف کن!',
-                cancelButtonText: 'خیر، انصراف'
-            }, function(){
-                $('#delete-form-' + fileId).submit();
-            });
-        }
-    </script>
 @endsection

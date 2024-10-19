@@ -43,7 +43,7 @@
                     <tr>
                         <td>{{ $file->created_at->toJalali()->format(formatJalaliDateTime()) }}</td>
                         <td>
-                            <a class="btn btn-success btn-sm" href="">دانلود PDF</a>
+                            <a class="btn btn-success btn-sm" target="_blank" href="{{ route('admin.contract.file.download',$file->id) }}">دانلود PDF</a>
                         </td>
                     </tr>
                 @endforeach

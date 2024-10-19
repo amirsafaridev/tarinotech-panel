@@ -63,8 +63,12 @@
                                 <tr>
                                     <td>{{ $file->created_at->toJalali()->format(formatJalaliDateTime()) }}</td>
                                     <td>
-                                        <a class="btn btn-success btn-sm" href="">دانلود PDF</a>
-                                        <button class="btn btn-outline-danger btn-sm">حذف</button>
+                                        <a href="{{ route('admin.contract.file.download', $file->id) }}" class="btn btn-success btn-sm">دانلود PDF</a>
+                                        <form action="{{ route('admin.contract.file.destroy', $file->id) }}" method="POST" class="d-inline" id="delete-form-{{ $file->id }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" class="btn btn-outline-danger btn-sm" onclick="confirmFileDelete({{ $file->id }})">حذف</button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
@@ -86,5 +90,23 @@
         $(document).ready(function () {
             activeParentUl('{{ route('admin.contract.sign.index') }}');
         })
+    </script>
+
+    <script>
+        function confirmFileDelete(fileId) {
+            swal({
+                title: 'آیا مطمئن هستید؟',
+                text: "این عمل قابل بازگشت نیست!",
+                type: "warning",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#ff0f3b',
+                confirmButtonText: 'بله، حذف کن!',
+                cancelButtonText: 'خیر، انصراف'
+            }, function(){
+                $('#delete-form-' + fileId).submit();
+            });
+        }
     </script>
 @endsection
