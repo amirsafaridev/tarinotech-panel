@@ -14,7 +14,7 @@
         }
 
         button.btn-add i{
-            color: white;
+            color: #0b7347;
         }
 
         button.btn-remove i{
