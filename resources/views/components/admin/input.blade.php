@@ -1,4 +1,4 @@
-<div class="mb-3">
+<div class="mb-3 @if ($wFull) w-100 @endif">
     @if ($type !== 'hidden' && $title)
         <label for="{{ $identify }}" class="form-label">{{ $title }}</label>
     @endif

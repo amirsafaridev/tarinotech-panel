@@ -307,5 +307,22 @@ return [
         'seo_keywords_count' => 'تعداد کلمات سئو شدنی',
         'seo_agreement_duration' => 'مدت قرارداد',
         'seo_amount_content' => 'میزان تولید محتوا',
+
+        'representative' => 'نماینده',
+        'color_scheme' => 'ترکیب رنگ',
+        'similar_websites' => 'وب‌سایت‌های مشابه',
+        'preferred_websites' => 'وب‌سایت‌های ترجیحی',
+        'site_title' => 'عنوان سایت',
+        'design_based_on' => 'طراحی بر اساس',
+        'menu_titles' => 'عناوین منو',
+        'homepage_layout' => 'طرح صفحه اصلی',
+        'website_features' => 'ویژگی‌های وب‌سایت',
+        'internal_pages_content' => 'محتوای صفحات داخلی',
+        'contract_differences' => 'تفاوت‌های قرارداد',
+        'final_decision' => 'تصمیم نهایی',
+
+        'internal_pages_content.*.page' => 'صفحه داخلی',
+        'internal_pages_content.*.content' => 'محتوای صفحه داخلی',
+        'contract_differences.*.content' => 'محتوای تفاوت‌ها',
     ],
 ];

@@ -25,6 +25,7 @@ class Input extends Component
         public bool $readOnly = false,
         public bool $isSmall = false,
         public bool $isDatePicker = false,
+        public bool $wFull = false
     ) {
         //
     }

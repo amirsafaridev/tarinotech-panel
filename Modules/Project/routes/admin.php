@@ -14,6 +14,7 @@ use Modules\Project\app\Http\Controllers\Admin\TypeController;
 use Modules\Project\app\Http\Controllers\Admin\WebController;
 use Modules\Project\app\Http\Controllers\Admin\WebFactorController;
 use Modules\Project\app\Http\Controllers\Admin\WebImportController;
+use Modules\Project\app\Http\Controllers\Admin\WebRequirementController;
 use Modules\Project\app\Http\Controllers\Admin\WebStatusController;
 
 Route::group(['guard' => 'admin'], function () {
@@ -86,6 +87,11 @@ Route::group(['guard' => 'admin'], function () {
             Route::get('/{projectId}/auto-factor', [WebFactorController::class, 'make'])->name('auto-factor');
             Route::patch('/{projectId}', [WebController::class, 'update'])->name('update');
             Route::delete('/{projectId}', [WebController::class, 'destroy'])->name('destroy');
+
+            /* Requirement */
+            Route::get('/{projectId}/requirement', [WebRequirementController::class, 'index'])->name('requirement');
+            Route::patch('/{projectId}/requirement', [WebRequirementController::class, 'update'])->name('requirement.update');
+
         })->whereNumber('projectId');
 
         Route::post('/', [WebController::class, 'store'])->name('store');

@@ -55,6 +55,7 @@ class WebController extends Controller
             'projects.created_at',
             'projects.is_signed',
             'projects.is_signed_user',
+            'projects.target_id',
             'admins.first_name as admin_first_name',
             'admins.last_name as admin_last_name',
             'users.first_name as user_first_name',

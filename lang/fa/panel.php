@@ -92,6 +92,7 @@ return [
         'change_status' => 'تغییر وضعیت',
         'auto_factor' => 'فاکتور اتوماتیک',
         'change_password' => 'تغییر گذر واژه',
+        'requirement' => 'فرم نیازسنجی',
     ],
     'setting' => [
         'title' => 'تنظیمات',
