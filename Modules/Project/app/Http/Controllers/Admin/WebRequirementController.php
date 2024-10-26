@@ -12,7 +12,7 @@ class WebRequirementController extends Controller
 {
     use HasJsonCommonResponse;
 
-    const INDEX_TITLE = 'پروژه وب - نیازمندی ها';
+    const INDEX_TITLE = 'پروژه وب - نیازسنجی';
 
     public function index($projectId)
     {
