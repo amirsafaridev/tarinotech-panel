@@ -25,7 +25,7 @@
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">{{ $title }}</h1>
+        <h1 class="page-title">{{ $projectWeb?->project?->title ?? $title }}</h1>
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a
@@ -46,35 +46,55 @@
                         @csrf
                         @method('PATCH')
 
-                        <x-admin.input
-                                identify="representative"
-                                title="نماینده کارفرما در جلسه"
-                                :old="$requirement->representative ?? ''"/>
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                <x-admin.input
+                                        identify="representative"
+                                        title="نماینده کارفرما در جلسه"
+                                        :old="$requirement->representative ?? ''"/>
+                            </div>
 
-                        <x-admin.input
-                                identify="color_scheme"
-                                title="رنگ بندی سایت"
-                                :old="$requirement->color_scheme ?? ''"/>
+                            <div class="col-12 col-lg-6">
+                                <x-admin.input
+                                        identify="color_scheme"
+                                        title="رنگ بندی سایت"
+                                        :old="$requirement->color_scheme ?? ''"/>
+                            </div>
+                        </div>
 
-                        <x-admin.input
-                                identify="similar_websites"
-                                title="سایت هایی که در زمینه کاری مشابه قرار دارند"
-                                :old="$requirement->similar_websites ?? ''"/>
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                <x-admin.input
+                                        identify="similar_websites"
+                                        title="سایت هایی که در زمینه کاری مشابه قرار دارند"
+                                        :old="$requirement->similar_websites ?? ''"/>
+                            </div>
 
-                        <x-admin.input
-                                identify="preferred_websites"
-                                title="سایت های مورد پسند"
-                                :old="$requirement->preferred_websites ?? ''"/>
+                            <div class="col-12 col-lg-6">
+                                <x-admin.input
+                                        identify="preferred_websites"
+                                        title="سایت های مورد پسند"
+                                        :old="$requirement->preferred_websites ?? ''"/>
+                            </div>
+                        </div>
 
-                        <x-admin.input
-                                identify="site_title"
-                                title="عنوان سایت"
-                                :old="$requirement->site_title ?? ''"/>
 
-                        <x-admin.input
-                                identify="design_based_on"
-                                title="طراحی برپایه"
-                                :old="$requirement->design_based_on ?? ''"/>
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                <x-admin.input
+                                        identify="site_title"
+                                        title="عنوان سایت"
+                                        :old="$requirement->site_title ?? ''"/>
+                            </div>
+
+                            <div class="col-12 col-lg-6">
+                                <x-admin.input
+                                        identify="design_based_on"
+                                        title="طراحی برپایه"
+                                        :old="$requirement->design_based_on ?? ''"/>
+                            </div>
+                        </div>
+
 
                         <x-admin.input
                                 identify="menu_titles"

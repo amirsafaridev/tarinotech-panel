@@ -20,11 +20,12 @@ class WebRequirementController extends Controller
 
         $projectWeb = ProjectWeb::query()
             ->with('requirement')
+            ->with('project')
             ->findOrFail($projectId);
 
         $requirement = $projectWeb->requirement ?? null;
 
-        return view('project::admin.web.requirement', compact('title', 'projectId', 'requirement'));
+        return view('project::admin.web.requirement', compact('title', 'projectId', 'requirement', 'projectWeb'));
     }
 
     public function update($projectId, UpdateRequirementRequest $request)
