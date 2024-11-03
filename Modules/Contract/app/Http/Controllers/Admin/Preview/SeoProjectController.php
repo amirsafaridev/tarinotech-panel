@@ -107,7 +107,7 @@ class SeoProjectController extends Controller implements PrintControllerInterfac
         return str($view)->replace($keys, $values);
     }
 
-    public function getViewPath(): string
+    public function getViewPath(Model $model): string
     {
         return 'contract::admin.pdf.seo-project';
     }

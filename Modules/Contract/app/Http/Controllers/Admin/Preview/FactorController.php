@@ -63,7 +63,7 @@ class FactorController extends Controller implements PrintControllerInterface
         return $view;
     }
 
-    public function getViewPath(): string
+    public function getViewPath(Model $model): string
     {
         return 'contract::admin.pdf.factor';
     }

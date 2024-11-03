@@ -12,9 +12,9 @@ interface PrintControllerInterface
 
     public function fillData(string $view, Model $model): string;
 
-    public function getViewPath(): string;
+    public function getViewPath(Model $model): string;
 
-    public function setupPdfService(Model $model = null): void;
+    public function setupPdfService(?Model $model = null): void;
 
     public function fileName(Model $model): string;
 }

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Modules\Contract\app\Enums\PlaceHolderKeys;
 use Modules\Project\app\Models\ProjectWeb;
+use Mpdf\MpdfException;
 use Throwable;
 
 class WebProjectController extends Controller implements PrintControllerInterface
@@ -121,11 +122,22 @@ class WebProjectController extends Controller implements PrintControllerInterfac
         return str($view)->replace($keys, $values);
     }
 
-    public function getViewPath(): string
+    /**
+     * @param  ProjectWeb  $model
+     */
+    public function getViewPath(Model $model): string
     {
+        if (in_array($model->package_id, [5, 4, 10])) {
+            return 'contract::admin.pdf.web-project-cheap-contract';
+        }
+
         return 'contract::admin.pdf.web-project';
     }
 
+    /**
+     * @throws MpdfException
+     * @throws Throwable
+     */
     public function setupPdfService(?Model $model = null): void
     {
         $header = view('contract::admin.pdf.header', compact('model'))->render();
@@ -151,7 +163,7 @@ class WebProjectController extends Controller implements PrintControllerInterfac
 
         $this->setupPdfService($model);
 
-        $viewPath = $this->getViewPath();
+        $viewPath = $this->getViewPath($model);
         $view = view($viewPath, compact('model'))->render();
 
         $viewFilled = $this->fillData($view, $model);
