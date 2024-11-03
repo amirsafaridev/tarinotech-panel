@@ -32,9 +32,9 @@ class UserSignController extends Controller
 
     const INDEX_TITLE = 'درخواست های امضاء کارفرما';
 
-    const EDIT_TITLE = 'درخواست های امضاء کارفرما - ویرایش';
+    const EDIT_TITLE = 'درخواست های امضاء کارفرما';
 
-    const EDIT_SHOW = 'درخواست های امضاء کارفرما - نمایش';
+    const EDIT_SHOW = 'درخواست های امضاء کارفرما';
 
     public function index()
     {
@@ -50,10 +50,11 @@ class UserSignController extends Controller
 
     public function edit(UserSignable $userSignable)
     {
-        $title = self::EDIT_TITLE;
 
         $relationshipsToLoad = $this->determineRelationshipsToLoad($userSignable);
         $userSignable->load($relationshipsToLoad);
+
+        $title = self::EDIT_TITLE.' - '.$userSignable?->target?->project->title;
 
         return view('contract::admin.user_signable.edit', compact('title', 'userSignable'));
     }
@@ -75,10 +76,12 @@ class UserSignController extends Controller
             // Update attachments if any are provided
             $this->updateAttachments($request->input('attachments'), $userSignable);
 
-            if ($userSignable->target_type === ProjectWeb::class
-                && $oldStatus != $userSignable->status
-                && $userSignable->status === UserSignableStatus::Accepted) {
+            if (
+                ($userSignable->target_type === ProjectWeb::class &&
+                    $userSignable->status === UserSignableStatus::Accepted &&
+                    $oldStatus != $request->input('status')) || $request->has('make_fresh')
 
+            ) {
                 $storePath = resolve(WebProjectController::class)
                     ->saveToDisk($userSignable->target_id);
                 $userSignable->files()->create([
@@ -98,10 +101,12 @@ class UserSignController extends Controller
 
     public function show(UserSignable $userSignable)
     {
-        $title = self::EDIT_SHOW;
-
         $relationshipsToLoad = $this->determineRelationshipsToLoad($userSignable);
         $userSignable->load($relationshipsToLoad);
+
+        return $userSignable;
+
+        $title = self::EDIT_TITLE.' - '.$userSignable?->target?->project->title;
 
         return view('contract::admin.user_signable.show', compact('title', 'userSignable'));
     }

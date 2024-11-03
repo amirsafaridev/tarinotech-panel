@@ -28,7 +28,7 @@ class SignController extends Controller
 
     const INDEX_TITLE = 'درخواست های امضاء';
 
-    const EDIT_TITLE = 'درخواست های امضاء - ویرایش';
+    const EDIT_TITLE = 'درخواست های امضاء';
 
     public function index()
     {
@@ -44,8 +44,9 @@ class SignController extends Controller
 
     public function edit(Signable $signable)
     {
-        $title = self::EDIT_TITLE;
-        $signable->load('files');
+        $signable->load(['files', 'target.project']);
+
+        $title = self::EDIT_TITLE.' - '.$signable?->target?->project->title;
 
         return view('contract::admin.signable.edit', compact('title', 'signable'));
     }
@@ -65,9 +66,12 @@ class SignController extends Controller
                 $this->createUserSignable($signable);
             }
 
-            if ($signable->target_type === ProjectWeb::class &&
+            if (
+                ($signable->target_type === ProjectWeb::class &&
                 $signable->status === SignableStatus::Signed &&
-                $oldStatus != $request->input('status')) {
+                $oldStatus != $request->input('status')) || $request->has('make_fresh')
+
+            ) {
                 $storePath = resolve(WebProjectController::class)
                     ->saveToDisk($signable->target_id);
                 $signable->files()->create([

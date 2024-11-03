@@ -26,7 +26,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.contract.sign.user.index') }}">درخواست ها</a></li>
-                <li class="breadcrumb-item active">ویرایش</li>
+                <li class="breadcrumb-item active">نمایش</li>
             </ol>
         </div>
     </div>

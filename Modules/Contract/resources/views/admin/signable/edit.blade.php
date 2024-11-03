@@ -39,6 +39,8 @@
 
                         <x-admin.textarea identify="note" :rows="6" :old="$signable->note" placeholder="توضیحات"/>
 
+                        <x-admin.checkbox identify="make_fresh" description="ایجاد امضاء"/>
+
                         <x-admin.button title="{{ trans('panel.update') }}"/>
 
                         <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
