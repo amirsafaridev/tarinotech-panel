@@ -103,9 +103,6 @@ class UserSignController extends Controller
     {
         $relationshipsToLoad = $this->determineRelationshipsToLoad($userSignable);
         $userSignable->load($relationshipsToLoad);
-
-        return $userSignable;
-
         $title = self::EDIT_TITLE.' - '.$userSignable?->target?->project->title;
 
         return view('contract::admin.user_signable.show', compact('title', 'userSignable'));
