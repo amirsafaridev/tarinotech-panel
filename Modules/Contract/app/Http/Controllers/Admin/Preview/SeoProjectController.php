@@ -37,7 +37,7 @@ class SeoProjectController extends Controller implements PrintControllerInterfac
 
             $this->setupPdfService($model);
 
-            $viewPath = $this->getViewPath();
+            $viewPath = $this->getViewPath($model);
             $view = view($viewPath, compact('model'))->render();
 
             $viewFilled = $this->fillData($view, $model);
