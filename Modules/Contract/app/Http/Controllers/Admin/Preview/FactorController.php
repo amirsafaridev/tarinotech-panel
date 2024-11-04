@@ -29,7 +29,7 @@ class FactorController extends Controller implements PrintControllerInterface
 
             $this->setupPdfService();
 
-            $viewPath = $this->getViewPath();
+            $viewPath = $this->getViewPath($model);
             $view = view($viewPath, compact('model'))->render();
 
             $viewFilled = $this->fillData($view, $model);
