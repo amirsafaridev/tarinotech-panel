@@ -118,6 +118,7 @@ class WebController extends Controller
             $projectParams['status_id'] = $request->input('status_id');
             $projectParams['price'] = $request->input('price');
             $projectParams['tax_rate'] = config('factor.tax');
+            $projectParams['contract_attachment'] = $request->input('contract_attachment');
 
             $agreementAt = $projectParams['agreement_at'];
             if ($agreementAt) {
@@ -159,6 +160,10 @@ class WebController extends Controller
             $projectParams = $this->initialProjectData($request);
             if (hasAdminPermission(PermissionName::PROJECT_PRICE_EDIT)) {
                 $projectParams['price'] = $request->input('price');
+            }
+
+            if (! $project->is_signed) {
+                $projectParams['contract_attachment'] = $request->input('contract_attachment');
             }
             $project->update($projectParams);
 
@@ -267,7 +272,6 @@ class WebController extends Controller
             'user_id' => $request->input('user_id'),
             'base_id' => ProjectBase::Web,
             'note' => $request->input('note'),
-            'contract_attachment' => $request->input('contract_attachment'),
             'business_domain_id' => $request->input('business_domain_id'),
             'business_domain' => $request->input('business_domain'),
         ];

@@ -299,6 +299,12 @@
                                       title="اطلاعات بیشتر (یادداشت)"
                                       :old="$project->note"/>
 
+                    @if($project->is_signed)
+                        <div class="alert alert-info">
+                            <p>قرارداد این پروژه به امضا رسیده و پیوست آن غیرقابل ویرایش است.</p>
+                        </div>
+                    @endif
+
                     <x-admin.textarea identify="contract_attachment"
                                       title="پیوست قرارداد"
                                       :old="$project->contract_attachment"/>
