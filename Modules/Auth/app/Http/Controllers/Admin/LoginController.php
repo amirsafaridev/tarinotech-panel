@@ -12,10 +12,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Session;
-use Modules\Admin\App\Models\Admin;
-use Modules\Auth\App\Http\Requests\Admin\LoginRequest;
-use Modules\Auth\App\Notifications\Admin\EmilOtpNotification;
-use Modules\Auth\App\Notifications\Admin\SmsOtpNotification;
+use Modules\Admin\app\Models\Admin;
+use Modules\Auth\app\Http\Requests\Api\Auth\LoginRequest;
+use Modules\Auth\app\Notifications\Admin\EmilOtpNotification;
+use Modules\Auth\app\Notifications\Admin\SmsOtpNotification;
 
 class LoginController extends Controller
 {

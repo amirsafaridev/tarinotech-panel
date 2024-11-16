@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Auth\App\Notifications\Admin;
+namespace Modules\Auth\app\Notifications\Admin;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;

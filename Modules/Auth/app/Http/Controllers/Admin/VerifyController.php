@@ -8,7 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 use Modules\Admin\app\Models\Admin;
-use Modules\Auth\App\Http\Requests\Admin\VerifyRequest;
+use Modules\Auth\app\Http\Requests\Admin\VerifyRequest;
 
 class VerifyController extends Controller
 {
@@ -39,6 +39,8 @@ class VerifyController extends Controller
             return $this->processOtpVerification($admin, $request->input('code'));
 
         } catch (Exception $e) {
+            report($e);
+
             return $this->handleUnexpectedError();
         }
     }
