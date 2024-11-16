@@ -2,6 +2,7 @@
 
 namespace Modules\Admin\app\Http\Requests\Admin;
 
+use App\Enums\Database\Admin\OtpSendWay;
 use App\Enums\Database\Admin\TypeInsurance;
 use App\Enums\Database\Admin\WorkLocation;
 use App\Rules\IRMobile;
@@ -51,10 +52,11 @@ class UpdateRequest extends FormRequest
             'national_code' => 'size:10|string',
             'shaba_number' => ['nullable', 'size:26', new ShabaNumber()],
             'cart_number' => 'size:16|string',
+            'otp_send_way' => ['required', new EnumValue(OtpSendWay::class)],
         ];
     }
 
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         $this->merge([
             'work_location' => (int) $this->input('work_location'),
@@ -62,6 +64,7 @@ class UpdateRequest extends FormRequest
             'shaba_number' => str_replace(' ', '', $this->input('shaba_number')),
             'cart_number' => str_replace(' ', '', $this->input('cart_number')),
             'promissory' => str_replace(',', '', $this->input('promissory')),
+            'otp_send_way' => (int) $this->input('otp_send_way'),
         ]);
     }
 }

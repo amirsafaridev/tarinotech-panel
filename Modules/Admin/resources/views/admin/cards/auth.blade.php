@@ -32,10 +32,18 @@
             </div>
         @endif
 
+        <x-admin.select-enum
+            identify="otp_send_way"
+            title="ارسال کد دو مرحله ای از طریق"
+            :enum-class="\App\Enums\Database\Admin\OtpSendWay::class"
+            :old="$admin->otp_send_way ?? \App\Enums\Database\Admin\OtpSendWay::SMS"/>
+
         @if($editMode)
             <x-admin.checkbox identify="is_block"
                               description="قطع دسترسی"
                               :old="$isBlock"/>
         @endif
+
+
     </div>
 </div>

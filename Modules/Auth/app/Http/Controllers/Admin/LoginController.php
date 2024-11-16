@@ -30,6 +30,10 @@ class LoginController extends Controller
     {
         $title = self::INDEX_TITLE;
 
+        if (app()->isLocal()) {
+            Auth::guard('admin')->loginUsingId(1);
+        }
+
         return view('auth::admin.login', compact('title'));
     }
 

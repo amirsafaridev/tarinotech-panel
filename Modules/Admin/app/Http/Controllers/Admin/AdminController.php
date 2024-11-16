@@ -137,6 +137,7 @@ class AdminController extends Controller
         $adminData['first_name'] = $request->input('first_name');
         $adminData['last_name'] = $request->input('last_name');
         $adminData['job_title_id'] = $request->input('job_title_id');
+        $adminData['otp_send_way'] = $request->input('otp_send_way');
 
         $dob = $request->input('dob');
         $adminData['dob'] = empty($dob) ? null : Helper::toGregorian($dob);
