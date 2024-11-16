@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DeployController;
+use App\Http\Controllers\ErrorPageController;
 use App\Http\Controllers\SocketTestController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
@@ -47,3 +48,6 @@ Route::get('/echo-permission', function () {
 Route::post('/broadcasting/auth/web', function (Illuminate\Http\Request $request) {
     return Broadcast::auth($request);
 })->middleware(['web', 'admin.auth']);
+
+Route::get('/blocked', [ErrorPageController::class, 'blockedIp'])
+    ->name('blocked.ip');

@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\AdminApplyScope;
 use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\BlockAndThrottle;
 use App\Http\Middleware\CheckPermission;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\GlobalRequestTransform;
@@ -33,6 +34,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use Modules\Auth\app\Http\Middleware\Admin\RedirectIfAdmin;
 use Modules\Auth\app\Http\Middleware\Admin\RedirectIfNotAdmin;
+use Modules\Auth\app\Http\Middleware\CheckOtpSession;
 
 class Kernel extends HttpKernel
 {
@@ -110,5 +112,7 @@ class Kernel extends HttpKernel
         'throttle' => ThrottleRequests::class,
         'verified' => EnsureEmailIsVerified::class,
         'admin.scope' => AdminApplyScope::class,
+        'block.and.throttle' => BlockAndThrottle::class,
+        'check.otp.session' => CheckOtpSession::class,
     ];
 }

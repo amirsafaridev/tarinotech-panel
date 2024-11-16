@@ -2,15 +2,14 @@
 
 namespace Modules\Auth\app\Http\Controllers\Api;
 
-use App\Helpers\Helper;
+use App\Domain\Jobs\OtpGenerateJob;
 use App\Http\Controllers\Controller;
-use App\Notifications\User\Auth\OtpNotification;
 use App\Traits\HasApiResponse;
 use Exception;
 use Modules\Auth\app\Http\Requests\Api\Auth\DevLoginRequest;
 use Modules\Auth\app\Http\Requests\Api\Auth\LoginRequest;
-use Modules\Auth\app\Models\OtpCode;
 use Modules\Auth\app\Notifications\SendCodeNotification;
+use Modules\Auth\App\Notifications\User\SmsOtpNotification;
 use Modules\User\app\Models\User;
 use Modules\User\app\Resources\User\UserResource;
 
@@ -18,7 +17,7 @@ class LoginController extends Controller
 {
     use HasApiResponse;
 
-    public function index(LoginRequest $request)
+    public function index(LoginRequest $request, OtpGenerateJob $otpGenerateJob)
     {
 
         try {
@@ -29,7 +28,7 @@ class LoginController extends Controller
                 return $this->failResponse('اطلاعات ارسال شده صحیح نیست', 400);
             }
 
-            $otp = $this->generateOtp($user, $identify, $request);
+            $otp = $otpGenerateJob->handle($user, $user->mobile);
 
             if (app()->isProduction()) {
                 $this->sendOtp($user, $identify, $otp);
@@ -72,33 +71,12 @@ class LoginController extends Controller
             ->first();
     }
 
-    private function generateOtp($user, $identify, $request): string
-    {
-        $otp = Helper::randNumeric(4);
-
-        if (app()->isLocal()) {
-            $otp = config('auth.development_otp');
-        }
-
-        OtpCode::query()->create([
-            'identify' => $identify,
-            'user_type' => User::class,
-            'user_id' => $user->id,
-            'code' => $otp,
-            'expired_at' => now()->addMinutes(5),
-            'ip' => $request->ip(),
-            'agent' => $request->userAgent(),
-        ]);
-
-        return $otp;
-    }
-
     private function sendOtp(User $user, string $identify, string $otp): void
     {
         if (filter_var($identify, FILTER_VALIDATE_EMAIL)) {
             $user->notify(new SendCodeNotification($otp));
         } else {
-            $user->notify(new OtpNotification($otp));
+            $user->notify(new SmsOtpNotification($otp));
         }
     }
 }

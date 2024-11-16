@@ -18,6 +18,7 @@ return [
             'login' => 'ورود به پنل',
             'title' => 'پورتال تارینوتک - ورود',
             'email' => 'پست الکترونیکی',
+            'verify' => 'کد تایید',
             'email_placeholder' => 'پست الکترونیکی را وارد کنید',
             'password' => 'گذرواژه',
             'password_placeholder' => 'گذرواژه را وارد کنید',

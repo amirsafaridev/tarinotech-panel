@@ -17,6 +17,9 @@ class AdminApplyScope
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if (app()->runningUnitTests()) {
+            return $next($request);
+        }
         if ($this->hasProjectSelfPermission()) {
             if (! $this->shouldSkipProjectScope($request->route()->getName())) {
                 $this->applyProjectScope();

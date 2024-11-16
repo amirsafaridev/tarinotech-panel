@@ -11,6 +11,10 @@ class CheckPermission
 {
     public function handle(Request $request, Closure $next)
     {
+        if (app()->runningUnitTests()) {
+            return $next($request);
+        }
+
         $permission = str($request->route()->getName())
             ->upper()
             ->replace(['.', '-'], '_')

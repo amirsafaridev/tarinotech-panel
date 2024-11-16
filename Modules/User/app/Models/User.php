@@ -154,7 +154,7 @@ class User extends Authenticatable
         );
     }
 
-    public function setEmailAttribute($value)
+    public function setEmailAttribute($value): void
     {
         $this->attributes['email'] = $value !== '' ? $value : null;
     }

@@ -88,6 +88,7 @@ class ProfileController extends Controller
     {
         $adminData['first_name'] = $request->input('first_name');
         $adminData['last_name'] = $request->input('last_name');
+        $adminData['otp_send_way'] = $request->input('otp_send_way');
 
         if ($request->hasFile('avatar')) {
             $imageUploader = (new PhotoUploader())

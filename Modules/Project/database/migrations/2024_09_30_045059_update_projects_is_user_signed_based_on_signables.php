@@ -10,6 +10,9 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (config('database.default') == 'sqlite') {
+            return;
+        }
         DB::table('projects')
             ->join('user_signables', function ($join) {
                 $join->on('projects.target_id', '=', 'user_signables.target_id')

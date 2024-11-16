@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('facilities', function (Blueprint $table) {
 
-            $table->dropForeign('facilities_project_base_id_foreign');
+            $table->dropForeignSafe('facilities_project_base_id_foreign');
 
             $table->dropColumn('project_base_id');
 
@@ -32,7 +32,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('facilities', function (Blueprint $table) {
-            $table->dropForeign('facilities_base_id_foreign');
+            $table->dropForeignSafe('facilities_base_id_foreign');
 
             $table->dropColumn('base_id');
 

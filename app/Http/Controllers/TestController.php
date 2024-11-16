@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Notifications\User\Auth\OtpNotification;
 use App\Service\Sms\SMSIR;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
 use Modules\Admin\app\Models\Admin;
 use Modules\Admin\app\Notifications\Admin\SendPasswordByEmail;
+use Modules\Auth\App\Notifications\User\SmsOtpNotification;
 use Modules\Package\app\Models\Package;
 use Modules\Project\app\Imports\ProjectWebImport;
 use Modules\User\app\Imports\UserImport;
@@ -123,6 +123,6 @@ class TestController extends Controller
     {
         $this->dieInProduction();
         $user = User::query()->first();
-        $user->notify(new OtpNotification('2233'));
+        $user->notify(new SmsOtpNotification('2233'));
     }
 }

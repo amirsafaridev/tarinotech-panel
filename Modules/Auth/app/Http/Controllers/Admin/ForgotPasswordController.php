@@ -9,8 +9,8 @@ use Exception;
 use Modules\Admin\app\Models\Admin;
 use Modules\Auth\app\Http\Requests\Admin\ForgetPasswordRequest;
 use Modules\Auth\app\Models\OtpCode;
-use Modules\Auth\app\Notifications\Admin\OtpCodeEmail;
-use Modules\Auth\app\Notifications\Admin\OtpCodeSms;
+use Modules\Auth\App\Notifications\Admin\EmilOtpNotification;
+use Modules\Auth\App\Notifications\Admin\SmsOtpNotification;
 
 class ForgotPasswordController extends Controller
 {
@@ -71,10 +71,10 @@ class ForgotPasswordController extends Controller
             // Send Notification To User
             if (filter_var($request->input('identify'), FILTER_VALIDATE_EMAIL)) {
                 // Notification Email
-                $admin->notify(new OtpCodeEmail($code));
+                $admin->notify(new EmilOtpNotification($code));
             } else {
                 // Notification Mobile
-                $admin->notify(new OtpCodeSms($code));
+                $admin->notify(new SmsOtpNotification($code));
             }
 
             return to_route('auth.admin.password.reset')->with('success', trans('panel.auth.forget.otp.sent'));

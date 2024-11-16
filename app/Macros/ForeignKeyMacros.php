@@ -8,10 +8,8 @@ class ForeignKeyMacros
 {
     /**
      * Register the dropForeignSafe macro.
-     *
-     * @return void
      */
-    public static function register()
+    public static function register(): void
     {
         Blueprint::macro('dropForeignSafe', function ($args) {
             if (app()->runningUnitTests()) {

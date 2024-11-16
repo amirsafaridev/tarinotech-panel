@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('packages', function (Blueprint $table) {
             $table->after('title', function (Blueprint $table) {
 
-                $table->dropForeign('packages_base_id_foreign');
+                $table->dropForeignSafe('packages_base_id_foreign');
                 $table->dropColumn('base_id');
 
                 $table->unsignedTinyInteger('type_id')->nullable();
@@ -32,7 +32,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('packages', function (Blueprint $table) {
-            $table->dropForeign('packages_type_id_foreign');
+            $table->dropForeignSafe('packages_type_id_foreign');
             $table->dropColumn('type_id');
 
             $table->after('title', function (Blueprint $table) {

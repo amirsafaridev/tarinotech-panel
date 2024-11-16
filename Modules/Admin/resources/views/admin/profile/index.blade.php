@@ -35,6 +35,12 @@
 
                         <x-admin.input identify="last_name" :title="trans('fields.admin.last_name')" :old="$admin->last_name" />
 
+                        <x-admin.select-enum
+                            identify="otp_send_way"
+                            title="ارسال کد دو مرحله ای از طریق"
+                            :enum-class="\App\Enums\Database\Admin\OtpSendWay::class"
+                            :old="$admin->otp_send_way"/>
+
                         <x-admin.button title="{{ trans('panel.update') }}"/>
 
                     </form>

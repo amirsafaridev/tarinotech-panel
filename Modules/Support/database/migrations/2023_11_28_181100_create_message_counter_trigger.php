@@ -9,6 +9,9 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (config('database.default') == 'sqlite') {
+            return;
+        }
         DB::statement('
             CREATE TRIGGER message_counter AFTER INSERT ON chat_messages
             FOR EACH ROW
@@ -18,7 +21,7 @@ return new class extends Migration
                 DECLARE seen_at_timestamp DATETIME;
                 DECLARE message_count INT;
 
-                DECLARE cur CURSOR FOR 
+                DECLARE cur CURSOR FOR
                     SELECT seen_at, id
                     FROM chat_users
                     WHERE chat_users.chat_id = NEW.chat_id;
@@ -30,7 +33,7 @@ return new class extends Migration
                 WHERE user_id = NEW.user_id
                 AND chat_users.chat_id = NEW.chat_id
                 AND RIGHT(user_type, 4) = RIGHT(NEW.user_type, 4);
-               
+
                 OPEN cur;
 
                 read_loop: LOOP
@@ -39,13 +42,13 @@ return new class extends Migration
                         LEAVE read_loop;
                     END IF;
 
-                    SELECT COUNT(*) INTO message_count 
+                    SELECT COUNT(*) INTO message_count
                     FROM chat_messages
-                    WHERE chat_id = NEW.chat_id 
+                    WHERE chat_id = NEW.chat_id
                     AND created_at > seen_at_timestamp;
 
-                    UPDATE chat_users 
-                    SET unread = message_count 
+                    UPDATE chat_users
+                    SET unread = message_count
                     WHERE id = id_value;
                 END LOOP;
 

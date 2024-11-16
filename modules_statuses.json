@@ -22,5 +22,7 @@
     "FreeDay": true,
     "Stream": true,
     "Content": true,
-    "Contract": true
+    "Contract": true,
+    "Middleware": true,
+    "CheckOtpSession": true
 }

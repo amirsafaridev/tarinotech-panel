@@ -50,7 +50,7 @@ class StoreRequest extends FormRequest
         ];
     }
 
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         $this->merge([
             'work_location' => (int) $this->input('work_location'),

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Modules\Auth\app\Http\Controllers\Admin\ForgotPasswordController;
 use Modules\Auth\app\Http\Controllers\Admin\LoginController;
 use Modules\Auth\app\Http\Controllers\Admin\ResetPasswordController;
+use Modules\Auth\App\Http\Controllers\Admin\VerifyController;
 
 /*
     |--------------------------------------------------------------------------
@@ -16,12 +17,26 @@ use Modules\Auth\app\Http\Controllers\Admin\ResetPasswordController;
     |
 */
 
-Route::get('/', [LoginController::class, 'index'])->name('login');
-Route::post('/', [LoginController::class, 'login']);
+// Login routes
+Route::get('/', [LoginController::class, 'index'])
+    ->name('login');
+
+Route::post('/login', [LoginController::class, 'login'])
+    ->name('login.submit')
+    ->middleware('block.and.throttle');
+
+// Verification routes
+Route::group(['middleware' => 'check.otp.session'], function () {
+    Route::get('/verify', [VerifyController::class, 'index'])
+        ->name('verify');
+
+    Route::post('/verify', [VerifyController::class, 'verify'])
+        ->name('verify.submit');
+});
+
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Reset Password
-
 Route::group(['prefix' => '/password', 'as' => 'password.'], function () {
     Route::get('/forget', [ForgotPasswordController::class, 'index'])->name('forget');
     Route::post('/sendOtpCode', [ForgotPasswordController::class, 'sendOtpCode'])->name('email');

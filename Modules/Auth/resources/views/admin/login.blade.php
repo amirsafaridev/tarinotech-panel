@@ -2,7 +2,7 @@
 @section('title') {{ $title }} @endsection
 @section('content')
     <h3 class="text-center">ورود به پورتال</h3>
-    <form action="{{ route('auth.admin.login') }}" method="post" class="forms-sample">
+    <form action="{{ route('auth.admin.login.submit') }}" method="post" class="forms-sample">
         @csrf
 
         <div class="mb-3">
@@ -56,6 +56,7 @@
         </div>
 
         <div class="d-flex justify-content-between align-items-center">
+            @include('admin.partial.message')
             <button class="btn btn-success btn-md">ورود به پورتال</button>
             <a href="{{ route('auth.admin.password.forget') }}">{{ trans('panel.auth.login.forget') }}</a>
         </div>
