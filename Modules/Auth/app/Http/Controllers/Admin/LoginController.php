@@ -10,7 +10,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Session;
 use Modules\Admin\app\Models\Admin;
 use Modules\Auth\app\Http\Requests\Api\Auth\LoginRequest;
@@ -41,7 +40,7 @@ class LoginController extends Controller
 
             if (! $admin) {
                 return to_route('auth.admin.login')
-                    ->with('error', Lang::get('auth.invalid_credentials'));
+                    ->with('error', __('auth.invalid_credentials'));
             }
 
             $this->generateAndSendOtp($otpGenerateJob, $admin);

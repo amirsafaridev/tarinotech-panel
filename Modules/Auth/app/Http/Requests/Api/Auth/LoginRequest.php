@@ -21,7 +21,7 @@ class LoginRequest extends FormRequest
     {
 
         return [
-            'identify' => 'required',
+            'email' => 'required|email',
         ];
     }
 
