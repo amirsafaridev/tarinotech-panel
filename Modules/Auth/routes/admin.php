@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Modules\Auth\app\Http\Controllers\Admin\ForgotPasswordController;
 use Modules\Auth\app\Http\Controllers\Admin\LoginController;
 use Modules\Auth\app\Http\Controllers\Admin\ResetPasswordController;
-use Modules\Auth\App\Http\Controllers\Admin\VerifyController;
+use Modules\Auth\app\Http\Controllers\Admin\VerifyController;
 
 /*
     |--------------------------------------------------------------------------
