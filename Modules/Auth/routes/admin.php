@@ -28,7 +28,8 @@ Route::post('/login', [LoginController::class, 'login'])
 // Verification routes
 Route::group(['middleware' => 'check.otp.session'], function () {
     Route::get('/verify', [VerifyController::class, 'index'])
-        ->name('verify');
+        ->name('verify')
+        ->middleware('block.and.throttle');
 
     Route::post('/verify', [VerifyController::class, 'verify'])
         ->name('verify.submit');
