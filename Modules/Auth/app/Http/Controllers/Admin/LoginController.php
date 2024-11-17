@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Modules\Admin\app\Models\Admin;
 use Modules\Auth\app\Http\Requests\Api\Auth\LoginRequest;
-use Modules\Auth\app\Notifications\Admin\EmilOtpNotification;
+use Modules\Auth\app\Notifications\Admin\EmailOtpNotification;
 use Modules\Auth\app\Notifications\Admin\SmsOtpNotification;
 
 class LoginController extends Controller
@@ -83,7 +83,7 @@ class LoginController extends Controller
     private function sendOtpNotification(Admin $admin, string $otpCode): void
     {
         $notification = $admin->otp_send_way === OtpSendWay::EMAIL
-            ? new EmilOtpNotification($otpCode)
+            ? new EmailOtpNotification($otpCode)
             : new SmsOtpNotification($otpCode);
 
         $admin->notify($notification);

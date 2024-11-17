@@ -253,7 +253,7 @@ class SeoController extends Controller
 
         $pricePerMonth = round($request->get('price') / $monthlyDuration);
 
-        $pricePerMonth = ($pricePerMonth * config('factor.tax')) + $pricePerMonth;
+        // $pricePerMonth = ($pricePerMonth * config('factor.tax')) + $pricePerMonth;
 
         $projectData['price_monthly'] = round($pricePerMonth);
 

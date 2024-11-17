@@ -91,7 +91,7 @@
 
             let pricePerMonth =  Math.round(priceValue / monthlyDuration);
 
-            pricePerMonth = Math.round((pricePerMonth * parseFloat('{{ config('factor.tax') }}')) + pricePerMonth);
+            // pricePerMonth = Math.round((pricePerMonth * parseFloat('{{ config('factor.tax') }}')) + pricePerMonth);
 
             priceMonthly.val(pricePerMonth);
             priceMonthly.trigger('click');

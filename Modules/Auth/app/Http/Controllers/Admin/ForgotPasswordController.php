@@ -9,8 +9,8 @@ use Exception;
 use Modules\Admin\app\Models\Admin;
 use Modules\Auth\app\Http\Requests\Admin\ForgetPasswordRequest;
 use Modules\Auth\app\Models\OtpCode;
-use Modules\Auth\App\Notifications\Admin\EmilOtpNotification;
-use Modules\Auth\App\Notifications\Admin\SmsOtpNotification;
+use Modules\Auth\app\Notifications\Admin\EmailOtpNotification;
+use Modules\Auth\app\Notifications\Admin\SmsOtpNotification;
 
 class ForgotPasswordController extends Controller
 {
@@ -71,7 +71,7 @@ class ForgotPasswordController extends Controller
             // Send Notification To User
             if (filter_var($request->input('identify'), FILTER_VALIDATE_EMAIL)) {
                 // Notification Email
-                $admin->notify(new EmilOtpNotification($code));
+                $admin->notify(new EmailOtpNotification($code));
             } else {
                 // Notification Mobile
                 $admin->notify(new SmsOtpNotification($code));
