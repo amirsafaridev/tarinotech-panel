@@ -2,6 +2,7 @@
 
 namespace Modules\Admin\app\Http\Controllers\Admin;
 
+use App\Enums\Database\Admin\OtpSendWay;
 use App\Helpers\Uploader\PhotoUploader;
 use App\Http\Controllers\Controller;
 use App\Traits\HasJsonCommonResponse;
@@ -89,6 +90,10 @@ class ProfileController extends Controller
         $adminData['first_name'] = $request->input('first_name');
         $adminData['last_name'] = $request->input('last_name');
         $adminData['otp_send_way'] = $request->input('otp_send_way');
+
+        if ($request->input('otp_send_way') != OtpSendWay::GOOGLE_AUTH) {
+            $adminData['google2fa_secret'] = null;
+        }
 
         if ($request->hasFile('avatar')) {
             $imageUploader = (new PhotoUploader())

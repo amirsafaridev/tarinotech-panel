@@ -47,7 +47,9 @@ class LoginController extends Controller
                     ->with('error', __('auth.invalid_credentials'));
             }
 
-            $this->generateAndSendOtp($otpGenerateJob, $admin);
+            if (! $admin->google2fa_secret && $admin->otp_send_way != OtpSendWay::GOOGLE_AUTH) {
+                $this->generateAndSendOtp($otpGenerateJob, $admin);
+            }
             $this->storeOtpEmailInSession($admin);
 
             return to_route('auth.admin.verify')

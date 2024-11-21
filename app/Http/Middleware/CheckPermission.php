@@ -26,6 +26,8 @@ class CheckPermission
             'ADMIN_ADMIN_PROFILE_PASSWORD',
             'ADMIN_ADMIN_PROFILE_PASSWORD_UPDATE',
             'ADMIN_ADMIN_PROFILE_LOGOUT',
+            'ADMIN_ADMIN_PROFILE_DISABLE2AGOOGLE',
+            'ADMIN_ADMIN_PROFILE_ENABLE2AGOOGLE',
         ];
         if (in_array($permission, $allowPermissions) || $request->user('admin')->hasPermissionTo($permission)) {
             return $next($request);

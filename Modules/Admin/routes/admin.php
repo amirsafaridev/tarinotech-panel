@@ -2,6 +2,7 @@
 
 use Modules\Admin\app\Http\Controllers\Admin\AdminController;
 use Modules\Admin\app\Http\Controllers\Admin\GoalController;
+use Modules\Admin\app\Http\Controllers\Admin\Google2FAController;
 use Modules\Admin\app\Http\Controllers\Admin\JobTitleController;
 use Modules\Admin\app\Http\Controllers\Admin\PasswordController;
 use Modules\Admin\app\Http\Controllers\Admin\ProfileController;
@@ -17,6 +18,9 @@ Route::group(['guard' => 'admin'], function () {
     Route::group(['prefix' => 'profile', 'as' => 'profile.'], function () {
         Route::get('/', [ProfileController::class, 'index'])->name('index');
         Route::patch('/', [ProfileController::class, 'update'])->name('update');
+
+        Route::get('/profile/enable2aGoogle', [Google2FAController::class, 'enable'])->name('enable2aGoogle');
+        Route::get('/profile/disable2aGoogle', [Google2FAController::class, 'disable'])->name('disable2aGoogle');
 
         Route::get('/profile/logout', [ProfileController::class, 'logout'])->name('logout');
 

@@ -64,6 +64,7 @@ class Admin extends Authenticatable
         'shaba_number',
         'cart_number',
         'is_foreign_national',
+        'google2fa_secret',
 
     ];
 

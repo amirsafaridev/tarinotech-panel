@@ -41,7 +41,13 @@
                             :enum-class="\App\Enums\Database\Admin\OtpSendWay::class"
                             :old="$admin->otp_send_way"/>
 
-                        <x-admin.button title="{{ trans('panel.update') }}"/>
+
+                        @include('admin.partial.message')
+
+                        <div class="d-flex justify-content-between mt-2">
+                            <x-admin.button title="{{ trans('panel.update') }}"/>
+                            <a class="btn btn-success" href="{{ route('admin.admin.profile.enable2aGoogle') }}">فعال سازی ورود دومرحله ای</a>
+                        </div>
 
                     </form>
                 </div>

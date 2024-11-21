@@ -2,6 +2,7 @@
 
 namespace Modules\Auth\App\Http\Controllers\Admin;
 
+use App\Enums\Database\Admin\OtpSendWay;
 use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Http\RedirectResponse;
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 use Modules\Admin\app\Models\Admin;
 use Modules\Auth\app\Http\Requests\Admin\VerifyRequest;
+use PragmaRX\Google2FA\Google2FA;
 
 class VerifyController extends Controller
 {
@@ -36,12 +38,36 @@ class VerifyController extends Controller
                 return $this->redirectToLoginWithError();
             }
 
-            return $this->processOtpVerification($admin, $request->input('code'));
+            if ($admin->google2fa_secret && $admin->otp_send_way == OtpSendWay::GOOGLE_AUTH) {
+                return $this->verifyGoogleAuthenticatorCode($admin, $request->input('code'));
+            } else {
+                return $this->processOtpVerification($admin, $request->input('code'));
+            }
 
         } catch (Exception $e) {
             report($e);
 
             return $this->handleUnexpectedError();
+        }
+    }
+
+    private function verifyGoogleAuthenticatorCode(Admin $admin, string $inputCode): RedirectResponse
+    {
+        try {
+            $google2FA = new Google2FA();
+            $isValidCode = $google2FA->verifyKey($admin->google2fa_secret, $inputCode);
+
+            if ($isValidCode) {
+                return $this->loginAdmin($admin);
+            }
+
+            return $this->redirectBackWithError();
+        } catch (Exception $e) {
+            report($e);
+
+            return back()->withErrors([
+                'message' => __('auth.unexpected_error'),
+            ]);
         }
     }
 

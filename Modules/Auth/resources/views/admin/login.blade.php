@@ -55,8 +55,12 @@
             </label>
         </div>
 
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="my-2">
             @include('admin.partial.message')
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center">
+
             <button class="btn btn-success btn-md">ورود به پورتال</button>
             <a href="{{ route('auth.admin.password.forget') }}">{{ trans('panel.auth.login.forget') }}</a>
         </div>
