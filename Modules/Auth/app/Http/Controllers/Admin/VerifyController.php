@@ -38,7 +38,7 @@ class VerifyController extends Controller
                 return $this->redirectToLoginWithError();
             }
 
-            if ($admin->google2fa_secret && $admin->otp_send_way == OtpSendWay::GOOGLE_AUTH) {
+            if ($admin->otp_send_way == OtpSendWay::GOOGLE_AUTH) {
                 return $this->verifyGoogleAuthenticatorCode($admin, $request->input('code'));
             } else {
                 return $this->processOtpVerification($admin, $request->input('code'));
