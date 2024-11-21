@@ -65,6 +65,7 @@ class Admin extends Authenticatable
         'cart_number',
         'is_foreign_national',
         'google2fa_secret',
+        'otp_send_way',
 
     ];
 
