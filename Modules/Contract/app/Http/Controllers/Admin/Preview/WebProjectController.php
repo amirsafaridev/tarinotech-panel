@@ -8,7 +8,7 @@ use App\Service\PdfService;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Contract\app\Enums\PlaceHolderKeys;
-use Modules\Contract\App\Traits\SavesPdfToDiskTrait;
+use Modules\Contract\app\Traits\SavesPdfToDiskTrait;
 use Modules\Project\app\Models\ProjectWeb;
 use Mpdf\MpdfException;
 use Throwable;
