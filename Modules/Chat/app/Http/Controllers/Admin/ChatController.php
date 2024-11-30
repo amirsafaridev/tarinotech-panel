@@ -5,7 +5,7 @@ namespace Modules\Chat\app\Http\Controllers\Admin;
 use App\Enums\Database\Chat\ChatStatus;
 use App\Enums\Database\Chat\ChatType;
 use App\Http\Controllers\Controller;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasJsonCommonResponseTrait;
 use DB;
 use Exception;
 use Modules\Chat\app\Events\Message\NewMessage;
@@ -17,7 +17,7 @@ use View;
 
 class ChatController extends Controller
 {
-    use HasJsonCommonResponse;
+    use HasJsonCommonResponseTrait;
 
     public function close(CloseRequest $request)
     {

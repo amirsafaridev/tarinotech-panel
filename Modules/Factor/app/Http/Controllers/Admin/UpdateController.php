@@ -4,7 +4,7 @@ namespace Modules\Factor\app\Http\Controllers\Admin;
 
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasJsonCommonResponseTrait;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -19,7 +19,7 @@ use Modules\Factor\app\Traits\WithAttributeChange;
 
 class UpdateController extends Controller
 {
-    use HasJsonCommonResponse;
+    use HasJsonCommonResponseTrait;
     use WithAttributeChange;
 
     const EDIT_TITLE = 'فاکتور ها - ویرایش';

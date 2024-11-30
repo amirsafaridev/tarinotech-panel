@@ -3,7 +3,7 @@
 namespace Modules\Chat\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasJsonCommonResponseTrait;
 use DB;
 use Exception;
 use Illuminate\Support\Facades\Storage;
@@ -14,7 +14,7 @@ use View;
 
 class AttachmentController extends Controller
 {
-    use HasJsonCommonResponse;
+    use HasJsonCommonResponseTrait;
 
     public function upload(StoreRequest $request)
     {

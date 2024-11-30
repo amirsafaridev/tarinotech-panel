@@ -7,8 +7,8 @@ use App\Foundation\ValueObjects\Datatable\ColumnOption;
 use App\Foundation\ValueObjects\Datatable\DatatableBase;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
-use App\Traits\HasDatatable;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasDatatableTrait;
+use App\Traits\HasJsonCommonResponseTrait;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -20,8 +20,8 @@ use Yajra\DataTables\Facades\DataTables;
 
 class StatusController extends Controller
 {
-    use HasDatatable;
-    use HasJsonCommonResponse;
+    use HasDatatableTrait;
+    use HasJsonCommonResponseTrait;
 
     const INDEX_TITLE = 'وضعیت خودکار';
 

@@ -6,7 +6,7 @@ use App\Enums\Database\Role\PermissionName;
 use App\Filters\Admin\Admin\AdminJoinedFilter;
 use App\Http\Controllers\Controller;
 use App\Service\PdfService;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasJsonCommonResponseTrait;
 use Carbon\Carbon;
 use Exception;
 use Maatwebsite\Excel\Facades\Excel;
@@ -24,7 +24,7 @@ use Mpdf\MpdfException;
 
 class ProjectController extends Controller
 {
-    use HasJsonCommonResponse;
+    use HasJsonCommonResponseTrait;
 
     const INDEX_TITLE = 'پروژه ها';
 

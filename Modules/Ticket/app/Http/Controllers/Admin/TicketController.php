@@ -9,8 +9,8 @@ use App\Foundation\ValueObjects\Datatable\ColumnOption;
 use App\Foundation\ValueObjects\Datatable\DatatableBase;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
-use App\Traits\HasDatatable;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasDatatableTrait;
+use App\Traits\HasJsonCommonResponseTrait;
 use Exception;
 use Modules\Admin\app\Models\Admin;
 use Modules\Chat\app\Events\Message\NewMessage;
@@ -22,8 +22,8 @@ use Yajra\DataTables\Facades\DataTables;
 
 class TicketController extends Controller
 {
-    use HasDatatable;
-    use HasJsonCommonResponse;
+    use HasDatatableTrait;
+    use HasJsonCommonResponseTrait;
 
     const INDEX_TITLE = 'تیکت ها';
 

@@ -8,7 +8,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
-trait HasJsonCommonResponse
+trait HasJsonCommonResponseTrait
 {
     protected function successResponse(?string $backNav = null): JsonResponse
     {

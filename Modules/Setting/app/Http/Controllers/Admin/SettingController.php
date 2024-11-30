@@ -4,13 +4,13 @@ namespace Modules\Setting\app\Http\Controllers\Admin;
 
 use App\Enums\Database\Setting\SettingItems;
 use App\Http\Controllers\Controller;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasJsonCommonResponseTrait;
 use Modules\Setting\app\Http\Requests\Admin\Setting\UpdateRequest;
 use Modules\Setting\app\Models\Setting;
 
 class SettingController extends Controller
 {
-    use HasJsonCommonResponse;
+    use HasJsonCommonResponseTrait;
 
     const EDIT_TITLE = 'تنظیمات - ویرایش';
 

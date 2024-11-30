@@ -3,7 +3,7 @@
 namespace Modules\Project\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasJsonCommonResponseTrait;
 use Exception;
 use Illuminate\Http\Request;
 use Modules\Log\app\Traits\HasSingleLogTrack;
@@ -13,7 +13,7 @@ use Modules\Project\app\Models\ProjectWeb;
 
 class WebStatusController extends Controller
 {
-    use HasJsonCommonResponse;
+    use HasJsonCommonResponseTrait;
     use HasSingleLogTrack;
 
     const INDEX_TITLE = 'پروژه های وب - ویرایش وضعیت';

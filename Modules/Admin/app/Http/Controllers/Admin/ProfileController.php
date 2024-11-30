@@ -5,7 +5,7 @@ namespace Modules\Admin\app\Http\Controllers\Admin;
 use App\Enums\Database\Admin\OtpSendWay;
 use App\Helpers\Uploader\PhotoUploader;
 use App\Http\Controllers\Controller;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasJsonCommonResponseTrait;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -15,7 +15,7 @@ use Modules\Admin\app\Models\Admin;
 
 class ProfileController extends Controller
 {
-    use HasJsonCommonResponse;
+    use HasJsonCommonResponseTrait;
 
     const PASSWORD_TITLE = 'پروفایل - تغییر گذرواژه';
 

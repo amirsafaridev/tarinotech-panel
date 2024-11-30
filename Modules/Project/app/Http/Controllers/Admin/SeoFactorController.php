@@ -4,14 +4,14 @@ namespace Modules\Project\app\Http\Controllers\Admin;
 
 use App\Domain\Jobs\SeoProjectFactorMakeJob;
 use App\Http\Controllers\Controller;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasJsonCommonResponseTrait;
 use Exception;
 use Modules\Factor\app\Models\Factor;
 use Modules\Project\app\Models\Project;
 
 class SeoFactorController extends Controller
 {
-    use HasJsonCommonResponse;
+    use HasJsonCommonResponseTrait;
 
     public function make($projectId)
     {

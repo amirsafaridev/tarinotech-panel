@@ -8,11 +8,15 @@ use App\Service\PdfService;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Contract\app\Enums\PlaceHolderKeys;
+use Modules\Contract\App\Traits\SavesPdfToDiskTrait;
 use Modules\Project\app\Models\ProjectSeo;
-use Modules\Project\app\Models\ProjectWeb;
+use Mpdf\MpdfException;
+use Throwable;
 
 class SeoProjectController extends Controller implements PrintControllerInterface
 {
+    use SavesPdfToDiskTrait;
+
     const EMPTY_PLACEHOLDER = '--------------';
 
     private PdfService $pdfService;
@@ -35,18 +39,14 @@ class SeoProjectController extends Controller implements PrintControllerInterfac
         try {
             $model = $this->findModel($id);
 
-            $this->setupPdfService($model);
-
-            $viewPath = $this->getViewPath($model);
-            $view = view($viewPath, compact('model'))->render();
-
-            $viewFilled = $this->fillData($view, $model);
-            $fileName = $this->fileName($model);
-
-            $this->pdfService->writeHtml($viewFilled);
+            $fileName = $this->getPreparedHtml($model);
 
             return $this->pdfService->output($fileName);
         } catch (Exception $e) {
+            report($e);
+
+            return $e->getMessage();
+        } catch (Throwable $e) {
             report($e);
 
             return $e->getMessage();
@@ -54,7 +54,7 @@ class SeoProjectController extends Controller implements PrintControllerInterfac
     }
 
     /**
-     * @return ProjectWeb
+     * @return ProjectSeo
      */
     public function findModel(int $id): Model
     {
@@ -94,7 +94,11 @@ class SeoProjectController extends Controller implements PrintControllerInterfac
             PlaceHolderKeys::PROJECT_DOMAIN => $orEmpty($model->project->domain),
             PlaceHolderKeys::SEO_KEYWORD_COUNT => $orEmpty($model->keywords_count),
             PlaceHolderKeys::SEO_AMOUNT_CONTENT => $orEmpty($model->amount_content),
-            PlaceHolderKeys::SEO_KEYWORDS => $orEmpty(implode(', ', $model->keywords)),
+            PlaceHolderKeys::SEO_KEYWORDS => $orEmpty(
+                is_array($model->keywords)
+                    ? implode(', ', $model->keywords)
+                    : (is_string($model->keywords) ? $model->keywords : '')
+            ),
             PlaceHolderKeys::USER_ECONOMIC_CODE => $orEmpty($model->project?->user?->economic_code),
             PlaceHolderKeys::SEO_MONTHLY_PAYMENT_DOUBLE => $orEmpty(number_format($model->price_monthly * 2)),
             PlaceHolderKeys::SEO_MONTHLY_PAYMENT => $orEmpty(number_format($model->price_monthly)),
@@ -107,11 +111,18 @@ class SeoProjectController extends Controller implements PrintControllerInterfac
         return str($view)->replace($keys, $values);
     }
 
+    /**
+     * @param  ProjectSeo  $model
+     */
     public function getViewPath(Model $model): string
     {
         return 'contract::admin.pdf.seo-project';
     }
 
+    /**
+     * @throws MpdfException
+     * @throws Throwable
+     */
     public function setupPdfService(?Model $model = null): void
     {
         $header = view('contract::admin.pdf.header', compact('model'))->render();
@@ -122,10 +133,29 @@ class SeoProjectController extends Controller implements PrintControllerInterfac
     }
 
     /**
-     * @param  ProjectWeb  $model
+     * @param  ProjectSeo  $model
      */
     public function fileName(Model $model): string
     {
         return $model->id.'.pdf';
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function getPreparedHtml(Model $model): string
+    {
+
+        $this->setupPdfService($model);
+
+        $viewPath = $this->getViewPath($model);
+        $view = view($viewPath, compact('model'))->render();
+
+        $viewFilled = $this->fillData($view, $model);
+        $fileName = $this->fileName($model);
+
+        $this->pdfService->writeHtml($viewFilled);
+
+        return $fileName;
     }
 }

@@ -7,14 +7,16 @@ use App\Http\Controllers\Controller;
 use App\Service\PdfService;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 use Modules\Contract\app\Enums\PlaceHolderKeys;
+use Modules\Contract\App\Traits\SavesPdfToDiskTrait;
 use Modules\Project\app\Models\ProjectWeb;
 use Mpdf\MpdfException;
 use Throwable;
 
 class WebProjectController extends Controller implements PrintControllerInterface
 {
+    use SavesPdfToDiskTrait;
+
     const EMPTY_PLACEHOLDER = '--------------';
 
     private PdfService $pdfService;
@@ -47,31 +49,6 @@ class WebProjectController extends Controller implements PrintControllerInterfac
             report($e);
 
             return $e->getMessage();
-        }
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function saveToDisk(int $id)
-    {
-        try {
-            $model = $this->findModel($id);
-            $this->getPreparedHtml($model);
-
-            $pdfContent = $this->pdfService->outputFile('save_contact');
-
-            $timestamp = now()->format('Y-m-d_H-i-s');
-            $fileName = sprintf('web_contract_project_%s_contract_%s.pdf', $model->id, $timestamp);
-            $filePath = 'contracts/'.$fileName;
-
-            Storage::disk('private')->put($filePath, $pdfContent);
-
-            return $filePath;
-        } catch (Exception $e) {
-            report($e);
-
-            return 'An error occurred: '.$e->getMessage();
         }
     }
 
@@ -158,7 +135,7 @@ class WebProjectController extends Controller implements PrintControllerInterfac
     /**
      * @throws Throwable
      */
-    public function getPreparedHtml(ProjectWeb $model): string
+    public function getPreparedHtml(Model $model): string
     {
 
         $this->setupPdfService($model);

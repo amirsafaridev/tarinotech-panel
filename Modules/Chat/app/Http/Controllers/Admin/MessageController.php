@@ -4,7 +4,7 @@ namespace Modules\Chat\app\Http\Controllers\Admin;
 
 use App\Enums\Database\Chat\ChatStatus;
 use App\Http\Controllers\Controller;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasJsonCommonResponseTrait;
 use DB;
 use Exception;
 use Modules\Admin\app\Models\Admin;
@@ -26,7 +26,7 @@ use View;
 
 class MessageController extends Controller
 {
-    use HasJsonCommonResponse;
+    use HasJsonCommonResponseTrait;
 
     const EDIT_TITLE = 'پیام - ویرایش';
 

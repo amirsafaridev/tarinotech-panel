@@ -8,8 +8,8 @@ use App\Foundation\ValueObjects\Datatable\DatatableBase;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Service\PermissionService;
-use App\Traits\HasDatatable;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasDatatableTrait;
+use App\Traits\HasJsonCommonResponseTrait;
 use Exception;
 use Illuminate\Http\Request;
 use Modules\Role\app\Http\Requests\Admin\Permission\StoreRequest;
@@ -19,8 +19,8 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PermissionController extends Controller
 {
-    use HasDatatable;
-    use HasJsonCommonResponse;
+    use HasDatatableTrait;
+    use HasJsonCommonResponseTrait;
 
     const INDEX_TITLE = 'پرمیشن ها';
 

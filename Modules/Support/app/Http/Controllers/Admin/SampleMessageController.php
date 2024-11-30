@@ -8,8 +8,8 @@ use App\Foundation\ValueObjects\Datatable\ColumnOption;
 use App\Foundation\ValueObjects\Datatable\DatatableBase;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
-use App\Traits\HasDatatable;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasDatatableTrait;
+use App\Traits\HasJsonCommonResponseTrait;
 use Exception;
 use Illuminate\Http\Request;
 use Modules\Support\app\Http\Requests\Admin\SampleMessage\MessageRequest;
@@ -21,8 +21,8 @@ use Yajra\DataTables\Facades\DataTables;
 
 class SampleMessageController extends Controller
 {
-    use HasDatatable;
-    use HasJsonCommonResponse;
+    use HasDatatableTrait;
+    use HasJsonCommonResponseTrait;
 
     const INDEX_TITLE = 'پیام های آماده';
 

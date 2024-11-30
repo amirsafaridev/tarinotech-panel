@@ -11,7 +11,7 @@ use App\Service\Json\WebProject\DomainTransformer;
 use App\Service\Json\WebProject\HostTransformer;
 use App\Service\Json\WebProject\LanguageTransformer;
 use App\Service\Json\WebProject\SampleTransformer;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasJsonCommonResponseTrait;
 use Carbon\Carbon;
 use DB;
 use Exception;
@@ -41,7 +41,7 @@ use Modules\User\app\Models\User;
 
 class IndexController extends Controller
 {
-    use HasJsonCommonResponse;
+    use HasJsonCommonResponseTrait;
 
     const INDEX_TITLE = 'فاکتور ها';
 

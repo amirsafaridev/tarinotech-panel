@@ -3,7 +3,7 @@
 namespace Modules\Package\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasJsonCommonResponseTrait;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ use Modules\Package\app\Models\Package;
 
 class PackageController extends Controller
 {
-    use HasJsonCommonResponse;
+    use HasJsonCommonResponseTrait;
 
     const INDEX_TITLE = 'پکیج ها';
 

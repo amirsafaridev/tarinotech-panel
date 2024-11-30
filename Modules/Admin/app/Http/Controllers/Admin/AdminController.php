@@ -11,8 +11,8 @@ use App\Foundation\ValueObjects\Datatable\ExternalFilter;
 use App\Helpers\Helper;
 use App\Helpers\Uploader\PhotoUploader;
 use App\Http\Controllers\Controller;
-use App\Traits\HasDatatable;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasDatatableTrait;
+use App\Traits\HasJsonCommonResponseTrait;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -24,8 +24,8 @@ use Yajra\DataTables\Facades\DataTables;
 
 class AdminController extends Controller
 {
-    use HasDatatable;
-    use HasJsonCommonResponse;
+    use HasDatatableTrait;
+    use HasJsonCommonResponseTrait;
 
     const INDEX_TITLE = 'پرسنل';
 

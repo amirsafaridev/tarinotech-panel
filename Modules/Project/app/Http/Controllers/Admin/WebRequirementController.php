@@ -3,14 +3,14 @@
 namespace Modules\Project\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasJsonCommonResponseTrait;
 use Exception;
 use Modules\Project\app\Http\Requests\Admin\Web\UpdateRequirementRequest;
 use Modules\Project\app\Models\ProjectWeb;
 
 class WebRequirementController extends Controller
 {
-    use HasJsonCommonResponse;
+    use HasJsonCommonResponseTrait;
 
     const INDEX_TITLE = 'پروژه وب - نیازسنجی';
 

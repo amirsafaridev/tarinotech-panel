@@ -8,8 +8,8 @@ use App\Foundation\ValueObjects\Datatable\DatatableBase;
 use App\Helpers\Helper;
 use App\Helpers\Uploader\PhotoUploader;
 use App\Http\Controllers\Controller;
-use App\Traits\HasDatatable;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasDatatableTrait;
+use App\Traits\HasJsonCommonResponseTrait;
 use Exception;
 use Illuminate\Http\Request;
 use Modules\Content\app\Http\Requests\Admin\Slider\StoreRequest;
@@ -19,8 +19,8 @@ use Yajra\DataTables\Facades\DataTables;
 
 class SliderController extends Controller
 {
-    use HasDatatable;
-    use HasJsonCommonResponse;
+    use HasDatatableTrait;
+    use HasJsonCommonResponseTrait;
 
     const INDEX_TITLE = 'اسلایدر ها';
 

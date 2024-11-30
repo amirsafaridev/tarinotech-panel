@@ -3,7 +3,7 @@
 namespace Modules\Contract\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasJsonCommonResponseTrait;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use Modules\Admin\app\Models\Admin;
@@ -13,7 +13,7 @@ use Modules\Contract\app\Models\SignableAttachment;
 
 class SignableAttachmentController extends Controller
 {
-    use HasJsonCommonResponse;
+    use HasJsonCommonResponseTrait;
 
     public function upload(UploadRequest $request)
     {

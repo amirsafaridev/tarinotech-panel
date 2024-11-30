@@ -9,16 +9,15 @@ use App\Foundation\ValueObjects\Datatable\Dropdown;
 use App\Foundation\ValueObjects\Datatable\DropdownItem;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
-use App\Traits\HasDatatable;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasDatatableTrait;
+use App\Traits\HasJsonCommonResponseTrait;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Modules\Contract\app\Enums\UserSignableStatus;
-use Modules\Contract\app\Http\Controllers\Admin\Preview\WebProjectController;
 use Modules\Contract\app\Http\Requests\Admin\UserSignable\UpdateRequest;
 use Modules\Contract\app\Models\SignableAttachment;
 use Modules\Contract\app\Models\UserSignable;
+use Modules\Contract\App\Traits\HandlesSignableUpdateTrait;
 use Modules\Project\app\Models\ProjectAds;
 use Modules\Project\app\Models\ProjectSeo;
 use Modules\Project\app\Models\ProjectWeb;
@@ -27,14 +26,13 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UserSignController extends Controller
 {
-    use HasDatatable;
-    use HasJsonCommonResponse;
+    use HandlesSignableUpdateTrait;
+    use HasDatatableTrait;
+    use HasJsonCommonResponseTrait;
 
     const INDEX_TITLE = 'درخواست های امضاء کارفرما';
 
     const EDIT_TITLE = 'درخواست های امضاء کارفرما';
-
-    const EDIT_SHOW = 'درخواست های امضاء کارفرما';
 
     public function index()
     {
@@ -54,7 +52,7 @@ class UserSignController extends Controller
         $relationshipsToLoad = $this->determineRelationshipsToLoad($userSignable);
         $userSignable->load($relationshipsToLoad);
 
-        $title = self::EDIT_TITLE.' - '.$userSignable?->target?->project->title;
+        $title = self::EDIT_TITLE.' - '.$userSignable->target?->project->title;
 
         return view('contract::admin.user_signable.edit', compact('title', 'userSignable'));
     }
@@ -67,27 +65,14 @@ class UserSignController extends Controller
         try {
             DB::beginTransaction();
 
-            // Prepare the data for updating the UserSignable model
             $oldStatus = $userSignable->status;
 
             $itemData = $this->prepareItemData($request);
             $userSignable->update($itemData);
 
-            // Update attachments if any are provided
             $this->updateAttachments($request->input('attachments'), $userSignable);
 
-            if (
-                ($userSignable->target_type === ProjectWeb::class &&
-                    $userSignable->status === UserSignableStatus::Accepted &&
-                    $oldStatus != $request->input('status')) || $request->has('make_fresh')
-
-            ) {
-                $storePath = resolve(WebProjectController::class)
-                    ->saveToDisk($userSignable->target_id);
-                $userSignable->files()->create([
-                    'file_path' => $storePath,
-                ]);
-            }
+            $this->handleSignableUpdate($userSignable, $oldStatus, $request->all());
 
             DB::commit();
 
@@ -103,7 +88,7 @@ class UserSignController extends Controller
     {
         $relationshipsToLoad = $this->determineRelationshipsToLoad($userSignable);
         $userSignable->load($relationshipsToLoad);
-        $title = self::EDIT_TITLE.' - '.$userSignable?->target?->project->title;
+        $title = self::EDIT_TITLE.' - '.$userSignable->target?->project->title;
 
         return view('contract::admin.user_signable.show', compact('title', 'userSignable'));
     }

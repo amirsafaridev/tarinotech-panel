@@ -4,7 +4,7 @@ namespace Modules\Support\app\Http\Controllers\Admin;
 
 use App\Enums\Database\Chat\ChatType;
 use App\Helpers\Uploader\PhotoUploader;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasJsonCommonResponseTrait;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -15,7 +15,7 @@ use Modules\Support\app\Models\ChatUser;
 
 class NotifyController
 {
-    use HasJsonCommonResponse;
+    use HasJsonCommonResponseTrait;
 
     const INDEX_TITLE = 'اطلاعیه ها';
 

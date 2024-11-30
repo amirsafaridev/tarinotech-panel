@@ -3,14 +3,14 @@
 namespace Modules\Admin\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasJsonCommonResponseTrait;
 use Exception;
 use Modules\Admin\app\Http\Requests\Admin\UpdatePasswordRequest;
 use Modules\Admin\app\Models\Admin;
 
 class PasswordController extends Controller
 {
-    use HasJsonCommonResponse;
+    use HasJsonCommonResponseTrait;
 
     const INDEX_TITLE = 'پرسنل - ویرایش گذرواژه';
 

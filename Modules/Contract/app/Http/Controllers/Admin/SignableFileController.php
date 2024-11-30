@@ -3,14 +3,14 @@
 namespace Modules\Contract\App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasJsonCommonResponseTrait;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use Modules\Contract\App\Models\SignableFile;
 
 class SignableFileController extends Controller
 {
-    use HasJsonCommonResponse;
+    use HasJsonCommonResponseTrait;
 
     public function download(SignableFile $signableFile)
     {

@@ -4,7 +4,7 @@ namespace Modules\Auth\app\Http\Controllers\Admin;
 
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasJsonCommonResponseTrait;
 use Exception;
 use Modules\Admin\app\Models\Admin;
 use Modules\Auth\app\Http\Requests\Admin\ForgetPasswordRequest;
@@ -14,7 +14,7 @@ use Modules\Auth\app\Notifications\Admin\SmsOtpNotification;
 
 class ForgotPasswordController extends Controller
 {
-    use HasJsonCommonResponse;
+    use HasJsonCommonResponseTrait;
 
     const INDEX_TITLE = 'پورتال تارینوتک - فراموشی گذرواژه';
 

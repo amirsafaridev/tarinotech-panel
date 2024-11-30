@@ -7,24 +7,26 @@ use App\Foundation\ValueObjects\Datatable\ColumnOption;
 use App\Foundation\ValueObjects\Datatable\DatatableBase;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
-use App\Traits\HasDatatable;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasDatatableTrait;
+use App\Traits\HasJsonCommonResponseTrait;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Modules\Contract\app\Enums\SignableStatus;
-use Modules\Contract\app\Http\Controllers\Admin\Preview\WebProjectController;
 use Modules\Contract\app\Http\Requests\Admin\Signable\UpdateRequest;
 use Modules\Contract\app\Models\Signable;
 use Modules\Contract\app\Models\UserSignable;
+use Modules\Contract\App\Traits\HandlesSignableUpdateTrait;
+use Modules\Project\app\Models\ProjectSeo;
 use Modules\Project\app\Models\ProjectWeb;
 use Throwable;
 use Yajra\DataTables\Facades\DataTables;
 
 class SignController extends Controller
 {
-    use HasDatatable;
-    use HasJsonCommonResponse;
+    use HandlesSignableUpdateTrait;
+    use HasDatatableTrait;
+    use HasJsonCommonResponseTrait;
 
     const INDEX_TITLE = 'درخواست های امضاء';
 
@@ -46,7 +48,7 @@ class SignController extends Controller
     {
         $signable->load(['files', 'target.project']);
 
-        $title = self::EDIT_TITLE.' - '.$signable?->target?->project->title;
+        $title = self::EDIT_TITLE.' - '.$signable->target?->project->title;
 
         return view('contract::admin.signable.edit', compact('title', 'signable'));
     }
@@ -66,18 +68,7 @@ class SignController extends Controller
                 $this->createUserSignable($signable);
             }
 
-            if (
-                ($signable->target_type === ProjectWeb::class &&
-                $signable->status === SignableStatus::Signed &&
-                $oldStatus != $request->input('status')) || $request->has('make_fresh')
-
-            ) {
-                $storePath = resolve(WebProjectController::class)
-                    ->saveToDisk($signable->target_id);
-                $signable->files()->create([
-                    'file_path' => $storePath,
-                ]);
-            }
+            $this->handleSignableUpdate($signable, $oldStatus, $request->all());
 
             DB::commit();
 
@@ -190,7 +181,7 @@ class SignController extends Controller
     private function shouldCreateUserSignable(UpdateRequest $request, Signable $signable): bool
     {
         return $request->input('status') === SignableStatus::Signed &&
-            $signable->target_type === ProjectWeb::class;
+            ($signable->target_type === ProjectWeb::class || $signable->target_type === ProjectSeo::class);
     }
 
     private function createUserSignable(Signable $signable): void

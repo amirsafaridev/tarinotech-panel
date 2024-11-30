@@ -68,7 +68,7 @@
                 <td>{{ $project->target->keywords_count }}</td>
             </tr>
 
-            @if($project->target->keywords)
+            @if($project->target->keywords && is_array($project->target->keywords))
                 <tr>
                     <td>لیست کلمات قراردادی</td>
                     <td>{{ implode(', ',$project->target->keywords) }}</td>

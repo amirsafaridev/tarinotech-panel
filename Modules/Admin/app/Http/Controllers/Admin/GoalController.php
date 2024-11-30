@@ -5,14 +5,14 @@ namespace Modules\Admin\app\Http\Controllers\Admin;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Models\SaleGoal;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasJsonCommonResponseTrait;
 use Exception;
 use Modules\Admin\app\Http\Requests\Admin\GoalSaveRequest;
 use Modules\Admin\app\Models\Admin;
 
 class GoalController extends Controller
 {
-    use HasJsonCommonResponse;
+    use HasJsonCommonResponseTrait;
 
     const COUNT_NEXT_MONTH = 6;
 

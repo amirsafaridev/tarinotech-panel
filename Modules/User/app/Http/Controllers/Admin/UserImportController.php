@@ -3,7 +3,7 @@
 namespace Modules\User\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasJsonCommonResponseTrait;
 use Exception;
 use Maatwebsite\Excel\Facades\Excel;
 use Modules\User\app\Http\Requests\Admin\User\ImportRequest;
@@ -11,7 +11,7 @@ use Modules\User\app\Imports\UserImport;
 
 class UserImportController extends Controller
 {
-    use HasJsonCommonResponse;
+    use HasJsonCommonResponseTrait;
 
     const INDEX_TITLE = 'کارفرمایان - بارگذاری';
 

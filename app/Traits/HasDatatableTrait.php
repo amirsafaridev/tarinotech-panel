@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-trait HasDatatable
+trait HasDatatableTrait
 {
     abstract public function getDataRoute(): string;
 

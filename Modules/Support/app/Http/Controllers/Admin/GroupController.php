@@ -6,7 +6,7 @@ use App\Enums\Database\Chat\ChatStatus;
 use App\Enums\Database\Chat\ChatType;
 use App\Helpers\Uploader\PhotoUploader;
 use App\Http\Controllers\Controller;
-use App\Traits\HasJsonCommonResponse;
+use App\Traits\HasJsonCommonResponseTrait;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -22,7 +22,7 @@ use View;
 
 class GroupController extends Controller
 {
-    use HasJsonCommonResponse;
+    use HasJsonCommonResponseTrait;
 
     const INDEX_TITLE = 'گروه ها';
 
