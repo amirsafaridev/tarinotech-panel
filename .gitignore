@@ -20,3 +20,4 @@ yarn-error.log
 /public/uploads/*
 /public/user/*
 /http/http-client.env.json
+.DS_Store

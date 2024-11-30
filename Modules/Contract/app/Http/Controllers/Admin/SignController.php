@@ -16,7 +16,7 @@ use Modules\Contract\app\Enums\SignableStatus;
 use Modules\Contract\app\Http\Requests\Admin\Signable\UpdateRequest;
 use Modules\Contract\app\Models\Signable;
 use Modules\Contract\app\Models\UserSignable;
-use Modules\Contract\App\Traits\HandlesSignableUpdateTrait;
+use Modules\Contract\app\Traits\HandlesSignableUpdateTrait;
 use Modules\Project\app\Models\ProjectSeo;
 use Modules\Project\app\Models\ProjectWeb;
 use Throwable;

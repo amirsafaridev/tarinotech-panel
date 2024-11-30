@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Contract\app\Http\Requests\Admin\UserSignable\UpdateRequest;
 use Modules\Contract\app\Models\SignableAttachment;
 use Modules\Contract\app\Models\UserSignable;
-use Modules\Contract\App\Traits\HandlesSignableUpdateTrait;
+use Modules\Contract\app\Traits\HandlesSignableUpdateTrait;
 use Modules\Project\app\Models\ProjectAds;
 use Modules\Project\app\Models\ProjectSeo;
 use Modules\Project\app\Models\ProjectWeb;
