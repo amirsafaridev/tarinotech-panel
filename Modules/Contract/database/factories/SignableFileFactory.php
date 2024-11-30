@@ -3,7 +3,7 @@
 namespace Modules\Contract\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Modules\Contract\App\Models\SignableFile;
+use Modules\Contract\app\Models\SignableFile;
 
 /**
  * @extends Factory<SignableFile>

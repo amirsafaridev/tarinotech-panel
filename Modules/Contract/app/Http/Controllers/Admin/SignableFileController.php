@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Traits\HasJsonCommonResponseTrait;
 use Exception;
 use Illuminate\Support\Facades\Storage;
-use Modules\Contract\App\Models\SignableFile;
+use Modules\Contract\app\Models\SignableFile;
 
 class SignableFileController extends Controller
 {
