@@ -127,10 +127,14 @@ class UserSignController extends Controller
     {
         return (new DatatableBase())
             ->addColumn(
-                ColumnOption::new()->setName('id')->setAs('شناسه')
+                ColumnOption::new()->setName('target_id')->setAs('شناسه پروژه')
+                    ->setSearchable(true)
+                    ->setSortable(true)
             )
             ->addColumn(
                 ColumnOption::new()->setName('target.project.domain')->setAs('پروژه')
+                    ->setSearchable(false)
+                    ->setSortable(false)
             )
             ->addColumn(
                 ColumnOption::new()->setName('target.project.admin.last_name')->setAs('کارشناس')
@@ -165,8 +169,7 @@ class UserSignController extends Controller
     {
         try {
             $signables = UserSignable::query()
-                ->with(['target.project.admin', 'user'])
-                ->whereHas('target.project.admin');
+                ->with(['target.project.admin', 'user']);
 
             return DataTables::eloquent($signables)
                 ->editColumn('status', function ($signable) {

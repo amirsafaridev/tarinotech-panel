@@ -60,6 +60,7 @@ class SignController extends Controller
     {
         try {
             DB::beginTransaction();
+
             $item = $this->prepareItemData($request);
             $oldStatus = $signable->status;
             $signable->update($item);
@@ -109,7 +110,9 @@ class SignController extends Controller
     {
         return (new DatatableBase())
             ->addColumn(
-                ColumnOption::new()->setName('id')->setAs('شناسه')
+                ColumnOption::new()->setName('target_id')->setAs('شناسه پروژه')
+                    ->setSearchable(true)
+                    ->setSortable(true)
             )
             ->addColumn(
                 ColumnOption::new()->setName('target.project.domain')->setAs('پروژه')
