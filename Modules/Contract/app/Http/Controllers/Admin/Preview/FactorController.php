@@ -8,6 +8,8 @@ use App\Service\PdfService;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Factor\app\Models\Factor;
+use Mpdf\MpdfException;
+use Throwable;
 
 class FactorController extends Controller implements PrintControllerInterface
 {
@@ -27,18 +29,14 @@ class FactorController extends Controller implements PrintControllerInterface
         try {
             $model = $this->findModel($id);
 
-            $this->setupPdfService();
-
-            $viewPath = $this->getViewPath($model);
-            $view = view($viewPath, compact('model'))->render();
-
-            $viewFilled = $this->fillData($view, $model);
-            $fileName = $this->fileName($model);
-
-            $this->pdfService->writeHtml($viewFilled);
+            $fileName = $this->getPreparedHtml($model);
 
             return $this->pdfService->output($fileName);
         } catch (Exception $e) {
+            report($e);
+
+            return $e->getMessage();
+        } catch (Throwable $e) {
             report($e);
 
             return $e->getMessage();
@@ -68,6 +66,10 @@ class FactorController extends Controller implements PrintControllerInterface
         return 'contract::admin.pdf.factor';
     }
 
+    /**
+     * @throws MpdfException
+     * @throws Throwable
+     */
     public function setupPdfService(?Model $model = null): void
     {
         $this->pdfService->setFont('DejaVuSans', 'B', 14);
@@ -79,5 +81,29 @@ class FactorController extends Controller implements PrintControllerInterface
     public function fileName(Model $model): string
     {
         return $model->identify.'.pdf';
+    }
+
+    public function saveToDisk(int $id, string $prefixNameFile): string
+    {
+        // TODO: Implement saveToDisk() method.
+        return '';
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function getPreparedHtml(Model $model): string
+    {
+        $this->setupPdfService($model);
+
+        $viewPath = $this->getViewPath($model);
+        $view = view($viewPath, compact('model'))->render();
+
+        $viewFilled = $this->fillData($view, $model);
+        $fileName = $this->fileName($model);
+
+        $this->pdfService->writeHtml($viewFilled);
+
+        return $fileName;
     }
 }
