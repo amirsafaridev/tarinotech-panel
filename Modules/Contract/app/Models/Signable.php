@@ -2,6 +2,7 @@
 
 namespace Modules\Contract\app\Models;
 
+use App\Traits\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,7 +12,7 @@ use Modules\Admin\app\Models\Admin;
 
 class Signable extends Model
 {
-    use HasFactory;
+    use Filterable,HasFactory;
 
     protected $casts = [
         'sign_at' => 'datetime',

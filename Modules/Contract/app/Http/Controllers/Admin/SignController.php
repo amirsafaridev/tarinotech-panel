@@ -2,14 +2,10 @@
 
 namespace Modules\Contract\app\Http\Controllers\Admin;
 
-use App\Enums\General\BtnType;
-use App\Foundation\ValueObjects\Datatable\ColumnOption;
-use App\Foundation\ValueObjects\Datatable\DatatableBase;
-use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
-use App\Traits\HasDatatableTrait;
 use App\Traits\HasJsonCommonResponseTrait;
 use Exception;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Modules\Contract\app\Enums\SignableStatus;
@@ -20,12 +16,10 @@ use Modules\Contract\app\Traits\HandlesSignableUpdateTrait;
 use Modules\Project\app\Models\ProjectSeo;
 use Modules\Project\app\Models\ProjectWeb;
 use Throwable;
-use Yajra\DataTables\Facades\DataTables;
 
 class SignController extends Controller
 {
     use HandlesSignableUpdateTrait;
-    use HasDatatableTrait;
     use HasJsonCommonResponseTrait;
 
     const INDEX_TITLE = 'درخواست های امضاء';
@@ -36,11 +30,46 @@ class SignController extends Controller
     {
         $title = self::INDEX_TITLE;
 
-        $routeData = $this->getDataRoute();
+        $signables = DB::table('signables_with_details')
+            // Filter by search term
+            ->when(request('search'), function (Builder $query): void {
+                $search = escapeLike(request('search'));
+                $query->where(function (Builder $q) use ($search): void {
+                    $q->where('project_title', 'like', '%'.$search.'%')
+                        ->orWhere('project_domain', 'like', '%'.$search.'%')
+                        ->orWhere('project_id', 'like', '%'.$search.'%');
+                });
+            })
 
-        $dataTable = $this->getDataTable();
+            // Filter by admin name
+            ->when(request('admin'), function (Builder $query): void {
+                $admin = escapeLike(request('admin'));
+                $query->where(function (Builder $q) use ($admin): void {
+                    $q->where('admin_first_name', 'like', '%'.$admin.'%')
+                        ->orWhere('admin_last_name', 'like', '%'.$admin.'%');
+                });
+            })
 
-        return view('contract::admin.signable.index', compact('title', 'routeData', 'dataTable'));
+            // Filter by status
+            ->when(request('status'), function (Builder $query): void {
+                $query->where('status', request('status'));
+            })
+
+            // Sort results
+            ->when(
+                request('sort') && preg_match('/^(created_at)\|(asc|desc)$/', request('sort')),
+                function (Builder $query): void {
+                    $query->orderBy(...explode('|', request('sort')));
+                },
+                function (Builder $query): void {
+                    $query->orderBy('created_at', 'desc');
+                }
+            )
+
+            // Paginate results
+            ->paginate()->appends(request()->query());
+
+        return view('contract::admin.signable.index', compact('title', 'signables'));
 
     }
 
@@ -99,86 +128,6 @@ class SignController extends Controller
         $signableData['sign_at'] = now();
 
         return $signableData;
-    }
-
-    public function getDataRoute(): string
-    {
-        return route('admin.contract.sign.data');
-    }
-
-    public function getDataTable(): array
-    {
-        return (new DatatableBase())
-            ->addColumn(
-                ColumnOption::new()->setName('target_id')->setAs('شناسه پروژه')
-                    ->setSearchable(true)
-                    ->setSortable(true)
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('target.project.domain')->setAs('پروژه')
-                    ->setSearchable(false)
-                    ->setSortable(false)
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('make_admin.last_name')->setAs('کارشناس')
-                    ->setSearchable(false)
-                    ->setSortable(false)
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('target.project.user.first_name')->setAs('نام')
-                    ->setSearchable(false)
-                    ->setSortable(false)
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('target.project.user.last_name')->setAs('نام خانوادگی')
-                    ->setSearchable(false)
-                    ->setSortable(false)
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('status')->setAs('وضعیت')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('sign_at')->setAs('تاریخ امضاء')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('created_at')->setAs('ایجاد')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('action')
-                    ->setAs('عملیات')
-                    ->removeAction()
-            )
-            ->render();
-    }
-
-    public function data()
-    {
-        try {
-            $signables = Signable::query()
-                ->with(['target.project.user', 'makeAdmin']);
-
-            return DataTables::eloquent($signables)
-                ->editColumn('status', function ($signable) {
-                    return Helper::renderSignableStatus($signable->status);
-                })
-                ->editColumn('sign_at', function ($signable) {
-                    return $signable->sign_at ? $signable->sign_at->toJalali()->format(formatJalaliDateTime()) : '-';
-                })
-                ->editColumn('created_at', function ($signable) {
-                    return $signable->created_at->toJalali()->format(formatJalaliDateTime());
-                })
-                ->addColumn('action', function (Signable $signable) {
-                    $actions = Helper::btnMaker(BtnType::Info, makeRouteContractPreview($signable->target_type, $signable->target_id), trans('panel.action.printContract'));
-                    $actions .= Helper::btnMaker(BtnType::Warning, route('admin.contract.sign.edit', $signable->id), trans('panel.action.edit'));
-
-                    return $actions;
-                })
-                ->rawColumns(['action', 'status'])
-                ->make();
-
-        } catch (Exception $exception) {
-            return $this->exceptionResponse($exception);
-        }
     }
 
     private function shouldCreateUserSignable(UpdateRequest $request, Signable $signable): bool

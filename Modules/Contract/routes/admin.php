@@ -33,7 +33,6 @@ Route::group(['guard' => 'admin'], function () {
 
     Route::group(['prefix' => 'sign/user', 'as' => 'sign.user.'], function () {
         Route::get('/', [UserSignController::class, 'index'])->name('index');
-        Route::get('/data', [UserSignController::class, 'data'])->name('data');
         Route::get('/{user_signable}', [UserSignController::class, 'edit'])->name('edit');
         Route::get('/{user_signable}/show', [UserSignController::class, 'show'])->name('show');
         Route::patch('/{user_signable}', [UserSignController::class, 'update'])->name('update');
@@ -41,7 +40,6 @@ Route::group(['guard' => 'admin'], function () {
 
     Route::group(['prefix' => 'sign', 'as' => 'sign.'], function () {
         Route::get('/', [SignController::class, 'index'])->name('index');
-        Route::get('/data', [SignController::class, 'data'])->name('data');
         Route::get('/{signable}', [SignController::class, 'edit'])->name('edit');
         Route::patch('/{signable}', [SignController::class, 'update'])->name('update');
         Route::delete('/{signable}', [SignController::class, 'destroy'])->name('destroy');

@@ -251,3 +251,11 @@ if (! function_exists('makeRouteContractPreview')) {
         return $route;
     }
 }
+
+if (! function_exists('escapeLike')) {
+    function escapeLike(string $value): string
+    {
+        // Escape special characters used in LIKE queries: %, _
+        return str_replace(['\\', '%', '_'], ['\\\\', '\\%', '\\_'], $value);
+    }
+}
