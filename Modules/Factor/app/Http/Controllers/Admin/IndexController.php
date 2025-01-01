@@ -18,7 +18,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Modules\Factor\app\Enums\FactorStatus;
-use Modules\Factor\app\Enums\PaymentGateway;
 use Modules\Factor\app\Exports\Admin\Report\DatatableExport;
 use Modules\Factor\app\Filters\Factor\DateFilter;
 use Modules\Factor\app\Filters\Factor\GatewayFilter;
@@ -33,15 +32,15 @@ use Modules\Factor\app\Filters\Factor\StatusFilter;
 use Modules\Factor\app\Http\Requests\Admin\Factor\StoreRequest;
 use Modules\Factor\app\Models\Factor;
 use Modules\Factor\app\Models\FactorItem;
+use Modules\Factor\App\Traits\DeterminesBillingDetailsTrait;
 use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Models\Project;
 use Modules\Project\app\Models\ProjectWeb;
-use Modules\User\app\Enums\PersonType;
 use Modules\User\app\Models\User;
 
 class IndexController extends Controller
 {
-    use HasJsonCommonResponseTrait;
+    use DeterminesBillingDetailsTrait,HasJsonCommonResponseTrait;
 
     const INDEX_TITLE = 'فاکتور ها';
 
@@ -254,12 +253,9 @@ class IndexController extends Controller
     private function updateGatewayBaseUser(Factor $factor)
     {
         $user = $factor->project->user;
-        $isOfficial = $user->person_type === PersonType::Legal || $user->official_bill;
-        $gateway = $isOfficial ? PaymentGateway::SEPEHR : PaymentGateway::PAYPING;
-
         $factor->update([
-            'is_official' => $isOfficial,
-            'gateway' => $gateway,
+            'is_official' => $this->isOfficialUser($user),
+            'gateway' => $this->determinePaymentGateway($user),
         ]);
     }
 

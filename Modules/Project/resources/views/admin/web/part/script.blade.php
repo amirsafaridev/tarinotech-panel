@@ -3,6 +3,7 @@
     const userId = $('#user_id');
     const languages = $('#languages');
     const selectOptions = $('#options');
+    const selectFacilities = $('#facilities');
     const price = $('#price');
     const agreementAt = $('#agreement_at');
 
@@ -29,6 +30,7 @@
         userId.select2();
         languages.select2();
         selectOptions.select2();
+        selectFacilities.select2();
     }
 
     function domainSetup() {

@@ -5,6 +5,7 @@ namespace Modules\Project\app\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Modules\Log\app\Enums\LogNames;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -24,6 +25,13 @@ class Facility extends Model
     public function base(): BelongsTo
     {
         return $this->belongsTo(ProjectBase::class, 'base_id');
+    }
+
+    public function projects(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class, 'project_facility')
+            ->withTimestamps()
+            ->withPivot(['renewal_at', 'id']);
     }
 
     public function getActivitylogOptions(): LogOptions

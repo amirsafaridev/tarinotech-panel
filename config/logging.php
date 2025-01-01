@@ -126,6 +126,13 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        'project-renewal' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/project-renewal.log'),
+            'level' => 'error',
+            'days' => 14,
+        ],
     ],
 
 ];

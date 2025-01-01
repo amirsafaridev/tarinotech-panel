@@ -9,8 +9,8 @@ use Modules\Admin\app\Models\Admin;
 use Modules\Package\app\Models\Package;
 use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Models\BusinessDomain;
+use Modules\Project\app\Models\Facility;
 use Modules\Project\app\Models\ProjectBase as ProjectBaseModel;
-use Modules\Project\app\Models\ProjectOption;
 use Modules\Project\app\Models\ProjectStatus;
 use Modules\Project\app\Models\ProjectType;
 
@@ -28,10 +28,8 @@ class ViewComposerProvider extends ServiceProvider
 
     /**
      * Bootstrap services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->getIndexComposer();
 
@@ -91,6 +89,7 @@ class ViewComposerProvider extends ServiceProvider
         view()->composer([
             'project::admin.web.index',
             'project::admin.web.create',
+            'project::admin.web.create',
             'project::admin.web.edit',
         ], function ($view) {
             $types = ProjectType::query()
@@ -109,13 +108,13 @@ class ViewComposerProvider extends ServiceProvider
             $businessDomains = BusinessDomain::query()
                 ->get();
 
-            $options = ProjectOption::query()
+            $facilities = Facility::query()
                 ->where('base_id', ProjectBase::Web)
                 ->get();
 
             $admins = $this->getAdminBaseOnRole();
 
-            $view->with(compact('types', 'statuses', 'packages', 'options', 'businessDomains', 'admins'));
+            $view->with(compact('types', 'statuses', 'packages', 'businessDomains', 'admins', 'facilities'));
         });
 
         view()->composer([

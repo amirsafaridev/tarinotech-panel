@@ -4,8 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Modules\Project\app\Http\Controllers\Admin\AdsController;
 use Modules\Project\app\Http\Controllers\Admin\BusinessDomainController;
 use Modules\Project\app\Http\Controllers\Admin\FacilityController;
-use Modules\Project\app\Http\Controllers\Admin\OptionController;
 use Modules\Project\app\Http\Controllers\Admin\ProjectController;
+use Modules\Project\App\Http\Controllers\Admin\ProjectFacilityRenewalController;
 use Modules\Project\app\Http\Controllers\Admin\ProjectRenewalController;
 use Modules\Project\app\Http\Controllers\Admin\SeoController;
 use Modules\Project\app\Http\Controllers\Admin\SeoFactorController;
@@ -37,16 +37,6 @@ Route::group(['guard' => 'admin'], function () {
         Route::post('/', [BusinessDomainController::class, 'store'])->name('store');
         Route::patch('/{businessDomain}', [BusinessDomainController::class, 'update'])->name('update');
         Route::delete('/{businessDomain}', [BusinessDomainController::class, 'destroy'])->name('destroy');
-    });
-
-    Route::group(['as' => 'option.', 'prefix' => 'option'], function () {
-        Route::get('/', [OptionController::class, 'index'])->name('index');
-        Route::get('/data', [OptionController::class, 'data'])->name('data');
-        Route::get('/create', [OptionController::class, 'create'])->name('create');
-        Route::get('/{project_option}', [OptionController::class, 'edit'])->name('edit');
-        Route::post('/', [OptionController::class, 'store'])->name('store');
-        Route::patch('/{project_option}', [OptionController::class, 'update'])->name('update');
-        Route::delete('/{project_option}', [OptionController::class, 'destroy'])->name('destroy');
     });
 
     Route::group(['as' => 'facility.', 'prefix' => 'facility'], function () {
@@ -128,7 +118,28 @@ Route::group(['guard' => 'admin'], function () {
 
     Route::group(['as' => 'renewal.', 'prefix' => 'renewal'], function () {
         Route::get('/', [ProjectRenewalController::class, 'index'])->name('index');
-        Route::get('/data', [ProjectRenewalController::class, 'data'])->name('data');
+
+        Route::group(['prefix' => '{project_renewal_id}'], function () {
+            Route::get('/', [ProjectRenewalController::class, 'show'])
+                ->name('show');
+
+            Route::group(['as' => 'facility.', 'prefix' => 'facility'], function () {
+
+                Route::patch('/{project_facility_renewal_id}', [ProjectFacilityRenewalController::class, 'update'])
+                    ->whereNumber('project_facility_renewal_id')->name('update');
+
+                Route::delete('/{project_facility_renewal_id}', [ProjectFacilityRenewalController::class, 'destroy'])
+                    ->whereNumber('project_facility_renewal_id')->name('destroy');
+
+                Route::get('/create', [ProjectFacilityRenewalController::class, 'create'])->name('create');
+
+                Route::post('/store', [ProjectFacilityRenewalController::class, 'store'])->name('store');
+
+                Route::get('/make-factor', [ProjectFacilityRenewalController::class, 'makeFactor'])->name('make-factor');
+
+            });
+
+        })->whereNumber('project_renewal_id');
     });
 
     Route::get('/', [ProjectController::class, 'index'])->name('index');

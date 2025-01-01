@@ -285,15 +285,16 @@
                                       :old="implode(PHP_EOL,$project->target->sample['favorite_sites'])"/>
 
                     <x-admin.select-model
-                            identify="options[]"
-                            title="امکانات بیشتر"
-                            key="id"
-                            value="title"
-                            :multiple="true"
-                            :with-option="false"
-                            :items="$options"
-                            :old="$project->target->options->pluck('id')->toArray()"
-                    />
+                        identify="facilities[]"
+                        title="ویژگی‌ها"
+                        key="id"
+                        value="title"
+                        :multiple="true"
+                        :with-option="false"
+                        :items="$facilities"
+                        :old="$project->facilities->pluck('id')->toArray()"
+                        />
+
 
                     <x-admin.textarea identify="note"
                                       title="اطلاعات بیشتر (یادداشت)"

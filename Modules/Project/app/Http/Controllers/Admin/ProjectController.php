@@ -19,7 +19,6 @@ use Modules\Project\app\Filters\Project\SortFilter;
 use Modules\Project\app\Filters\StatusFilter;
 use Modules\Project\app\Filters\TypeFilter;
 use Modules\Project\app\Models\Project;
-use Modules\Project\app\Models\ProjectWeb;
 use Mpdf\MpdfException;
 
 class ProjectController extends Controller
@@ -103,10 +102,6 @@ class ProjectController extends Controller
         $title = self::SHOW_TITLE.' - '.$project->title;
 
         $this->getProjectWithRelation($project);
-
-        if ($project->target_type === ProjectWeb::class) {
-            $project->load('target.options');
-        }
 
         return view('project::admin.show', compact('title', 'project'));
     }

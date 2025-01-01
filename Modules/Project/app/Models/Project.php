@@ -7,6 +7,7 @@ use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -101,9 +102,22 @@ class Project extends Model
         return $this->hasMany(PresenterProject::class, 'project_id');
     }
 
+    public function facilities(): BelongsToMany
+    {
+        return $this->belongsToMany(Facility::class, 'project_facilities')
+            ->withTimestamps()
+            ->withPivot(['renewal_at', 'id']);
+        //->with('facility');
+    }
+
     public function factors(): HasMany
     {
         return $this->hasMany(Factor::class, 'project_id');
+    }
+
+    public function renewals(): HasMany
+    {
+        return $this->hasMany(ProjectRenewal::class, 'project_id');
     }
 
     public static function findSeoTarget($projectId): ?self
@@ -118,7 +132,7 @@ class Project extends Model
     {
         return self::query()
             ->whereHasMorph('target', [ProjectWeb::class])
-            ->with('target')
+            ->with(['target', 'facilities'])
             ->findOrFail($projectId);
     }
 
@@ -128,6 +142,23 @@ class Project extends Model
             ->whereHasMorph('target', [ProjectAds::class])
             ->with('target')
             ->findOrFail($projectId);
+    }
+
+    public function syncFacilitiesPreserveRenewal(array $facilities): array
+    {
+        $currentFacilities = $this->facilities()
+            ->get()
+            ->pluck('pivot.renewal_at', 'id')
+            ->map(fn ($date) => ['renewal_at' => $date])
+            ->toArray();
+
+        $syncData = collect($facilities)->mapWithKeys(function ($facilityId) use ($currentFacilities) {
+            return [
+                $facilityId => $currentFacilities[$facilityId] ?? ['renewal_at' => $currentFacilities[$facilityId]['renewal_at'] ?? now()],
+            ];
+        })->toArray();
+
+        return $this->facilities()->sync($syncData);
     }
 
     public function getActivitylogOptions(): LogOptions

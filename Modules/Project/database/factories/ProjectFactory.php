@@ -56,6 +56,7 @@ class ProjectFactory extends Factory
             'agreement_at' => now()->addMonths(rand(1, 5))->startOfMonth(),
             'created_at' => now()->addMonths(rand(1, 5))->startOfMonth(),
             'updated_at' => now()->addMonths(rand(1, 5))->startOfMonth(),
+            'renewal_at' => $this->faker->boolean(20) ? now()->subYear() : null,
         ];
     }
 }

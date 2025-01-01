@@ -9,6 +9,9 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (config('database.default') == 'sqlite') {
+            return;
+        }
         DB::statement("
             CREATE OR REPLACE VIEW `user_signables_with_details` AS
             SELECT
@@ -71,6 +74,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        if (config('database.default') == 'sqlite') {
+            return;
+        }
         DB::statement('DROP VIEW IF EXISTS `user_signables_with_details`');
     }
 };

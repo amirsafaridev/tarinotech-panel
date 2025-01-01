@@ -161,16 +161,6 @@
                 </tr>
             @endif
 
-            <!-- Options -->
-            @if($project->target->options->isNotEmpty())
-                <tr>
-                    <td>امکانات بیشتر</td>
-                    <td>
-                        {{ $project->target->options->pluck('title')->implode(', ') }}
-                    </td>
-                </tr>
-            @endif
-
             @if(!empty($project->target->sample['favorite_sites']))
                 <tr>
                     <td>سایت های مورد پسند</td>

@@ -13,12 +13,11 @@ class ProjectDatabaseSeeder extends Seeder
     {
         $this->call([
             BusinessDomainSeeder::class,
+            FacilitySeeder::class,
             ProjectStatusSeeder::class,
             ProjectWebSeeder::class,
             ProjectSeoSeeder::class,
             ProjectAdsSeeder::class,
-            ProjectOptionSeeder::class,
-            FacilitySeeder::class,
         ]);
     }
 }

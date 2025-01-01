@@ -56,7 +56,6 @@ class WebStatusController extends Controller
     {
         return Project::query()
             ->whereHasMorph('target', [ProjectWeb::class])
-            ->with('target.options')
             ->findOrFail($projectId);
     }
 }

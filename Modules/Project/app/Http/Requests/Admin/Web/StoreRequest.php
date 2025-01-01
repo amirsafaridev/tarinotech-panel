@@ -62,7 +62,7 @@ class StoreRequest extends FormRequest
         return $baseRule;
     }
 
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         $this->merge([
             'price' => str_replace(',', '', $this->input('price')),
