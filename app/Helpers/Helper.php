@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Modules\Contract\app\Enums\SignableStatus;
 use Modules\Contract\app\Enums\UserSignableStatus;
-use Modules\Project\App\Enums\RenewalStatus;
+use Modules\Project\app\Enums\RenewalStatus;
 use Modules\User\app\Enums\PersonType;
 use Verta;
 

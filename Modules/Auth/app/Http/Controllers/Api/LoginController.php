@@ -9,7 +9,7 @@ use Exception;
 use Modules\Auth\app\Http\Requests\Api\Auth\DevLoginRequest;
 use Modules\Auth\app\Http\Requests\Api\Auth\LoginRequest;
 use Modules\Auth\app\Notifications\SendCodeNotification;
-use Modules\Auth\App\Notifications\User\SmsOtpNotification;
+use Modules\Auth\app\Notifications\User\SmsOtpNotification;
 use Modules\User\app\Models\User;
 use Modules\User\app\Resources\User\UserResource;
 

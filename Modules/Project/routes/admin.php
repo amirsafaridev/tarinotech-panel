@@ -5,7 +5,7 @@ use Modules\Project\app\Http\Controllers\Admin\AdsController;
 use Modules\Project\app\Http\Controllers\Admin\BusinessDomainController;
 use Modules\Project\app\Http\Controllers\Admin\FacilityController;
 use Modules\Project\app\Http\Controllers\Admin\ProjectController;
-use Modules\Project\App\Http\Controllers\Admin\ProjectFacilityRenewalController;
+use Modules\Project\app\Http\Controllers\Admin\ProjectFacilityRenewalController;
 use Modules\Project\app\Http\Controllers\Admin\ProjectRenewalController;
 use Modules\Project\app\Http\Controllers\Admin\SeoController;
 use Modules\Project\app\Http\Controllers\Admin\SeoFactorController;

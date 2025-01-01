@@ -32,7 +32,7 @@ use Modules\Factor\app\Filters\Factor\StatusFilter;
 use Modules\Factor\app\Http\Requests\Admin\Factor\StoreRequest;
 use Modules\Factor\app\Models\Factor;
 use Modules\Factor\app\Models\FactorItem;
-use Modules\Factor\App\Traits\DeterminesBillingDetailsTrait;
+use Modules\Factor\app\Traits\DeterminesBillingDetailsTrait;
 use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Models\Project;
 use Modules\Project\app\Models\ProjectWeb;
