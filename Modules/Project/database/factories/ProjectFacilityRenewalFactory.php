@@ -6,7 +6,7 @@ use App\Enums\Database\Facility\FinancialCycle;
 use App\Enums\Database\Facility\PriceType;
 use App\Enums\Database\Facility\WorkCycle;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Modules\Project\App\Models\ProjectFacilityRenewal;
+use Modules\Project\app\Models\ProjectFacilityRenewal;
 
 /**
  * @extends Factory<ProjectFacilityRenewal>

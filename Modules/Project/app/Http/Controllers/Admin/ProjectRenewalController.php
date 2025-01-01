@@ -5,7 +5,7 @@ namespace Modules\Project\app\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Traits\HasJsonCommonResponseTrait;
 use Illuminate\Database\Eloquent\Builder;
-use Modules\Project\App\Models\ProjectRenewal;
+use Modules\Project\app\Models\ProjectRenewal;
 
 class ProjectRenewalController extends Controller
 {

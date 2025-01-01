@@ -3,7 +3,7 @@
 namespace Modules\Project\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Modules\Project\App\Models\ProjectRenewal;
+use Modules\Project\app\Models\ProjectRenewal;
 
 /**
  * @extends Factory<ProjectRenewal>
