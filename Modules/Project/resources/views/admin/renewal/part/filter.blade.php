@@ -22,7 +22,7 @@
         <x-admin.select-enum
             identify="status"
             title="وضعیت تمدید"
-            :enum-class="\Modules\Project\App\Enums\RenewalStatus::class"
+            :enum-class="\Modules\Project\app\Enums\RenewalStatus::class"
             :old="request('status')"
             :is-small="true"
         />
