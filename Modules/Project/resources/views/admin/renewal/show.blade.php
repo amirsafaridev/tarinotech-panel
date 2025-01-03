@@ -197,18 +197,6 @@
                                         </td>
                                     </tr>
 
-                                    <tr>
-                                        <td colspan="8" class="align-middle">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <span>مبلغ نهایی : </span>
-                                                    <span id="total-price">
-                                                </span>
-                                                </div>
-                                                <button type="button" id="generate-invoice" class="btn btn-lg btn-success">صدور نهایی فاکتور</button>
-                                            </div>
-                                        </td>
-                                    </tr>
                                 @endforeach
 
                             @else
@@ -216,6 +204,7 @@
                                     <td colspan="8" class="text-center py-4">هیچ موردی یافت نشد</td>
                                 </tr>
 
+                            @endif
                                 <tr>
                                     <td colspan="8" class="align-middle">
                                         <div class="d-flex justify-content-between align-items-center">
@@ -228,7 +217,6 @@
                                         </div>
                                     </td>
                                 </tr>
-                            @endif
                             </tbody>
                         </table>
                     </div>
