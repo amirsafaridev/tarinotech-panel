@@ -93,9 +93,11 @@ class ProjectFacilityRenewalController extends Controller
 
             $workCycleValue = $request->input('work_cycle_value');
 
-            if ($workCycleValue) {
+            if (! empty($workCycleValue)) {
                 $jalaliDate = Verta::parse($workCycleValue);
                 $workCycleValue = $jalaliDate->datetime()->format('Y-m-d');
+            } else {
+                $workCycleValue = null;
             }
             ProjectFacilityRenewal::query()
                 ->where('id', $projectFacilityRenewalId)
