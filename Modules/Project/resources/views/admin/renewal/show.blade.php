@@ -196,6 +196,19 @@
                                             <button type="button" class="btn btn-block btn-sm btn-danger">حذف</button>
                                         </td>
                                     </tr>
+
+                                    <tr>
+                                        <td colspan="8" class="align-middle">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <span>مبلغ نهایی : </span>
+                                                    <span id="total-price">
+                                                </span>
+                                                </div>
+                                                <button type="button" id="generate-invoice" class="btn btn-lg btn-success">صدور نهایی فاکتور</button>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 @endforeach
 
                             @else
