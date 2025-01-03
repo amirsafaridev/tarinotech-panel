@@ -28,37 +28,47 @@ class ProjectRenewalCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'project:renewal';
+    protected $signature = 'project:renewal {project_id? : The ID of the specific project to renew}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Handle project renewals by creating renewal records and updating renewal dates';
+    protected $description = 'Handle project renewals by creating renewal records and updating renewal dates. Optionally specify a project ID.';
 
     /**
      * Execute the console command.
+     *
+     * @throws Throwable
      */
     public function handle(): void
     {
         $this->info('Starting project renewal process...');
 
         try {
-            // Fetch projects eligible for renewal
-            $projects = Project::query()
-                ->where('renewal_at', '<=', now())
+            $projectId = $this->argument('project_id');
+
+            $query = Project::query()
                 ->whereHasMorph('target', [ProjectWeb::class], function (Builder $query) {
                     $query->whereHas('package');
                 })
                 ->whereHas('user')
                 ->with(['target.package', 'user', 'facilities'])
-                ->whereNotNull('renewal_at')
-                ->whereNotNull('agreement_at')
-                ->get();
+                ->whereNotNull('agreement_at');
+
+            // If project_id is provided, filter for that specific project
+            if ($projectId) {
+                $query->where('id', $projectId);
+            } else {
+                $query->where('renewal_at', '<=', now())
+                    ->whereNotNull('renewal_at');
+            }
+
+            $projects = $query->get();
 
             $projectCount = $projects->count();
-            $this->info("Found {$projectCount} project(s) eligible for renewal.");
+            $this->info("Found $projectCount project(s) eligible for renewal.");
 
             if ($projectCount === 0) {
                 $this->info('No projects require renewal. Exiting.');
@@ -69,10 +79,11 @@ class ProjectRenewalCommand extends Command
             foreach ($projects as $project) {
                 try {
                     $this->processProjectRenewal($project);
+                    $this->info("Successfully processed project ID: $project->id");
                 } catch (Throwable $e) {
-                    $this->error("Failed to process project ID: {$project->id}");
+                    $this->error("Failed to process project ID: $project->id");
                     Log::channel('project-renewal')->error(
-                        "Error processing project ID {$project->id}: {$e->getMessage()}",
+                        "Error processing project ID $project->id: {$e->getMessage()}",
                         ['stack' => $e->getTraceAsString()]
                     );
                 }
@@ -85,9 +96,13 @@ class ProjectRenewalCommand extends Command
                 "Command failed: {$e->getMessage()}",
                 ['stack' => $e->getTraceAsString()]
             );
+            throw $e;
         }
     }
 
+    /**
+     * Process renewal for a single project
+     */
     private function processProjectRenewal(Project $project): void
     {
         $package = $this->getPackage($project);
@@ -103,11 +118,10 @@ class ProjectRenewalCommand extends Command
                 'status' => RenewalStatus::Pending,
             ]);
 
-            Log::channel('project-renewal')->info("Created renewal with ID: {$renewal->id} for project ID: {$project->id}");
+            Log::channel('project-renewal')->info("Created renewal with ID: $renewal->id for project ID: $project->id");
 
             if ($project->facilities->isNotEmpty()) {
                 $project->facilities->each(function ($facility) use ($renewal) {
-
                     $days = Carbon::parse($facility->pivot->renewal_at)->diffInDays(now());
 
                     ProjectFacilityRenewal::query()->create([
@@ -116,38 +130,44 @@ class ProjectRenewalCommand extends Command
                         'days' => $days,
                     ]);
 
-                    ProjectFacility::query()
-                        ->where('id', $facility->pivot->id)
-                        ->update(['renewal_at' => now()]);
-                });
+                    if (app()->isLocal()) {
+                        ProjectFacility::query()
+                            ->where('id', $facility->pivot->id)
+                            ->update(['renewal_at' => now()]);
+                    }
 
+                });
             }
 
             // Update Project Renewal Date to one year from now
-            // $project->update(['renewal_at' => now()->addYear()]);
+            if (app()->isLocal()) {
+                $project->update(['renewal_at' => now()->addYear()]);
+            }
 
-            // Log the updated renewal date
-            Log::channel('project-renewal')->info("Updated renewal date for project ID: {$project->id} to {$project->renewal_at}");
+            Log::channel('project-renewal')->info("Updated renewal date for project ID: $project->id to $project->renewal_at");
         });
     }
 
+    /**
+     * Get the package associated with the project
+     */
     private function getPackage(Project $project): Package
     {
         if (! isset($project->target->package)) {
-            throw new RuntimeException("Project ID {$project->id} does not have a package.");
+            throw new RuntimeException("Project ID $project->id does not have a package.");
         }
 
         return $project->target->package;
     }
 
+    /**
+     * Get the current price for the package
+     */
     private function getCurrentPricePackage(Package $package): PackagePrice
     {
         $price = $package->getPriceForDate(now())->getPrice();
 
-        if (! $price) {
-            throw new RuntimeException("No price found for package ID {$package->id} on the current date.");
-        }
+        return $price ?: throw new RuntimeException("No price found for package ID $package->id on the current date.");
 
-        return $price;
     }
 }

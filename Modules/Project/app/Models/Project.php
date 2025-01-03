@@ -161,6 +161,54 @@ class Project extends Model
         return $this->facilities()->sync($syncData);
     }
 
+    public function getRenewalStatus(): array
+    {
+        $conditions = [
+            'target' => [
+                'condition' => $this->target instanceof ProjectWeb,
+                'message' => 'این نوع پروژه قابل تمدید نیست',
+            ],
+            'package' => [
+                'condition' => $this->target && $this->target->package,
+                'message' => 'پکیج برای پروژه تعریف نشده است',
+            ],
+            'user' => [
+                'condition' => $this->user,
+                'message' => 'کاربر برای پروژه تعریف نشده است',
+            ],
+            'agreement' => [
+                'condition' => $this->agreement_at,
+                'message' => 'تاریخ قرارداد ثبت نشده است',
+            ],
+            'renewal' => [
+                'condition' => $this->renewal_at,
+                'message' => 'تاریخ تمدید تعیین نشده است',
+            ],
+        ];
+
+        // Check conditions and return failure message if any condition fails
+        foreach ($conditions as $key => $value) {
+            if (! $value['condition']) {
+                return [
+                    'canRenew' => false,
+                    'message' => $value['message'],
+                    'daysUntilRenewal' => null,
+                    'renewalDate' => null,
+                ];
+            }
+        }
+
+        $daysUntilRenewal = now()->diffInDays($this->renewal_at, false);
+        $canRenew = $this->renewal_at <= now();
+
+        return [
+            'canRenew' => $canRenew,
+            'message' => null,
+            'daysUntilRenewal' => $daysUntilRenewal,
+            'renewalDate' => $this->renewal_at,
+        ];
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
