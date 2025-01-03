@@ -197,6 +197,12 @@
                                         </td>
                                     </tr>
                                 @endforeach
+
+                            @else
+                                <tr>
+                                    <td colspan="8" class="text-center py-4">هیچ موردی یافت نشد</td>
+                                </tr>
+
                                 <tr>
                                     <td colspan="8" class="align-middle">
                                         <div class="d-flex justify-content-between align-items-center">
@@ -208,10 +214,6 @@
                                             <button type="button" id="generate-invoice" class="btn btn-lg btn-success">صدور نهایی فاکتور</button>
                                         </div>
                                     </td>
-                                </tr>
-                            @else
-                                <tr>
-                                    <td colspan="8" class="text-center py-4">هیچ موردی یافت نشد</td>
                                 </tr>
                             @endif
                             </tbody>
