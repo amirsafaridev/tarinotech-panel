@@ -40,7 +40,7 @@ class LoginController extends Controller
     public function login(LoginRequest $request, OtpGenerateJob $otpGenerateJob): RedirectResponse
     {
         try {
-            $admin = $this->validateAdminCredentials($request->only('email', 'password'));
+            $admin = $this->validateAdminCredentials($request->only('identify', 'password'));
 
             if (! $admin) {
                 return to_route('auth.admin.login')
