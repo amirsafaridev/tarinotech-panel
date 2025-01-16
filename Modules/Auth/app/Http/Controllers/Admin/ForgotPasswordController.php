@@ -40,7 +40,7 @@ class ForgotPasswordController extends Controller
                     $q->where('email', $request->input('identify'));
                     $q->orWhere('mobile', $request->input('mobile'));
                 })
-                ->where('has_access', true)
+                ->where('is_block', false)
                 ->first();
 
             if (! $admin) {
