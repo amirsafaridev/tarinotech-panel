@@ -182,7 +182,10 @@ class WebController extends Controller
             $projectWeb = $project->target;
             $projectWeb->update($this->initialWebData($request));
 
-            $project->syncFacilitiesPreserveRenewal($request->input('facilities'));
+            $facilities = $request->input('facilities');
+            if (is_array($facilities) && ! empty($facilities)) {
+                $project->syncFacilitiesPreserveRenewal($facilities);
+            }
 
             DB::commit();
 
