@@ -124,6 +124,7 @@ class PackageController extends Controller
         }
 
         $item['contract_attachment'] = $request->input('contract_attachment');
+        $item['contract_text'] = $request->input('contract_text');
 
         return $item;
     }

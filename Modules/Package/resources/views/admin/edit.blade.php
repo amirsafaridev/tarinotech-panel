@@ -42,6 +42,8 @@
 
                         @include('package::admin.part.seo-fields')
 
+                        <x-admin.textarea identify="contract_text" title="متن قرارداد"  :old="$package->contract_text"/>
+
                         <x-admin.textarea identify="contract_attachment" title="پیوست قرارداد"  :old="$package->contract_attachment"/>
 
 
@@ -78,6 +80,7 @@
         $(document).ready(function (){
             activeParentUl('{{ route('admin.package.index') }}');
             CKEDITOR.replace( 'contract_attachment',{height:400});
+            CKEDITOR.replace('contract_text', { height: 400 });
         })
     </script>
     @include('package::admin.part.script')

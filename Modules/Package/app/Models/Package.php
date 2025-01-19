@@ -23,6 +23,7 @@ class Package extends Model
         'title',
         'type_id',
         'contract_attachment',
+        'contract_text',
         'minimum_price_percent',
         'seo_keywords_count',
         'seo_agreement_duration',

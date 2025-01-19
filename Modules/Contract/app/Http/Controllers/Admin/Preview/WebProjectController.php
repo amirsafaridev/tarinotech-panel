@@ -138,10 +138,12 @@ class WebProjectController extends Controller implements PrintControllerInterfac
     public function getPreparedHtml(Model $model): string
     {
 
+        $contractText = $model->package->contract_text;
+
         $this->setupPdfService($model);
 
         $viewPath = $this->getViewPath($model);
-        $view = view($viewPath, compact('model'))->render();
+        $view = view($viewPath, compact('model', 'contractText'))->render();
 
         $viewFilled = $this->fillData($view, $model);
         $fileName = $this->fileName($model);
