@@ -104,9 +104,9 @@ class WebProjectController extends Controller implements PrintControllerInterfac
      */
     public function getViewPath(Model $model): string
     {
-        if (in_array($model->package_id, [5, 4, 10])) {
+        /*if (in_array($model->package_id, [5, 4, 10])) {
             return 'contract::admin.pdf.web-project-cheap-contract';
-        }
+        }*/
 
         return 'contract::admin.pdf.web-project';
     }
