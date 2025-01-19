@@ -80,7 +80,7 @@
                                         @endif
                                         <td>{{ $project->domain }}</td>
                                         <td>{{ $project->created_at->toJalali()->format(formatJalaliDate()) }}</td>
-                                        <td class="d-flex gap-2">
+                                        <td>
 
                                             <div class="dropdown">
                                                 <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-bs-toggle="dropdown">

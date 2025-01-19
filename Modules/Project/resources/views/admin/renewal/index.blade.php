@@ -64,7 +64,7 @@
                                         <td>{{ verta($renewal->created_at)->format(formatJalaliDate()) }}</td>
                                         <td>{!! \App\Helpers\Helper::renderProjectRenewalStatus($renewal->status) !!}</td>
                                         <td>{{ verta($renewal->project_renewal_at)->format(formatJalaliDate()) }}</td>
-                                        <td class="d-flex gap-2">
+                                        <td>
                                             <a class="btn btn-sm btn-info" target="_blank" href="{{ route('admin.project.renewal.show',$renewal->id) }}">{{ __('panel.action.show') }}</a>
                                         </td>
                                     </tr>
