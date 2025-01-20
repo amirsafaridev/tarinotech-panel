@@ -77,9 +77,11 @@
                                         <td>{!! factorStatusRender($factor->status, $factor->is_confirm) !!}</td>
                                         <td>{{ $factor->paid_at ?  $factor->paid_at->toJalali()->format(formatJalaliDateTime()) : ''}}</td>
                                         <td>{{ $factor->created_at->toJalali()->format(formatJalaliDateTime()) }}</td>
-                                        <td class="d-flex gap-2">
-                                            <a class="btn btn-sm btn-warning" target="_blank" href="{{ route('admin.factor.edit',$factor->id) }}">{{ __('panel.action.edit') }}</a>
-                                            <a class="btn btn-sm btn-info" target="_blank" href="{{ route('admin.factor.show',$factor->id) }}">{{ __('panel.action.show') }}</a>
+                                        <td>
+                                            <div class="d-flex gap-2">
+                                                <a class="btn btn-sm btn-warning" target="_blank" href="{{ route('admin.factor.edit',$factor->id) }}">{{ __('panel.action.edit') }}</a>
+                                                <a class="btn btn-sm btn-info" target="_blank" href="{{ route('admin.factor.show',$factor->id) }}">{{ __('panel.action.show') }}</a>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

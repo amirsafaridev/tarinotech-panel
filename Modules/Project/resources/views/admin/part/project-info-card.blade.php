@@ -97,6 +97,35 @@
                 <td>توضیحات</td>
                 <td>{{ $project->note }}</td>
             </tr>
+            @can('ADMIN_PROJECT_RENEWAL')
+                @php
+                    $renewalStatus = $project->getRenewalStatus();
+                @endphp
+                <tr>
+                    <td>وضعیت تمدید</td>
+                    <td>
+                        @if($renewalStatus['canRenew'])
+                            <a class="btn btn-success" href="{{ route('admin.project.renewal',$project->id) }}">
+                                ایجاد تمدید
+                            </a>
+                        @else
+                            <div class="alert alert-warning">
+                                @if($renewalStatus['message'])
+                                    <i class="fa fa-exclamation-triangle"></i>
+                                    {{ $renewalStatus['message'] }}
+                                @else
+                                    <i class="fa fa-clock-o"></i>
+                                    {{ $renewalStatus['daysUntilRenewal'] }} روز تا زمان تمدید باقی مانده است
+                                    <br>
+                                    <small class="text-muted">
+                                        تاریخ تمدید: {{ verta($renewalStatus['renewalDate'])->format('Y/m/d') }}
+                                    </small>
+                                @endif
+                            </div>
+                        @endif
+                    </td>
+                </tr>
+            @endcan
             </tbody>
         </table>
     </div>

@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Modules\Contract\app\Models\Signable;
 use Modules\Contract\app\Models\UserSignable;
 use Modules\Log\app\Enums\LogNames;
@@ -52,11 +51,6 @@ class ProjectWeb extends Model
     public function package(): BelongsTo
     {
         return $this->belongsTo(Package::class);
-    }
-
-    public function options(): MorphToMany
-    {
-        return $this->morphToMany(ProjectOption::class, 'target', 'project_option_sets');
     }
 
     public function signable(): MorphOne

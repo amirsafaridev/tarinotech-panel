@@ -69,9 +69,11 @@
                                         </td>
                                         <td>{!! \App\Helpers\Helper::renderUserSignableStatus($signable->status) !!}</td>
                                         <td>{{ verta($signable->created_at)->format(formatJalaliDateTime()) }}</td>
-                                        <td class="d-flex gap-2">
-                                            <a class="btn btn-sm btn-info" target="_blank" href="{{ makeRouteContractPreview($signable->target_type, $signable->target_id) }}">{{ __('panel.action.printContract') }}</a>
-                                            <a class="btn btn-sm btn-warning" target="_blank" href="{{ route('admin.contract.sign.user.edit', $signable->id) }}">{{ __('panel.action.edit') }}</a>
+                                        <td>
+                                            <div class="d-flex gap-2">
+                                                <a class="btn btn-sm btn-info" target="_blank" href="{{ makeRouteContractPreview($signable->target_type, $signable->target_id) }}">{{ __('panel.action.printContract') }}</a>
+                                                <a class="btn btn-sm btn-warning" target="_blank" href="{{ route('admin.contract.sign.user.edit', $signable->id) }}">{{ __('panel.action.edit') }}</a>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

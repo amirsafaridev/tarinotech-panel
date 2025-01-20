@@ -147,7 +147,6 @@
                     'ADMIN_PROJECT_SEO_INDEX',
                     'ADMIN_PROJECT_ADS_INDEX',
                     'ADMIN_PROJECT_FACILITY_INDEX',
-                    'ADMIN_PROJECT_OPTION_INDEX',
                     'ADMIN_PROJECT_TYPE_INDEX',
                     'ADMIN_PROJECT_STATUS_INDEX',
                     'ADMIN_PACKAGE_INDEX',
@@ -188,11 +187,6 @@
                             @can('ADMIN_PROJECT_FACILITY_INDEX')
                                 <li><a href="{{ route('admin.project.facility.index') }}" class="slide-item">امکانات
                                         جانبی</a></li>
-                            @endcan
-
-                            @can('ADMIN_PROJECT_OPTION_INDEX')
-                                <li><a href="{{ route('admin.project.option.index') }}" class="slide-item">امکانات</a>
-                                </li>
                             @endcan
 
                             @can('ADMIN_PROJECT_TYPE_INDEX')

@@ -1,6 +1,9 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <span class="bold">اقلام فاکتور</span>
+        @if(isset($shouldShowFactorLink) && $shouldShowFactorLink === true)
+            <a class="btn btn-sm btn-info" href="{{ route('admin.factor.show', $items->first()->factor_id) }}">نمایش فاکتور</a>
+        @endif
     </div>
     <div class="card-body">
         <div class="table-responsive">

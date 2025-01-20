@@ -9,6 +9,8 @@ use App\Service\PdfService;
 use App\Traits\HasJsonCommonResponseTrait;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Modules\Project\app\Exports\Admin\Report\ProjectDatatableExport;
 use Modules\Project\app\Filters\IsSignFilter;
@@ -19,7 +21,6 @@ use Modules\Project\app\Filters\Project\SortFilter;
 use Modules\Project\app\Filters\StatusFilter;
 use Modules\Project\app\Filters\TypeFilter;
 use Modules\Project\app\Models\Project;
-use Modules\Project\app\Models\ProjectWeb;
 use Mpdf\MpdfException;
 
 class ProjectController extends Controller
@@ -104,11 +105,39 @@ class ProjectController extends Controller
 
         $this->getProjectWithRelation($project);
 
-        if ($project->target_type === ProjectWeb::class) {
-            $project->load('target.options');
-        }
-
         return view('project::admin.show', compact('title', 'project'));
+    }
+
+    public function renewal(Project $project)
+    {
+        try {
+            $command = 'project:renewal';
+            $parameters = [];
+
+            $projectId = $project->id;
+            $parameters['project_id'] = $projectId;
+
+            Artisan::call($command, $parameters);
+
+            $output = Artisan::output();
+
+            Log::channel('project-renewal')->info(
+                'Renewal process triggered via controller',
+                [
+                    'project_id' => $projectId ?? 'all',
+                    'output' => $output,
+                ]
+            );
+
+            return $this->successBack(
+                route('admin.project.manage', $projectId),
+                'تمدید پروژه با موفقیت انجام شد'
+            );
+        } catch (Exception $exception) {
+            report($exception);
+
+            return $this->exceptionBack($exception);
+        }
     }
 
     public function print(Project $project, PdfService $pdfService)

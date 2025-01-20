@@ -1,93 +1,94 @@
+version: "3"
 services:
-  #PHP Service
-  php:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: php8.2
-    container_name: php_tarinotech
-    restart: unless-stopped
-    tty: true
-    working_dir: /var/www
-    volumes:
-      - ./:/var/www
-      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
-    networks:
-      - tarinotech-network
+    #PHP Service
+    php:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: php8.2
+        container_name: php_tarinotech
+        restart: unless-stopped
+        tty: true
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+            - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+        networks:
+            - tarinotech-network
 
-  #Nginx Service
-  webserver:
-    image: nginx:1.24.0
-    container_name: webserver_tarinotech
-    restart: unless-stopped
-    tty: true
-    ports:
-      - "8080:80"
-    volumes:
-      - ./:/var/www
-      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
-    networks:
-      - tarinotech-network
+    #Nginx Service
+    webserver:
+        image: nginx:1.24.0
+        container_name: webserver_tarinotech
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "8080:80"
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+        networks:
+            - tarinotech-network
 
-  #MySQL Service
-  db:
-    image: mysql:8.0.33
-    container_name: db_tarinotech
-    restart: always
-    tty: true
-    ports:
-      - "33066:3306"
-    environment:
-        MYSQL_DATABASE: ${DB_DATABASE}
-        MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-    volumes:
-      - dbdata:/var/lib/mysql/
-      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
-    networks:
-      - tarinotech-network
+    #MySQL Service
+    db:
+        image: mysql:8.0.33
+        container_name: db_tarinotech
+        restart: always
+        tty: true
+        ports:
+            - "33066:3306"
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+        volumes:
+            - dbdata:/var/lib/mysql/
+            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+        networks:
+            - tarinotech-network
 
-  #PHPMYADMIN
-  phpmyadmin:
-    image: phpmyadmin:5
-    container_name: phpmyadmin_tarinotech
-    restart: always
-    depends_on:
-      - db
-    ports:
-      - "8081:80"
-    environment:
-      PMA_HOST: db_tarinotech
-      UPLOAD_LIMIT: 64M
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_USERNAME}
-    networks:
-      - tarinotech-network
-  #Soketi Service
-  soketi:
-    container_name: 'soketi_tarinotech'
-    image: 'quay.io/soketi/soketi:latest-16-alpine'
-    ports:
-      - '${SOKETI_PORT:-6001}:6001'
-      - '${SOKETI_METRICS_SERVER_PORT:-9601}:9601'
-    environment:
-      SOKETI_DEBUG: ${DEBUG:-1}
-      SOKETI_DEFAULT_APP_ID: ${PUSHER_APP_ID}
-      SOKETI_DEFAULT_APP_KEY: ${PUSHER_APP_KEY}
-      DEFAULT_APP_SECRET: ${PUSHER_APP_SECRET}
-      PUSHER_HOST: ${PUSHER_HOST}
-      PUSHER_PORT: ${PUSHER_PORT}
-      PUSHER_SCHEME: ${PUSHER_SCHEME}
-      METRICS_SERVER_PORT: ${SOKETI_METRICS_SERVER_PORT}
-      DEFAULT_APP_ENABLE_CLIENT_MESSAGES: ${DEFAULT_APP_ENABLE_CLIENT_MESSAGES}
-    networks:
-      - tarinotech-network
+    #PHPMYADMIN
+    phpmyadmin:
+        image: phpmyadmin:5
+        container_name: phpmyadmin_tarinotech
+        restart: always
+        depends_on:
+            - db
+        ports:
+            - "8081:80"
+        environment:
+            PMA_HOST: db_tarinotech
+            UPLOAD_LIMIT: 64M
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_USERNAME}
+        networks:
+            - tarinotech-network
+    #Soketi Service
+    soketi:
+        container_name: 'soketi_tarinotech'
+        image: 'quay.io/soketi/soketi:latest-16-alpine'
+        ports:
+            - "6001:6001"
+            - "9601:9601"
+        environment:
+            SOKETI_DEBUG: "1"
+            SOKETI_DEFAULT_APP_ID: ${PUSHER_APP_ID}
+            SOKETI_DEFAULT_APP_KEY: ${PUSHER_APP_KEY}
+            DEFAULT_APP_SECRET: ${PUSHER_APP_SECRET}
+            PUSHER_HOST: ${PUSHER_HOST}
+            PUSHER_PORT: ${PUSHER_PORT}
+            PUSHER_SCHEME: ${PUSHER_SCHEME}
+            METRICS_SERVER_PORT: ${SOKETI_METRICS_SERVER_PORT}
+            DEFAULT_APP_ENABLE_CLIENT_MESSAGES: ${DEFAULT_APP_ENABLE_CLIENT_MESSAGES}
+        networks:
+            - tarinotech-network
 #Docker Networks
 networks:
-  tarinotech-network:
-    driver: bridge
+    tarinotech-network:
+        driver: bridge
 
 #Volumes
 volumes:
-  dbdata:
-    driver: local
+    dbdata:
+        driver: local

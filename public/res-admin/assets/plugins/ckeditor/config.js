@@ -8,6 +8,14 @@ CKEDITOR.editorConfig = function (config) {
     config.rtl = true;
     config.language = 'fa';
 
+    // Enable source dialog plugin
+    config.extraPlugins = 'sourcedialog,table';
+
+    // Configure source dialog settings
+    config.sourceDialog_backgroundColor = '#f1f1f1';
+    config.sourceDialog_height = '400px';
+    config.sourceDialog_width = '600px';
+
     // Toolbar groups arrangement, optimized for a single toolbar row.
     config.toolbarGroups = [
         { name: 'document', groups: ['mode', 'document', 'doctools'] },
@@ -29,12 +37,22 @@ CKEDITOR.editorConfig = function (config) {
     // Simplify dialog windows.
     config.removeDialogTabs = 'link:advanced';
 
-    // Include the table plugin.
-    config.extraPlugins = 'table';
-
-    // Add the Table button to the insert toolbar group.
+    // Configure the toolbar with source control
     config.toolbar = [
-        { name: 'document', items: ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates'] },
+        {
+            name: 'document',
+            items: [
+                'Source',           // Add Source button at the beginning
+                'Sourcedialog',     // Add Source dialog button
+                '-',
+                'Save',
+                'NewPage',
+                'Preview',
+                'Print',
+                '-',
+                'Templates'
+            ]
+        },
         { name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'] },
         { name: 'editing', items: ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt'] },
         { name: 'forms', items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'] },
@@ -46,5 +64,14 @@ CKEDITOR.editorConfig = function (config) {
         { name: 'colors', items: ['TextColor', 'BGColor'] },
         { name: 'tools', items: ['Maximize', 'ShowBlocks'] },
         { name: 'others', items: ['-'] }
+    ];
+
+    // Configure source editing
+    config.allowedContent = true; // Disable content filtering
+    config.height = '400px';      // Set editor height
+
+    // Add keyboard shortcuts for source mode
+    config.keystrokes = [
+        [ CKEDITOR.CTRL + CKEDITOR.SHIFT + 83 /*S*/, 'sourcedialog' ] // Ctrl+Shift+S
     ];
 };

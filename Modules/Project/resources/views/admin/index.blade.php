@@ -75,7 +75,7 @@
                                         @endif
                                         <td>{{ $project->domain }}</td>
                                         <td>{{ $project->created_at->toJalali()->format(formatJalaliDate()) }}</td>
-                                        <td class="d-flex gap-2">
+                                        <td>
                                             <a class="btn btn-sm btn-success" target="_blank" href="{{ route('admin.project.manage',$project->id) }}">{{ __('panel.action.manage') }}</a>
                                         </td>
                                     </tr>

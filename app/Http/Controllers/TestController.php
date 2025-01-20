@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
 use Modules\Admin\app\Models\Admin;
 use Modules\Admin\app\Notifications\Admin\SendPasswordByEmail;
-use Modules\Auth\App\Notifications\User\SmsOtpNotification;
+use Modules\Auth\app\Notifications\User\SmsOtpNotification;
 use Modules\Package\app\Models\Package;
 use Modules\Project\app\Imports\ProjectWebImport;
 use Modules\User\app\Imports\UserImport;

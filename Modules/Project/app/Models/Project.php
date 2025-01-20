@@ -7,6 +7,7 @@ use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -101,9 +102,22 @@ class Project extends Model
         return $this->hasMany(PresenterProject::class, 'project_id');
     }
 
+    public function facilities(): BelongsToMany
+    {
+        return $this->belongsToMany(Facility::class, 'project_facilities')
+            ->withTimestamps()
+            ->withPivot(['renewal_at', 'id']);
+        //->with('facility');
+    }
+
     public function factors(): HasMany
     {
         return $this->hasMany(Factor::class, 'project_id');
+    }
+
+    public function renewals(): HasMany
+    {
+        return $this->hasMany(ProjectRenewal::class, 'project_id');
     }
 
     public static function findSeoTarget($projectId): ?self
@@ -118,7 +132,7 @@ class Project extends Model
     {
         return self::query()
             ->whereHasMorph('target', [ProjectWeb::class])
-            ->with('target')
+            ->with(['target', 'facilities'])
             ->findOrFail($projectId);
     }
 
@@ -128,6 +142,71 @@ class Project extends Model
             ->whereHasMorph('target', [ProjectAds::class])
             ->with('target')
             ->findOrFail($projectId);
+    }
+
+    public function syncFacilitiesPreserveRenewal(array $facilities): array
+    {
+        $currentFacilities = $this->facilities()
+            ->get()
+            ->pluck('pivot.renewal_at', 'id')
+            ->map(fn ($date) => ['renewal_at' => $date])
+            ->toArray();
+
+        $syncData = collect($facilities)->mapWithKeys(function ($facilityId) use ($currentFacilities) {
+            return [
+                $facilityId => $currentFacilities[$facilityId] ?? ['renewal_at' => $currentFacilities[$facilityId]['renewal_at'] ?? now()],
+            ];
+        })->toArray();
+
+        return $this->facilities()->sync($syncData);
+    }
+
+    public function getRenewalStatus(): array
+    {
+        $conditions = [
+            'target' => [
+                'condition' => $this->target instanceof ProjectWeb,
+                'message' => 'این نوع پروژه قابل تمدید نیست',
+            ],
+            'package' => [
+                'condition' => $this->target && $this->target->package,
+                'message' => 'پکیج برای پروژه تعریف نشده است',
+            ],
+            'user' => [
+                'condition' => $this->user,
+                'message' => 'کاربر برای پروژه تعریف نشده است',
+            ],
+            'agreement' => [
+                'condition' => $this->agreement_at,
+                'message' => 'تاریخ قرارداد ثبت نشده است',
+            ],
+            'renewal' => [
+                'condition' => $this->renewal_at,
+                'message' => 'تاریخ تمدید تعیین نشده است',
+            ],
+        ];
+
+        // Check conditions and return failure message if any condition fails
+        foreach ($conditions as $key => $value) {
+            if (! $value['condition']) {
+                return [
+                    'canRenew' => false,
+                    'message' => $value['message'],
+                    'daysUntilRenewal' => null,
+                    'renewalDate' => null,
+                ];
+            }
+        }
+
+        $daysUntilRenewal = now()->diffInDays($this->renewal_at, false);
+        $canRenew = $this->renewal_at <= now();
+
+        return [
+            'canRenew' => $canRenew,
+            'message' => null,
+            'daysUntilRenewal' => $daysUntilRenewal,
+            'renewalDate' => $this->renewal_at,
+        ];
     }
 
     public function getActivitylogOptions(): LogOptions

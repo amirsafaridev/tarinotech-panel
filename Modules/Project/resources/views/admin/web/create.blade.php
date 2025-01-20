@@ -243,13 +243,13 @@
                     <x-admin.textarea identify="favorite_sites" title="سایت های مورد پسند"/>
 
                     <x-admin.select-model
-                            identify="options[]"
-                            title="امکانات بیشتر"
-                            key="id"
-                            value="title"
-                            :multiple="true"
-                            :with-option="false"
-                            :items="$options"/>
+                        identify="facilities[]"
+                        title="ویژگی‌ها"
+                        key="id"
+                        value="title"
+                        :multiple="true"
+                        :with-option="false"
+                        :items="$facilities"/>
 
                     <x-admin.textarea identify="note" title="اطلاعات بیشتر (یادداشت)"/>
 

@@ -2,130 +2,87 @@
 
 namespace Modules\Project\app\Http\Controllers\Admin;
 
-use App\Enums\General\BtnType;
-use App\Foundation\ValueObjects\Datatable\ColumnOption;
-use App\Foundation\ValueObjects\Datatable\DatatableBase;
-use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
-use App\Traits\HasDatatableTrait;
 use App\Traits\HasJsonCommonResponseTrait;
-use Exception;
-use Modules\Project\app\Models\Project;
-use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Database\Eloquent\Builder;
+use Modules\Project\app\Models\ProjectRenewal;
 
 class ProjectRenewalController extends Controller
 {
-    use HasDatatableTrait;
     use HasJsonCommonResponseTrait;
 
     const INDEX_TITLE = 'لیست تمدیدها';
+
+    const SHOW_TITLE = 'لیست تمدیدها - نمایش';
 
     public function index()
     {
         $title = self::INDEX_TITLE;
 
-        $routeData = $this->getDataRoute();
+        $renewals = ProjectRenewal::query()
+            ->select(
+                'project_renewals.id',
+                'project_renewals.status',
+                'project_renewals.package_calculated_price',
+                'project_renewals.project_id',
+                'project_renewals.created_at',
+                'projects.id as project_id',
+                'projects.title as project_title',
+                'projects.domain as project_domain',
+                'projects.agreement_at as project_agreement_at',
+                'projects.renewal_at as project_renewal_at',
+                'admins.first_name as admin_first_name',
+                'admins.last_name as admin_last_name'
+            )
+            ->has('project')
+            ->join('projects', 'project_id', '=', 'projects.id')
+            ->join('admins', 'projects.admin_id', '=', 'admins.id')
 
-        $dataTable = $this->getDataTable();
+            // Filter by search term
+            ->when(request('search'), function (Builder $query): void {
+                $search = escapeLike(request('search'));
+                $query->where(function (Builder $q) use ($search): void {
+                    $q->where('projects.title', 'like', '%'.$search.'%')
+                        ->orWhere('projects.domain', 'like', '%'.$search.'%')
+                        ->orWhere('projects.id', 'like', '%'.$search.'%');
+                });
+            })
 
-        return view('project::admin.index_renewal', compact('title', 'routeData', 'dataTable'));
+            // Filter by admin name
+            ->when(request('admin'), function (Builder $query): void {
+                $admin = escapeLike(request('admin'));
+                $query->where(function (Builder $q) use ($admin): void {
+                    $q->where('admins.first_name', 'like', '%'.$admin.'%')
+                        ->orWhere('admins.last_name', 'like', '%'.$admin.'%');
+                });
+            })
+
+            // Filter by status
+            ->when(request('status'), function (Builder $query): void {
+                $query->where('status', request('status'));
+            })
+
+            // Sort results
+            ->when(
+                request('sort') && preg_match('/^(created_at)\|(asc|desc)$/', request('sort')),
+                function (Builder $query): void {
+                    $query->orderBy(...explode('|', request('sort')));
+                },
+                function (Builder $query): void {
+                    $query->orderBy('created_at', 'desc');
+                }
+            )
+            ->paginate()->appends(request()->query());
+
+        return view('project::admin.renewal.index', compact('title', 'renewals'));
     }
 
-    public function getDataRoute(): string
+    public function show(int $projectRenewalId)
     {
-        return route('admin.project.renewal.data');
-    }
+        $projectRenewal = ProjectRenewal::findWithRelations($projectRenewalId);
 
-    public function getDataTable(): array
-    {
-        return (new DatatableBase())
-            ->addColumn(
-                ColumnOption::new()->setName('id')->setAs('شناسه')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('title')->setAs('عنوان')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('domain')->setAs('دامنه')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('type.title')
-                    ->setSortable(false)
-                    ->setAs('نوع')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('status.title')
-                    ->setSortable(false)
-                    ->setAs('وضعیت')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('price')->setAs('قیمت')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('domain')->setAs('دامنه')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('agreement_at')->setAs('قرارداد')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('renewal_at')->setAs('تمدید')
-            )
-            ->addColumn(
-                ColumnOption::new()->setName('action')
-                    ->setAs('عملیات')
-                    ->removeAction()
-            )
-            /*->addExternalFilter(ExternalFilter::new()->setKey('admin'))
-            ->addExternalFilter(ExternalFilter::new()->setKey('type'))
-            ->addExternalFilter(ExternalFilter::new()->setKey('status'))*/
-            ->render();
-    }
+        $title = self::SHOW_TITLE;
 
-    public function data()
-    {
-        try {
-            $projects = Project::query()
-                ->select([
-                    'id',
-                    'title',
-                    'price',
-                    'domain',
-                    'type_id',
-                    'status_id',
-                    'renewal_at',
-                    'agreement_at',
-                ])
-                /*->filter([
-                    AdminFilter::class,
-                    TypeFilter::class,
-                    StatusFilter::class,
-                ])*/
-                ->with([
-                    'type.base',
-                    'status.type',
-                    /*'admin' => function (BelongsTo $query) {
-                        $query->select('admins.id', 'admins.first_name', 'admins.last_name');
-                    },*/
-                ])
-                ->whereNotNull('renewal_at');
-
-            return DataTables::eloquent($projects)
-                ->editColumn('agreement_at', function (Project $project) {
-                    return $project->agreement_at->toJalali()->format(formatJalaliDate());
-                })
-                ->editColumn('renewal_at', function (Project $project) {
-                    return $project->renewal_at->toJalali()->format(formatJalaliDate());
-                })
-                ->editColumn('price', function (Project $project) {
-                    return number_format($project->price);
-                })
-                ->addColumn('action', function ($project) {
-                    return Helper::btnMaker(BtnType::Success, route('admin.project.manage', $project->id), trans('panel.action.manage'));
-                })
-                ->rawColumns(['action'])
-                ->make();
-        } catch (Exception $exception) {
-            return $this->exceptionResponse($exception);
-        }
+        return view('project::admin.renewal.show', compact('title', 'projectRenewal'));
     }
 }

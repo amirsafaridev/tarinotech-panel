@@ -125,8 +125,17 @@ class WebController extends Controller
                 $projectParams['renewal_at'] = Carbon::parse($agreementAt)->addYear()
                     ->format('Y-m-d');
             }
-            $projectWeb->project()->create($projectParams);
-            $projectWeb->options()->attach($request->input('options'));
+            $project = $projectWeb->project()->create($projectParams);
+
+            $facilities = collect($request->input('facilities'))->mapWithKeys(function ($facilityId) {
+                return [
+                    $facilityId => [
+                        'renewal_at' => now(),
+                    ],
+                ];
+            });
+
+            $project->facilities()->sync($facilities);
 
             DB::commit();
 
@@ -172,7 +181,12 @@ class WebController extends Controller
              */
             $projectWeb = $project->target;
             $projectWeb->update($this->initialWebData($request));
-            $projectWeb->options()->attach($request->input('options'));
+
+            $facilities = $request->input('facilities');
+            if (is_array($facilities) && ! empty($facilities)) {
+                $project->syncFacilitiesPreserveRenewal($facilities);
+            }
+
             DB::commit();
 
             return $this->successUpdateResponse();

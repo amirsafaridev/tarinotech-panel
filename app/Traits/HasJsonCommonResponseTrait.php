@@ -28,6 +28,15 @@ trait HasJsonCommonResponseTrait
         ]);
     }
 
+    protected function successDestroyResponse(?string $backNav = null): JsonResponse
+    {
+        return response()->json([
+            'back' => $backNav,
+            'result' => 'success',
+            'message' => trans('panel.success_delete'),
+        ]);
+    }
+
     protected function failure(string $message, int $code): JsonResponse
     {
         return response()->json([

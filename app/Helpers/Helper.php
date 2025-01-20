@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Modules\Contract\app\Enums\SignableStatus;
 use Modules\Contract\app\Enums\UserSignableStatus;
+use Modules\Project\app\Enums\RenewalStatus;
 use Modules\User\app\Enums\PersonType;
 use Verta;
 
@@ -31,6 +32,15 @@ class Helper
         return match ($type) {
             PersonType::Person => '<span class="badge bg-success">حقیقی</span>',
             PersonType::Legal => '<span class="badge bg-primary">حقوقی</span>',
+            default => '<span class="badge bg-info">ندارد</span>',
+        };
+    }
+
+    public static function renderProjectRenewalStatus(int $status): string
+    {
+        return match ($status) {
+            RenewalStatus::Pending => '<span class="badge bg-info">در انتظار</span>',
+            RenewalStatus::Pay => '<span class="badge bg-success">پرداخت شده</span>',
             default => '<span class="badge bg-info">ندارد</span>',
         };
     }

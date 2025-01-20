@@ -39,6 +39,8 @@
 
                         @include('package::admin.part.seo-fields')
 
+                        <x-admin.textarea identify="contract_text" title="متن قرارداد"/>
+
                         <x-admin.textarea identify="contract_attachment" title="پیوست قرارداد"/>
 
                         <x-admin.button title="{{ trans('panel.create') }}"/>
@@ -62,6 +64,7 @@
             activeParentUl('{{ route('admin.package.index') }}');
             makeInputPrice($('#price'));
             CKEDITOR.replace('contract_attachment', { height: 400 });
+            CKEDITOR.replace('contract_text', { height: 400 });
         });
     </script>
     @include('package::admin.part.script')
