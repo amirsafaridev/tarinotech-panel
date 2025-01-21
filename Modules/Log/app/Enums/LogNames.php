@@ -41,6 +41,8 @@ class LogNames extends Enum implements LocalizedEnum
 
     const PACKAGE = 'package';
 
+    const PACKAGE_HISTORY = 'package_history';
+
     const PACKAGE_PRICE = 'package_price';
 
     const PROJECT = 'project';

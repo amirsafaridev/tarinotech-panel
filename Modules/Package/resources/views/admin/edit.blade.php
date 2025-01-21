@@ -42,7 +42,9 @@
 
                         @include('package::admin.part.seo-fields')
 
-                        <x-admin.textarea identify="contract_text" title="متن قرارداد"  :old="$package->contract_text"/>
+                        <x-admin.input identify="change_reason" title="علت تفییر"/>
+
+                        <x-admin.textarea identify="contract_text" title="متن قرارداد"  :old="$contractText"/>
 
                         <x-admin.textarea identify="contract_attachment" title="پیوست قرارداد"  :old="$package->contract_attachment"/>
 
@@ -63,6 +65,7 @@
 
         <div class="col-xl-6 col-lg-6 col-md-6 col-12">
             @include('package::admin.price.card.list',['prices'=>$package->prices])
+            @include('package::admin.part.history',['package' => $package])
         </div>
     </div>
 @endsection

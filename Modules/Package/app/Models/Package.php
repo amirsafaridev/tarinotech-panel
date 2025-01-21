@@ -45,6 +45,13 @@ class Package extends Model
         return $this->hasOne(PackagePrice::class)->orderByDesc('id');
     }
 
+    public function contractHistories(): HasMany
+    {
+        return $this->hasMany(PackageContractHistory::class)
+            ->limit(10)
+            ->latest();
+    }
+
     public function getPriceForDate($date): PackagePriceResult
     {
         $date = Carbon::parse($date);

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Modules\Package\app\Http\Requests\Admin\StoreRequest;
 use Modules\Package\app\Http\Requests\Admin\UpdateRequest;
 use Modules\Package\app\Models\Package;
+use Modules\Package\App\Models\PackageContractHistory;
 
 class PackageController extends Controller
 {
@@ -48,6 +49,9 @@ class PackageController extends Controller
                 'price' => $request->input('price'),
                 'start_at' => now(),
             ]);
+
+            $this->createContractHistoryIfChanged($package, $item);
+
             DB::commit();
 
             return $this->successResponse();
@@ -58,18 +62,42 @@ class PackageController extends Controller
 
     public function edit(Package $package)
     {
+        $contractText = $package->contract_text;
 
-        $title = self::EDIT_TITLE;
+        $historyId = request()->integer('restore');
+        if ($historyId) {
+            $historyText = PackageContractHistory::query()
+                ->where('package_id', $package->id)
+                ->where('id', $historyId)
+                ->value('contract_content');
 
-        $package->load(['finalPrice', 'prices']);
+            if ($historyText) {
+                $contractText = $historyText;
+            }
+        }
 
-        return view('package::admin.edit', compact('title', 'package'));
+        $package->load([
+            'finalPrice',
+            'prices',
+            'contractHistories.admin',
+        ]);
+
+        return view('package::admin.edit', [
+            'title' => self::EDIT_TITLE,
+            'package' => $package,
+            'contractText' => $contractText,
+        ]);
     }
 
     public function update(UpdateRequest $request, Package $package)
     {
         try {
             DB::beginTransaction();
+
+            $item = $this->prepareItemData($request);
+
+            $this->createContractHistoryIfChanged($package, $item);
+
             $package->update($this->prepareItemData($request));
             $latestPackagePrice = $package->load('finalPrice');
             $inputPrice = (int) $request->input('price');
@@ -125,7 +153,20 @@ class PackageController extends Controller
 
         $item['contract_attachment'] = $request->input('contract_attachment');
         $item['contract_text'] = $request->input('contract_text');
+        $item['change_reason'] = $request->input('change_reason');
 
         return $item;
+    }
+
+    private function createContractHistoryIfChanged(Package $package, array $data): void
+    {
+        if ($package->contract_text !== $data['contract_text']) {
+            PackageContractHistory::create([
+                'package_id' => $package->id,
+                'admin_id' => auth()->id(),
+                'contract_content' => $data['contract_text'],
+                'change_reason' => $data['change_reason'],
+            ]);
+        }
     }
 }

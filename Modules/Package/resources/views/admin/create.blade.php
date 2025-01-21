@@ -39,6 +39,8 @@
 
                         @include('package::admin.part.seo-fields')
 
+                        <x-admin.input identify="change_reason" title="علت تفییر"/>
+
                         <x-admin.textarea identify="contract_text" title="متن قرارداد"/>
 
                         <x-admin.textarea identify="contract_attachment" title="پیوست قرارداد"/>
