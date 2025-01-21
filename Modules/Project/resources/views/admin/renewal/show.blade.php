@@ -98,8 +98,8 @@
                         <table class="table table-hover table-striped align-middle">
                             <thead>
                             <tr>
-                                <th>مبلغ پروژه (ریال)</th>
-                                <th>مبلغ پکیج (ریال)</th>
+                                <th>مبلغ قرارداد (ریال)</th>
+                                <th>مبلغ فعلی پکیج (ریال)</th>
                                 <th>مبلغ براساس پکیج (ریال)</th>
                             </tr>
                             </thead>
@@ -175,7 +175,11 @@
                                             <x-admin.select-enum identify="work_{{ $facility->id }}"
                                                                  :enum-class="\App\Enums\Database\Facility\WorkCycle::class"
                                                                  :old="$facility->work_cycle"/>
-                                            <input type="text" data-jdp class="form-control mt-2 custom-work-input" value="{{ $facility->work_cycle_value }}">
+                                            @if($facility->work_cycle === \App\Enums\Database\Facility\WorkCycle::InputDate)
+                                                <input type="text" data-jdp class="form-control mt-2 custom-work-input" value="{{ $facility->work_cycle_value->toJalali()->format('Y/m/d') }}">
+                                            @else
+                                                <input type="text" data-jdp class="form-control mt-2 custom-work-input" value="{{ $facility->work_cycle_value }}">
+                                            @endif
                                         </td>
 
                                         <td class="align-middle">
@@ -205,18 +209,34 @@
                                 </tr>
 
                             @endif
-                                <tr>
-                                    <td colspan="8" class="align-middle">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <span>مبلغ نهایی : </span>
-                                                <span id="total-price">
-                                                </span>
-                                            </div>
-                                            <button type="button" id="generate-invoice" class="btn btn-lg btn-success">صدور نهایی فاکتور</button>
+                            <tr>
+                                <td colspan="8" class="align-middle">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span>مبلغ نهایی:</span>
+                                            <span class="font-weight-bold">
+                                                @if($projectRenewal->facilities && $projectRenewal->facilities->isNotEmpty())
+                                                    {{ number_format($projectRenewal->facilities->sum('calculated_price') ?? 0) }}
+                                                @else
+                                                    0
+                                                @endif
+                                            </span>
+                                            <span>ریال</span>
                                         </div>
-                                    </td>
-                                </tr>
+                                        <button
+                                            type="button"
+                                            id="generate-invoice"
+                                            class="btn btn-lg btn-success"
+                                            @if(!$projectRenewal->facilities || $projectRenewal->facilities->isEmpty())
+                                                disabled
+                                            @endif
+                                        >
+                                            <i class="fas fa-file-invoice me-2"></i>
+                                            صدور نهایی فاکتور
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>

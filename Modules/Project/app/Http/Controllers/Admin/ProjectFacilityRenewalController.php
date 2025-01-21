@@ -141,7 +141,7 @@ class ProjectFacilityRenewalController extends Controller
                     ->where('calculated_price', '!=', 0)
                     ->get();
 
-                $projectTitle = sprintf('صدور فاکتور تمدید برای پروژه : %s', $project->title);
+                $projectTitle = sprintf('تمدید سالیانه %s (%s)', $project->title, verta($project->renewal_at)->format('Y'));
 
                 // Calculate tax for main project renewal
                 $mainPrice = $projectRenewal->package_calculated_price;
@@ -163,7 +163,7 @@ class ProjectFacilityRenewalController extends Controller
 
                 $items = [[
                     'title' => $projectTitle,
-                    'transaction_category_id' => 10,
+                    'transaction_category_id' => 16, //Annual renewal Category ID
                     'price' => $mainPrice,
                     'tax_rate' => 0.10,
                     'tax_amount' => $mainTaxAmount,
