@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Modules\Package\app\Http\Requests\Admin\StoreRequest;
 use Modules\Package\app\Http\Requests\Admin\UpdateRequest;
 use Modules\Package\app\Models\Package;
-use Modules\Package\App\Models\PackageContractHistory;
+use Modules\Package\app\Models\PackageContractHistory;
 
 class PackageController extends Controller
 {
