@@ -243,6 +243,60 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">فاکتور ها</h5>
+                </div>
+                <div class="card-body">
+                    @if($factors->isNotEmpty())
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped align-middle">
+                                <thead>
+                                <tr>
+                                    <th scope="col">شناسه</th>
+                                    <th scope="col">عنوان</th>
+                                    <th scope="col">مبلغ (ریال)</th>
+                                    <th scope="col">درگاه پرداخت</th>
+                                    <th scope="col">وضعیت</th>
+                                    <th scope="col">تاریخ پرداخت</th>
+                                    <th scope="col">ایجاد</th>
+                                    <th scope="col">عملیات</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($factors as $factor)
+                                    <tr>
+                                        <td>{{ $factor->id }}</td>
+                                        <td>{{ $factor->title ?: 'بدون عنوان' }}</td>
+                                        <td>{{ number_format($factor->final_price) }}</td>
+                                        <td>{{ $factor->gateway ? \Modules\Factor\app\Enums\PaymentGateway::getDescription($factor->gateway) : 'نامشخص' }}</td>
+                                        <td>{!! factorStatusRender($factor->status, $factor->is_confirm) !!}</td>
+                                        <td>{{ $factor->paid_at ? $factor->paid_at->toJalali()->format(formatJalaliDateTime()) : '---' }}</td>
+                                        <td>{{ $factor->created_at->toJalali()->format(formatJalaliDateTime()) }}</td>
+                                        <td>
+                                            <div class="d-flex gap-2">
+                                                <a class="btn btn-sm btn-warning" target="_blank" href="{{ route('admin.factor.edit',$factor->id) }}">{{ __('panel.action.edit') }}</a>
+                                                <a class="btn btn-sm btn-info" target="_blank" href="{{ route('admin.factor.show',$factor->id) }}">{{ __('panel.action.show') }}</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @else
+                        <div class="text-center py-5">
+                            <div class="mb-3">
+                                <i class="bi bi-inbox fs-1 text-muted"></i>
+                            </div>
+                            <h6 class="text-muted">هیچ فاکتوری یافت نشد</h6>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 

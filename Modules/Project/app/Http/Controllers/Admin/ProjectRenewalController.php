@@ -5,6 +5,7 @@ namespace Modules\Project\app\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Traits\HasJsonCommonResponseTrait;
 use Illuminate\Database\Eloquent\Builder;
+use Modules\Factor\app\Models\Factor;
 use Modules\Project\app\Models\ProjectRenewal;
 
 class ProjectRenewalController extends Controller
@@ -81,8 +82,17 @@ class ProjectRenewalController extends Controller
     {
         $projectRenewal = ProjectRenewal::findWithRelations($projectRenewalId);
 
+        $factors = Factor::query()
+            ->where('project_id', $projectRenewal->project_id)
+            ->where('is_automate', true)
+            ->whereHas('items', function ($query) {
+                $query->where('transaction_category_id', 16);
+            })
+            ->latest()
+            ->get();
+
         $title = self::SHOW_TITLE;
 
-        return view('project::admin.renewal.show', compact('title', 'projectRenewal'));
+        return view('project::admin.renewal.show', compact('title', 'projectRenewal', 'factors'));
     }
 }
