@@ -97,7 +97,7 @@ class IndexController extends Controller
             return $this->export($factors->get());
         }
 
-        $factors = $factors->paginate(50);
+        $factors = $factors->paginate(50)->appends(request()->query());
 
         return view('factor::admin.index', compact('title', 'factors'));
     }

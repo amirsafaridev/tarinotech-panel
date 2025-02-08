@@ -4,6 +4,7 @@ namespace Modules\Factor\app\Filters\Factor;
 
 use App\Filters\FilterBase;
 use App\Helpers\Helper;
+use Carbon\Carbon;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Validator;
@@ -28,11 +29,13 @@ class DateFilter extends FilterBase
 
         if ($dateColumn) {
             if ($fromDate) {
-                $query->where($dateColumn, '>=', Helper::toGregorian($fromDate));
+                $query->where($dateColumn, '>=',
+                    Carbon::parse(Helper::toGregorian($fromDate))->startOfMonth()->format('Y-m-d'));
             }
 
             if ($toDate) {
-                $query->where($dateColumn, '<=', Helper::toGregorian($toDate));
+                $query->where($dateColumn, '<=',
+                    Carbon::parse(Helper::toGregorian($toDate))->startOfMonth()->format('Y-m-d'));
             }
         }
 
