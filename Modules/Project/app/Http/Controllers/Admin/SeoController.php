@@ -91,7 +91,8 @@ class SeoController extends Controller
                 SortFilter::class,
             ]);
 
-        $projects = $projects->paginate();
+        $projects = $projects->paginate()
+            ->withQueryString();
 
         return view('project::admin.seo.index', compact('title', 'projects', 'hasPricePermission'));
     }

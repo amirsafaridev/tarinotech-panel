@@ -80,7 +80,8 @@ class ProjectController extends Controller
             return $this->export($projects->get());
         }
 
-        $projects = $projects->paginate();
+        $projects = $projects->paginate()
+            ->withQueryString();
 
         return view('project::admin.index', compact('title', 'projects', 'hasPricePermission'));
     }

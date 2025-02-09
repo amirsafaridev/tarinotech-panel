@@ -83,7 +83,8 @@ class AdsController extends Controller
                 SortFilter::class,
             ]);
 
-        $projects = $projects->paginate();
+        $projects = $projects->paginate()
+            ->withQueryString();
 
         return view('project::admin.ads.index', compact('title', 'projects', 'hasPricePermission'));
     }

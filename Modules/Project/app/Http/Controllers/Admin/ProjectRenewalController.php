@@ -73,7 +73,8 @@ class ProjectRenewalController extends Controller
                     $query->orderBy('created_at', 'desc');
                 }
             )
-            ->paginate()->appends(request()->query());
+            ->paginate()
+            ->withQueryString();
 
         return view('project::admin.renewal.index', compact('title', 'renewals'));
     }

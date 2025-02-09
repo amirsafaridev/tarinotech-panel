@@ -51,6 +51,7 @@ class LogController extends Controller
                 return $query->orderByDesc('id');
             })
             ->paginate(10)
+            ->withQueryString()
             ->setPath(route('admin.log.index'));
 
         return view('log::admin.index', compact('title', 'logs', 'sortItems'));

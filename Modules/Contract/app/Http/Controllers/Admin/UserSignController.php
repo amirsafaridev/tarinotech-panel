@@ -67,7 +67,8 @@ class UserSignController extends Controller
             )
 
             // Paginate results
-            ->paginate()->appends(request()->query());
+            ->paginate()
+            ->withQueryString();
 
         return view('contract::admin.user_signable.index', compact('title', 'userSignables'));
 

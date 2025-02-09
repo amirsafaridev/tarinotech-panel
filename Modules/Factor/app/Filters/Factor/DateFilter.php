@@ -29,13 +29,13 @@ class DateFilter extends FilterBase
 
         if ($dateColumn) {
             if ($fromDate) {
-                $query->where($dateColumn, '>=',
-                    Carbon::parse(Helper::toGregorian($fromDate))->startOfMonth()->format('Y-m-d'));
+                $gregorianFromDate = Helper::toGregorian($fromDate);
+                $query->where($dateColumn, '>=', Carbon::parse($gregorianFromDate)->startOfDay());
             }
 
             if ($toDate) {
-                $query->where($dateColumn, '<=',
-                    Carbon::parse(Helper::toGregorian($toDate))->startOfMonth()->format('Y-m-d'));
+                $gregorianToDate = Helper::toGregorian($toDate);
+                $query->where($dateColumn, '<=', Carbon::parse($gregorianToDate)->endOfDay());
             }
         }
 

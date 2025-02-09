@@ -67,7 +67,8 @@ class SignController extends Controller
             )
 
             // Paginate results
-            ->paginate()->appends(request()->query());
+            ->paginate()
+            ->withQueryString();
 
         return view('contract::admin.signable.index', compact('title', 'signables'));
 

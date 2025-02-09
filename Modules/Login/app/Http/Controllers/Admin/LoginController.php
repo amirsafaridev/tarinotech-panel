@@ -44,7 +44,8 @@ class LoginController extends Controller
             }, function (Builder $query) {
                 return $query->orderByDesc('id');
             })
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         return view('login::admin.index', compact('title', 'sortItems', 'logins'));
     }

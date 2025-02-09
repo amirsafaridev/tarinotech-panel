@@ -4,6 +4,7 @@ namespace Modules\Project\app\Filters\Project;
 
 use App\Filters\FilterBase;
 use App\Helpers\Helper;
+use Carbon\Carbon;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Validator;
@@ -28,11 +29,13 @@ class DateFilter extends FilterBase
 
         if ($dateColumn) {
             if ($fromDate) {
-                $query->where($dateColumn, '>=', Helper::toGregorian($fromDate));
+                $gregorianFromDate = Helper::toGregorian($fromDate);
+                $query->where($dateColumn, '>=', Carbon::parse($gregorianFromDate)->startOfDay());
             }
 
             if ($toDate) {
-                $query->where($dateColumn, '<=', Helper::toGregorian($toDate));
+                $gregorianToDate = Helper::toGregorian($toDate);
+                $query->where($dateColumn, '<=', Carbon::parse($gregorianToDate)->endOfDay());
             }
         }
 

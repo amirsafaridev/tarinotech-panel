@@ -94,7 +94,8 @@ class WebController extends Controller
                 SortFilter::class,
             ]);
 
-        $projects = $projects->paginate();
+        $projects = $projects->paginate()
+            ->withQueryString();
 
         return view('project::admin.web.index', compact('title', 'projects', 'hasPricePermission'));
     }
