@@ -13,7 +13,7 @@ class PackageFilter extends FilterBase
     public function handle(Builder $query, Closure $next)
     {
         $packageId = request('package_id');
-        if (! empty($packageIds) && is_numeric($packageId)) {
+        if (! empty($packageId) && is_numeric($packageId)) {
             $query->where('project_webs.package_id', $packageId);
         }
 
