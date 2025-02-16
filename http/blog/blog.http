@@ -1,0 +1,29 @@
+GET {{ URL }}/blog
+Content-Type: application/json
+Accept: application/json
+
+###
+
+GET {{ URL }}/blog?page=2
+Content-Type: application/json
+Accept: application/json
+
+###
+
+GET {{ URL }}/blog?page=1&category=3
+Content-Type: application/json
+Accept: application/json
+
+###
+
+GET {{ URL }}/blog?page=1&category=3&search=159
+Content-Type: application/json
+Accept: application/json
+
+###
+
+GET {{ URL }}/blog/بلاگ-350
+Content-Type: application/json
+Accept: application/json
+
+###

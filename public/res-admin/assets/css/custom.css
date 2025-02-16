@@ -1,0 +1,16 @@
+.select2-container .select2-selection--single {
+    height: 2.65rem !important;
+}
+.form-help{
+    font-size: 13px;
+    opacity: 0.8;
+    padding: 10px 0;
+}
+.factor-item-price{
+    font-weight: 900;
+    font-size: 28px;
+    line-height: 32px;
+}
+.bg-gray{
+    background-color: #5a6970 !important;
+}

@@ -1,0 +1,24 @@
+GET {{ URL }}/user
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{ TOKEN }}
+###
+
+POST {{ URL }}/user/logout
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{ TOKEN }}
+###
+
+PATCH {{ URL }}/user
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{ TOKEN }}
+
+{
+  "first_name": "ali",
+  "last_name": "mousavi",
+  "en_first_name": "aa",
+  "en_last_name": "bb"
+}
+###

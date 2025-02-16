@@ -1,0 +1,31 @@
+{
+    "name": "tarinotech/middleware",
+    "description": "",
+    "authors": [
+        {
+            "name": "Ali Mousavi",
+            "email": "mosaviali701@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Middleware\\": "",
+            "Modules\\Middleware\\App\\": "app/",
+            "Modules\\Middleware\\Database\\Factories\\": "database/factories/",
+            "Modules\\Middleware\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Middleware\\Tests\\": "tests/"
+        }
+    }
+}

@@ -1,0 +1,268 @@
+<script>
+    const status = $('#status');
+    const projectId = $('#project_id');
+    const projectInfo = $('#project_info');
+    const factorItemContainer = $('#factor_item_container');
+    const btnAddItem = $('#btn_add_item');
+
+    const swalDeleteConfirmationTitle = "حذف";
+    const swalDeleteConfirmationMessage = "آیا مطمئن هستید که میخواهید این مورد را حذف کنید؟";
+    const swalConfirmButtonText = "حذف";
+    const swalCancelButtonText = "صرفه نظر";
+
+    const customCustomerContainer = $('#custom_customer_container');
+    const customCustomer = $('#custom_customer');
+
+    /* Custom User | Project */
+    const projectPrice = $('#project_price');
+    const projectTypeId = $('#project_type_id')
+    const projectStatusId = $('#project_status_id');
+    const projectPackageId = $('#project_package_id');
+
+    /* Cheque */
+    const chequeContainer = $('#cheque_container');
+    const chequeAmount = $('#cheque_amount');
+    const chequeIdentifier = $('#cheque_identifier');
+
+
+    /* Manual */
+    const manualContainer = $('#manual_container');
+
+    $(document).ready(function () {
+
+        jalaliDatepicker.startWatch();
+
+        activeParentUl('{{ route('admin.factor.index') }}');
+        jalaliDatepicker.startWatch();
+
+        select2Setup();
+        projectLoader();
+
+        factorItemSetup();
+        factorItemInputType();
+
+        applyTypeInput();
+
+        /* Custom User | Project */
+        @if(isset($types))
+            setupCustomCustomer();
+            typeStatusSetup();
+            typePackageSetup();
+        @endif
+
+        /* Cheque Setup */
+        /* Manual Setup */
+        statusSetup();
+    })
+
+    function statusSetup(){
+        status.change(function (){
+            const status = $(this).val();
+            chequeContainer.fadeOut();
+            manualContainer.fadeOut();
+
+            if(parseInt(status) === parseInt('{{ \Modules\Factor\app\Enums\FactorStatus::PaidWithCheque }}')){
+                chequeContainer.fadeIn();
+            }
+            else if(parseInt(status) === parseInt('{{ \Modules\Factor\app\Enums\FactorStatus::PaidManual }}')){
+                manualContainer.fadeIn();
+            }
+        });
+        status.trigger('change');
+    }
+
+    function applyTypeInput() {
+        makeInputPrice(projectPrice);
+        makeInputPrice(chequeAmount);
+        makeInputNumber(chequeIdentifier);
+    }
+
+    function select2Setup() {
+        projectId.select2();
+
+        setTimeout(function (){
+            projectId.trigger('change')
+        },200)
+    }
+
+    function projectLoader() {
+
+        customCustomer.prop('disabled', true);
+        projectId.change(function () {
+            const value = $(this).val();
+            if(value === ''){
+                customCustomer.prop('disabled', false);
+                projectInfo.html('');
+                return;
+            }
+
+            postAjax('{{ route('admin.ajax.project.single') }}', {
+                projectId: value
+            })
+                .then(function (response) {
+                    projectInfo.html(response.html)
+                })
+                .catch(function (response) {
+                    showToast(response);
+                    console.log(response);
+                });
+        });
+    }
+
+    function factorItemSetup() {
+        let itemCount = 0;
+        @if(isset($factor))
+            itemCount = {{ $factor->items->count() }};
+        @endif
+        btnAddItem.click(function () {
+            getAjax('{{ route('admin.factor.item.view') }}')
+                .then(function (response) {
+                    let dataResource = response.html;
+                    dataResource = dataResource.replace(/__INDEX__/g, itemCount);
+                    factorItemContainer.append(dataResource);
+                    itemCount++;
+                    factorItemInputType();
+                })
+                .catch(function (response) {
+                    showToast(response);
+                });
+        });
+
+        factorItemContainer.on('click', '.btn-remove', function () {
+            const self = $(this);
+
+            swal({
+                title: swalDeleteConfirmationTitle,
+                text: swalDeleteConfirmationMessage,
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#ff0f3b",
+                confirmButtonText: swalConfirmButtonText,
+                cancelButtonText: swalCancelButtonText,
+                closeOnConfirm: true
+            }, function () {
+                self.closest('.card-factor-item').remove();
+                itemCount--;
+            });
+        });
+    }
+
+    function factorItemInputType() {
+        $('input.offer-input').each(function () {
+            const input = $(this);
+            priceInputMaker(input);
+            input.on("input", function () {
+                updateTotalPrice(input);
+            });
+        });
+
+        $('input.price-input').each(function () {
+            const input = $(this);
+            priceInputMaker(input);
+
+            input.on("input", function () {
+                const priceInput = $(this);
+                const value = parseInt(priceInput.val().replace(/,/g, ''), 10) || 0;
+
+                const taxInput = priceInput.parent().parent().parent().find('.tax-input');
+
+                const taxRate = Number('{{ config('factor.tax') }}');
+                if (value <= 0) {
+                    taxInput.val(0);
+                } else {
+                    let taxCalc = Math.round(value * taxRate);
+                    taxInput.val(numberWithCommas(taxCalc))
+                }
+                updateTotalPrice(input);
+            })
+        })
+    }
+
+    function priceInputMaker(input) {
+        input.off('click');
+        input.off('input');
+        input.off('change');
+        makeInputPrice(input);
+    }
+
+    function updateTotalPrice(card) {
+        const cardItem = card.parent().parent().parent().parent().parent();
+        const h4FinalPrice = cardItem.find('.factor-item-price');
+
+        let totalPrice = 0;
+        let totalSub = 0;
+
+        cardItem.find('.calc').each(function () {
+
+            const inputInProcess = $(this);
+            let price = parseInt(inputInProcess.val().replace(/,/g, ''), 10) || 0;
+
+            if (inputInProcess.hasClass('offer-input')) {
+                totalSub += price;
+            } else {
+                totalPrice += price;
+            }
+        });
+        h4FinalPrice.text(numberWithCommas(totalPrice - totalSub));
+    }
+
+    @if(isset($types))
+        function typeStatusSetup() {
+            const jsonTypeWithStatuses = @json( $types);
+            projectTypeId.change(function () {
+                const id = parseInt($(this).val());
+                const type = jsonTypeWithStatuses.find(function (item) {
+                    return item.id === id;
+                })
+                if (type) {
+                    projectStatusId.empty();
+                    type.statuses.forEach(function (status) {
+                        const option = $('<option>', {
+                            value: status.id,
+                            text: status.title
+                        });
+                        projectStatusId.append(option);
+                    });
+                }
+            });
+            projectTypeId.trigger('change');
+        }
+
+        function typePackageSetup() {
+            const jsonTypeWithPackages = @json( $packages);
+
+            projectTypeId.change(function () {
+                const id = parseInt($(this).val());
+                const packages = jsonTypeWithPackages.filter(function (item) {
+                    return item.type_id === id;
+                })
+                projectPackageId.empty();
+                packages.forEach(function (status) {
+                    const option = $('<option>', {
+                        value: status.id,
+                        text: status.title
+                    });
+                    projectPackageId.append(option);
+                });
+            });
+            projectTypeId.trigger('change');
+        }
+
+        function setupCustomCustomer() {
+            customCustomer.change(function () {
+                if ($(this).is(':checked')) {
+                    customCustomerContainer.fadeIn();
+                    projectId.val("");
+                    projectId.prop('disabled', true);
+                    projectId.prop('readonly', true);
+                    projectId.trigger("change")
+                } else {
+                    customCustomerContainer.fadeOut();
+                    projectId.prop('disabled', false);
+                    projectId.prop('readonly', false);
+                }
+            });
+            customCustomer.trigger('change');
+        }
+    @endif
+</script>

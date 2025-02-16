@@ -1,0 +1,12 @@
+GET {{ URL }}/setting
+Content-Type: application/json
+Accept: application/json
+
+###
+
+GET {{ URL }}/setting/enums
+Content-Type: application/json
+Accept: application/json
+
+###
+

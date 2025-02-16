@@ -1,0 +1,11 @@
+{
+    "name": "Middleware",
+    "alias": "middleware",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Middleware\\app\\Providers\\MiddlewareServiceProvider"
+    ],
+    "files": []
+}

@@ -1,0 +1,28 @@
+POST {{ URL }}/auth/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "identify": "09355502763"
+}
+
+###
+
+POST {{ URL }}/auth/verify
+Content-Type: application/json
+Accept: application/json
+
+{
+  "identify": "09355502763",
+  "code": "8851"
+}
+
+###
+
+POST {{ URL }}/auth/dev-login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "mobile": "09033609009"
+}

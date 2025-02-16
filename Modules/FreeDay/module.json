@@ -1,0 +1,11 @@
+{
+    "name": "FreeDay",
+    "alias": "freeday",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\FreeDay\\app\\Providers\\FreeDayServiceProvider"
+    ],
+    "files": []
+}

@@ -1,0 +1,13 @@
+{
+    "name": "Factor",
+    "alias": "factor",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Factor\\app\\Providers\\FactorServiceProvider"
+    ],
+    "files": [
+        "app/Helpers/helper.php"
+    ]
+}

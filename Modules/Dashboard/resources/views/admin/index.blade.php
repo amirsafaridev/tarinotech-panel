@@ -1,0 +1,104 @@
+@extends('admin.master')
+@section('title') {{ $title }} @endsection
+@section('head')
+
+@endsection
+@section('content')
+
+    <div class="page-header">
+        <h1 class="page-title">{{ trans('panel.dashboard.title') }}</h1>
+        <div>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 mb-2">
+            @include('admin.partial.message')
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-order">
+                        <h2 class="text-end">
+                            <i class="fal fa-user icon-size float-start text-danger text-danger-shadow p-3"></i>
+                            <span>{{ number_format($data['admins_count']) }}</span>
+                        </h2>
+                        <div class="mb-0 pt-5">
+                            <span>{{ trans('panel.dashboard.total_admin') }}</span>
+                            <span class="float-end">
+                                <a class="btn btn-sm btn-light" href="{{ route('admin.admin.index') }}">{{ trans('panel.dashboard.show_link') }}</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-order">
+                        <h2 class="text-end">
+                            <i class="fal fa-globe icon-size float-start text-success text-success-shadow p-3"></i>
+                            <span>{{ number_format($data['project_web_count']) }}</span>
+                        </h2>
+                        <div class="mb-0 pt-5">
+                            <span>پروژه های وب</span>
+                            <span class="float-end">
+                                <a class="btn btn-sm btn-light" href="{{ route('admin.project.web.index') }}">{{ trans('panel.dashboard.show_link') }}</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-order">
+                        <h2 class="text-end">
+                            <i class="fal fa-list-numeric icon-size float-start text-info text-info-shadow p-3"></i>
+                            <span>{{ number_format($data['project_seo_count']) }}</span>
+                        </h2>
+                        <div class="mb-0 pt-5">
+                            <span>پروژه های سئو</span>
+                            <span class="float-end">
+                                <a class="btn btn-sm btn-light" href="{{ route('admin.project.seo.index') }}">{{ trans('panel.dashboard.show_link') }}</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-order">
+                        <h2 class="text-end">
+                            <i class="fal fa-bullhorn icon-size float-start text-warning text-warning-shadow p-3"></i>
+                            <span>{{ number_format($data['project_ads_count']) }}</span>
+                        </h2>
+                        <div class="mb-0 pt-5">
+                            <span>پروژه های ادوورز</span>
+                            <span class="float-end">
+                                <a class="btn btn-sm btn-light" href="{{ route('admin.project.ads.index') }}">{{ trans('panel.dashboard.show_link') }}</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+    </div>
+@endsection
+@section('script')
+
+@endsection

@@ -1,0 +1,5 @@
+# List CHAT
+GET {{ URL }}/chat
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{ TOKEN }}

@@ -1,0 +1,12 @@
+.factor .icon-check{
+    font-size: 22px;
+}
+.card-factor{
+    padding: 20px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    min-width: 450px;
+    border-radius: 20px;
+}
+.factor .title{
+    font-size: 22px;
+}

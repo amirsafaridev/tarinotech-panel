@@ -1,0 +1,6 @@
+@import "fonts.css";
+@import "../plugins/bootstrap/css/bootstrap.rtl.min.css";
+@import "../font-awesome/css/fontawesome.min.css";
+body {
+    font-family: "Yekan_Bakh", sans-serif;
+}

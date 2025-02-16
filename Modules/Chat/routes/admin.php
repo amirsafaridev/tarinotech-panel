@@ -1,0 +1,61 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use Modules\Chat\app\Http\Controllers\Admin\AttachmentController;
+use Modules\Chat\app\Http\Controllers\Admin\ChatController;
+use Modules\Chat\app\Http\Controllers\Admin\MessageController;
+use Modules\Chat\app\Http\Middleware\ChatAccess;
+use Modules\Chat\app\Http\Middleware\MessageAccess;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::group(['guard' => 'admin'], function () {
+
+    Route::post('/close', [ChatController::class, 'close'])
+        ->middleware([ChatAccess::class])
+        ->name('close');
+
+    Route::group(['as' => 'message.', 'prefix' => 'message'], function () {
+        Route::post('/', [MessageController::class, 'index'])
+            ->middleware([ChatAccess::class])
+            ->name('index');
+
+        Route::post('/edit', [MessageController::class, 'edit'])
+            ->middleware([ChatAccess::class])
+            ->name('edit');
+
+        Route::post('/store', [MessageController::class, 'store'])
+            ->middleware([ChatAccess::class])
+            ->name('store');
+
+        Route::post('/destroy', [MessageController::class, 'destroy'])
+            ->middleware([MessageAccess::class])
+            ->name('destroy');
+
+        Route::post('/{messageId}/update', [MessageController::class, 'update'])
+            ->middleware([ChatAccess::class])
+            ->name('update');
+    });
+});
+
+Route::group(['guard' => 'admin'], function () {
+    Route::group(['as' => 'attachment.', 'prefix' => 'attachment'], function () {
+
+        Route::post('/', [AttachmentController::class, 'upload'])
+            ->middleware([ChatAccess::class])
+            ->name('upload');
+
+        Route::post('/destroy', [AttachmentController::class, 'destroy'])
+            ->middleware([MessageAccess::class])
+            ->name('destroy');
+    });
+});
