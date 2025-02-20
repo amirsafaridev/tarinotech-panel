@@ -181,6 +181,7 @@ class ProjectController extends Controller
             'target.signable.files',
             'target.userSignable.attachments',
             'target.userSignable.files',
+            'facilities',
         ]);
     }
 }

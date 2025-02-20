@@ -64,10 +64,20 @@
                 <td>وضعیت پروژه</td>
                 <td>{{ $project->status->title }}</td>
             </tr>
+
             @if($project->businessDomain)
                 <tr>
                     <td>زمینه کاری</td>
                     <td>{{ $project->businessDomain->title }}</td>
+                </tr>
+            @endif
+
+            @if($project->facilities->isNotEmpty())
+                <tr>
+                    <td>ویژگی‌ها</td>
+                    <td>
+                        <span>{{ $project->facilities->pluck('title')->implode(', ') }}</span>
+                    </td>
                 </tr>
             @endif
 
