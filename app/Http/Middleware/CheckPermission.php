@@ -19,7 +19,6 @@ class CheckPermission
             ->upper()
             ->replace(['.', '-'], '_')
             ->toString();
-
         $allowPermissions = [
             'ADMIN_ADMIN_PROFILE_INDEX',
             'ADMIN_ADMIN_PROFILE_UPDATE',

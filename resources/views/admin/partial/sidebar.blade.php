@@ -35,6 +35,7 @@
                     <li class="sub-category">
                         <h3>مدیریت پرسنل</h3>
                     </li>
+                    
                     <li class="slide can-expand">
                         <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navAdmin">
                             <i class="side-menu__icon fal fa-user"></i>
@@ -68,6 +69,9 @@
                             @can('ADMIN_REPORT_GOAL_GROUP')
                                 <li><a href="{{ route('admin.report.goal-group') }}" class="slide-item">گزارش هدف های
                                         گروهی</a></li>
+                            @endcan
+                            @can('ADMIN_ADMIN_PERSONNEL_ASSISTANCE_INDEX')
+                                <li><a href="{{ route('admin.admin.personnel-assistance.index') }}" class="slide-item">مساعده</a></li>
                             @endcan
                         </ul>
                     </li>

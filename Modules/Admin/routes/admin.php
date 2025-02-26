@@ -5,7 +5,9 @@ use Modules\Admin\app\Http\Controllers\Admin\GoalController;
 use Modules\Admin\app\Http\Controllers\Admin\Google2FAController;
 use Modules\Admin\app\Http\Controllers\Admin\JobTitleController;
 use Modules\Admin\app\Http\Controllers\Admin\PasswordController;
+use Modules\Admin\app\Http\Controllers\Admin\PersonnelAssistanceController;
 use Modules\Admin\app\Http\Controllers\Admin\ProfileController;
+use Modules\Admin\app\Models\PersonnelAssistance;
 
 Route::group(['guard' => 'admin'], function () {
 
@@ -37,6 +39,15 @@ Route::group(['guard' => 'admin'], function () {
         Route::patch('/{job_title}', [JobTitleController::class, 'update'])->name('update');
         Route::delete('/{job_title}', [JobTitleController::class, 'destroy'])->name('destroy');
     });
+
+    Route::group(['prefix' => 'personnel-assistance' , 'as' => 'personnel-assistance.'], function () {
+        Route::get('/', [PersonnelAssistanceController::class, 'index'])->name('index');
+        Route::get('/create', [PersonnelAssistanceController::class, 'create'])->name('create');
+        Route::get('/{personnelAssistance}', [PersonnelAssistanceController::class, 'edit'])->name('edit');
+        Route::post('/', [PersonnelAssistanceController::class, 'store'])->name('store');
+        Route::patch('/{personnelAssistance}', [PersonnelAssistanceController::class, 'update'])->name('update');
+        Route::delete('/{personnelAssistance}', [PersonnelAssistanceController::class, 'destroy'])->name('destroy');
+    });
     Route::group([], function () {
         Route::get('/{admin}', [AdminController::class, 'edit'])->name('edit');
         Route::get('/{admin}/show', [AdminController::class, 'show'])->name('show');
@@ -50,5 +61,7 @@ Route::group(['guard' => 'admin'], function () {
         Route::post('/{admin}/goal', [GoalController::class, 'save'])->name('goal.save');
 
     })->whereNumber('admin');
+    
+    
 
 });

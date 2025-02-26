@@ -13,6 +13,7 @@ class RedirectIfAdmin
      */
     public function handle(Request $request, Closure $next, string $guard = 'admin'): mixed
     {
+
         if (Auth::guard($guard)->check()) {
             Auth::shouldUse($guard);
 
