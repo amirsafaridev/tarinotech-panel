@@ -13,7 +13,6 @@ class UpdateRequest extends FormRequest
     {
         return [
             'price' => 'required|numeric',
-            'reason' => 'required',
             'description' => 'required',
         ];
     }

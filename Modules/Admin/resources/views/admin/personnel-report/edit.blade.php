@@ -13,7 +13,7 @@
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.admin.personnel-assistance.index') }}">مساعده</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.admin.personnel-report.index') }}">گزارش تردد و مرخصی</a></li>
                 <li class="breadcrumb-item active">ویرایش</li>
             </ol>
         </div>
@@ -24,11 +24,11 @@
             <div class="card">
                 <div class="card-body pb-4">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ route('admin.admin.personnel-assistance.update',$personnelAssistance->id) }}">
+                    <form class="request-form forms-sample" method="post" action="{{ route('admin.admin.personnel-report.update',$personnelReport->id) }}">
                         @csrf
                         @method('PATCH')
-                            <x-admin.input identify="price" title="مبلغ" :old="$personnelAssistance->price"/>
-                            <x-admin.input identify="description" title="توضیحات" :old="$personnelAssistance->description"/>
+                            <x-admin.input identify="price" title="مبلغ" :old="$personnelReport->price"/>
+                            <x-admin.input identify="description" title="توضیحات" :old="$personnelReport->description"/>
                         <x-admin.button title="ویرایش"/>
 
                         <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
@@ -38,7 +38,7 @@
         </div>
     </div>
 
-    <form id="deleteItem" action="{{ route('admin.admin.personnel-assistance.destroy',$personnelAssistance->id) }}" method="post" class="form-inline">
+    <form id="deleteItem" action="{{ route('admin.admin.personnel-report.destroy',$personnelReport->id) }}" method="post" class="form-inline">
         @csrf
         @method('DELETE')
     </form>
@@ -50,7 +50,7 @@
     ]])
     <script>
         $(document).ready(function () {
-            activeParentUl('{{ route('admin.admin.personnel-assistance.index') }}');
+            activeParentUl('{{ route('admin.admin.personnel-report.index') }}');
         })
     </script>
 @endsection

@@ -91,6 +91,9 @@ class TypeController extends Controller
     protected function prepareItemData(Request $request): array
     {
         $item['title'] = $request->input('title');
+        $item['eua_expert_price'] = $request->input('eua_expert_price');
+        $item['euc_expert_price'] = $request->input('euc_expert_price');
+
         $item['base_id'] = $request->input('base_id');
         $item['note'] = $request->input('note');
 

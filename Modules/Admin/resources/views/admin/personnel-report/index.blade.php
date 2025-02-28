@@ -19,9 +19,9 @@
         <div class="col-xl-12 col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title">مساعده ها</h3>
-                    @can('ADMIN_ADMIN_PERSONNEL_ASSISTANCE_CREATE')
-                        <a class="btn btn-success btn-sm" href="{{ route('admin.admin.personnel-assistance.create') }}">ایجاد درخواست مساعده</a>
+                    <h3 class="card-title">گزارش تردد و مرخصی ها</h3>
+                    @can('ADMIN_ADMIN_PERSONNEL_REPORT_CREATE')
+                        <a class="btn btn-success btn-sm" href="{{ route('admin.admin.personnel-report.create') }}">ایجاد تردد و مرخصی</a>
                     @endcan
                 </div>
                 <div class="card-body">
@@ -41,19 +41,19 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @if($personnelAssistances->isNotEmpty())
-                                @foreach($personnelAssistances as $personnelAssistance)
+                            @if($personnelReports->isNotEmpty())
+                                @foreach($personnelReports as $personnelReport)
                                     <tr>
-                                        <td>{{ $personnelAssistance->id }}</td>
+                                        <td>{{ $personnelReport->id }}</td>
 
-                                        <td>{{ $personnelAssistance->user->first_name. " " . $personnelAssistance->user->last_name  }}</td>
+                                        <td>{{ $personnelReport->user->first_name. " " . $personnelReport->user->last_name  }}</td>
 
-                                        <td>{{ $personnelAssistance->price }}</td>
-                                        <td>{{ $personnelAssistance->description }}</td>
+                                        <td>{{ $personnelReport->price }}</td>
+                                        <td>{{ $personnelReport->description }}</td>
 
                                      
                                         <td>
-                                            <a href="{{ route('admin.admin.personnel-assistance.edit',$personnelAssistance->id) }}" class="btn btn-warning btn-sm">ویرایش</a>
+                                            <a href="{{ route('admin.admin.personnel-report.edit',$personnelReport->id) }}" class="btn btn-warning btn-sm">ویرایش</a>
                                         </td>
                                     </tr>
                                 @endforeach

@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Admin\app\Http\Requests\Admin\PersonnelAssistance;
+namespace Modules\Admin\app\Http\Requests\Admin\PersonnelReport;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +14,6 @@ class StoreRequest extends FormRequest
         return [
             'price' => 'required|numeric',
             'description' => 'required',
-
         ];
     }
 

@@ -6,8 +6,10 @@ use Modules\Admin\app\Http\Controllers\Admin\Google2FAController;
 use Modules\Admin\app\Http\Controllers\Admin\JobTitleController;
 use Modules\Admin\app\Http\Controllers\Admin\PasswordController;
 use Modules\Admin\app\Http\Controllers\Admin\PersonnelAssistanceController;
+use Modules\Admin\app\Http\Controllers\Admin\PersonnelSalaryController;
+use Modules\Admin\app\Http\Controllers\Admin\PersonnelReportController;
+
 use Modules\Admin\app\Http\Controllers\Admin\ProfileController;
-use Modules\Admin\app\Models\PersonnelAssistance;
 
 Route::group(['guard' => 'admin'], function () {
 
@@ -47,6 +49,22 @@ Route::group(['guard' => 'admin'], function () {
         Route::post('/', [PersonnelAssistanceController::class, 'store'])->name('store');
         Route::patch('/{personnelAssistance}', [PersonnelAssistanceController::class, 'update'])->name('update');
         Route::delete('/{personnelAssistance}', [PersonnelAssistanceController::class, 'destroy'])->name('destroy');
+    });
+    Route::group(['prefix' => 'personnel-salary' , 'as' => 'personnel-salary.'], function () {
+        Route::get('/', [PersonnelSalaryController::class, 'index'])->name('index');
+        Route::get('/create', [PersonnelSalaryController::class, 'create'])->name('create');
+        Route::get('/{personnelSalary}', [PersonnelSalaryController::class, 'edit'])->name('edit');
+        Route::post('/', [PersonnelSalaryController::class, 'store'])->name('store');
+        Route::patch('/{personnelSalary}', [PersonnelSalaryController::class, 'update'])->name('update');
+        Route::delete('/{personnelSalary}', [PersonnelSalaryController::class, 'destroy'])->name('destroy');
+    });
+    Route::group(['prefix' => 'personnel-report' , 'as' => 'personnel-report.'], function () {
+        Route::get('/', [PersonnelReportController::class, 'index'])->name('index');
+        Route::get('/create', [PersonnelReportController::class, 'create'])->name('create');
+        Route::get('/{personnelReport}', [PersonnelReportController::class, 'edit'])->name('edit');
+        Route::post('/', [PersonnelReportController::class, 'store'])->name('store');
+        Route::patch('/{personnelReport}', [PersonnelReportController::class, 'update'])->name('update');
+        Route::delete('/{personnelReport}', [PersonnelReportController::class, 'destroy'])->name('destroy');
     });
     Route::group([], function () {
         Route::get('/{admin}', [AdminController::class, 'edit'])->name('edit');

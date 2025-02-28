@@ -19,9 +19,9 @@
         <div class="col-xl-12 col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title">مساعده ها</h3>
-                    @can('ADMIN_ADMIN_PERSONNEL_ASSISTANCE_CREATE')
-                        <a class="btn btn-success btn-sm" href="{{ route('admin.admin.personnel-assistance.create') }}">ایجاد درخواست مساعده</a>
+                    <h3 class="card-title">تنخواه ها</h3>
+                    @can('ADMIN_ADMIN_PERSONNEL_SALARY_CREATE')
+                        <a class="btn btn-success btn-sm" href="{{ route('admin.admin.personnel-salary.create') }}">ایجاد درخواست تنخواه</a>
                     @endcan
                 </div>
                 <div class="card-body">
@@ -41,19 +41,19 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @if($personnelAssistances->isNotEmpty())
-                                @foreach($personnelAssistances as $personnelAssistance)
+                            @if($personnelSalaries->isNotEmpty())
+                                @foreach($personnelSalaries as $personnelSalary)
                                     <tr>
-                                        <td>{{ $personnelAssistance->id }}</td>
+                                        <td>{{ $personnelSalary->id }}</td>
 
-                                        <td>{{ $personnelAssistance->user->first_name. " " . $personnelAssistance->user->last_name  }}</td>
+                                        <td>{{ $personnelSalary->user->first_name. " " . $personnelSalary->user->last_name  }}</td>
 
-                                        <td>{{ $personnelAssistance->price }}</td>
-                                        <td>{{ $personnelAssistance->description }}</td>
+                                        <td>{{ $personnelSalary->price }}</td>
+                                        <td>{{ $personnelSalary->description }}</td>
 
                                      
                                         <td>
-                                            <a href="{{ route('admin.admin.personnel-assistance.edit',$personnelAssistance->id) }}" class="btn btn-warning btn-sm">ویرایش</a>
+                                            <a href="{{ route('admin.admin.personnel-salary.edit',$personnelSalary->id) }}" class="btn btn-warning btn-sm">ویرایش</a>
                                         </td>
                                     </tr>
                                 @endforeach

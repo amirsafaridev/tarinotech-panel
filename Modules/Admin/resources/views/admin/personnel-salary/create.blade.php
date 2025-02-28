@@ -13,7 +13,7 @@
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.admin.personnel-assistance.index') }}">مساعده</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.admin.personnel-salary.index') }}">تنخواه</a></li>
                 <li class="breadcrumb-item active">ایجاد</li>
             </ol>
         </div>
@@ -24,7 +24,7 @@
             <div class="card">
                 <div class="card-body pb-4">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ route('admin.admin.personnel-assistance.store') }}">
+                    <form class="request-form forms-sample" method="post" action="{{ route('admin.admin.personnel-salary.store') }}">
                         @csrf
 
                         <x-admin.input identify="price" title="مبلغ"/>
@@ -41,7 +41,7 @@
     @include('admin.partial.request')
     <script>
         $(document).ready(function () {
-            activeParentUl('{{ route('admin.admin.personnel-assistance.index') }}');
+            activeParentUl('{{ route('admin.admin.personnel-salary.index') }}');
         })
     </script>
 @endsection
