@@ -9,6 +9,7 @@ use Modules\Admin\app\Http\Controllers\Admin\PersonnelAssistanceController;
 use Modules\Admin\app\Http\Controllers\Admin\PersonnelSalaryController;
 use Modules\Admin\app\Http\Controllers\Admin\PersonnelReportController;
 use Modules\Admin\app\Http\Controllers\Admin\VariableAmountController;
+use Modules\Admin\app\Http\Controllers\Admin\FixedAmountController;
 
 use Modules\Admin\app\Http\Controllers\Admin\ProfileController;
 
@@ -74,6 +75,14 @@ Route::group(['guard' => 'admin'], function () {
         Route::post('/', [VariableAmountController::class, 'store'])->name('store');
         Route::patch('/{variableAmount}', [VariableAmountController::class, 'update'])->name('update');
         Route::delete('/{variableAmount}', [VariableAmountController::class, 'destroy'])->name('destroy');
+    });
+    Route::group(['prefix' => 'fixed-amount' , 'as' => 'fixed-amount.'], function () {
+        Route::get('/', [FixedAmountController::class, 'index'])->name('index');
+        Route::get('/create', [FixedAmountController::class, 'create'])->name('create');
+        Route::get('/{fixedAmount}', [FixedAmountController::class, 'edit'])->name('edit');
+        Route::post('/', [FixedAmountController::class, 'store'])->name('store');
+        Route::patch('/{fixedAmount}', [FixedAmountController::class, 'update'])->name('update');
+        Route::delete('/{fixedAmount}', [FixedAmountController::class, 'destroy'])->name('destroy');
     });
     Route::group([], function () {
         Route::get('/{admin}', [AdminController::class, 'edit'])->name('edit');

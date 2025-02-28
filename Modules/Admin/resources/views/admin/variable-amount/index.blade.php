@@ -19,9 +19,9 @@
         <div class="col-xl-12 col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title">مبالغ متغیر ها</h3>
+                    <h3 class="card-title">مبالغ متغیر </h3>
                     @can('ADMIN_ADMIN_VARIABLE_AMOUNT_CREATE')
-                        <a class="btn btn-success btn-sm" href="{{ route('admin.admin.variable-amount.create') }}">ایجاد درخواست مبالغ متغیر</a>
+                        <a class="btn btn-success btn-sm" href="{{ route('admin.admin.variable-amount.create') }}">ایجاد درخواست مبلغ متغیر</a>
                     @endcan
                 </div>
                 <div class="card-body">
