@@ -8,6 +8,7 @@ use Modules\Admin\app\Http\Controllers\Admin\PasswordController;
 use Modules\Admin\app\Http\Controllers\Admin\PersonnelAssistanceController;
 use Modules\Admin\app\Http\Controllers\Admin\PersonnelSalaryController;
 use Modules\Admin\app\Http\Controllers\Admin\PersonnelReportController;
+use Modules\Admin\app\Http\Controllers\Admin\VariableAmountController;
 
 use Modules\Admin\app\Http\Controllers\Admin\ProfileController;
 
@@ -65,6 +66,14 @@ Route::group(['guard' => 'admin'], function () {
         Route::post('/', [PersonnelReportController::class, 'store'])->name('store');
         Route::patch('/{personnelReport}', [PersonnelReportController::class, 'update'])->name('update');
         Route::delete('/{personnelReport}', [PersonnelReportController::class, 'destroy'])->name('destroy');
+    });
+    Route::group(['prefix' => 'variable-amount' , 'as' => 'variable-amount.'], function () {
+        Route::get('/', [VariableAmountController::class, 'index'])->name('index');
+        Route::get('/create', [VariableAmountController::class, 'create'])->name('create');
+        Route::get('/{variableAmount}', [VariableAmountController::class, 'edit'])->name('edit');
+        Route::post('/', [VariableAmountController::class, 'store'])->name('store');
+        Route::patch('/{variableAmount}', [VariableAmountController::class, 'update'])->name('update');
+        Route::delete('/{variableAmount}', [VariableAmountController::class, 'destroy'])->name('destroy');
     });
     Route::group([], function () {
         Route::get('/{admin}', [AdminController::class, 'edit'])->name('edit');

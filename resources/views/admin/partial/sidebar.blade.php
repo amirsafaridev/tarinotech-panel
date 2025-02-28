@@ -31,7 +31,7 @@
                     </a>
                 </li>
 
-                @canany(['ADMIN_ADMIN_INDEX','ADMIN_ADMIN_CREATE','ADMIN_ADMIN_JOB_TITLE_INDEX','ADMIN_ADMIN_GROUP_GOAL','ADMIN_REPORT_GOAL','ADMIN_REPORT_GOAL_GROUP','ADMIN_ADMIN_PERSONNEL_ASSISTANCE_INDEX','ADMIN_ADMIN_PERSONNEL_SALARY_INDEX','ADMIN_ADMIN_PERSONNEL_REPORT_INDEX'])
+                @canany(['ADMIN_ADMIN_INDEX','ADMIN_ADMIN_CREATE','ADMIN_ADMIN_JOB_TITLE_INDEX','ADMIN_ADMIN_GROUP_GOAL','ADMIN_REPORT_GOAL','ADMIN_REPORT_GOAL_GROUP','ADMIN_ADMIN_PERSONNEL_ASSISTANCE_INDEX','ADMIN_ADMIN_PERSONNEL_SALARY_INDEX','ADMIN_ADMIN_PERSONNEL_REPORT_INDEX', 'ADMIN_ADMIN_VARIABLE_AMOUNT_INDEX'])
                     <li class="sub-category">
                         <h3>مدیریت پرسنل</h3>
                     </li>
@@ -69,6 +69,9 @@
                             @can('ADMIN_REPORT_GOAL_GROUP')
                                 <li><a href="{{ route('admin.report.goal-group') }}" class="slide-item">گزارش هدف های
                                         گروهی</a></li>
+                            @endcan
+                            @can('ADMIN_ADMIN_VARIABLE_AMOUNT_INDEX')
+                            <li><a href="{{ route('admin.admin.variable-amount.index') }}" class="slide-item">مساعده ها</a></li>
                             @endcan
                             @can('ADMIN_ADMIN_PERSONNEL_ASSISTANCE_INDEX')
                                 <li><a href="{{ route('admin.admin.personnel-assistance.index') }}" class="slide-item">مساعده ها</a></li>
