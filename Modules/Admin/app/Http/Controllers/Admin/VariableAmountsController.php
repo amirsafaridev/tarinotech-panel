@@ -26,7 +26,8 @@ class VariableAmountController extends Controller
     {
         $title = self::INDEX_TITLE;
         $variableAmounts = VariableAmount::query()->get();
-        return view('admin::admin.variable-amount.index',compact('title','variableAmounts'));
+
+        return view('admin::admin.variable-amount.index', compact('title', 'variableAmounts'));
     }
 
     /**
@@ -36,7 +37,7 @@ class VariableAmountController extends Controller
     {
         $title = self::CREATE_TITLE;
 
-        return view('admin::admin.variable-amount.create',compact('title'));
+        return view('admin::admin.variable-amount.create', compact('title'));
     }
 
     /**
@@ -46,13 +47,12 @@ class VariableAmountController extends Controller
     {
         try {
             DB::beginTransaction();
-            $inputs=$request->all();
-            $inputs['user_id']=Auth::user()->id;
+            $inputs = $request->all();
+            $inputs['user_id'] = Auth::user()->id;
             VariableAmount::query()->create($inputs);
             DB::commit();
 
             return $this->successResponse();
-
         } catch (Exception $exception) {
             DB::rollBack();
 
@@ -75,7 +75,7 @@ class VariableAmountController extends Controller
     {
         $title = self::EDIT_TITLE;
 
-        return view('admin::admin.variable-amount.edit',compact('title','variableAmount'));
+        return view('admin::admin.variable-amount.edit', compact('title', 'variableAmount'));
     }
 
     /**
@@ -105,7 +105,6 @@ class VariableAmountController extends Controller
             $variableAmount->delete();
 
             return $this->successDestroyBack(route('admin.admin.variable-amount.index'));
-
         } catch (Exception $exception) {
             return $this->exceptionBack($exception);
         }

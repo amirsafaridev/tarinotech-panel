@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Traits\HasJsonCommonResponseTrait;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Modules\Admin\app\Http\Requests\Admin\VariableAmount\StoreRequest;
-use Modules\Admin\app\Http\Requests\Admin\VariableAmount\UpdateRequest;
+use Modules\Admin\app\Http\Requests\Admin\FixedAmount\StoreRequest;
+use Modules\Admin\app\Http\Requests\Admin\FixedAmount\UpdateRequest;
 use Modules\Admin\app\Models\FixedAmount;
 use Exception;
 
@@ -25,7 +25,8 @@ class FixedAmountController extends Controller
     {
         $title = self::INDEX_TITLE;
         $fixedAmounts = FixedAmount::query()->get();
-        return view('admin::admin.fixed-amount.index',compact('title','fixedAmounts'));
+        $fixedAmountsCount = FixedAmount::query()->count();
+        return view('admin::admin.fixed-amount.index', compact('title', 'fixedAmounts', 'fixedAmountsCount'));
     }
 
     /**
@@ -35,7 +36,7 @@ class FixedAmountController extends Controller
     {
         $title = self::CREATE_TITLE;
 
-        return view('admin::admin.fixed-amount.create',compact('title'));
+        return view('admin::admin.fixed-amount.create', compact('title'));
     }
 
     /**
@@ -45,13 +46,12 @@ class FixedAmountController extends Controller
     {
         try {
             DB::beginTransaction();
-            $inputs=$request->all();
-            $inputs['user_id']=Auth::user()->id;
+            $inputs = $request->all();
+            $inputs['user_id'] = Auth::user()->id;
             FixedAmount::query()->create($inputs);
             DB::commit();
 
             return $this->successResponse();
-
         } catch (Exception $exception) {
             DB::rollBack();
 
@@ -74,7 +74,7 @@ class FixedAmountController extends Controller
     {
         $title = self::EDIT_TITLE;
 
-        return view('admin::admin.fixed-amount.edit',compact('title','fixedAmount'));
+        return view('admin::admin.fixed-amount.edit', compact('title', 'fixedAmount'));
     }
 
     /**
@@ -104,7 +104,6 @@ class FixedAmountController extends Controller
             $fixedAmount->delete();
 
             return $this->successDestroyBack(route('admin.admin.fixed-amount.index'));
-
         } catch (Exception $exception) {
             return $this->exceptionBack($exception);
         }
