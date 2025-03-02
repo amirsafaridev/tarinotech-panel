@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Auth\app\Http\Controllers\Api\LoginController;
+use Modules\Auth\app\Http\Controllers\Api\ResendOtpController;
 use Modules\Auth\app\Http\Controllers\Api\VerifyController;
 
 /*
@@ -17,5 +18,6 @@ use Modules\Auth\app\Http\Controllers\Api\VerifyController;
 
 Route::post('/login', [LoginController::class, 'index']);
 Route::post('/verify', [VerifyController::class, 'index']);
+Route::post('/resend', [ResendOtpController::class, 'index']);
 
 Route::post('/dev-login', [LoginController::class, 'devLogin']);

@@ -21,14 +21,7 @@ class LoginRequest extends FormRequest
     {
 
         return [
-            'email' => 'required',
-            'captcha' => 'required|captcha',
-            'password' => 'required',
+            'identify' => 'required',
         ];
-    }
-
-    protected function prepareForValidation()
-    {
-
     }
 }

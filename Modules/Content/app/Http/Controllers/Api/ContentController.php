@@ -28,7 +28,7 @@ class ContentController extends Controller
             $blogs = Blog::query()
                 ->where('is_publish', true)
                 ->with('category')
-                ->limit(10)
+                ->limit(5)
                 ->latest()
                 ->get();
 

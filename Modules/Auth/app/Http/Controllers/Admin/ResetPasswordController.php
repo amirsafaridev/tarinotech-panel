@@ -7,7 +7,7 @@ use Auth;
 use DB;
 use Exception;
 use Modules\Admin\app\Models\Admin;
-use Modules\Auth\app\Http\Requests\Admin\ResetPasswordRequest;
+use Modules\Auth\App\Http\Requests\Admin\Auth\ResetPasswordRequest;
 use Modules\Auth\app\Models\OtpCode;
 
 class ResetPasswordController extends Controller

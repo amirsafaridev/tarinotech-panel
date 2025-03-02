@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Traits\HasJsonCommonResponseTrait;
 use Exception;
 use Modules\Admin\app\Models\Admin;
-use Modules\Auth\app\Http\Requests\Admin\ForgetPasswordRequest;
+use Modules\Auth\App\Http\Requests\Admin\Auth\ForgetPasswordRequest;
 use Modules\Auth\app\Models\OtpCode;
 use Modules\Auth\app\Notifications\Admin\EmailOtpNotification;
 use Modules\Auth\app\Notifications\Admin\SmsOtpNotification;

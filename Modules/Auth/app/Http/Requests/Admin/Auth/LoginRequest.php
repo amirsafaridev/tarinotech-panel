@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Auth\app\Http\Requests\Admin;
+namespace Modules\Auth\App\Http\Requests\Admin\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class VerifyRequest extends FormRequest
+class LoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,13 +19,10 @@ class VerifyRequest extends FormRequest
      */
     public function rules(): array
     {
-        return ['code' => 'required'];
-    }
-
-    public function messages(): array
-    {
         return [
-            'code.required' => 'کد تایید را وارد کنید.',
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string',
+            'captcha' => 'required|captcha',
         ];
     }
 }

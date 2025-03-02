@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Modules\Admin\app\Models\Admin;
-use Modules\Auth\app\Http\Requests\Api\Auth\LoginRequest;
+use Modules\Auth\app\Http\Requests\Admin\Auth\LoginRequest;
 use Modules\Auth\app\Notifications\Admin\EmailOtpNotification;
 use Modules\Auth\app\Notifications\Admin\SmsOtpNotification;
 

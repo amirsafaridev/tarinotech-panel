@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Auth\app\Http\Requests\Api\Auth;
+namespace Modules\Auth\App\Http\Requests\Admin\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ForgetRequest extends FormRequest
+class VerifyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,15 +19,13 @@ class ForgetRequest extends FormRequest
      */
     public function rules(): array
     {
-
-        return [
-            'identify' => 'required',
-            'password' => 'required',
-        ];
+        return ['code' => 'required'];
     }
 
-    protected function prepareForValidation()
+    public function messages(): array
     {
-
+        return [
+            'code.required' => 'کد تایید را وارد کنید.',
+        ];
     }
 }

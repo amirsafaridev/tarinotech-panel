@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Auth\app\Http\Requests\Admin;
+namespace Modules\Auth\App\Http\Requests\Api\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class ResendOtpRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,10 +19,9 @@ class LoginRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
-            'email' => 'required|string|email|max:255',
-            'password' => 'required|string',
-            'captcha' => 'required|captcha',
+            'identify' => 'required',
         ];
     }
 }
