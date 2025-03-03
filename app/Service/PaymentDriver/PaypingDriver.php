@@ -2,13 +2,12 @@
 
 namespace App\Service\PaymentDriver;
 
-use Exception;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\HandlerStack;
-use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Log;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Shetabit\Multipay\Abstracts\Driver;
 use Shetabit\Multipay\Contracts\ReceiptInterface;
 use Shetabit\Multipay\Exceptions\InvalidPaymentException;
@@ -53,14 +52,42 @@ class PaypingDriver extends Driver
         // Create a handler stack with the default handler
         $stack = HandlerStack::create();
 
-        // Add a middleware that logs requests and responses
-        $stack->push(Middleware::log(
-            Log::channel('payment'),
-            new MessageFormatter(
-                "==== PAYPING REQUEST ====\nMethod: {method}\nURL: {uri}\nHeaders: {req_headers}\nBody: {req_body}\n".
-                "==== PAYPING RESPONSE ====\nStatus: {code}\nHeaders: {res_headers}\nBody: {res_body}\n==== END PAYPING ====\n"
-            )
-        ));
+        // Add a middleware that intercepts the response and copies the body
+        $stack->push(function (callable $handler) {
+            return function (RequestInterface $request, array $options) use ($handler) {
+                return $handler($request, $options)->then(
+                    function (ResponseInterface $response) {
+                        // Get body contents as a string
+                        $body = $response->getBody()->getContents();
+
+                        // Rewind the stream to the beginning so it can be read again
+                        $response->getBody()->rewind();
+
+                        // Log the request and response
+                        Log::channel('payment')->info(
+                            "==== PAYPING REQUEST ====\n".
+                            "Method: {$request->getMethod()}\n".
+                            "URL: {$request->getUri()}\n".
+                            "Headers: {$request->getMethod()} {$request->getRequestTarget()} HTTP/{$request->getProtocolVersion()}\n".
+                            implode("\n", array_map(function ($k, $v) {
+                                return "$k: ".implode(', ', $v);
+                            }, array_keys($request->getHeaders()), array_values($request->getHeaders())))."\n".
+                            'Body: '.$request->getBody()."\n".
+                            "==== PAYPING RESPONSE ====\n".
+                            "Status: {$response->getStatusCode()}\n".
+                            "Headers: {$response->getStatusCode()} {$response->getReasonPhrase()}\n".
+                            implode("\n", array_map(function ($k, $v) {
+                                return "$k: ".implode(', ', $v);
+                            }, array_keys($response->getHeaders()), array_values($response->getHeaders())))."\n".
+                            'Body: '.$body."\n".
+                            '==== END PAYPING ===='
+                        );
+
+                        return $response;
+                    }
+                );
+            };
+        });
 
         // Create the client with our custom handler
         $this->client = new Client(['handler' => $stack]);
@@ -70,9 +97,9 @@ class PaypingDriver extends Driver
             Log::channel('payment')->info('PaypingDriver initialized', [
                 'uuid' => $invoice->getUuid(),
                 'amount' => $invoice->getAmount(),
-                'timestamp' => now()->toDateTimeString(),
+                'timestamp' => date('Y-m-d H:i:s'),
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Log any exception during initialization
             $this->logException('Driver initialization failed', $e);
         }
@@ -94,7 +121,7 @@ class PaypingDriver extends Driver
      * @return string
      *
      * @throws PurchaseFailedException
-     * @throws GuzzleException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function purchase()
     {
@@ -117,7 +144,7 @@ class PaypingDriver extends Driver
             Log::channel('payment')->info('PaypingDriver purchase attempt', [
                 'uuid' => $this->invoice->getUuid(),
                 'amount' => $data['amount'],
-                'timestamp' => now()->toDateTimeString(),
+                'timestamp' => date('Y-m-d H:i:s'),
             ]);
 
             $response = $this
@@ -135,10 +162,20 @@ class PaypingDriver extends Driver
                     ]
                 );
 
+            // Get the response body as a string
             $responseBody = $response->getBody()->getContents();
-            $response->getBody()->rewind();
+
+            // Explicitly log the raw response body with content
+            Log::channel('payment')->debug('Raw response body', [
+                'body' => $responseBody,
+            ]);
+
+            // Convert to lowercase if needed
             $lowercaseBody = mb_strtolower($responseBody);
+
+            // Parse the JSON
             $body = @json_decode($lowercaseBody, true);
+
             $statusCode = (int) $response->getStatusCode();
 
             if ($statusCode !== 200) {
@@ -151,22 +188,24 @@ class PaypingDriver extends Driver
                     'status_code' => $statusCode,
                     'error_message' => $message,
                     'response_body' => $responseBody,
-                    'timestamp' => now()->toDateTimeString(),
+                    'timestamp' => date('Y-m-d H:i:s'),
                 ]);
 
                 throw new PurchaseFailedException($message);
             }
 
             // Check if the code key exists in the response
-            if (! isset($body['code'])) {
+            if (! is_array($body) || ! isset($body['code'])) {
                 $errorMessage = 'Invalid response format: missing transaction code';
 
-                // Log the invalid response
+                // Log the invalid response with detailed content
                 Log::channel('payment')->error('PaypingDriver invalid response', [
                     'uuid' => $this->invoice->getUuid(),
                     'error_message' => $errorMessage,
                     'response_body' => $responseBody,
-                    'timestamp' => now()->toDateTimeString(),
+                    'parsed_body' => $body,
+                    'body_type' => gettype($body),
+                    'timestamp' => date('Y-m-d H:i:s'),
                 ]);
 
                 throw new PurchaseFailedException($errorMessage);
@@ -178,7 +217,7 @@ class PaypingDriver extends Driver
             Log::channel('payment')->info('PaypingDriver purchase successful', [
                 'uuid' => $this->invoice->getUuid(),
                 'transaction_id' => $body['code'],
-                'timestamp' => now()->toDateTimeString(),
+                'timestamp' => date('Y-m-d H:i:s'),
             ]);
 
             // return the transaction's id
@@ -187,7 +226,7 @@ class PaypingDriver extends Driver
         } catch (PurchaseFailedException $e) {
             // This will be caught at a higher level, just rethrow
             throw $e;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Log any unexpected exceptions
             $this->logException('Unexpected exception in purchase', $e);
 
@@ -209,11 +248,11 @@ class PaypingDriver extends Driver
                 'uuid' => $this->invoice->getUuid(),
                 'transaction_id' => $this->invoice->getTransactionId(),
                 'redirect_url' => $payUrl,
-                'timestamp' => now()->toDateTimeString(),
+                'timestamp' => date('Y-m-d H:i:s'),
             ]);
 
             return $this->redirectWithForm($payUrl, [], 'GET');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Log any exception
             $this->logException('Exception in payment redirect', $e);
             throw $e;
@@ -225,7 +264,7 @@ class PaypingDriver extends Driver
      *
      *
      * @throws InvalidPaymentException
-     * @throws GuzzleException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function verify(): ReceiptInterface
     {
@@ -241,7 +280,7 @@ class PaypingDriver extends Driver
                 'uuid' => $this->invoice->getUuid(),
                 'ref_id' => $refId,
                 'amount' => $data['amount'],
-                'timestamp' => now()->toDateTimeString(),
+                'timestamp' => date('Y-m-d H:i:s'),
             ]);
 
             $response = $this->client->request(
@@ -257,8 +296,19 @@ class PaypingDriver extends Driver
                 ]
             );
 
-            $responseBody = mb_strtolower($response->getBody()->getContents());
-            $body = @json_decode($responseBody, true);
+            // Get the response body as a string
+            $responseBody = $response->getBody()->getContents();
+
+            // Explicitly log the raw response body
+            Log::channel('payment')->debug('Raw verification response body', [
+                'body' => $responseBody,
+            ]);
+
+            // Convert to lowercase if needed
+            $lowercaseBody = mb_strtolower($responseBody);
+
+            // Parse the JSON
+            $body = @json_decode($lowercaseBody, true);
 
             $statusCode = (int) $response->getStatusCode();
 
@@ -272,14 +322,14 @@ class PaypingDriver extends Driver
                     'status_code' => $statusCode,
                     'error_message' => $message,
                     'response_body' => $responseBody,
-                    'timestamp' => now()->toDateTimeString(),
+                    'timestamp' => date('Y-m-d H:i:s'),
                 ]);
 
                 $this->notVerified($message, $statusCode);
             }
 
             // Check if required response data exists
-            if (! isset($body['cardnumber'])) {
+            if (! is_array($body) || ! isset($body['cardnumber'])) {
                 $errorMessage = 'Invalid verification response: missing card number';
 
                 // Log the invalid response
@@ -288,7 +338,9 @@ class PaypingDriver extends Driver
                     'ref_id' => $refId,
                     'error_message' => $errorMessage,
                     'response_body' => $responseBody,
-                    'timestamp' => now()->toDateTimeString(),
+                    'parsed_body' => $body,
+                    'body_type' => gettype($body),
+                    'timestamp' => date('Y-m-d H:i:s'),
                 ]);
 
                 $this->notVerified($errorMessage, 400);
@@ -299,7 +351,7 @@ class PaypingDriver extends Driver
                 'uuid' => $this->invoice->getUuid(),
                 'ref_id' => $refId,
                 'card_number' => substr($body['cardnumber'], 0, 6).'******'.substr($body['cardnumber'], -4), // Mask the card number
-                'timestamp' => now()->toDateTimeString(),
+                'timestamp' => date('Y-m-d H:i:s'),
             ]);
 
             $receipt = $this->createReceipt($refId);
@@ -312,7 +364,7 @@ class PaypingDriver extends Driver
         } catch (InvalidPaymentException $e) {
             // This will be caught at a higher level, just rethrow
             throw $e;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Log any unexpected exceptions
             $this->logException('Unexpected exception in verification', $e);
 
@@ -368,9 +420,9 @@ class PaypingDriver extends Driver
      * Log exceptions with detailed information
      *
      * @param  string  $message  The log message
-     * @param  Exception  $exception  The exception to log
+     * @param  \Exception  $exception  The exception to log
      */
-    private function logException(string $message, Exception $exception): void
+    private function logException(string $message, \Exception $exception): void
     {
         Log::channel('payment')->error('PaypingDriver exception: '.$message, [
             'uuid' => $this->invoice ? $this->invoice->getUuid() : 'unknown',
@@ -379,7 +431,7 @@ class PaypingDriver extends Driver
             'exception_code' => $exception->getCode(),
             'exception_file' => $exception->getFile().':'.$exception->getLine(),
             'exception_trace' => $exception->getTraceAsString(),
-            'timestamp' => now()->toDateTimeString(),
+            'timestamp' => date('Y-m-d H:i:s'),
         ]);
     }
 }
