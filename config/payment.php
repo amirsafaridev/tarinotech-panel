@@ -448,7 +448,7 @@ return [
         'pasargad' => \Shetabit\Multipay\Drivers\Pasargad\Pasargad::class,
         'payir' => \Shetabit\Multipay\Drivers\Payir\Payir::class,
         'paypal' => \Shetabit\Multipay\Drivers\Paypal\Paypal::class,
-        'payping' => \Shetabit\Multipay\Drivers\Payping\Payping::class,
+        'payping' => \App\Service\PaymentDriver\PaypingDriver::class,
         'paystar' => \Shetabit\Multipay\Drivers\Paystar\Paystar::class,
         'poolam' => \Shetabit\Multipay\Drivers\Poolam\Poolam::class,
         'sadad' => \Shetabit\Multipay\Drivers\Sadad\Sadad::class,
