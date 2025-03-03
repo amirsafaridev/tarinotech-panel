@@ -4,21 +4,22 @@ namespace Modules\Admin\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Traits\HasJsonCommonResponseTrait;
-use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Modules\Admin\app\Http\Requests\Admin\PersonnelAssistance\StoreRequest;
-use Modules\Admin\app\Http\Requests\Admin\PersonnelAssistance\UpdateRequest;
+use Modules\Admin\app\Http\Requests\Admin\BonusesDeduction\StoreRequest;
+use Modules\Admin\app\Http\Requests\Admin\BonusesDeduction\UpdateRequest;
+use Exception;
+use Modules\Admin\app\Models\BonusesDeduction;
+use Modules\Admin\app\Models\Reason;
 
-use Modules\Admin\app\Models\PersonnelAssistance;
-
-class PersonnelAssistanceController extends Controller
+class BonusController extends Controller
 {
+
     use HasJsonCommonResponseTrait;
 
-    const INDEX_TITLE = 'مساعده';
-    const CREATE_TITLE = 'مساعده - ایجاد';
-    const EDIT_TITLE = 'مساعده - ویرایش';
+    const INDEX_TITLE = 'پاداش';
+    const CREATE_TITLE = 'پاداش - ایجاد';
+    const EDIT_TITLE = 'پاداش - ویرایش';
 
     /**
      * Display a listing of the resource.
@@ -26,8 +27,8 @@ class PersonnelAssistanceController extends Controller
     public function index()
     {
         $title = self::INDEX_TITLE;
-        $personnelAssistances = PersonnelAssistance::query()->get();
-        return view('admin::admin.personnel-assistance.index', compact('title', 'personnelAssistances'));
+        $bonuses = BonusesDeduction::query()->get();
+        return view('admin::admin.bonuses.index', compact('title', 'bonuses'));
     }
 
     /**
@@ -37,7 +38,7 @@ class PersonnelAssistanceController extends Controller
     {
         $title = self::CREATE_TITLE;
 
-        return view('admin::admin.personnel-assistance.create', compact('title'));
+        return view('admin::admin.bonuses.create', compact('title'));
     }
 
     /**
@@ -49,7 +50,12 @@ class PersonnelAssistanceController extends Controller
             DB::beginTransaction();
             $inputs = $request->all();
             $inputs['user_id'] = Auth::user()->id;
-            PersonnelAssistance::query()->create($inputs);
+            $inputs['type'] = 0;
+            $bonus =  BonusesDeduction::query()->create($inputs);
+            Reason::query()->create([
+                'bonuses_deduction_id' => $bonus->id,
+                'description' => $inputs['description']
+            ]);
             DB::commit();
 
             return $this->successResponse();
@@ -71,21 +77,21 @@ class PersonnelAssistanceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(PersonnelAssistance $personnelAssistance)
+    public function edit(BonusesDeduction $bonus)
     {
         $title = self::EDIT_TITLE;
 
-        return view('admin::admin.personnel-assistance.edit', compact('title', 'personnelAssistance'));
+        return view('admin::admin.bonuses.edit', compact('title', 'bonus'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, PersonnelAssistance $personnelAssistance)
+    public function update(UpdateRequest $request, BonusesDeduction $bonus)
     {
         try {
             DB::beginTransaction();
-            $personnelAssistance->update($request->all());
+            $bonus->update($request->all());
             DB::commit();
 
             return $this->successUpdateResponse();
@@ -99,12 +105,12 @@ class PersonnelAssistanceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PersonnelAssistance $personnelAssistance)
+    public function destroy(BonusesDeduction $bonus)
     {
         try {
-            $personnelAssistance->delete();
+            $bonus->delete();
 
-            return $this->successDestroyBack(route('admin.admin.personnel-assistance.index'));
+            return $this->successDestroyBack(route('admin.admin.bonuses.index'));
         } catch (Exception $exception) {
             return $this->exceptionBack($exception);
         }
