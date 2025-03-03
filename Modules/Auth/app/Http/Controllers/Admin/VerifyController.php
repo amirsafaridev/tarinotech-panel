@@ -9,7 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 use Modules\Admin\app\Models\Admin;
-use Modules\Auth\App\Http\Requests\Admin\Auth\VerifyRequest;
+use Modules\Auth\app\Http\Requests\Admin\Auth\VerifyRequest;
 use PragmaRX\Google2FA\Google2FA;
 
 class VerifyController extends Controller
