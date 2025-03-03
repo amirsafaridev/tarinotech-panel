@@ -136,7 +136,9 @@ class PaypingDriver extends Driver
                 );
 
             $responseBody = $response->getBody()->getContents();
-            $body = @json_decode($responseBody, true);
+            $response->getBody()->rewind();
+            $lowercaseBody = mb_strtolower($responseBody);
+            $body = @json_decode($lowercaseBody, true);
             $statusCode = (int) $response->getStatusCode();
 
             if ($statusCode !== 200) {
