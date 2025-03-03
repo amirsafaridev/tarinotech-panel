@@ -3,6 +3,7 @@
 namespace Modules\Payment\app\Http\Controllers\Web;
 
 use App\Domain\Jobs\FactorSerialUpdateJob;
+use App\Helpers\PaymentLogger;
 use App\Http\Controllers\Controller;
 use Exception;
 use Modules\Factor\app\Enums\FactorStatus;
@@ -10,6 +11,7 @@ use Modules\Factor\app\Enums\PaymentGateway;
 use Modules\Factor\app\Models\Factor;
 use Modules\User\app\Enums\PersonType;
 use Modules\User\app\Models\User;
+use ReflectionClass;
 use Shetabit\Multipay\Invoice;
 use Shetabit\Payment\Facade\Payment;
 
@@ -41,7 +43,6 @@ class PaymentController extends Controller
 
             $invoice = new Invoice();
             $invoice->amount($factor->final_price);
-
             $invoice->uuid($factor->identify);
 
             foreach ($factor->items as $item) {
@@ -50,7 +51,16 @@ class PaymentController extends Controller
 
             $paymentDriver = $this->getPaymentDriverByPersonType($factor->project?->user);
 
-            return Payment::via($paymentDriver['driver'])->callbackUrl($paymentDriver['verify'])->purchase(
+            $payment = Payment::via($paymentDriver['driver'])->callbackUrl($paymentDriver['verify']);
+            $driver = $payment->getDriver();
+
+            $reflection = new ReflectionClass($driver);
+            if ($reflection->hasProperty('client')) {
+                $clientProperty = $reflection->getProperty('client');
+                $clientProperty->setValue($driver, PaymentLogger::createLoggingClient());
+            }
+
+            return $payment->purchase(
                 $invoice,
                 function ($driver, $transactionId) use ($factor, $paymentDriver) {
                     $factor->update([
@@ -65,7 +75,6 @@ class PaymentController extends Controller
 
             return view('payment::web.message', compact('message'));
         }
-
     }
 
     public function verifySepehr()
