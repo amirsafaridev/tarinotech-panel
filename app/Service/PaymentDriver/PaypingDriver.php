@@ -9,6 +9,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Log;
+use JsonException;
 use Shetabit\Multipay\Abstracts\Driver;
 use Shetabit\Multipay\Contracts\ReceiptInterface;
 use Shetabit\Multipay\Exceptions\InvalidPaymentException;
@@ -22,10 +23,8 @@ class PaypingDriver extends Driver
 {
     /**
      * Payping Client.
-     *
-     * @var object
      */
-    protected $client;
+    protected Client $client;
 
     /**
      * Invoice
@@ -78,10 +77,8 @@ class PaypingDriver extends Driver
 
     /**
      * Retrieve data from details using its name.
-     *
-     * @return string
      */
-    private function extractDetails($name)
+    private function extractDetails($name): ?string
     {
         return empty($this->invoice->getDetails()[$name]) ? null : $this->invoice->getDetails()[$name];
     }
@@ -89,12 +86,11 @@ class PaypingDriver extends Driver
     /**
      * Purchase Invoice.
      *
-     * @return string
      *
-     * @throws PurchaseFailedException
      * @throws GuzzleException
+     * @throws JsonException
      */
-    public function purchase()
+    public function purchase(): string
     {
         $name = $this->extractDetails('name');
         $mobile = $this->extractDetails('mobile');
@@ -135,21 +131,32 @@ class PaypingDriver extends Driver
                 ]
             );
 
-            $responseBody = mb_strtolower($response->getBody()->getContents());
-            $body = @json_decode($responseBody, true);
-            $statusCode = (int) $response->getStatusCode();
+            $responseBody = $response->getBody()->getContents();
+            $statusCode = $response->getStatusCode();
 
-            // Log raw response
+            try {
+                $body = json_decode($responseBody, true, 512, JSON_THROW_ON_ERROR);
+            } catch (JsonException $e) {
+                $this->logPaymentInfo('JSON parsing error', [
+                    'error' => $e->getMessage(),
+                    'raw_body' => $responseBody,
+                ], 'warning');
+                $body = $responseBody;
+            }
+
             $this->logPaymentInfo('Purchase response', [
                 'status_code' => $statusCode,
-                'body' => $body,
+                'raw_body' => $responseBody,
+                'parsed_body' => $body,
             ]);
 
             if ($statusCode !== 200) {
-                // some error has happened
-                $message = is_array($body) ? array_pop($body) : $this->convertStatusCodeToMessage($statusCode);
+                if (is_array($body) && ! empty($body)) {
+                    $message = array_pop($body);
+                } else {
+                    $message = $this->convertStatusCodeToMessage($statusCode);
+                }
 
-                // Log error
                 $this->logPaymentInfo('Purchase failed', [
                     'status_code' => $statusCode,
                     'message' => $message,
@@ -158,18 +165,23 @@ class PaypingDriver extends Driver
                 throw new PurchaseFailedException($message);
             }
 
+            if (! is_array($body) || ! isset($body['code'])) {
+                $errorMsg = 'Invalid response format from payment gateway';
+                $this->logPaymentInfo($errorMsg, [
+                    'raw_body' => $responseBody,
+                ], 'error');
+                throw new PurchaseFailedException($errorMsg);
+            }
+
             $this->invoice->transactionId($body['code']);
 
-            // Log success
             $this->logPaymentInfo('Purchase successful', [
                 'transaction_id' => $body['code'],
             ]);
 
-            // return the transaction's id
             return $this->invoice->getTransactionId();
 
         } catch (Exception $e) {
-            // Log exception
             $this->logPaymentInfo('Purchase exception', [
                 'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -196,11 +208,8 @@ class PaypingDriver extends Driver
     }
 
     /**
-     * Verify payment
-     *
-     *
-     * @throws InvalidPaymentException
      * @throws GuzzleException
+     * @throws JsonException
      */
     public function verify(): ReceiptInterface
     {
@@ -233,18 +242,33 @@ class PaypingDriver extends Driver
                 ]
             );
 
-            $responseBody = mb_strtolower($response->getBody()->getContents());
-            $body = @json_decode($responseBody, true);
-            $statusCode = (int) $response->getStatusCode();
+            $responseBody = $response->getBody()->getContents();
+            $statusCode = $response->getStatusCode();
+
+            try {
+                $body = json_decode($responseBody, true, 512, JSON_THROW_ON_ERROR);
+            } catch (JsonException $e) {
+                $this->logPaymentInfo('JSON parsing error in verification', [
+                    'error' => $e->getMessage(),
+                    'raw_body' => $responseBody,
+                ], 'warning');
+
+                $body = $responseBody;
+            }
 
             // Log verification response
             $this->logPaymentInfo('Verification response', [
                 'status_code' => $statusCode,
-                'body' => $body,
+                'raw_body' => $responseBody,
+                'parsed_body' => $body,
             ]);
 
             if ($statusCode !== 200) {
-                $message = is_array($body) ? array_pop($body) : $this->convertStatusCodeToMessage($statusCode);
+                if (is_array($body) && ! empty($body)) {
+                    $message = array_pop($body);
+                } else {
+                    $message = $this->convertStatusCodeToMessage($statusCode);
+                }
 
                 // Log verification failure
                 $this->logPaymentInfo('Verification failed', [
@@ -255,16 +279,25 @@ class PaypingDriver extends Driver
                 $this->notVerified($message, $statusCode);
             }
 
+            // Check if body is array and has required keys
+            if (! is_array($body)) {
+                $errorMsg = 'Invalid verification response format';
+                $this->logPaymentInfo($errorMsg, [
+                    'raw_body' => $responseBody,
+                ], 'error');
+                $this->notVerified($errorMsg, 400);
+            }
+
             // Log verification success
             $this->logPaymentInfo('Verification successful', [
                 'ref_id' => $refId,
-                'card_number' => $body['cardnumber'] ?? null,
+                'card_number' => $body['cardnumber'] ?? 'unknown',
             ]);
 
             $receipt = $this->createReceipt($refId);
 
             $receipt->detail([
-                'cardNumber' => $body['cardnumber'],
+                'cardNumber' => $body['cardnumber'] ?? 'unknown',
             ]);
 
             return $receipt;
@@ -281,15 +314,10 @@ class PaypingDriver extends Driver
 
     /**
      * Generate the payment's receipt
-     *
-     *
-     * @return Receipt
      */
-    protected function createReceipt($referenceId)
+    protected function createReceipt($referenceId): Receipt
     {
-        $receipt = new Receipt('payping', $referenceId);
-
-        return $receipt;
+        return new Receipt('payping', $referenceId);
     }
 
     /**
