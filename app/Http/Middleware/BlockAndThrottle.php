@@ -23,7 +23,8 @@ class BlockAndThrottle
             return $next($request);
         }
 
-        $ip = $request->ip();
+        // Get the real client IP address
+        $ip = $this->getRealIpAddress($request);
 
         // Check if the IP is blocked and unblock if expired
         if ($this->isIpBlocked($ip)) {
@@ -47,6 +48,33 @@ class BlockAndThrottle
         RateLimiter::hit($this->throttleKey($ip), $this->decayMinutes * 60);
 
         return $next($request);
+    }
+
+    /**
+     * Get the real client IP address
+     */
+    protected function getRealIpAddress(Request $request): string
+    {
+        // Check for X-Forwarded-For header first (common when behind a proxy/load balancer)
+        $ip = $request->header('X-Forwarded-For');
+
+        if ($ip) {
+            // X-Forwarded-For can contain multiple IPs, take the first one
+            $ips = explode(',', $ip);
+
+            return trim($ips[0]);
+        }
+
+        // Check for other common proxy headers
+        foreach (['HTTP_X_REAL_IP', 'HTTP_CLIENT_IP'] as $header) {
+            $ip = $request->server($header);
+            if ($ip) {
+                return $ip;
+            }
+        }
+
+        // Fallback to the regular IP method
+        return $request->ip();
     }
 
     protected function throttleKey($ip): string
