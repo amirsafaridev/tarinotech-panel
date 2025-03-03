@@ -3,6 +3,10 @@
 namespace App\Service\PaymentDriver;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\MessageFormatter;
+use GuzzleHttp\Middleware;
+use Illuminate\Support\Facades\Log;
 use Shetabit\Multipay\Abstracts\Driver;
 use Shetabit\Multipay\Contracts\ReceiptInterface;
 use Shetabit\Multipay\Exceptions\InvalidPaymentException;
@@ -43,7 +47,21 @@ class PaypingDriver extends Driver
     {
         $this->invoice($invoice);
         $this->settings = (object) $settings;
-        $this->client = new Client();
+
+        // Create a handler stack with the default handler
+        $stack = HandlerStack::create();
+
+        // Add a middleware that logs requests and responses
+        $stack->push(Middleware::log(
+            Log::channel('payment'),
+            new MessageFormatter(
+                "==== PAYPING REQUEST ====\nMethod: {method}\nURL: {uri}\nHeaders: {req_headers}\nBody: {req_body}\n".
+                "==== PAYPING RESPONSE ====\nStatus: {code}\nHeaders: {res_headers}\nBody: {res_body}\n==== END PAYPING ====\n"
+            )
+        ));
+
+        // Create the client with our custom handler
+        $this->client = new Client(['handler' => $stack]);
     }
 
     /**
