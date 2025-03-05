@@ -12,7 +12,9 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'price' => 'required|numeric',
+            //    'description' => 'required',
+
         ];
     }
 

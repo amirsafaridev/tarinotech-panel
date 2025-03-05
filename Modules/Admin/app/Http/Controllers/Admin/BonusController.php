@@ -27,6 +27,7 @@ class BonusController extends Controller
     public function index()
     {
         $title = self::INDEX_TITLE;
+
         $bonuses = BonusesDeduction::query()->get();
         return view('admin::admin.bonuses.index', compact('title', 'bonuses'));
     }
@@ -77,21 +78,27 @@ class BonusController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(BonusesDeduction $bonus)
+    public function edit(BonusesDeduction $bonusesDeduction)
     {
         $title = self::EDIT_TITLE;
-
-        return view('admin::admin.bonuses.edit', compact('title', 'bonus'));
+        $reason = Reason::where('bonuses_deduction_id', $bonusesDeduction->id)->latest()->first();
+        return view('admin::admin.bonuses.edit', compact('title', 'bonusesDeduction', 'reason'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, BonusesDeduction $bonus)
+    public function update(UpdateRequest $request, BonusesDeduction $bonusesDeduction)
     {
         try {
+            $reason = Reason::where('bonuses_deduction_id', $bonusesDeduction->id)->latest()->first();
             DB::beginTransaction();
-            $bonus->update($request->all());
+            $bonusesDeduction->update($request->all());
+            $reason->update([
+                'bonuses_deduction_id' => $bonusesDeduction->id,
+                'description' => $request->description
+            ]);
+
             DB::commit();
 
             return $this->successUpdateResponse();
@@ -105,10 +112,14 @@ class BonusController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(BonusesDeduction $bonus)
+    public function destroy(BonusesDeduction $bonusesDeduction)
     {
         try {
-            $bonus->delete();
+
+            $bonusesDeduction->delete();
+            foreach ($bonusesDeduction->reasons()->get() as $reason) {
+                $reason->delete();
+            }
 
             return $this->successDestroyBack(route('admin.admin.bonuses.index'));
         } catch (Exception $exception) {

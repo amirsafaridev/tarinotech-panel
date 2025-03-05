@@ -77,21 +77,28 @@ class DeductionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(BonusesDeduction $deduction)
+    public function edit(BonusesDeduction $bonusesDeduction)
     {
         $title = self::EDIT_TITLE;
+        $reason = Reason::where('bonuses_deduction_id', $bonusesDeduction->id)->latest()->first();
 
-        return view('admin::admin.deductions.edit', compact('title', 'deduction'));
+        return view('admin::admin.deductions.edit', compact('title', 'bonusesDeduction', 'reason'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, BonusesDeduction $deduction)
+    public function update(UpdateRequest $request, BonusesDeduction $bonusesDeduction)
     {
         try {
+            $reason = Reason::where('bonuses_deduction_id', $bonusesDeduction->id)->latest()->first();
             DB::beginTransaction();
-            $deduction->update($request->all());
+            $bonusesDeduction->update($request->all());
+            $reason->update([
+                'bonuses_deduction_id' => $bonusesDeduction->id,
+                'description' => $request->description
+            ]);
+
             DB::commit();
 
             return $this->successUpdateResponse();
@@ -105,11 +112,13 @@ class DeductionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(BonusesDeduction $deduction)
+    public function destroy(BonusesDeduction $bonusesDeduction)
     {
         try {
-            $deduction->delete();
-
+            $bonusesDeduction->delete();
+            foreach ($bonusesDeduction->reasons()->get() as $reason) {
+                $reason->delete();
+            }
             return $this->successDestroyBack(route('admin.admin.deductions.index'));
         } catch (Exception $exception) {
             return $this->exceptionBack($exception);
