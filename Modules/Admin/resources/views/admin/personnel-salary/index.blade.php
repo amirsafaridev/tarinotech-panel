@@ -60,8 +60,10 @@
                                             <td>{{ $personnelSalary->created_at->toJalali()->format('d F Y') }}</td>
 
                                             <td>
-                                                <a href="{{ route('admin.admin.personnel-salary.edit', $personnelSalary->id) }}"
-                                                    class="btn btn-warning btn-sm">ویرایش</a>
+                                                @can('ADMIN_ADMIN_PERSONNEL_SALARY_EDIT')
+                                                    <a href="{{ route('admin.admin.personnel-salary.edit', $personnelSalary->id) }}"
+                                                        class="btn btn-warning btn-sm">ویرایش</a>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach

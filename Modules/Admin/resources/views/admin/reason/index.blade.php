@@ -54,9 +54,10 @@
                                             <td>{{ $reason->created_at->toJalali()->format('d F Y') }}</td>
 
                                             <td>
-                                                <a href="{{ route('admin.admin.reason.edit', ['bonusesDeduction' => $bonusesDeduction->id, 'reason' => $reason->id]) }}"
-                                                    class="btn btn-warning btn-sm">ویرایش</a>
-
+                                                @can('ADMIN_ADMIN_REASON_EDIT')
+                                                    <a href="{{ route('admin.admin.reason.edit', ['bonusesDeduction' => $bonusesDeduction->id, 'reason' => $reason->id]) }}"
+                                                        class="btn btn-warning btn-sm">ویرایش</a>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach

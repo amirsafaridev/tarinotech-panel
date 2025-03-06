@@ -79,8 +79,10 @@
                                             <td>{{ $fixedAmount->created_at->toJalali()->format('d F Y') }}</td>
 
                                             <td>
-                                                <a href="{{ route('admin.admin.fixed-amount.edit', $fixedAmount->id) }}"
-                                                    class="btn btn-warning btn-sm">ویرایش</a>
+                                                @can('ADMIN_ADMIN_FIXED_AMOUNT_EDIT')
+                                                    <a href="{{ route('admin.admin.fixed-amount.edit', $fixedAmount->id) }}"
+                                                        class="btn btn-warning btn-sm">ویرایش</a>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach

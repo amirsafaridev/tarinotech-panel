@@ -63,8 +63,10 @@
                                             <td>{{ $variableAmount->created_at->toJalali()->format('d F Y') }}</td>
 
                                             <td>
-                                                <a href="{{ route('admin.admin.variable-amount.edit', $variableAmount->id) }}"
-                                                    class="btn btn-warning btn-sm">ویرایش</a>
+                                                @can('ADMIN_ADMIN_VARIABLE_AMOUNT_EDIT')
+                                                    <a href="{{ route('admin.admin.variable-amount.edit', $variableAmount->id) }}"
+                                                        class="btn btn-warning btn-sm">ویرایش</a>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach
