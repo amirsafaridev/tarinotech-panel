@@ -48,6 +48,8 @@
                                     <th>بیمه سهم پرسنل(حضوری)</th>
                                     <th>بیمه سهم کارفرما(دورکاری)</th>
                                     <th>بیمه سهم پرسنل(دورکاری)</th>
+                                    <th>تاریخ</th>
+
                                     <th>عملیات</th>
                                 </tr>
                             </thead>
@@ -74,6 +76,7 @@
                                             <td>{{ $fixedAmount->personnel_insurance_remote ? $fixedAmount->personnel_insurance_remote : 'ثبت نشده' }}
                                             </td>
 
+                                            <td>{{ $fixedAmount->created_at->toJalali()->format('d F Y') }}</td>
 
                                             <td>
                                                 <a href="{{ route('admin.admin.fixed-amount.edit', $fixedAmount->id) }}"

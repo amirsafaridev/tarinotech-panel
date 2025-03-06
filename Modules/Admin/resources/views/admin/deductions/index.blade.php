@@ -39,6 +39,8 @@
                                     <th>پرسنل</th>
                                     <th>مبلغ</th>
                                     <th>علت</th>
+                                    <th>تاریخ</th>
+
                                     <th>عملیات</th>
                                 </tr>
                             </thead>
@@ -54,6 +56,7 @@
                                             </td>
                                             <td>{{ $deduction->price }}</td>
                                             <td>{{ $deduction->reasons()->latest()->first()->description }}</td>
+                                            <td>{{ $deduction->created_at->toJalali()->format('d F Y') }}</td>
                                             <td>
                                                 @can('ADMIN_ADMIN_DEDUCTIONS_EDIT')
                                                     <a href="{{ route('admin.admin.deductions.edit', $deduction->id) }}"

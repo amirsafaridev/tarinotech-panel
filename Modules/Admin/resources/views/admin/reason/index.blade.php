@@ -39,6 +39,8 @@
                                     <th>شناسه</th>
 
                                     <th>علت</th>
+                                    <th>تاریخ</th>
+
                                     <th>عملیات</th>
                                 </tr>
                             </thead>
@@ -49,6 +51,8 @@
 
                                             <td>{{ $reason->id }}</td>
                                             <td>{{ $reason->description }}</td>
+                                            <td>{{ $reason->created_at->toJalali()->format('d F Y') }}</td>
+
                                             <td>
                                                 <a href="{{ route('admin.admin.reason.edit', ['bonusesDeduction' => $bonusesDeduction->id, 'reason' => $reason->id]) }}"
                                                     class="btn btn-warning btn-sm">ویرایش</a>

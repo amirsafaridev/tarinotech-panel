@@ -39,6 +39,8 @@
                                     <th>پرسنل</th>
                                     <th>مبلغ</th>
                                     <th>علت</th>
+                                    <th>تاریخ</th>
+
                                     <th>عملیات</th>
                                 </tr>
                             </thead>
@@ -54,6 +56,8 @@
                                             </td>
                                             <td>{{ $bonus->price }}</td>
                                             <td>{{ $bonus->reasons()->latest()->first()->description }}</td>
+                                            <td>{{ $bonus->created_at->toJalali()->format('d F Y') }}</td>
+
                                             <td>
                                                 @can('ADMIN_ADMIN_BONUSES_EDIT')
                                                     <a href="{{ route('admin.admin.bonuses.edit', $bonus->id) }}"

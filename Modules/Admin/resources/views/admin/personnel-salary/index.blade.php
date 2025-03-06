@@ -1,7 +1,9 @@
 @extends('admin.master')
-@section('title') {{ $title }} @endsection
+@section('title')
+    {{ $title }}
+@endsection
 @section('head')
-    @include('admin.partial.loader.style',['load'=>[\App\Enums\Assets\StyleLoader::DataTable()]])
+    @include('admin.partial.loader.style', ['load' => [\App\Enums\Assets\StyleLoader::DataTable()]])
 @endsection
 @section('content')
 
@@ -9,7 +11,8 @@
         <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a
+                        href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item active">{{ $title }}</li>
             </ol>
         </div>
@@ -21,7 +24,8 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title">تنخواه ها</h3>
                     @can('ADMIN_ADMIN_PERSONNEL_SALARY_CREATE')
-                        <a class="btn btn-success btn-sm" href="{{ route('admin.admin.personnel-salary.create') }}">ایجاد درخواست تنخواه</a>
+                        <a class="btn btn-success btn-sm" href="{{ route('admin.admin.personnel-salary.create') }}">ایجاد
+                            درخواست تنخواه</a>
                     @endcan
                 </div>
                 <div class="card-body">
@@ -29,35 +33,39 @@
                     <div class="table-responsive">
                         <table id="data-table" class="table">
                             <thead>
-                            <tr>
+                                <tr>
 
-                                <th>شناسه</th>
-                                <th>نام و نام‌خانوادگی</th>
+                                    <th>شناسه</th>
+                                    <th>نام و نام‌خانوادگی</th>
 
-                                <th>مبلغ</th>
-                                <th>توضیحات</th>
-                                
-                                <th>عملیات</th>
-                            </tr>
+                                    <th>مبلغ</th>
+                                    <th>توضیحات</th>
+                                    <th>تاریخ</th>
+
+                                    <th>عملیات</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            @if($personnelSalaries->isNotEmpty())
-                                @foreach($personnelSalaries as $personnelSalary)
-                                    <tr>
-                                        <td>{{ $personnelSalary->id }}</td>
+                                @if ($personnelSalaries->isNotEmpty())
+                                    @foreach ($personnelSalaries as $personnelSalary)
+                                        <tr>
+                                            <td>{{ $personnelSalary->id }}</td>
 
-                                        <td>{{ $personnelSalary->user->first_name. " " . $personnelSalary->user->last_name  }}</td>
+                                            <td>{{ $personnelSalary->user->first_name . ' ' . $personnelSalary->user->last_name }}
+                                            </td>
 
-                                        <td>{{ $personnelSalary->price }}</td>
-                                        <td>{{ $personnelSalary->description }}</td>
+                                            <td>{{ $personnelSalary->price }}</td>
+                                            <td>{{ $personnelSalary->description }}</td>
 
-                                     
-                                        <td>
-                                            <a href="{{ route('admin.admin.personnel-salary.edit',$personnelSalary->id) }}" class="btn btn-warning btn-sm">ویرایش</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
+                                            <td>{{ $personnelSalary->created_at->toJalali()->format('d F Y') }}</td>
+
+                                            <td>
+                                                <a href="{{ route('admin.admin.personnel-salary.edit', $personnelSalary->id) }}"
+                                                    class="btn btn-warning btn-sm">ویرایش</a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -67,6 +75,6 @@
     </div>
 @endsection
 @section('script')
-    @include('admin.partial.loader.script',['load'=>[\App\Enums\Assets\ScriptLoader::DataTable()]])
+    @include('admin.partial.loader.script', ['load' => [\App\Enums\Assets\ScriptLoader::DataTable()]])
     @include('admin.partial.datatable_offline')
 @endsection
