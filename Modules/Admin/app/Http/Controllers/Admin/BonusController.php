@@ -28,7 +28,7 @@ class BonusController extends Controller
     {
         $title = self::INDEX_TITLE;
 
-        $bonuses = BonusesDeduction::query()->get();
+        $bonuses = BonusesDeduction::query()->where('type', 0)->get();
         return view('admin::admin.bonuses.index', compact('title', 'bonuses'));
     }
 

@@ -23,7 +23,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title">پاداش</h3>
-                    @can('ADMIN_ADMIN_FIXED_AMOUNT_CREATE')
+                    @can('ADMIN_ADMIN_BONUSES_CREATE')
                         <a class="btn btn-success btn-sm" href="{{ route('admin.admin.bonuses.create') }}">ایجاد
                             درخواست پاداش</a>
                     @endcan
@@ -58,7 +58,7 @@
                                                 <a href="{{ route('admin.admin.bonuses.edit', $bonus->id) }}"
                                                     class="btn btn-warning btn-sm">ویرایش</a>
                                                 <a class="btn btn-info btn-sm"
-                                                    href="{{ route('admin.admin.bonuses.create') }}">
+                                                    href="{{ route('admin.admin.reason.index', $bonus->id) }}">
                                                     علل</a>
                                             </td>
                                         </tr>

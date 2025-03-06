@@ -14,6 +14,7 @@ use Modules\Admin\app\Http\Controllers\Admin\VariableAmountController;
 use Modules\Admin\app\Http\Controllers\Admin\FixedAmountController;
 
 use Modules\Admin\app\Http\Controllers\Admin\ProfileController;
+use Modules\Admin\app\Http\Controllers\Admin\ReasonController;
 
 Route::group(['guard' => 'admin'], function () {
 
@@ -101,6 +102,14 @@ Route::group(['guard' => 'admin'], function () {
         Route::post('/', [DeductionController::class, 'store'])->name('store');
         Route::patch('/{bonusesDeduction}', [DeductionController::class, 'update'])->name('update');
         Route::delete('/{bonusesDeduction}', [DeductionController::class, 'destroy'])->name('destroy');
+    });
+    Route::group(['prefix' => 'reason', 'as' => 'reason.'], function () {
+        Route::get('/{bonusesDeduction}', [ReasonController::class, 'index'])->name('index');
+        Route::get('/create/{bonusesDeduction}', [ReasonController::class, 'create'])->name('create');
+        Route::get('/{bonusesDeduction}/{reason}', [ReasonController::class, 'edit'])->name('edit');
+        Route::post('/{bonusesDeduction}', [ReasonController::class, 'store'])->name('store');
+        Route::patch('/{reason}', [ReasonController::class, 'update'])->name('update');
+        Route::delete('/{bonusesDeduction}/{reason}', [ReasonController::class, 'destroy'])->name('destroy');
     });
     Route::group([], function () {
         Route::get('/{admin}', [AdminController::class, 'edit'])->name('edit');

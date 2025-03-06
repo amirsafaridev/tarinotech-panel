@@ -27,7 +27,7 @@ class ReasonController extends Controller
     {
         $title = self::INDEX_TITLE;
         $reasons = $bonusesDeduction->reasons()->get();
-        return view('admin::admin.reason.index', compact('title', 'reasons'));
+        return view('admin::admin.reason.index', compact('title', 'reasons', 'bonusesDeduction'));
     }
 
     /**
@@ -37,7 +37,7 @@ class ReasonController extends Controller
     {
         $title = self::CREATE_TITLE;
 
-        return view('admin::admin.reason.create', compact('title'));
+        return view('admin::admin.reason.create', compact('title', 'bonusesDeduction'));
     }
 
     /**
@@ -50,9 +50,8 @@ class ReasonController extends Controller
             $inputs = $request->all();
             $inputs['user_id'] = Auth::user()->id;
             $inputs['type'] = 0;
-            $bonus =  BonusesDeduction::query()->create($inputs);
             Reason::query()->create([
-                'bonuses_deduction_id' => $bonus->id,
+                'bonuses_deduction_id' => $bonusesDeduction->id,
                 'description' => $inputs['description']
             ]);
             DB::commit();

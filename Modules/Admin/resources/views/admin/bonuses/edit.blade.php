@@ -30,7 +30,7 @@
                         @csrf
                         @method('PATCH')
                         <x-admin.input identify="price" title="مبلغ" :old="$bonusesDeduction->price" />
-                        <x-admin.input identify="description" title="توضیحات" :old="$reason->description" />
+                        <x-admin.input identify="description" title="علت" :old="$reason->description" />
 
                         <x-admin.button title="ویرایش" />
 

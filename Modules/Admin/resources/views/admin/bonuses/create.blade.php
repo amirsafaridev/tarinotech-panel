@@ -29,7 +29,7 @@
                         action="{{ route('admin.admin.bonuses.store') }}">
                         @csrf
                         <x-admin.input identify="price" title="مبلغ" />
-                        <x-admin.input identify="description" title="توضیحات" />
+                        <x-admin.input identify="description" title="علت" />
 
                         <x-admin.button title="{{ trans('panel.create') }}" />
                     </form>

@@ -27,7 +27,7 @@ class DeductionController extends Controller
     public function index()
     {
         $title = self::INDEX_TITLE;
-        $deductions = BonusesDeduction::query()->get();
+        $deductions = BonusesDeduction::query()->where('type', 1)->get();
         return view('admin::admin.deductions.index', compact('title', 'deductions'));
     }
 

@@ -22,10 +22,11 @@
         <div class="col-xl-12 col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title">کسورات</h3>
-                    @can('ADMIN_ADMIN_DEDUCTIONS_CREATE')
-                        <a class="btn btn-success btn-sm" href="{{ route('admin.admin.deductions.create') }}">ایجاد
-                            درخواست کسورات</a>
+                    <h3 class="card-title">علت</h3>
+                    @can('ADMIN_ADMIN_REASON_CREATE')
+                        <a class="btn btn-success btn-sm"
+                            href="{{ route('admin.admin.reason.create', $bonusesDeduction->id) }}">ایجاد
+                            علت</a>
                     @endcan
 
                 </div>
@@ -36,30 +37,22 @@
                             <thead>
                                 <tr>
                                     <th>شناسه</th>
-                                    <th>پرسنل</th>
-                                    <th>مبلغ</th>
+
                                     <th>علت</th>
                                     <th>عملیات</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($deductions->isNotEmpty())
-                                    @foreach ($deductions as $deduction)
+                                @if ($reasons->isNotEmpty())
+                                    @foreach ($reasons as $reason)
                                         <tr>
 
-                                            <td>{{ $deduction->id }}</td>
-
-
-                                            <td>{{ $deduction->user->first_name . ' ' . $deduction->user->last_name }}
-                                            </td>
-                                            <td>{{ $deduction->price }}</td>
-                                            <td>{{ $deduction->reasons()->latest()->first()->description }}</td>
+                                            <td>{{ $reason->id }}</td>
+                                            <td>{{ $reason->description }}</td>
                                             <td>
-                                                <a href="{{ route('admin.admin.deductions.edit', $deduction->id) }}"
+                                                <a href="{{ route('admin.admin.reason.edit', ['bonusesDeduction' => $bonusesDeduction->id, 'reason' => $reason->id]) }}"
                                                     class="btn btn-warning btn-sm">ویرایش</a>
-                                                <a class="btn btn-info btn-sm"
-                                                    href="{{ route('admin.admin.reason.index', $deduction->id) }}">
-                                                    علل</a>
+
                                             </td>
                                         </tr>
                                     @endforeach

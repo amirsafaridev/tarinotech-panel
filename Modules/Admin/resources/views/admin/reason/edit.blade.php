@@ -14,7 +14,8 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a
                         href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.admin.deductions.index') }}">کسورات</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.admin.reason.index', $bonusesDeduction->id) }}">علت</a>
+                </li>
                 <li class="breadcrumb-item active">ویرایش</li>
             </ol>
         </div>
@@ -26,11 +27,10 @@
                 <div class="card-body pb-4">
                     @include('admin.partial.message')
                     <form class="request-form forms-sample" method="post"
-                        action="{{ route('admin.admin.deductions.update', $bonusesDeduction->id) }}">
+                        action="{{ route('admin.admin.reason.update', $reason->id) }}">
                         @csrf
                         @method('PATCH')
-                        <x-admin.input identify="price" title="مبلغ" :old="$bonusesDeduction->price" />
-                        <x-admin.input identify="description" title="علت" :old="$reason->description" />
+                        <x-admin.input identify="description" title="توضیحات" :old="$reason->description" />
 
                         <x-admin.button title="ویرایش" />
 
@@ -42,8 +42,9 @@
         </div>
     </div>
 
-    <form id="deleteItem" action="{{ route('admin.admin.deductions.destroy', $bonusesDeduction->id) }}" method="post"
-        class="form-inline">
+    <form id="deleteItem"
+        action="{{ route('admin.admin.reason.destroy', ['bonusesDeduction' => $bonusesDeduction->id, 'reason' => $reason->id]) }}"
+        method="post" class="form-inline">
         @csrf
         @method('DELETE')
     </form>
@@ -53,7 +54,7 @@
     @include('admin.partial.loader.script', ['load' => [\App\Enums\Assets\ScriptLoader::Alert()]])
     <script>
         $(document).ready(function() {
-            activeParentUl('{{ route('admin.admin.deductions.index') }}');
+            activeParentUl('{{ route('admin.admin.reason.index', $bonusesDeduction->id) }}');
         })
     </script>
 @endsection
