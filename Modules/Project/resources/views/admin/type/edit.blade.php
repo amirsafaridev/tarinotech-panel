@@ -38,6 +38,8 @@
                                               :old="$projectType->base_id"/>
 
                         <x-admin.input identify="title" title="عنوان" :old="$projectType->title"/>
+                         <x-admin.input identify="eua_expert_price" title="عنوان" :old="$projectType->title"/>
+                         <x-admin.input identify="euc_expert_price" title="عنوان" :old="$projectType->title"/>
 
                         <x-admin.button title="{{ trans('panel.update') }}"/>
 

@@ -1,11 +1,20 @@
 <?php
 
 use Modules\Admin\app\Http\Controllers\Admin\AdminController;
+use Modules\Admin\app\Http\Controllers\Admin\BonusController;
+use Modules\Admin\app\Http\Controllers\Admin\DeductionController;
 use Modules\Admin\app\Http\Controllers\Admin\GoalController;
 use Modules\Admin\app\Http\Controllers\Admin\Google2FAController;
 use Modules\Admin\app\Http\Controllers\Admin\JobTitleController;
 use Modules\Admin\app\Http\Controllers\Admin\PasswordController;
+use Modules\Admin\app\Http\Controllers\Admin\PersonnelAssistanceController;
+use Modules\Admin\app\Http\Controllers\Admin\PersonnelSalaryController;
+use Modules\Admin\app\Http\Controllers\Admin\PersonnelReportController;
+use Modules\Admin\app\Http\Controllers\Admin\VariableAmountController;
+use Modules\Admin\app\Http\Controllers\Admin\FixedAmountController;
+
 use Modules\Admin\app\Http\Controllers\Admin\ProfileController;
+use Modules\Admin\app\Http\Controllers\Admin\ReasonController;
 
 Route::group(['guard' => 'admin'], function () {
 
@@ -37,6 +46,71 @@ Route::group(['guard' => 'admin'], function () {
         Route::patch('/{job_title}', [JobTitleController::class, 'update'])->name('update');
         Route::delete('/{job_title}', [JobTitleController::class, 'destroy'])->name('destroy');
     });
+
+    Route::group(['prefix' => 'personnel-assistance', 'as' => 'personnel-assistance.'], function () {
+        Route::get('/', [PersonnelAssistanceController::class, 'index'])->name('index');
+        Route::get('/create', [PersonnelAssistanceController::class, 'create'])->name('create');
+        Route::get('/{personnelAssistance}', [PersonnelAssistanceController::class, 'edit'])->name('edit');
+        Route::post('/', [PersonnelAssistanceController::class, 'store'])->name('store');
+        Route::patch('/{personnelAssistance}', [PersonnelAssistanceController::class, 'update'])->name('update');
+        Route::delete('/{personnelAssistance}', [PersonnelAssistanceController::class, 'destroy'])->name('destroy');
+    });
+    Route::group(['prefix' => 'personnel-salary', 'as' => 'personnel-salary.'], function () {
+        Route::get('/', [PersonnelSalaryController::class, 'index'])->name('index');
+        Route::get('/create', [PersonnelSalaryController::class, 'create'])->name('create');
+        Route::get('/{personnelSalary}', [PersonnelSalaryController::class, 'edit'])->name('edit');
+        Route::post('/', [PersonnelSalaryController::class, 'store'])->name('store');
+        Route::patch('/{personnelSalary}', [PersonnelSalaryController::class, 'update'])->name('update');
+        Route::delete('/{personnelSalary}', [PersonnelSalaryController::class, 'destroy'])->name('destroy');
+    });
+    Route::group(['prefix' => 'personnel-report', 'as' => 'personnel-report.'], function () {
+        Route::get('/', [PersonnelReportController::class, 'index'])->name('index');
+        Route::get('/create', [PersonnelReportController::class, 'create'])->name('create');
+        Route::get('/{personnelReport}', [PersonnelReportController::class, 'edit'])->name('edit');
+        Route::post('/', [PersonnelReportController::class, 'store'])->name('store');
+        Route::patch('/{personnelReport}', [PersonnelReportController::class, 'update'])->name('update');
+        Route::delete('/{personnelReport}', [PersonnelReportController::class, 'destroy'])->name('destroy');
+    });
+    Route::group(['prefix' => 'variable-amount', 'as' => 'variable-amount.'], function () {
+        Route::get('/', [VariableAmountController::class, 'index'])->name('index');
+        Route::get('/create', [VariableAmountController::class, 'create'])->name('create');
+        Route::get('/{variableAmount}', [VariableAmountController::class, 'edit'])->name('edit');
+        Route::post('/', [VariableAmountController::class, 'store'])->name('store');
+        Route::patch('/{variableAmount}', [VariableAmountController::class, 'update'])->name('update');
+        Route::delete('/{variableAmount}', [VariableAmountController::class, 'destroy'])->name('destroy');
+    });
+    Route::group(['prefix' => 'fixed-amount', 'as' => 'fixed-amount.'], function () {
+        Route::get('/', [FixedAmountController::class, 'index'])->name('index');
+        Route::get('/create', [FixedAmountController::class, 'create'])->name('create');
+        Route::get('/{fixedAmount}', [FixedAmountController::class, 'edit'])->name('edit');
+        Route::post('/', [FixedAmountController::class, 'store'])->name('store');
+        Route::patch('/{fixedAmount}', [FixedAmountController::class, 'update'])->name('update');
+        Route::delete('/{fixedAmount}', [FixedAmountController::class, 'destroy'])->name('destroy');
+    });
+    Route::group(['prefix' => 'bonuses', 'as' => 'bonuses.'], function () {
+        Route::get('/', [BonusController::class, 'index'])->name('index');
+        Route::get('/create', [BonusController::class, 'create'])->name('create');
+        Route::get('/{bonusesDeduction}', [BonusController::class, 'edit'])->name('edit');
+        Route::post('/', [BonusController::class, 'store'])->name('store');
+        Route::patch('/{bonusesDeduction}', [BonusController::class, 'update'])->name('update');
+        Route::delete('/{bonusesDeduction}', [BonusController::class, 'destroy'])->name('destroy');
+    });
+    Route::group(['prefix' => 'deductions', 'as' => 'deductions.'], function () {
+        Route::get('/', [DeductionController::class, 'index'])->name('index');
+        Route::get('/create', [DeductionController::class, 'create'])->name('create');
+        Route::get('/{bonusesDeduction}', [DeductionController::class, 'edit'])->name('edit');
+        Route::post('/', [DeductionController::class, 'store'])->name('store');
+        Route::patch('/{bonusesDeduction}', [DeductionController::class, 'update'])->name('update');
+        Route::delete('/{bonusesDeduction}', [DeductionController::class, 'destroy'])->name('destroy');
+    });
+    Route::group(['prefix' => 'reason', 'as' => 'reason.'], function () {
+        Route::get('/{bonusesDeduction}', [ReasonController::class, 'index'])->name('index');
+        Route::get('/create/{bonusesDeduction}', [ReasonController::class, 'create'])->name('create');
+        Route::get('/{bonusesDeduction}/{reason}', [ReasonController::class, 'edit'])->name('edit');
+        Route::post('/{bonusesDeduction}', [ReasonController::class, 'store'])->name('store');
+        Route::patch('/{reason}', [ReasonController::class, 'update'])->name('update');
+        Route::delete('/{bonusesDeduction}/{reason}', [ReasonController::class, 'destroy'])->name('destroy');
+    });
     Route::group([], function () {
         Route::get('/{admin}', [AdminController::class, 'edit'])->name('edit');
         Route::get('/{admin}/show', [AdminController::class, 'show'])->name('show');
@@ -48,7 +122,5 @@ Route::group(['guard' => 'admin'], function () {
 
         Route::get('/{admin}/goal', [GoalController::class, 'index'])->name('goal');
         Route::post('/{admin}/goal', [GoalController::class, 'save'])->name('goal.save');
-
     })->whereNumber('admin');
-
 });

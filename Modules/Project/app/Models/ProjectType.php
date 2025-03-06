@@ -18,6 +18,8 @@ class ProjectType extends Model
 
     protected $fillable = [
         'title',
+        'euc_expert_price',
+        'eua_expert_price',
         'base_id',
     ];
 

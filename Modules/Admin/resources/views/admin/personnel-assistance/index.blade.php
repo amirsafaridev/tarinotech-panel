@@ -1,0 +1,82 @@
+@extends('admin.master')
+@section('title')
+    {{ $title }}
+@endsection
+@section('head')
+    @include('admin.partial.loader.style', ['load' => [\App\Enums\Assets\StyleLoader::DataTable()]])
+@endsection
+@section('content')
+
+    <div class="page-header">
+        <h1 class="page-title">{{ $title }}</h1>
+        <div>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a
+                        href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item active">{{ $title }}</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title">مساعده ها</h3>
+                    @can('ADMIN_ADMIN_PERSONNEL_ASSISTANCE_CREATE')
+                        <a class="btn btn-success btn-sm" href="{{ route('admin.admin.personnel-assistance.create') }}">ایجاد
+                            درخواست مساعده</a>
+                    @endcan
+                </div>
+                <div class="card-body">
+                    @include('admin.partial.message')
+                    <div class="table-responsive">
+                        <table id="data-table" class="table">
+                            <thead>
+                                <tr>
+
+                                    <th>شناسه</th>
+                                    <th>نام و نام‌خانوادگی</th>
+
+                                    <th>مبلغ</th>
+                                    <th>توضیحات</th>
+                                    <th>تاریخ</th>
+
+                                    <th>عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if ($personnelAssistances->isNotEmpty())
+                                    @foreach ($personnelAssistances as $personnelAssistance)
+                                        <tr>
+                                            <td>{{ $personnelAssistance->id }}</td>
+
+                                            <td>{{ $personnelAssistance->user->first_name . ' ' . $personnelAssistance->user->last_name }}
+                                            </td>
+
+                                            <td>{{ $personnelAssistance->price }}</td>
+                                            <td>{{ $personnelAssistance->description }}</td>
+
+                                            <td>{{ $personnelAssistance->created_at->toJalali()->format('d F Y') }}</td>
+
+                                            <td>
+                                                @can('ADMIN_ADMIN_PERSONNEL_ASSISTANCE_EDIT')
+                                                    <a href="{{ route('admin.admin.personnel-assistance.edit', $personnelAssistance->id) }}"
+                                                        class="btn btn-warning btn-sm">ویرایش</a>
+                                                @endcan
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+@section('script')
+    @include('admin.partial.loader.script', ['load' => [\App\Enums\Assets\ScriptLoader::DataTable()]])
+    @include('admin.partial.datatable_offline')
+@endsection

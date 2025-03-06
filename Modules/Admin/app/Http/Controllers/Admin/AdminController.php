@@ -44,7 +44,6 @@ class AdminController extends Controller
         $routeData = $this->getDataRoute();
 
         $dataTable = $this->getDataTable();
-
         return view('admin::admin.index', compact('title', 'routeData', 'dataTable'));
     }
 

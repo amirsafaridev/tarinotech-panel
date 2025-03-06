@@ -21,6 +21,9 @@ class UpdateRequest extends FormRequest
     {
         return [
             'title' => 'required|max:255',
+            'euc_expert_price' => 'required|max:255',
+            'eua_expert_price' => 'required|max:255',
+
             'base_id' => 'required|exists:project_bases,id',
         ];
     }
