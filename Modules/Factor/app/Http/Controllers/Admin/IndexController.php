@@ -40,7 +40,7 @@ use Modules\User\app\Models\User;
 
 class IndexController extends Controller
 {
-    use DeterminesBillingDetailsTrait,HasJsonCommonResponseTrait;
+    use DeterminesBillingDetailsTrait, HasJsonCommonResponseTrait;
 
     const INDEX_TITLE = 'فاکتور ها';
 
@@ -106,7 +106,7 @@ class IndexController extends Controller
     private function export($factors)
     {
         try {
-            $fileName = 'Factor-'.Carbon::now()->format('Y-m-d').'.xlsx';
+            $fileName = 'Factor-' . Carbon::now()->format('Y-m-d') . '.xlsx';
 
             return Excel::download(new DatatableExport(collect($factors)), $fileName);
         } catch (Exception $exception) {
@@ -119,7 +119,6 @@ class IndexController extends Controller
     public function create()
     {
         $title = self::CREATE_TITLE;
-
         return view('factor::admin.create', compact('title'));
     }
 
@@ -173,12 +172,10 @@ class IndexController extends Controller
             $factor->delete();
 
             return $this->successDestroyBack(route('admin.factor.index'));
-
         } catch (Exception $exception) {
             DB::rollBack();
 
             return $this->exceptionBack($exception);
-
         }
     }
 

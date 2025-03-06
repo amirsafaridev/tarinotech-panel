@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Modules\Admin\app\Http\Requests\Admin\PersonnelAssistance\StoreRequest;
 use Modules\Admin\app\Http\Requests\Admin\PersonnelAssistance\UpdateRequest;
-
+use Modules\Admin\app\Models\Admin;
 use Modules\Admin\app\Models\PersonnelAssistance;
 
 class PersonnelAssistanceController extends Controller
@@ -36,8 +36,9 @@ class PersonnelAssistanceController extends Controller
     public function create()
     {
         $title = self::CREATE_TITLE;
+        $users = Admin::query()->get();
 
-        return view('admin::admin.personnel-assistance.create', compact('title'));
+        return view('admin::admin.personnel-assistance.create', compact('title', 'users'));
     }
 
     /**
@@ -48,7 +49,6 @@ class PersonnelAssistanceController extends Controller
         try {
             DB::beginTransaction();
             $inputs = $request->all();
-            $inputs['user_id'] = Auth::user()->id;
             PersonnelAssistance::query()->create($inputs);
             DB::commit();
 
@@ -74,8 +74,9 @@ class PersonnelAssistanceController extends Controller
     public function edit(PersonnelAssistance $personnelAssistance)
     {
         $title = self::EDIT_TITLE;
+        $users = Admin::query()->get();
 
-        return view('admin::admin.personnel-assistance.edit', compact('title', 'personnelAssistance'));
+        return view('admin::admin.personnel-assistance.edit', compact('title', 'personnelAssistance', 'users'));
     }
 
     /**

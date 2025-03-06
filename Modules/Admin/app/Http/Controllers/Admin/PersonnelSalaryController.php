@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Admin\app\Http\Requests\Admin\PersonnelSalary\StoreRequest;
 use Modules\Admin\app\Http\Requests\Admin\PersonnelSalary\UpdateRequest;
 use Exception;
-
+use Modules\Admin\app\Models\Admin;
 use Modules\Admin\app\Models\PersonnelSalary;
 
 class PersonnelSalaryController extends Controller
@@ -26,7 +26,7 @@ class PersonnelSalaryController extends Controller
     {
         $title = self::INDEX_TITLE;
         $personnelSalaries = PersonnelSalary::query()->get();
-        return view('admin::admin.personnel-salary.index',compact('title','personnelSalaries'));
+        return view('admin::admin.personnel-salary.index', compact('title', 'personnelSalaries'));
     }
 
     /**
@@ -35,8 +35,9 @@ class PersonnelSalaryController extends Controller
     public function create()
     {
         $title = self::CREATE_TITLE;
+        $users = Admin::query()->get();
 
-        return view('admin::admin.personnel-salary.create',compact('title'));
+        return view('admin::admin.personnel-salary.create', compact('title', 'users'));
     }
 
     /**
@@ -46,13 +47,11 @@ class PersonnelSalaryController extends Controller
     {
         try {
             DB::beginTransaction();
-            $inputs=$request->all();
-            $inputs['user_id']=Auth::user()->id;
+            $inputs = $request->all();
             PersonnelSalary::query()->create($inputs);
             DB::commit();
 
             return $this->successResponse();
-
         } catch (Exception $exception) {
             DB::rollBack();
 
@@ -74,8 +73,9 @@ class PersonnelSalaryController extends Controller
     public function edit(PersonnelSalary $personnelSalary)
     {
         $title = self::EDIT_TITLE;
+        $users = Admin::query()->get();
 
-        return view('admin::admin.personnel-salary.edit',compact('title','personnelSalary'));
+        return view('admin::admin.personnel-salary.edit', compact('title', 'personnelSalary', 'users'));
     }
 
     /**
@@ -105,7 +105,6 @@ class PersonnelSalaryController extends Controller
             $personnelSalary->delete();
 
             return $this->successDestroyBack(route('admin.admin.personnel-salary.index'));
-
         } catch (Exception $exception) {
             return $this->exceptionBack($exception);
         }

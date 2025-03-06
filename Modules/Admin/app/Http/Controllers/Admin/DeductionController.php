@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Admin\app\Http\Requests\Admin\BonusesDeduction\StoreRequest;
 use Modules\Admin\app\Http\Requests\Admin\BonusesDeduction\UpdateRequest;
 use Exception;
+use Modules\Admin\app\Models\Admin;
 use Modules\Admin\app\Models\BonusesDeduction;
 use Modules\Admin\app\Models\Reason;
 
@@ -37,8 +38,9 @@ class DeductionController extends Controller
     public function create()
     {
         $title = self::CREATE_TITLE;
+        $users = Admin::query()->get();
 
-        return view('admin::admin.deductions.create', compact('title'));
+        return view('admin::admin.deductions.create', compact('title', 'users'));
     }
 
     /**
@@ -49,7 +51,6 @@ class DeductionController extends Controller
         try {
             DB::beginTransaction();
             $inputs = $request->all();
-            $inputs['user_id'] = Auth::user()->id;
             $inputs['type'] = 1;
             $bonus =  BonusesDeduction::query()->create($inputs);
             Reason::query()->create([
@@ -81,8 +82,9 @@ class DeductionController extends Controller
     {
         $title = self::EDIT_TITLE;
         $reason = Reason::where('bonuses_deduction_id', $bonusesDeduction->id)->latest()->first();
+        $users = Admin::query()->get();
 
-        return view('admin::admin.deductions.edit', compact('title', 'bonusesDeduction', 'reason'));
+        return view('admin::admin.deductions.edit', compact('title', 'bonusesDeduction', 'reason', 'users'));
     }
 
     /**

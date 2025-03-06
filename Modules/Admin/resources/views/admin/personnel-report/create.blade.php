@@ -1,19 +1,21 @@
 @extends('admin.master')
-@section('title') {{ $title }} @endsection
+@section('title')
+    {{ $title }}
+@endsection
 @section('head')
-    @include('admin.partial.loader.style',['load'=>[
-       \App\Enums\Assets\StyleLoader::Toast(),
-       \App\Enums\Assets\StyleLoader::Datepicker(),
-   ]])
+    @include('admin.partial.loader.style', [
+        'load' => [\App\Enums\Assets\StyleLoader::Toast(), \App\Enums\Assets\StyleLoader::Datepicker()],
+    ])
 @endsection
 @section('content')
-
     <div class="page-header">
         <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.admin.personnel-report.index') }}">گزارش تردد و مرخصی</a></li>
+                <li class="breadcrumb-item"><a
+                        href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.admin.personnel-report.index') }}">گزارش تردد و مرخصی</a>
+                </li>
                 <li class="breadcrumb-item active">ایجاد</li>
             </ol>
         </div>
@@ -24,13 +26,14 @@
             <div class="card">
                 <div class="card-body pb-4">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ route('admin.admin.personnel-report.store') }}">
+                    <form class="request-form forms-sample" method="post"
+                        action="{{ route('admin.admin.personnel-report.store') }}">
                         @csrf
 
-                        <x-admin.input identify="price" title="مبلغ"/>
-                        <x-admin.input identify="description" title="توضیحات"/>
+                        <x-admin.input identify="price" title="مبلغ" />
+                        <x-admin.textarea identify="description" title="توضیحات" />
 
-                        <x-admin.button title="{{ trans('panel.create') }}"/>
+                        <x-admin.button title="{{ trans('panel.create') }}" />
                     </form>
                 </div>
             </div>
@@ -40,7 +43,7 @@
 @section('script')
     @include('admin.partial.request')
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             activeParentUl('{{ route('admin.admin.personnel-report.index') }}');
         })
     </script>

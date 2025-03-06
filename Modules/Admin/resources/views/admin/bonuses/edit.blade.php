@@ -30,7 +30,9 @@
                         @csrf
                         @method('PATCH')
                         <x-admin.input identify="price" title="مبلغ" :old="$bonusesDeduction->price" />
-                        <x-admin.input identify="description" title="علت" :old="$reason->description" />
+                        <x-admin.select-user title="انتخاب پرسنل" identify="user_id" key="id" value="optionTitle"
+                            :items="$users" :old="$bonusesDeduction->user_id" />
+                        <x-admin.textarea identify="description" title="علت" :old="$reason->description" />
 
                         <x-admin.button title="ویرایش" />
 

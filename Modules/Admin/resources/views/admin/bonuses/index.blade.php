@@ -55,8 +55,10 @@
                                             <td>{{ $bonus->price }}</td>
                                             <td>{{ $bonus->reasons()->latest()->first()->description }}</td>
                                             <td>
-                                                <a href="{{ route('admin.admin.bonuses.edit', $bonus->id) }}"
-                                                    class="btn btn-warning btn-sm">ویرایش</a>
+                                                @can('ADMIN_ADMIN_BONUSES_EDIT')
+                                                    <a href="{{ route('admin.admin.bonuses.edit', $bonus->id) }}"
+                                                        class="btn btn-warning btn-sm">ویرایش</a>
+                                                @endcan
                                                 <a class="btn btn-info btn-sm"
                                                     href="{{ route('admin.admin.reason.index', $bonus->id) }}">
                                                     علل</a>

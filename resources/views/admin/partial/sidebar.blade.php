@@ -100,10 +100,10 @@
                                 <li><a href="{{ route('admin.admin.personnel-salary.index') }}" class="slide-item">تنخواه
                                         ها</a></li>
                             @endcan
-                            @can('ADMIN_ADMIN_PERSONNEL_REPORT_INDEX')
+                            {{-- @can('ADMIN_ADMIN_PERSONNEL_REPORT_INDEX')
                                 <li><a href="{{ route('admin.admin.personnel-report.index') }}" class="slide-item">گزارش تردد و
                                         مرخصی ها</a></li>
-                            @endcan
+                            @endcan --}}
                         </ul>
                     </li>
                 @endcanany

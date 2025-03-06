@@ -30,7 +30,7 @@
                         action="{{ route('admin.admin.reason.update', $reason->id) }}">
                         @csrf
                         @method('PATCH')
-                        <x-admin.input identify="description" title="توضیحات" :old="$reason->description" />
+                        <x-admin.textarea identify="description" title="توضیحات" :old="$reason->description" />
 
                         <x-admin.button title="ویرایش" />
 

@@ -47,7 +47,6 @@ class FixedAmountController extends Controller
         try {
             DB::beginTransaction();
             $inputs = $request->all();
-            $inputs['user_id'] = Auth::user()->id;
             FixedAmount::query()->create($inputs);
             DB::commit();
 

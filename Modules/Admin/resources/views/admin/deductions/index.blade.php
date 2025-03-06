@@ -55,8 +55,10 @@
                                             <td>{{ $deduction->price }}</td>
                                             <td>{{ $deduction->reasons()->latest()->first()->description }}</td>
                                             <td>
-                                                <a href="{{ route('admin.admin.deductions.edit', $deduction->id) }}"
-                                                    class="btn btn-warning btn-sm">ویرایش</a>
+                                                @can('ADMIN_ADMIN_DEDUCTIONS_EDIT')
+                                                    <a href="{{ route('admin.admin.deductions.edit', $deduction->id) }}"
+                                                        class="btn btn-warning btn-sm">ویرایش</a>
+                                                @endcan
                                                 <a class="btn btn-info btn-sm"
                                                     href="{{ route('admin.admin.reason.index', $deduction->id) }}">
                                                     علل</a>

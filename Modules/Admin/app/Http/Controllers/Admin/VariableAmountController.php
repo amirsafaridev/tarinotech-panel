@@ -48,7 +48,6 @@ class VariableAmountController extends Controller
         try {
             DB::beginTransaction();
             $inputs = $request->all();
-            $inputs['user_id'] = Auth::user()->id;
             VariableAmount::query()->create($inputs);
             DB::commit();
 

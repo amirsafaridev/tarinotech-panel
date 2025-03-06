@@ -30,7 +30,7 @@
                         action="{{ route('admin.admin.reason.store', $bonusesDeduction->id) }}">
                         @csrf
                         <x-admin.input identify="price" title="مبلغ" />
-                        <x-admin.input identify="description" title="توضیحات" />
+                        <x-admin.textarea identify="description" title="توضیحات" />
 
                         <x-admin.button title="{{ trans('panel.create') }}" />
                     </form>
