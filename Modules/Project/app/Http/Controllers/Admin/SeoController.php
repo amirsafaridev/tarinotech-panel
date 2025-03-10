@@ -116,6 +116,7 @@ class SeoController extends Controller
             $projectSeo = ProjectSeo::query()->create($projectData);
 
             $projectParams = $this->initialProjectData($request);
+            $projectParams['admin_id'] = auth()->id();
             $projectParams['tax_rate'] = config('factor.tax');
 
             $projectSeo->project()->create($projectParams);

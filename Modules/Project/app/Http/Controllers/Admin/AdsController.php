@@ -107,7 +107,7 @@ class AdsController extends Controller
 
             $projectParams = $this->initialProjectData($request);
             $projectParams['tax_rate'] = config('factor.tax');
-
+            $projectParams['admin_id'] = auth()->id();
             $projectAds->project()->create($projectParams);
             DB::commit();
 

@@ -168,6 +168,7 @@ class WebController extends Controller
             DB::beginTransaction();
 
             $projectParams = $this->initialProjectData($request);
+            $projectParams['admin_id'] = auth()->id();
             if (hasAdminPermission(PermissionName::PROJECT_PRICE_EDIT)) {
                 $projectParams['price'] = $request->input('price');
             }
