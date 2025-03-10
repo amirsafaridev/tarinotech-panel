@@ -3,6 +3,7 @@
 namespace Modules\Project\app\Http\Controllers\Admin;
 
 use App\Enums\Database\Role\PermissionName;
+use App\Enums\Database\Role\RoleName;
 use App\Filters\Admin\Admin\AdminJoinedFilter;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
@@ -168,7 +169,6 @@ class AdsController extends Controller
         $data = [
             'title' => $request->input('title'),
             'domain' => $request->input('domain_primary'),
-            'admin_id' => auth()->id(),
             'user_id' => $request->input('user_id'),
             'status_id' => $request->input('status_id'),
             'base_id' => ProjectBase::Ads,
@@ -177,6 +177,10 @@ class AdsController extends Controller
             'note' => $request->input('note'),
             'contract_attachment' => $request->input('contract_attachment'),
         ];
+
+        if (hasAdminRole(RoleName::SUPER_ADMIN)) {
+            $data['admin_id'] = $request->input('admin_id');
+        }
 
         if (! empty($agreementAt)) {
             $data['agreement_at'] = Helper::toGregorian($agreementAt);

@@ -274,15 +274,9 @@ class WebController extends Controller
         $agreementAt = $request->input('agreement_at');
         $deadlineAt = $request->input('deadline_at');
 
-        $adminId = auth()->id();
-        if (hasAdminRole(RoleName::SUPER_ADMIN)) {
-            $adminId = $request->input('admin_id');
-        }
-
         $data = [
             'title' => $request->input('title'),
             'domain' => $request->input('domain_primary'),
-            'admin_id' => $adminId,
             'type_id' => $request->input('type_id'),
             'user_id' => $request->input('user_id'),
             'base_id' => ProjectBase::Web,
@@ -290,6 +284,10 @@ class WebController extends Controller
             'business_domain_id' => $request->input('business_domain_id'),
             'business_domain' => $request->input('business_domain'),
         ];
+
+        if (hasAdminRole(RoleName::SUPER_ADMIN)) {
+            $data['admin_id'] = $request->input('admin_id');
+        }
 
         if (! empty($agreementAt)) {
             $data['agreement_at'] = Helper::toGregorian($agreementAt);

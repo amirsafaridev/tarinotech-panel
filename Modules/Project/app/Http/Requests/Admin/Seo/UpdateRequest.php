@@ -2,6 +2,7 @@
 
 namespace Modules\Project\app\Http\Requests\Admin\Seo;
 
+use App\Enums\Database\Role\RoleName;
 use BenSampo\Enum\Rules\EnumKey;
 use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Foundation\Http\FormRequest;
@@ -25,7 +26,7 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
 
-        return [
+        $baseRule = [
             'title' => 'required|max:255',
             'domain_primary' => 'required|max:255',
 
@@ -48,6 +49,12 @@ class UpdateRequest extends FormRequest
             'keywords_count' => 'required|numeric|min:1',
             'keywords' => 'required|array',
         ];
+
+        if (hasAdminRole(RoleName::SUPER_ADMIN)) {
+            $baseRule['admin_id'] = 'required|exists:admins,id';
+        }
+
+        return $baseRule;
     }
 
     public function messages(): array

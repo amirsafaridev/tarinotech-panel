@@ -2,6 +2,7 @@
 
 namespace Modules\Project\app\Http\Requests\Admin\Ads;
 
+use App\Enums\Database\Role\RoleName;
 use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Foundation\Http\FormRequest;
 use Modules\Project\app\Enums\ProjectDesignBy;
@@ -21,7 +22,7 @@ class UpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $baseRule = [
             'title' => 'required|max:255',
             'domain_primary' => 'required|max:255',
             'user_id' => 'required|exists:users,id',
@@ -29,6 +30,12 @@ class UpdateRequest extends FormRequest
             'agreement_at' => 'required|jdate',
             'designed_by' => ['required', new EnumValue(ProjectDesignBy::class)],
         ];
+
+        if (hasAdminRole(RoleName::SUPER_ADMIN)) {
+            $baseRule['admin_id'] = 'required|exists:admins,id';
+        }
+
+        return $baseRule;
     }
 
     public function messages(): array

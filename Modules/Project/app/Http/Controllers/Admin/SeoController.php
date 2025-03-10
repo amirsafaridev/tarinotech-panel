@@ -178,14 +178,9 @@ class SeoController extends Controller
         $agreementAt = $request->input('agreement_at');
         $deadlineAt = $request->input('deadline_at');
 
-        $adminId = auth()->id();
-        if (hasAdminRole(RoleName::SUPER_ADMIN)) {
-            $adminId = $request->input('admin_id');
-        }
         $data = [
             'title' => $request->input('title'),
             'domain' => $request->input('domain_primary'),
-            'admin_id' => $adminId,
             'user_id' => $request->input('user_id'),
             'status_id' => $request->input('status_id'),
             'base_id' => ProjectBase::Seo,
@@ -194,6 +189,10 @@ class SeoController extends Controller
             'note' => $request->input('note'),
             'contract_attachment' => $request->input('contract_attachment'),
         ];
+
+        if (hasAdminRole(RoleName::SUPER_ADMIN)) {
+            $data['admin_id'] = $request->input('admin_id');
+        }
 
         if (! empty($agreementAt)) {
             $data['agreement_at'] = Helper::toGregorian($agreementAt);
