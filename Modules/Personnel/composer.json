@@ -1,0 +1,31 @@
+{
+    "name": "tarinotech/personnel",
+    "description": "",
+    "authors": [
+        {
+            "name": "Ali Mousavi",
+            "email": "mosaviali701@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Personnel\\": "",
+            "Modules\\Personnel\\App\\": "app/",
+            "Modules\\Personnel\\Database\\Factories\\": "database/factories/",
+            "Modules\\Personnel\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Personnel\\Tests\\": "tests/"
+        }
+    }
+}

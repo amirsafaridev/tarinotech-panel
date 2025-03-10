@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('personnel_reports', function (Blueprint $table) {
+        Schema::create('payslips', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('admins')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('price');
-            $table->text('description');
+            $table->text('reject_reason')->nullable();
+            $table->tinyInteger('status')->default(0);
             $table->timestamps();
             $table->softDeletes();
+
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('personnel_reports');
+        Schema::dropIfExists('payslips');
     }
 };

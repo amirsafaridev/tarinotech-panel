@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Modules\User\app\Models\User;
+use Modules\Admin\app\Models\Admin;
 
 class BonusesDeduction extends Model
 {
@@ -19,7 +19,7 @@ class BonusesDeduction extends Model
     protected $fillable = ['price', 'type', 'user_id'];
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(Admin::class, 'user_id');
     }
     public function reasons(): HasMany
     {

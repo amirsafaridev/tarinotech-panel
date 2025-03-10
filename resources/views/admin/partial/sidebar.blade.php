@@ -31,7 +31,24 @@
                         <span class="side-menu__label">{{ trans('panel.dashboard.title') }}</span>
                     </a>
                 </li>
+                @canany(['ADMIN_PERSONNEL_PAYSLIP_INDEX'])
+                <li class="slide can-expand">
+                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navRole">
+                        <i class="side-menu__icon fal fa-user"></i>
+                        <span class="side-menu__label">امور پرسنلی من</span><i
+                            class="angle fal fa-angle-left"></i>
+                    </a>
 
+                    <ul class="slide-menu">
+                        @can('ADMIN_PERSONNEL_PAYSLIP_INDEX')
+                            <li><a href="{{ route('admin.personnel.payslip.index') }}" class="slide-item">فیش حقوقی</a>
+                            </li>
+                        @endcan
+
+                    
+                    </ul>
+                </li>
+            @endcanany
                 @canany(['ADMIN_ADMIN_INDEX', 'ADMIN_ADMIN_CREATE', 'ADMIN_ADMIN_JOB_TITLE_INDEX',
                     'ADMIN_ADMIN_GROUP_GOAL', 'ADMIN_REPORT_GOAL', 'ADMIN_REPORT_GOAL_GROUP',
                     'ADMIN_ADMIN_PERSONNEL_ASSISTANCE_INDEX', 'ADMIN_ADMIN_PERSONNEL_SALARY_INDEX',

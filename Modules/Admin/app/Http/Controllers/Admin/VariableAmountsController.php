@@ -4,29 +4,28 @@ namespace Modules\Admin\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Traits\HasJsonCommonResponseTrait;
-use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Modules\Admin\app\Http\Requests\Admin\PersonnelAssistance\StoreRequest;
-use Modules\Admin\app\Http\Requests\Admin\PersonnelAssistance\UpdateRequest;
-use Modules\Admin\app\Models\Admin;
-use Modules\Admin\app\Models\PersonnelAssistance;
+use Modules\Admin\app\Http\Requests\Admin\VariableAmount\StoreRequest;
+use Modules\Admin\app\Http\Requests\Admin\VariableAmount\UpdateRequest;
+use Modules\Admin\app\Models\VariableAmount;
+use Exception;
 
-class PersonnelAssistanceController extends Controller
+class VariableAmountController extends Controller
 {
     use HasJsonCommonResponseTrait;
 
-    const INDEX_TITLE = 'مساعده';
-    const CREATE_TITLE = 'مساعده - ایجاد';
-    const EDIT_TITLE = 'مساعده - ویرایش';
-
+    const INDEX_TITLE = 'مبالغ متغیر';
+    const CREATE_TITLE = 'مبالغ متغیر - ایجاد';
+    const EDIT_TITLE = 'مبالغ متغیر - ویرایش';
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $title = self::INDEX_TITLE;
-        $personnelAssistances = PersonnelAssistance::query()->get();
-        return view('admin::admin.personnel-assistance.index', compact('title', 'personnelAssistances'));
+        $variableAmounts = VariableAmount::query()->get();
+        return view('admin::admin.variable-amount.index',compact('title','variableAmounts'));
     }
 
     /**
@@ -35,9 +34,8 @@ class PersonnelAssistanceController extends Controller
     public function create()
     {
         $title = self::CREATE_TITLE;
-        $users = Admin::query()->get();
 
-        return view('admin::admin.personnel-assistance.create', compact('title', 'users'));
+        return view('admin::admin.variable-amount.create',compact('title'));
     }
 
     /**
@@ -47,11 +45,13 @@ class PersonnelAssistanceController extends Controller
     {
         try {
             DB::beginTransaction();
-            $inputs = $request->all();
-            PersonnelAssistance::query()->create($inputs);
+            $inputs=$request->all();
+            $inputs['user_id']=Auth::user()->id;
+            VariableAmount::query()->create($inputs);
             DB::commit();
 
             return $this->successResponse();
+
         } catch (Exception $exception) {
             DB::rollBack();
 
@@ -70,22 +70,21 @@ class PersonnelAssistanceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(PersonnelAssistance $personnelAssistance)
+    public function edit(VariableAmount $variableAmount)
     {
         $title = self::EDIT_TITLE;
-        $users = Admin::query()->get();
 
-        return view('admin::admin.personnel-assistance.edit', compact('title', 'personnelAssistance', 'users'));
+        return view('admin::admin.variable-amount.edit',compact('title','variableAmount'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, PersonnelAssistance $personnelAssistance)
+    public function update(UpdateRequest $request, VariableAmount $variableAmount)
     {
         try {
             DB::beginTransaction();
-            $personnelAssistance->update($request->all());
+            $variableAmount->update($request->all());
             DB::commit();
 
             return $this->successUpdateResponse();
@@ -99,12 +98,13 @@ class PersonnelAssistanceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PersonnelAssistance $personnelAssistance)
+    public function destroy(VariableAmount $variableAmount)
     {
         try {
-            $personnelAssistance->delete();
+            $variableAmount->delete();
 
-            return $this->successDestroyBack(route('admin.admin.personnel-assistance.index'));
+            return $this->successDestroyBack(route('admin.admin.variable-amount.index'));
+
         } catch (Exception $exception) {
             return $this->exceptionBack($exception);
         }

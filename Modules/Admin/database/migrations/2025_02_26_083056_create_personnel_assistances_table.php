@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('personnel_assistances', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('admins')->onUpdate('cascade')->onDelete('cascade');
             $table->string('price');
             $table->text('description');
             $table->timestamps();

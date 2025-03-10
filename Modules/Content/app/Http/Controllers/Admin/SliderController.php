@@ -177,10 +177,10 @@ class SliderController extends Controller
                     return $slider->published_at->toJalali()->format(formatJalaliDate());
                 })
                 ->editColumn('archived_at', function ($slider) {
-                    return $slider->archived_at->toJalali()->format(formatJalaliDate());
+                    return $slider->archived_at->()->format(formatJalaliDate());
                 })
                 ->editColumn('created_at', function ($slider) {
-                    return $slider->created_at->toJalali()->format(formatJalaliDateTime());
+                    return $slider->created_at->()->format(formatJalaliDateTime());
                 })
                 ->addColumn('action', function ($slider) {
                     return Helper::btnMaker(BtnType::Warning, route('admin.content.slider.edit', $slider->id), trans('panel.action.edit'));
