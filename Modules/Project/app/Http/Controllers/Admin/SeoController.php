@@ -116,8 +116,13 @@ class SeoController extends Controller
             $projectSeo = ProjectSeo::query()->create($projectData);
 
             $projectParams = $this->initialProjectData($request);
-            $projectParams['admin_id'] = auth()->id();
             $projectParams['tax_rate'] = config('factor.tax');
+
+            if (hasAdminRole(RoleName::SUPER_ADMIN)) {
+                $projectParams['admin_id'] = $request->input('admin_id');
+            } else {
+                $projectParams['admin_id'] = auth()->id();
+            }
 
             $projectSeo->project()->create($projectParams);
 
@@ -148,7 +153,14 @@ class SeoController extends Controller
             $project = Project::findSeoTarget($projectId);
 
             DB::beginTransaction();
-            $project->update($this->initialProjectData($request));
+
+            $projectParams = $this->initialProjectData($request);
+
+            if (hasAdminRole(RoleName::SUPER_ADMIN)) {
+                $projectParams['admin_id'] = $request->input('admin_id');
+            }
+
+            $project->update($projectParams);
             $project->target->update($this->initialSeoData($request));
             DB::commit();
 
@@ -190,10 +202,6 @@ class SeoController extends Controller
             'note' => $request->input('note'),
             'contract_attachment' => $request->input('contract_attachment'),
         ];
-
-        if (hasAdminRole(RoleName::SUPER_ADMIN)) {
-            $data['admin_id'] = $request->input('admin_id');
-        }
 
         if (! empty($agreementAt)) {
             $data['agreement_at'] = Helper::toGregorian($agreementAt);

@@ -121,6 +121,12 @@ class WebController extends Controller
             $projectParams['tax_rate'] = config('factor.tax');
             $projectParams['contract_attachment'] = $request->input('contract_attachment');
 
+            if (hasAdminRole(RoleName::SUPER_ADMIN)) {
+                $projectParams['admin_id'] = $request->input('admin_id');
+            } else {
+                $projectParams['admin_id'] = auth()->id();
+            }
+
             $agreementAt = $projectParams['agreement_at'];
             if ($agreementAt) {
                 $projectParams['renewal_at'] = Carbon::parse($agreementAt)->addYear()
@@ -168,9 +174,13 @@ class WebController extends Controller
             DB::beginTransaction();
 
             $projectParams = $this->initialProjectData($request);
-            $projectParams['admin_id'] = auth()->id();
+
             if (hasAdminPermission(PermissionName::PROJECT_PRICE_EDIT)) {
                 $projectParams['price'] = $request->input('price');
+            }
+
+            if (hasAdminRole(RoleName::SUPER_ADMIN)) {
+                $projectParams['admin_id'] = $request->input('admin_id');
             }
 
             if (! $project->is_signed) {
@@ -285,10 +295,6 @@ class WebController extends Controller
             'business_domain_id' => $request->input('business_domain_id'),
             'business_domain' => $request->input('business_domain'),
         ];
-
-        if (hasAdminRole(RoleName::SUPER_ADMIN)) {
-            $data['admin_id'] = $request->input('admin_id');
-        }
 
         if (! empty($agreementAt)) {
             $data['agreement_at'] = Helper::toGregorian($agreementAt);
