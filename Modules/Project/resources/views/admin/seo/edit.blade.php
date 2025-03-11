@@ -197,7 +197,9 @@
 
                     <x-admin.button title="ویرایش"/>
 
-                    <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
+                    @can('ADMIN_PROJECT_SEO_DESTROY')
+                        <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
+                    @endcan
 
                 </div>
             </div>

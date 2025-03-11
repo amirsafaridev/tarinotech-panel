@@ -313,7 +313,9 @@
 
                     <x-admin.button title="{{ trans('panel.update') }}"/>
 
-                    <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
+                    @can('ADMIN_PROJECT_WEB_DESTROY')
+                        <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
+                    @endcan
 
                 </div>
             </div>

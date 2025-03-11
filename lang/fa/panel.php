@@ -94,6 +94,7 @@ return [
         'auto_factor' => 'فاکتور اتوماتیک',
         'change_password' => 'تغییر گذر واژه',
         'requirement' => 'فرم نیازسنجی',
+        'delete' => 'حذف',
     ],
     'setting' => [
         'title' => 'تنظیمات',

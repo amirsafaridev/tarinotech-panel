@@ -3,6 +3,7 @@
 @section('head')
     @include('admin.partial.loader.style',['load'=>[
         \App\Enums\Assets\StyleLoader::Datepicker(),
+        \App\Enums\Assets\StyleLoader::Alert(),
    ]])
 @endsection
 @section('content')
@@ -94,6 +95,9 @@
                                                     <a class="dropdown-item" href="{{ route('admin.project.web.edit.status',$project->id) }}">{{ __('panel.action.change_status') }}</a>
                                                     <a class="dropdown-item" href="{{ route('admin.project.web.auto-factor',$project->id) }}">{{ __('panel.action.auto_factor') }}</a>
                                                     <a class="dropdown-item" href="{{ route('admin.project.web.requirement',$project->target_id) }}">{{ __('panel.action.requirement') }}</a>
+                                                    @can('ADMIN_PROJECT_WEB_DESTROY')
+                                                        <a class="dropdown-item delete-item" href="javascript:void(0)" data-id="{{ $project->id }}" data-title="{{ $project->title }}">{{ __('panel.action.delete') }}</a>
+                                                    @endcan
                                                 </div>
                                             </div>
                                         </td>
@@ -111,15 +115,44 @@
             </div>
         </div>
     </form>
+
+    <!-- Delete Form -->
+    <form id="delete-form" action="" method="POST" style="display: none;">
+        @csrf
+        @method('DELETE')
+    </form>
 @endsection
 @section('script')
     @include('admin.partial.loader.script',['load'=>[
        \App\Enums\Assets\ScriptLoader::Datepicker(),
+       \App\Enums\Assets\ScriptLoader::Alert(),
    ]])
     @include('admin.partial.script.global')
     <script>
         $(document).ready(function (){
             jalaliDatepicker.startWatch();
-        })
+
+            // Delete confirmation
+            $('.delete-item').on('click', function() {
+                const id = $(this).data('id');
+
+                // Set the form action with the project ID
+                $('#delete-form').attr('action', `{{ route('admin.project.web.destroy', '') }}/${id}`);
+
+                swal({
+                    title: 'آیا مطمئن هستید؟',
+                    text: "این عمل قابل بازگشت نیست!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#ff0f3b',
+                    confirmButtonText: 'بله، حذف کن!',
+                    cancelButtonText: 'خیر، انصراف',
+                    closeOnConfirm: false
+                }, function(){
+                    $('#delete-form').submit();
+                });
+            });
+        });
     </script>
 @endsection
