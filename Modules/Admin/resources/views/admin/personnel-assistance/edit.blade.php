@@ -3,9 +3,14 @@
     {{ $title }}
 @endsection
 @section('head')
-    @include('admin.partial.loader.style', [
-        'load' => [\App\Enums\Assets\StyleLoader::Toast(), \App\Enums\Assets\StyleLoader::Alert()],
-    ])
+@include('admin.partial.loader.style',['load'=>[
+    \App\Enums\Assets\StyleLoader::Toast(),
+    \App\Enums\Assets\StyleLoader::Alert(),
+    \App\Enums\Assets\StyleLoader::Datepicker(),
+    \App\Enums\Assets\StyleLoader::Select2(),
+
+
+]])
 @endsection
 @section('content')
     <div class="page-header">
@@ -30,8 +35,13 @@
                         @csrf
                         @method('PATCH')
                         <x-admin.input identify="price" title="مبلغ" :old="$personnelAssistance->price" />
-                        <x-admin.select-user title="انتخاب پرسنل" identify="user_id" key="id" value="optionTitle"
-                            :items="$users" :old="$personnelAssistance->user_id" />
+                        <x-admin.select-user title="انتخاب پرسنل" identify="user_id" key="id" :old="$personnelAssistance->user_id" />
+                            <x-admin.input
+                            identify="from_date"
+                            title="تاریخ"
+                            :is-date-picker="true"
+                            :old="$personnelAssistance->date"
+                    />
                         <x-admin.textarea identify="description" title="توضیحات" :old="$personnelAssistance->description" />
 
                         <x-admin.button title="ویرایش" />
@@ -52,9 +62,18 @@
 @endsection
 @section('script')
     @include('admin.partial.request')
-    @include('admin.partial.loader.script', ['load' => [\App\Enums\Assets\ScriptLoader::Alert()]])
+    @include('admin.partial.script.global')
+
+    @include('admin.partial.loader.script', ['load' => [
+    \App\Enums\Assets\ScriptLoader::Alert(),
+    \App\Enums\Assets\ScriptLoader::Datepicker(),
+    \App\Enums\Assets\ScriptLoader::Select2(),
+
+    ]])
     <script>
         $(document).ready(function() {
+            jalaliDatepicker.startWatch();
+
             activeParentUl('{{ route('admin.admin.personnel-assistance.index') }}');
         })
     </script>

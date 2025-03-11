@@ -14,7 +14,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a
                         href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.admin.reason.index', $bonusesDeduction->id) }}">علت</a>
+                <li class="breadcrumb-item"><a href="{{ route('admin.admin.reason.index') }}">علت</a>
                 </li>
                 <li class="breadcrumb-item active">ایجاد</li>
             </ol>
@@ -27,10 +27,10 @@
                 <div class="card-body pb-4">
                     @include('admin.partial.message')
                     <form class="request-form forms-sample" method="post"
-                        action="{{ route('admin.admin.reason.store', $bonusesDeduction->id) }}">
+                        action="{{ route('admin.admin.reason.store') }}">
                         @csrf
                         <x-admin.input identify="price" title="مبلغ" />
-                        <x-admin.textarea identify="description" title="توضیحات" />
+                        <x-admin.textarea identify="title" title="علت" />
 
                         <x-admin.button title="{{ trans('panel.create') }}" />
                     </form>
@@ -43,7 +43,7 @@
     @include('admin.partial.request')
     <script>
         $(document).ready(function() {
-            activeParentUl('{{ route('admin.admin.reason.index', $bonusesDeduction->id) }}');
+            activeParentUl('{{ route('admin.admin.reason.index') }}');
         })
     </script>
 @endsection

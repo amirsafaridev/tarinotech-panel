@@ -24,8 +24,8 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title">پاداش</h3>
                     @can('ADMIN_ADMIN_BONUSES_CREATE')
-                        <a class="btn btn-success btn-sm" href="{{ route('admin.admin.bonuses.create') }}">ایجاد
-                            درخواست پاداش</a>
+                        <a class="btn btn-success btn-sm" href="{{ route('admin.admin.bonuses.create') }}">
+                            ثبت پاداش</a>
                     @endcan
 
                 </div>
@@ -39,6 +39,8 @@
                                     <th>پرسنل</th>
                                     <th>مبلغ</th>
                                     <th>علت</th>
+                                    <th>توضیحات</th>
+
                                     <th>تاریخ</th>
 
                                     <th>عملیات</th>
@@ -55,17 +57,17 @@
                                             <td>{{ $bonus->user->first_name . ' ' . $bonus->user->last_name }}
                                             </td>
                                             <td>{{ $bonus->price }}</td>
-                                            <td>{{ $bonus->reasons()->latest()->first()->description }}</td>
-                                            <td>{{ $bonus->created_at->toJalali()->format('d F Y') }}</td>
+                                            <td>{{ $bonus->reason->title }}</td>
+
+                                            <td>{{ $bonus->description }}</td>
+                                            <td>{{ $bonus->date }}</td>
 
                                             <td>
                                                 @can('ADMIN_ADMIN_BONUSES_EDIT')
                                                     <a href="{{ route('admin.admin.bonuses.edit', $bonus->id) }}"
                                                         class="btn btn-warning btn-sm">ویرایش</a>
                                                 @endcan
-                                                <a class="btn btn-info btn-sm"
-                                                    href="{{ route('admin.admin.reason.index', $bonus->id) }}">
-                                                    علل</a>
+                                             
                                             </td>
                                         </tr>
                                     @endforeach

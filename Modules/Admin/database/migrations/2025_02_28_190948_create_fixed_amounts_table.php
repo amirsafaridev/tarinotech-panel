@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('personnel_insurance')->nullable();
             $table->string('employer_insurance_remote')->nullable();
             $table->string('personnel_insurance_remote')->nullable();
+            $table->date('date');
             $table->timestamps();
             $table->softDeletes();
         });

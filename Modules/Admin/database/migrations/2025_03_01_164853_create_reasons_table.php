@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('reasons', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('bonuses_deduction_id')->constrained('bonuses_deductions')->onUpdate('cascade')->onDelete('cascade');
-            $table->text('description');
+            $table->string('title');
+            $table->tinyInteger('type')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

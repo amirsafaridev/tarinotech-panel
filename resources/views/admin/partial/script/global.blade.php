@@ -1,4 +1,13 @@
 <script>
+        const userId = $('#user_id');
+        function select2Setup() {
+            userId.select2();
+
+        setTimeout(function (){
+            userId.trigger('change')
+        },200)
+    }
+
     function showToast(text, icon = 'warning') {
         const iconConfig = {
             warning: {bgColor: '#ff8100', heading: 'اخطار'},
@@ -191,4 +200,7 @@
     function unblockUI(){
         $.unblockUI();
     }
+    $(document).ready(function () {
+        select2Setup();
+    })
 </script>

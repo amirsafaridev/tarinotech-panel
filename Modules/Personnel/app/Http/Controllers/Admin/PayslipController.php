@@ -6,6 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\HasJsonCommonResponseTrait;
 use Modules\Personnel\app\Models\Payslip;
+use Modules\Personnel\Services\PayslipService;
+use Modules\Admin\app\Models\FixedAmount;
+use Modules\Admin\app\Models\VariableAmount;
+use Modules\Admin\app\Models\PersonnelSalary;
+use Modules\Admin\app\Models\PersonnelAssistance;
 
 class PayslipController extends Controller
 {
@@ -23,10 +28,21 @@ class PayslipController extends Controller
         $title = self::INDEX_TITLE;
         $user = Auth::user();
         $payslips = Payslip::where('user_id',$user->id)->get();
+        $payslipService = new PayslipService();
+
+        if(Payslip::count()===0)
+        {
+            $payslipService->generatePayslips();
+        }
         return view('personnel::admin.payslip.index', compact('title', 'payslips'));
     }
     public function show(Payslip $payslip)
     {
-        return view('personnel::admin.payslip.show', compact('payslip'));
+        $fixedAmount = FixedAmount::orderBy('created_at','desc')->first();
+        $variableAmount = VariableAmount::orderBy('created_at','desc')->first();
+        $personnelSalay = PersonnelSalary::where('user_id', $payslip->user->id)->first();
+        $personnelAssistance = PersonnelAssistance::where('user_id', $payslip->user->id)->first();
+
+        return view('personnel::admin.payslip.show', compact('payslip','fixedAmount','variableAmount','personnelSalay','personnelAssistance'));
     }
 }

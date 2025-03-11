@@ -12,15 +12,16 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'basic_rights' => 'required',
-            'right_to_housing' => 'required|numeric',
-            'right_to_marry' => 'required|numeric',
-            'childrens_right' => 'required|numeric',
-            'right_to_eat_and_drink' => 'required|numeric',
-            'employer_insurance' => 'nullable|numeric',
-            'personnel_insurance' => 'nullable|numeric',
-            'employer_insurance_remote' => 'nullable|numeric',
-            'personnel_insurance_remote' => 'nullable|numeric',
+            'date' => 'required|jdate',
+            'basic_rights' => 'required|integer',
+            'right_to_housing' => 'required|integer',
+            'right_to_marry' => 'required|integer',
+            'childrens_right' => 'required|integer',
+            'right_to_eat_and_drink' => 'required|integer',
+            'employer_insurance' => 'required|integer',
+            'personnel_insurance' => 'required|integer',
+            'employer_insurance_remote' => 'required|integer',
+            'personnel_insurance_remote' => 'required|integer',
         ];
     }
 

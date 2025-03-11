@@ -4,7 +4,10 @@
 @endsection
 @section('head')
     @include('admin.partial.loader.style', [
-        'load' => [\App\Enums\Assets\StyleLoader::Toast(), \App\Enums\Assets\StyleLoader::Datepicker()],
+        'load' => [\App\Enums\Assets\StyleLoader::Toast(),
+         \App\Enums\Assets\StyleLoader::Datepicker(),
+         \App\Enums\Assets\StyleLoader::Select2(),
+         ]
     ])
 @endsection
 @section('content')
@@ -29,10 +32,16 @@
                         action="{{ route('admin.admin.deductions.store') }}">
                         @csrf
                         <x-admin.input identify="price" title="مبلغ" />
-                        <x-admin.select-user title="انتخاب پرسنل" identify="user_id" key="id" value="optionTitle"
-                            :items="$users" />
-                        <x-admin.textarea identify="description" title="علت" />
-
+                        <x-admin.select-user title="انتخاب پرسنل" identify="user_id" key="id" />
+                            <x-admin.select-model title="علت" identify="reason_id" key="id" value="title"
+                            :items="$reasons"/>
+                            <x-admin.input
+                            identify="date"
+                            title="تاریخ"
+                            :is-date-picker="true"
+                            :old="request('date')"
+                    />
+                            <x-admin.textarea identify="description" title="توضیحات" />
                         <x-admin.button title="{{ trans('panel.create') }}" />
                     </form>
                 </div>
@@ -41,9 +50,18 @@
     </div>
 @endsection
 @section('script')
+@include('admin.partial.loader.script',['load'=>[
+    \App\Enums\Assets\ScriptLoader::Datepicker(),
+    \App\Enums\Assets\ScriptLoader::Select2(),
+
+]])
     @include('admin.partial.request')
+    @include('admin.partial.script.global')
+
     <script>
         $(document).ready(function() {
+            jalaliDatepicker.startWatch();
+
             activeParentUl('{{ route('admin.admin.deductions.index') }}');
         })
     </script>

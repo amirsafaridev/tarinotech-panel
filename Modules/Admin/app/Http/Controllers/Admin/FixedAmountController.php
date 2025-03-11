@@ -45,6 +45,7 @@ class FixedAmountController extends Controller
     public function store(StoreRequest $request)
     {
         try {
+            
             DB::beginTransaction();
             $inputs = $request->all();
             FixedAmount::query()->create($inputs);

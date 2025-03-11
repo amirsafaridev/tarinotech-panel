@@ -104,12 +104,12 @@ Route::group(['guard' => 'admin'], function () {
         Route::delete('/{bonusesDeduction}', [DeductionController::class, 'destroy'])->name('destroy');
     });
     Route::group(['prefix' => 'reason', 'as' => 'reason.'], function () {
-        Route::get('/{bonusesDeduction}', [ReasonController::class, 'index'])->name('index');
-        Route::get('/create/{bonusesDeduction}', [ReasonController::class, 'create'])->name('create');
-        Route::get('/{bonusesDeduction}/{reason}', [ReasonController::class, 'edit'])->name('edit');
-        Route::post('/{bonusesDeduction}', [ReasonController::class, 'store'])->name('store');
+        Route::get('/', [ReasonController::class, 'index'])->name('index');
+        Route::get('/create', [ReasonController::class, 'create'])->name('create');
+        Route::get('/{reason}', [ReasonController::class, 'edit'])->name('edit');
+        Route::post('/', [ReasonController::class, 'store'])->name('store');
         Route::patch('/{reason}', [ReasonController::class, 'update'])->name('update');
-        Route::delete('/{bonusesDeduction}/{reason}', [ReasonController::class, 'destroy'])->name('destroy');
+        Route::delete('/{reason}', [ReasonController::class, 'destroy'])->name('destroy');
     });
     Route::group([], function () {
         Route::get('/{admin}', [AdminController::class, 'edit'])->name('edit');

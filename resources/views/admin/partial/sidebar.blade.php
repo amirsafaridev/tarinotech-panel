@@ -100,6 +100,10 @@
                                 <li><a href="{{ route('admin.admin.variable-amount.index') }}" class="slide-item">مبالغ
                                         متغیر</a></li>
                             @endcan
+                            @can('ADMIN_ADMIN_REASON_INDEX')
+                            <li><a href="{{ route('admin.admin.reason.index') }}" class="slide-item">علت ها</a>
+                            </li>
+                        @endcan
                             @can('ADMIN_ADMIN_DEDUCTIONS_INDEX')
                                 <li><a href="{{ route('admin.admin.deductions.index') }}" class="slide-item">ثبت کسورات</a>
                                 </li>

@@ -36,6 +36,12 @@
                             <x-admin.input identify="personnel_insurance" title="بیمه سهم پرسنل(حضوری)"/>
                             <x-admin.input identify="employer_insurance_remote" title="بیمه سهم کارفرما(دورکاری)"/>
                             <x-admin.input identify="personnel_insurance_remote" title="بیمه سهم پرسنل(دورکاری)"/>
+                            <x-admin.input
+                            identify="date"
+                            title="تاریخ"
+                            :is-date-picker="true"
+                            :old="request('date')"
+                    />
                         <x-admin.button title="{{ trans('panel.create') }}"/>
                     </form>
                 </div>
@@ -44,9 +50,28 @@
     </div>
 @endsection
 @section('script')
+@include('admin.partial.loader.script',['load'=>[
+    \App\Enums\Assets\ScriptLoader::Datepicker(),
+]])
+@include('admin.partial.request')
+
+
     @include('admin.partial.request')
+    @include('admin.partial.script.global')
+  
     <script>
         $(document).ready(function () {
+            jalaliDatepicker.startWatch();
+
+            makeInputPrice($('#basic_rights'));
+            makeInputPrice($('#right_to_housing'));
+            makeInputPrice($('#right_to_marry'));
+            makeInputPrice($('#childrens_right'));
+            makeInputPrice($('#right_to_eat_and_drink'));
+            makeInputPrice($('#employer_insurance'));
+            makeInputPrice($('#personnel_insurance'));
+            makeInputPrice($('#employer_insurance_remote'));
+            makeInputPrice($('#personnel_insurance_remote'));
             activeParentUl('{{ route('admin.admin.fixed-amount.index') }}');
         })
     </script>

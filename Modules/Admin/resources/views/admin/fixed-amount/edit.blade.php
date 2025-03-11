@@ -4,7 +4,11 @@
 @endsection
 @section('head')
     @include('admin.partial.loader.style', [
-        'load' => [\App\Enums\Assets\StyleLoader::Toast(), \App\Enums\Assets\StyleLoader::Alert()],
+        'load' => [
+        \App\Enums\Assets\StyleLoader::Toast(), 
+        \App\Enums\Assets\StyleLoader::Alert(), 
+        \App\Enums\Assets\StyleLoader::Datepicker(),
+        ],
     ])
 @endsection
 @section('content')
@@ -40,7 +44,12 @@
                             :old="$fixedAmount->employer_insurance_remote" />
                         <x-admin.input identify="personnel_insurance_remote" title="بیمه سهم پرسنل(دورکاری)"
                             :old="$fixedAmount->personnel_insurance_remote" />
-
+                            <x-admin.input
+                            identify="from_date"
+                            title="تاریخ"
+                            :is-date-picker="true"
+                            :old="$fixedAmount->date"
+                    />
                         <x-admin.button title="ویرایش" />
 
                         <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger"
@@ -59,9 +68,24 @@
 @endsection
 @section('script')
     @include('admin.partial.request')
-    @include('admin.partial.loader.script', ['load' => [\App\Enums\Assets\ScriptLoader::Alert()]])
+    @include('admin.partial.loader.script', ['load' => [    \App\Enums\Assets\ScriptLoader::Datepicker(),
+\App\Enums\Assets\ScriptLoader::Alert()]])
+    @include('admin.partial.script.global')
+
     <script>
         $(document).ready(function() {
+            jalaliDatepicker.startWatch();
+
+            // makeInputPrice($('#basic_rights'));
+            // makeInputPrice($('#right_to_housing'));
+            // makeInputPrice($('#right_to_marry'));
+            // makeInputPrice($('#childrens_right'));
+            // makeInputPrice($('#right_to_eat_and_drink'));
+            // makeInputPrice($('#employer_insurance'));
+            // makeInputPrice($('#personnel_insurance'));
+            // makeInputPrice($('#employer_insurance_remote'));
+            // makeInputPrice($('#personnel_insurance_remote'));
+
             activeParentUl('{{ route('admin.admin.fixed-amount.index') }}');
         })
     </script>

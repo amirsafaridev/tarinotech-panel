@@ -14,7 +14,12 @@ return new class extends Migration
         Schema::create('bonuses_deductions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('admins')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('reason_id')->constrained('reasons')->onUpdate('cascade')->onDelete('cascade');
+
             $table->string('price');
+            $table->text('description');
+            $table->date('date');
+
             $table->tinyInteger('type')->default(0);
             $table->timestamps();
             $table->softDeletes();

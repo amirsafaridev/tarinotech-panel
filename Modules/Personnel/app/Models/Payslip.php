@@ -4,19 +4,20 @@ namespace Modules\Personnel\app\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\Personnel\Database\factories\PayslipFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Admin\app\Models\Admin;
 
 class Payslip extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [];
-    
-    protected static function newFactory(): PayslipFactory
+    protected $fillable = ['status','user_id'];
+    public function user(): BelongsTo
     {
-        //return PayslipFactory::new();
+        return $this->belongsTo(Admin::class, 'user_id');
     }
 }

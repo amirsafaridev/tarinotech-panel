@@ -14,6 +14,8 @@ class StoreRequest extends FormRequest
         return [
             'price' => 'required|numeric',
             'description' => 'required',
+            'user_id' => 'required|exists:admins,id',
+            'date' => 'required|jdate',
 
         ];
     }

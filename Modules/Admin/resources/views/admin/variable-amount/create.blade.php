@@ -27,12 +27,21 @@
                     <form class="request-form forms-sample" method="post" action="{{ route('admin.admin.variable-amount.store') }}">
                         @csrf
 
-                        <x-admin.input identify="title" title="سمت"/>
                             <x-admin.input identify="base_units_count" title="تعداد واحد پایه P"/>
                             <x-admin.input identify="extra_units_amount" title="قیمت واحد اکسترا E"/>
                             <x-admin.input identify="performance_amount" title="مبلغ عملکرد ویژه"/>
                             <x-admin.input identify="reward_basis" title="مبنای پاداش بهره وری"/>
-
+                            <x-admin.select-model identify="job_title_id"
+                            title="سمت شغلی"
+                            value="title"
+                            key="id"
+                            :items="$jobTitles"/>
+                            <x-admin.input
+                            identify="date"
+                            title="تاریخ"
+                            :is-date-picker="true"
+                            :old="request('date')"
+                    />
                         <x-admin.button title="{{ trans('panel.create') }}"/>
                     </form>
                 </div>
@@ -41,9 +50,14 @@
     </div>
 @endsection
 @section('script')
+@include('admin.partial.loader.script',['load'=>[
+    \App\Enums\Assets\ScriptLoader::Datepicker(),
+]])
     @include('admin.partial.request')
     <script>
         $(document).ready(function () {
+            jalaliDatepicker.startWatch();
+
             activeParentUl('{{ route('admin.admin.variable-amount.index') }}');
         })
     </script>

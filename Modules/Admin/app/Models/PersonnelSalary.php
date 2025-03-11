@@ -14,7 +14,7 @@ class PersonnelSalary extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = ['price', 'description','user_id'];
+    protected $fillable = ['date','price', 'description','user_id'];
     public function user(): BelongsTo
     {
         return $this->belongsTo(Admin::class, 'user_id');

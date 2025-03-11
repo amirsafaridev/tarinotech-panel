@@ -4,6 +4,8 @@
     @include('admin.partial.loader.style',['load'=>[
         \App\Enums\Assets\StyleLoader::Toast(),
         \App\Enums\Assets\StyleLoader::Alert(),
+        \App\Enums\Assets\StyleLoader::Datepicker(),
+
     ]])
 @endsection
 @section('content')
@@ -27,12 +29,23 @@
                     <form class="request-form forms-sample" method="post" action="{{ route('admin.admin.variable-amount.update',$variableAmount->id) }}">
                         @csrf
                         @method('PATCH')
-                            <x-admin.input identify="title" title="سمت" :old="$variableAmount->title"/>
                             <x-admin.input identify="base_units_count" title="تعداد واحد پایه P" :old="$variableAmount->base_units_count"/>
                             <x-admin.input identify="extra_units_amount" title="قیمت واحد اکسترا E" :old="$variableAmount->extra_units_amount"/>
                             <x-admin.input identify="performance_amount" title="مبلغ عملکرد ویژه" :old="$variableAmount->performance_amount"/>
                             <x-admin.input identify="reward_basis" title="مبنای پاداش بهره وری":old="$variableAmount->reward_basis"/>
-                           <x-admin.button title="ویرایش"/>
+                                <x-admin.select-model identify="job_title_id"
+                              title="سمت شغلی"
+                              value="title"
+                              key="id"
+                              :old="$variableAmount->job_title_id"
+                              :items="$jobTitles"/>
+                                <x-admin.input
+                                identify="from_date"
+                                title="تاریخ"
+                                :is-date-picker="true"
+                                :old="$variableAmount->date"
+                        />
+                                <x-admin.button title="ویرایش"/>
 
                         <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
                     </form>
@@ -50,9 +63,13 @@
     @include('admin.partial.request')
     @include('admin.partial.loader.script',['load'=>[
         \App\Enums\Assets\ScriptLoader::Alert(),
+        \App\Enums\Assets\ScriptLoader::Datepicker(),
+
     ]])
     <script>
         $(document).ready(function () {
+            jalaliDatepicker.startWatch();
+
             activeParentUl('{{ route('admin.admin.variable-amount.index') }}');
         })
     </script>

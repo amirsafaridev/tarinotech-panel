@@ -7,7 +7,7 @@
         'load' => [
             \App\Enums\Assets\StyleLoader::Toast(),
             \App\Enums\Assets\StyleLoader::Alert(),
-            \App\Enums\Assets\StyleLoader::Select2(),
+           \App\Enums\Assets\StyleLoader::Select2(),
             \App\Enums\Assets\StyleLoader::Datepicker(),
         ],
     ])
@@ -70,7 +70,7 @@
         'load' => [
             \App\Enums\Assets\ScriptLoader::Datepicker(),
             \App\Enums\Assets\ScriptLoader::Alert(),
-            \App\Enums\Assets\ScriptLoader::Select2(),
+         \App\Enums\Assets\ScriptLoader::Select2(),
         ],
     ])
     @include('admin.partial.request')

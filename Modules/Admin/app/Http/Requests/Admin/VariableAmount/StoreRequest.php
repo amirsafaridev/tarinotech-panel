@@ -12,6 +12,8 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'date' => 'required|jdate',
+            'job_title_id' => 'required|exists:job_titles,id',
             'title' => 'required',
             'base_units_count' => 'required|numeric',
             'performance_amount' => 'required|numeric',

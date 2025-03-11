@@ -14,7 +14,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a
                         href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.admin.reason.index', $bonusesDeduction->id) }}">علت</a>
+                <li class="breadcrumb-item"><a href="{{ route('admin.admin.reason.index') }}">علت</a>
                 </li>
                 <li class="breadcrumb-item active">ویرایش</li>
             </ol>
@@ -30,7 +30,7 @@
                         action="{{ route('admin.admin.reason.update', $reason->id) }}">
                         @csrf
                         @method('PATCH')
-                        <x-admin.textarea identify="description" title="توضیحات" :old="$reason->description" />
+                        <x-admin.textarea identify="title" title="علت" :old="$reason->description" />
 
                         <x-admin.button title="ویرایش" />
 
@@ -43,7 +43,7 @@
     </div>
 
     <form id="deleteItem"
-        action="{{ route('admin.admin.reason.destroy', ['bonusesDeduction' => $bonusesDeduction->id, 'reason' => $reason->id]) }}"
+        action="{{ route('admin.admin.reason.destroy', $reason->id) }}"
         method="post" class="form-inline">
         @csrf
         @method('DELETE')
@@ -54,7 +54,7 @@
     @include('admin.partial.loader.script', ['load' => [\App\Enums\Assets\ScriptLoader::Alert()]])
     <script>
         $(document).ready(function() {
-            activeParentUl('{{ route('admin.admin.reason.index', $bonusesDeduction->id) }}');
+            activeParentUl('{{ route('admin.admin.reason.index') }}');
         })
     </script>
 @endsection

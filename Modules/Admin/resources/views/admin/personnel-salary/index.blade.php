@@ -25,7 +25,7 @@
                     <h3 class="card-title">تنخواه ها</h3>
                     @can('ADMIN_ADMIN_PERSONNEL_SALARY_CREATE')
                         <a class="btn btn-success btn-sm" href="{{ route('admin.admin.personnel-salary.create') }}">ایجاد
-                            درخواست تنخواه</a>
+                            جدول تنخواه</a>
                     @endcan
                 </div>
                 <div class="card-body">
@@ -57,7 +57,7 @@
                                             <td>{{ $personnelSalary->price }}</td>
                                             <td>{{ $personnelSalary->description }}</td>
 
-                                            <td>{{ $personnelSalary->created_at->toJalali()->format('d F Y') }}</td>
+                                            <td>{{ $personnelSalary->date }}</td>
 
                                             <td>
                                                 @can('ADMIN_ADMIN_PERSONNEL_SALARY_EDIT')

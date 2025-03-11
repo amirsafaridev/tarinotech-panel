@@ -40,7 +40,8 @@ class BonusController extends Controller
     {
         $title = self::CREATE_TITLE;
         $users = Admin::query()->get();
-        return view('admin::admin.bonuses.create', compact('title', 'users'));
+        $reasons = Reason::where('type',0)->get();
+        return view('admin::admin.bonuses.create', compact('title', 'users','reasons'));
     }
 
     /**
@@ -52,11 +53,8 @@ class BonusController extends Controller
             DB::beginTransaction();
             $inputs = $request->all();
             $inputs['type'] = 0;
-            $bonus =  BonusesDeduction::query()->create($inputs);
-            Reason::query()->create([
-                'bonuses_deduction_id' => $bonus->id,
-                'description' => $inputs['description']
-            ]);
+            BonusesDeduction::query()->create($inputs);
+           
             DB::commit();
 
             return $this->successResponse();
@@ -81,10 +79,9 @@ class BonusController extends Controller
     public function edit(BonusesDeduction $bonusesDeduction)
     {
         $title = self::EDIT_TITLE;
-        $reason = Reason::where('bonuses_deduction_id', $bonusesDeduction->id)->latest()->first();
         $users = Admin::query()->get();
-
-        return view('admin::admin.bonuses.edit', compact('title', 'bonusesDeduction', 'reason', 'users'));
+        $reasons = Reason::where('type',0)->get();
+        return view('admin::admin.bonuses.edit', compact('title', 'bonusesDeduction', 'users', 'reasons'));
     }
 
     /**
@@ -93,14 +90,9 @@ class BonusController extends Controller
     public function update(UpdateRequest $request, BonusesDeduction $bonusesDeduction)
     {
         try {
-            $reason = Reason::where('bonuses_deduction_id', $bonusesDeduction->id)->latest()->first();
             DB::beginTransaction();
             $bonusesDeduction->update($request->all());
-            $reason->update([
-                'bonuses_deduction_id' => $bonusesDeduction->id,
-                'description' => $request->description
-            ]);
-
+         
             DB::commit();
 
             return $this->successUpdateResponse();
@@ -119,10 +111,6 @@ class BonusController extends Controller
         try {
 
             $bonusesDeduction->delete();
-            foreach ($bonusesDeduction->reasons()->get() as $reason) {
-                $reason->delete();
-            }
-
             return $this->successDestroyBack(route('admin.admin.bonuses.index'));
         } catch (Exception $exception) {
             return $this->exceptionBack($exception);

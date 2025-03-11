@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>فیش حقوقی</title>
+    <link href="{{ asset('res-admin/assets/font-awesome/css/light.css') }}" rel="stylesheet" />
+    <link href="{{ asset('res-admin/assets/font-awesome/css/solid.css') }}" rel="stylesheet" />
     <style>
       body {
         font-family: Tahoma, sans-serif;
@@ -89,7 +91,7 @@
           <td>تارگت تیمی</td>
           <td>0</td>
           <td>بیمه سهم کارمند</td>
-          <td>11,566,000</td>
+          <td>{{ $fixedAmount->employer_insurance??$fixedAmount->employer_insurance_remote }}</td>
         </tr>
         <tr class="blue-bg">
           <td>واریزی سئو</td>
@@ -97,15 +99,15 @@
           <td>پورسانت</td>
           <td>0</td>
           <td>تنخواه</td>
-          <td>11,566,000</td>
+          <td>{{ number_format($personnelSalay->price ?? 0) }}</td>
         </tr>
         <tr>
           <td>تعداد پروژه های پیشرفته</td>
           <td>0</td>
           <td>میزان حقوق پایه</td>
-          <td>0</td>
+          <td>{{ number_format($fixedAmount->basic_rights?? 0) }}</td>
           <td>مساعده اخذ شده</td>
-          <td>11,566,000</td>
+          <td>{{ number_format($personnelAssistance->price ?? 0) }}</td>
         </tr>
         <tr class="blue-bg">
           <td>تعداد پروژه های اقتصادی</td>
@@ -119,7 +121,7 @@
           <td>تعداد پروژه های سئو(جاری)</td>
           <td>0</td>
           <td>پاداش عملکرد ویژه</td>
-          <td>0</td>
+          <td>{{ number_format($variableAmount->performance_amount ??0) }}</td>
           <th>جمع بندی مالی</th>
           <th>مقادیر</th>
         </tr>
@@ -127,7 +129,7 @@
           <td>واحدهای انجام شده(اصلی)</td>
           <td>0</td>
           <td>پاداش بهره وری مضاعف</td>
-          <td>0</td>
+          <td>{{ number_format($variableAmount->reward_basis ?? 0)}}</td>
           <td>مجموع دریافتی ها</td>
           <td>0</td>
         </tr>
@@ -135,7 +137,7 @@
           <td>واحدهای انجام شده(اکسترا)</td>
           <td>0</td>
           <td>حق مسکن</td>
-          <td>0</td>
+          <td>{{number_format($fixedAmount->right_to_housing?? 0)}}</td>
           <td>مجموع کسورات</td>
           <td>0</td>
         </tr>
@@ -143,7 +145,7 @@
           <td>واحدهای تشویقی</td>
           <td>0</td>
           <td>حق تاهل</td>
-          <td>0</td>
+          <td>{{ number_format($fixedAmount->right_to_marry ?? 0)}}</td>
           <td class="font-weight-bold">حقوق قابل پرداخت نهایی</td>
           <td class="font-weight-bold">0</td>
         </tr>
@@ -151,7 +153,7 @@
           <td>محموع واحدهای انجام شده</td>
           <td>0</td>
           <td>حق اولاد</td>
-          <td>0</td>
+          <td>{{ number_format($fixedAmount->childrens_right ?? 0 )}}</td>
           <td></td>
           <td></td>
         </tr>
@@ -159,7 +161,7 @@
           <th>وضعیت حضور و غباب</th>
           <th>مقادیر</th>
           <td>حق خوار و بار</td>
-          <td>0</td>
+          <td>{{number_format( $fixedAmount->right_to_eat_and_drink?? 0)}}</td>
           <td></td>
           <td></td>
         </tr>
@@ -167,7 +169,7 @@
           <td>مرخصی مجاز</td>
           <td>0</td>
           <td>بیمه سهم کارفرما</td>
-          <td>0</td>
+          <td>{{ number_format($fixedAmount->employer_insurance??$fixedAmount->employer_insurance_remote) }}</td>
           <td></td>
           <td></td>
         </tr>

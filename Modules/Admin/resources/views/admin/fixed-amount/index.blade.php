@@ -23,12 +23,10 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title">مبالغ ثابت</h3>
-                    @if ($fixedAmountsCount == 0)
                         @can('ADMIN_ADMIN_FIXED_AMOUNT_CREATE')
-                            <a class="btn btn-success btn-sm" href="{{ route('admin.admin.fixed-amount.create') }}">ایجاد
-                                درخواست مبلغ ثابت</a>
+                            <a class="btn btn-success btn-sm" href="{{ route('admin.admin.fixed-amount.create') }}">
+                                ایجاد جدول مبلغ ثابت</a>
                         @endcan
-                    @endif
 
                 </div>
                 <div class="card-body">
@@ -61,22 +59,22 @@
                                             <td>{{ $fixedAmount->id }}</td>
 
 
-                                            <td>{{ $fixedAmount->basic_rights }}</td>
-                                            <td>{{ $fixedAmount->right_to_housing }}</td>
-                                            <td>{{ $fixedAmount->right_to_marry }}</td>
+                                            <td>{{ number_format($fixedAmount->basic_rights) }}</td>
+                                            <td>{{ number_format($fixedAmount->right_to_housing) }}</td>
+                                            <td>{{ number_format($fixedAmount->right_to_marry) }}</td>
 
-                                            <td>{{ $fixedAmount->childrens_right }}</td>
-                                            <td>{{ $fixedAmount->right_to_eat_and_drink }}</td>
-                                            <td>{{ $fixedAmount->employer_insurance ? $fixedAmount->employer_insurance : 'ثبت نشده' }}
+                                            <td>{{ number_format($fixedAmount->childrens_right) }}</td>
+                                            <td>{{ number_format($fixedAmount->right_to_eat_and_drink) }}</td>
+                                            <td>{{ number_format($fixedAmount->employer_insurance) ? number_format($fixedAmount->employer_insurance) : 'ثبت نشده' }}
                                             </td>
-                                            <td>{{ $fixedAmount->personnel_insurance ? $fixedAmount->personnel_insurance : 'ثبت نشده' }}
+                                            <td>{{ number_format($fixedAmount->personnel_insurance) ? number_format($fixedAmount->personnel_insurance) : 'ثبت نشده' }}
                                             </td>
-                                            <td>{{ $fixedAmount->employer_insurance_remote ? $fixedAmount->employer_insurance_remote : 'ثبت نشده' }}
+                                            <td>{{ number_format($fixedAmount->employer_insurance_remote) ? number_format($fixedAmount->employer_insurance_remote) : 'ثبت نشده' }}
                                             </td>
-                                            <td>{{ $fixedAmount->personnel_insurance_remote ? $fixedAmount->personnel_insurance_remote : 'ثبت نشده' }}
+                                            <td>{{ number_format($fixedAmount->personnel_insurance_remote) ? number_format($fixedAmount->personnel_insurance_remote) : 'ثبت نشده' }}
                                             </td>
 
-                                            <td>{{ $fixedAmount->created_at->toJalali()->format('d F Y') }}</td>
+                                            <td>{{ $fixedAmount->date }}</td>
 
                                             <td>
                                                 @can('ADMIN_ADMIN_FIXED_AMOUNT_EDIT')

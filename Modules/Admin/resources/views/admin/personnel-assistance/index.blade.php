@@ -25,7 +25,7 @@
                     <h3 class="card-title">مساعده ها</h3>
                     @can('ADMIN_ADMIN_PERSONNEL_ASSISTANCE_CREATE')
                         <a class="btn btn-success btn-sm" href="{{ route('admin.admin.personnel-assistance.create') }}">ایجاد
-                            درخواست مساعده</a>
+                            جدول مساعده</a>
                     @endcan
                 </div>
                 <div class="card-body">
@@ -57,7 +57,7 @@
                                             <td>{{ $personnelAssistance->price }}</td>
                                             <td>{{ $personnelAssistance->description }}</td>
 
-                                            <td>{{ $personnelAssistance->created_at->toJalali()->format('d F Y') }}</td>
+                                            <td>{{ $personnelAssistance->date }}</td>
 
                                             <td>
                                                 @can('ADMIN_ADMIN_PERSONNEL_ASSISTANCE_EDIT')

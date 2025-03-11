@@ -9,51 +9,45 @@ use Illuminate\Support\Facades\DB;
 use Modules\Admin\app\Http\Requests\Admin\Reason\StoreRequest;
 use Modules\Admin\app\Http\Requests\Admin\Reason\UpdateRequest;
 use Exception;
-use Modules\Admin\app\Models\BonusesDeduction;
 use Modules\Admin\app\Models\Reason;
 
 class ReasonController extends Controller
 {
     use HasJsonCommonResponseTrait;
 
-    const INDEX_TITLE = 'علل';
-    const CREATE_TITLE = 'علل - ایجاد';
-    const EDIT_TITLE = 'علل - ویرایش';
+    const INDEX_TITLE = 'علت ها';
+    const CREATE_TITLE = 'علت - ایجاد';
+    const EDIT_TITLE = 'علت - ویرایش';
 
     /**
      * Display a listing of the resource.
      */
-    public function index(BonusesDeduction $bonusesDeduction)
+    public function index()
     {
         $title = self::INDEX_TITLE;
-        $reasons = $bonusesDeduction->reasons()->get();
-        return view('admin::admin.reason.index', compact('title', 'reasons', 'bonusesDeduction'));
+        $reasons = Reason::query()->get();
+        return view('admin::admin.reason.index', compact('title', 'reasons'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(BonusesDeduction $bonusesDeduction)
+    public function create()
     {
         $title = self::CREATE_TITLE;
 
-        return view('admin::admin.reason.create', compact('title', 'bonusesDeduction'));
+        return view('admin::admin.reason.create', compact('title'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRequest $request, BonusesDeduction $bonusesDeduction)
+    public function store(StoreRequest $request)
     {
         try {
             DB::beginTransaction();
             $inputs = $request->all();
-            $inputs['user_id'] = Auth::user()->id;
-            $inputs['type'] = 0;
-            Reason::query()->create([
-                'bonuses_deduction_id' => $bonusesDeduction->id,
-                'description' => $inputs['description']
-            ]);
+            Reason::query()->create($inputs);
             DB::commit();
 
             return $this->successResponse();
@@ -75,11 +69,11 @@ class ReasonController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(BonusesDeduction $bonusesDeduction, Reason $reason)
+    public function edit(Reason $reason)
     {
         $title = self::EDIT_TITLE;
 
-        return view('admin::admin.reason.edit', compact('title', 'reason', 'bonusesDeduction'));
+        return view('admin::admin.reason.edit', compact('title', 'reason'));
     }
 
     /**
@@ -103,12 +97,12 @@ class ReasonController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(BonusesDeduction $bonusesDeduction, Reason $reason)
+    public function destroy(Reason $reason)
     {
         try {
             $reason->delete();
 
-            return $this->successDestroyBack(route('admin.admin.reason.index', $bonusesDeduction->id));
+            return $this->successDestroyBack(route('admin.admin.reason.index'));
         } catch (Exception $exception) {
             return $this->exceptionBack($exception);
         }

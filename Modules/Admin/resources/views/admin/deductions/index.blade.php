@@ -24,8 +24,8 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title">کسورات</h3>
                     @can('ADMIN_ADMIN_DEDUCTIONS_CREATE')
-                        <a class="btn btn-success btn-sm" href="{{ route('admin.admin.deductions.create') }}">ایجاد
-                            درخواست کسورات</a>
+                        <a class="btn btn-success btn-sm" href="{{ route('admin.admin.deductions.create') }}">
+                            ثبت کسورات</a>
                     @endcan
 
                 </div>
@@ -39,6 +39,8 @@
                                     <th>پرسنل</th>
                                     <th>مبلغ</th>
                                     <th>علت</th>
+
+                                    <th>توضیحات</th>
                                     <th>تاریخ</th>
 
                                     <th>عملیات</th>
@@ -55,16 +57,15 @@
                                             <td>{{ $deduction->user->first_name . ' ' . $deduction->user->last_name }}
                                             </td>
                                             <td>{{ $deduction->price }}</td>
-                                            <td>{{ $deduction->reasons()->latest()->first()->description }}</td>
-                                            <td>{{ $deduction->created_at->toJalali()->format('d F Y') }}</td>
+                                            <td>{{ $bonus->reason->title }}</td>
+
+                                            <td>{{ $deduction->description }}</td>
+                                            <td>{{ $deduction->date }}</td>
                                             <td>
                                                 @can('ADMIN_ADMIN_DEDUCTIONS_EDIT')
                                                     <a href="{{ route('admin.admin.deductions.edit', $deduction->id) }}"
                                                         class="btn btn-warning btn-sm">ویرایش</a>
                                                 @endcan
-                                                <a class="btn btn-info btn-sm"
-                                                    href="{{ route('admin.admin.reason.index', $deduction->id) }}">
-                                                    علل</a>
                                             </td>
                                         </tr>
                                     @endforeach

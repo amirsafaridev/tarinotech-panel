@@ -52,14 +52,21 @@
                                             <td>{{ $payslip->created_at->toJalali()->format('d F Y') }}</td>
                                             <td>{{ $payslip->created_at->toJalali()->format('F') }}</td>
                                             <td>{{ $payslip->created_at->toJalali()->format('d') }}</td>
-                                            <td>{{ $payslip->status === 0 ? 'در انتظار تایید' : $payslip->status === 2 ? 'رد شده' : 'تایید شده' }}
+                                            <td>{{ $payslip->status === 0 ? 'در انتظار تایید' : 'تایید شده' }}
                                             </td>
 
                                             <td>
                                                 @can('ADMIN_PERSONNEL_PAYSLIP_SHOW')
-                                                    <a href="{{ route('admin.personnel.payslip.show', $personnelAssistance->id) }}"
+                                                    <a href="{{ route('admin.personnel.payslip.show', $payslip->id) }}"
                                                         class="btn btn-warning btn-sm">مشاهده</a>
                                                 @endcan
+                                                @can('ADMIN_PERSONNEL_PAYSLIP_SHOW')
+                                                <a href="{{ route('admin.personnel.payslip.show', $payslip->id) }}"
+                                                    class="btn btn-success btn-sm">تایید</a>
+                                            @endcan @can('ADMIN_PERSONNEL_PAYSLIP_SHOW')
+                                            <a href="{{ route('admin.personnel.payslip.show', $payslip->id) }}"
+                                                class="btn btn-danger btn-sm">عدم تایید</a>
+                                        @endcan
                                             </td>
                                         </tr>
                                     @endforeach

@@ -3,9 +3,14 @@
     {{ $title }}
 @endsection
 @section('head')
-    @include('admin.partial.loader.style', [
-        'load' => [\App\Enums\Assets\StyleLoader::Toast(), \App\Enums\Assets\StyleLoader::Alert()],
-    ])
+@include('admin.partial.loader.style',['load'=>[
+    \App\Enums\Assets\StyleLoader::Toast(),
+    \App\Enums\Assets\StyleLoader::Alert(),
+    \App\Enums\Assets\StyleLoader::Datepicker(),
+    \App\Enums\Assets\StyleLoader::Select2(),
+
+
+]])
 @endsection
 @section('content')
     <div class="page-header">
@@ -30,9 +35,16 @@
                         @csrf
                         @method('PATCH')
                         <x-admin.input identify="price" title="مبلغ" :old="$bonusesDeduction->price" />
-                        <x-admin.select-user title="انتخاب پرسنل" identify="user_id" key="id" value="optionTitle"
-                            :items="$users" :old="$bonusesDeduction->user_id" />
-                        <x-admin.textarea identify="description" title="علت" :old="$reason->description" />
+                        <x-admin.select-user title="انتخاب پرسنل" identify="user_id" key="id" :old="$bonusesDeduction->user_id" />
+                            <x-admin.select-model title="علت" identify="reason_id" key="id" value="title"
+                            :items="$reasons" :old="$bonusesDeduction->reason->id" />
+                            <x-admin.input
+                            identify="from_date"
+                            title="تاریخ"
+                            :is-date-picker="true"
+                            :old="$bonusesDeduction->date"
+                    />
+                        <x-admin.textarea identify="description" title="توضیحات" :old="$bonusesDeduction->description" />
 
                         <x-admin.button title="ویرایش" />
 
@@ -52,9 +64,18 @@
 @endsection
 @section('script')
     @include('admin.partial.request')
-    @include('admin.partial.loader.script', ['load' => [\App\Enums\Assets\ScriptLoader::Alert()]])
+    @include('admin.partial.script.global')
+
+    @include('admin.partial.loader.script', ['load' => [
+        \App\Enums\Assets\ScriptLoader::Alert(),
+        \App\Enums\Assets\ScriptLoader::Datepicker(),
+        \App\Enums\Assets\ScriptLoader::Select2(),
+
+        ]])
     <script>
         $(document).ready(function() {
+            jalaliDatepicker.startWatch();
+
             activeParentUl('{{ route('admin.admin.bonuses.index') }}');
         })
     </script>

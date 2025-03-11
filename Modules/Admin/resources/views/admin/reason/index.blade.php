@@ -25,7 +25,7 @@
                     <h3 class="card-title">علت</h3>
                     @can('ADMIN_ADMIN_REASON_CREATE')
                         <a class="btn btn-success btn-sm"
-                            href="{{ route('admin.admin.reason.create', $bonusesDeduction->id) }}">ایجاد
+                            href="{{ route('admin.admin.reason.create') }}">ایجاد
                             علت</a>
                     @endcan
 
@@ -50,12 +50,12 @@
                                         <tr>
 
                                             <td>{{ $reason->id }}</td>
-                                            <td>{{ $reason->description }}</td>
+                                            <td>{{ $reason->title }}</td>
                                             <td>{{ $reason->created_at->toJalali()->format('d F Y') }}</td>
 
                                             <td>
                                                 @can('ADMIN_ADMIN_REASON_EDIT')
-                                                    <a href="{{ route('admin.admin.reason.edit', ['bonusesDeduction' => $bonusesDeduction->id, 'reason' => $reason->id]) }}"
+                                                    <a href="{{ route('admin.admin.reason.edit',  $reason->id) }}"
                                                         class="btn btn-warning btn-sm">ویرایش</a>
                                                 @endcan
                                             </td>

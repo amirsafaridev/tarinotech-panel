@@ -24,7 +24,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title">مبالغ متغیر </h3>
                     @can('ADMIN_ADMIN_VARIABLE_AMOUNT_CREATE')
-                        <a class="btn btn-success btn-sm" href="{{ route('admin.admin.variable-amount.create') }}">ایجاد درخواست
+                        <a class="btn btn-success btn-sm" href="{{ route('admin.admin.variable-amount.create') }}">ایجاد جدول
                             مبلغ متغیر</a>
                     @endcan
                 </div>
@@ -54,13 +54,13 @@
                                             <td>{{ $variableAmount->id }}</td>
 
 
-                                            <td>{{ $variableAmount->title }}</td>
+                                            <td>{{ $variableAmount->jobTitle->title }}</td>
                                             <td>{{ $variableAmount->base_units_count }}</td>
                                             <td>{{ $variableAmount->extra_units_amount }}</td>
                                             <td>{{ $variableAmount->performance_amount }}</td>
                                             <td>{{ $variableAmount->reward_basis }}</td>
 
-                                            <td>{{ $variableAmount->created_at->toJalali()->format('d F Y') }}</td>
+                                            <td>{{ $variableAmount->date }}</td>
 
                                             <td>
                                                 @can('ADMIN_ADMIN_VARIABLE_AMOUNT_EDIT')

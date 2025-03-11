@@ -32,6 +32,13 @@ class ViewComposerProvider extends ServiceProvider
                 ->get();
             $view->with(compact('roles', 'jobTitles'));
         });
+        view()->composer(['admin::admin.variable-amount.create','admin::admin.variable-amount.edit'], function ($view) {
+            $jobTitles = JobTitle::query()
+                ->withCount('admins')
+                ->get();
+
+            $view->with(compact('jobTitles'));
+        });
 
         view()->composer(['admin::admin.index'], function ($view) {
             $jobTitles = JobTitle::query()
