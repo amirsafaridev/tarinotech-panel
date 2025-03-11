@@ -32,7 +32,8 @@
                         action="{{ route('admin.admin.deductions.store') }}">
                         @csrf
                         <x-admin.input identify="price" title="مبلغ" />
-                        <x-admin.select-user title="انتخاب پرسنل" identify="user_id" key="id" />
+                        <x-admin.select-model title="انتخاب پرسنل" identify="user_id" key="id" :items="$users"
+                        value="fullName" />
                             <x-admin.select-model title="علت" identify="reason_id" key="id" value="title"
                             :items="$reasons"/>
                             <x-admin.input

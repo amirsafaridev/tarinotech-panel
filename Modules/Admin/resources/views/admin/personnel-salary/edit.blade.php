@@ -34,7 +34,8 @@
                         @csrf
                         @method('PATCH')
                         <x-admin.input identify="price" title="مبلغ" :old="$personnelSalary->price" />
-                        <x-admin.select-user title="انتخاب پرسنل" identify="user_id" key="id" :old="$personnelSalary->user_id" />
+                        <x-admin.select-model title="انتخاب پرسنل" identify="user_id" key="id" :items="$users"
+                        value="fullName":old="$personnelSalary->user_id" />
                             <x-admin.input
                             identify="from_date"
                             title="تاریخ"

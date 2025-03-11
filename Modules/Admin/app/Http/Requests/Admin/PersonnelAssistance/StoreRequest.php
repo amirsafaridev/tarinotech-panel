@@ -19,7 +19,12 @@ class StoreRequest extends FormRequest
 
         ];
     }
-
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'price' => str_replace(',', '', $this->input('price')),
+        ]);
+    }
     /**
      * Determine if the user is authorized to make this request.
      */

@@ -34,7 +34,8 @@
                         @csrf
 
                         <x-admin.input identify="price" title="مبلغ" />
-                        <x-admin.select-user title="انتخاب پرسنل" identify="user_id" key="id"  />
+                        <x-admin.select-model title="انتخاب پرسنل" identify="user_id" key="id" :items="$users"
+                            value="fullName" />
                             <x-admin.input
                             identify="date"
                             title="تاریخ"
@@ -58,10 +59,12 @@
 ]])
     @include('admin.partial.request')
     @include('admin.partial.script.global')
+    @include('project::admin.web.part.script')
 
     <script>
         $(document).ready(function() {
             jalaliDatepicker.startWatch();
+            makeInputPrice($('#price'));
 
             activeParentUl('{{ route('admin.admin.personnel-salary.index') }}');
         })

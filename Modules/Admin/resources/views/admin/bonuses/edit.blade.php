@@ -35,7 +35,8 @@
                         @csrf
                         @method('PATCH')
                         <x-admin.input identify="price" title="مبلغ" :old="$bonusesDeduction->price" />
-                        <x-admin.select-user title="انتخاب پرسنل" identify="user_id" key="id" :old="$bonusesDeduction->user_id" />
+                        <x-admin.select-model title="انتخاب پرسنل" identify="user_id" key="id":items="$users"
+                        value="fullName" :old="$bonusesDeduction->user_id" />
                             <x-admin.select-model title="علت" identify="reason_id" key="id" value="title"
                             :items="$reasons" :old="$bonusesDeduction->reason->id" />
                             <x-admin.input
