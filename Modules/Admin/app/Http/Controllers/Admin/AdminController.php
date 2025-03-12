@@ -68,7 +68,6 @@ class AdminController extends Controller
             //$admin->notify(new SendPasswordByEmail($password));
 
             return $this->successResponse();
-
         } catch (Exception $exception) {
             DB::rollBack();
 
@@ -114,7 +113,7 @@ class AdminController extends Controller
     {
         try {
             DB::beginTransaction();
-            $admin->update(['email' => uniqid($admin->email).'_']);
+            $admin->update(['email' => uniqid($admin->email) . '_']);
             $admin->delete();
             DB::commit();
 
@@ -123,7 +122,6 @@ class AdminController extends Controller
             DB::rollBack();
 
             return $this->exceptionBack($exception);
-
         }
     }
 

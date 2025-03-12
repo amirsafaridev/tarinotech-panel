@@ -60,11 +60,17 @@
                                             <td>{{ $personnelAssistance->description }}</td>
                                             <td>
                                                 @if ($personnelAssistance->status === 0)
-                                                    در انتظار تایید
-                                                    @elseif ($personnelAssistance->status === 1)
-                                                    تایید شده
-                                                    @else
-                                                    رد شده
+                                                    <span class="badge bg-warning">
+                                                        در انتظار تایید
+                                                    </span>
+                                                @elseif ($personnelAssistance->status === 1)
+                                                    <span class="badge bg-success">
+                                                        تایید شده
+                                                    </span>
+                                                @else
+                                                    <span class="badge bg-danger">
+                                                        رد شده
+                                                    </span>
                                                 @endif
                                             </td>
                                             <td>{{ $personnelAssistance->date }}</td>
