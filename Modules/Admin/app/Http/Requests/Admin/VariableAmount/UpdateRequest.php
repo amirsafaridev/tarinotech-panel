@@ -14,7 +14,6 @@ class UpdateRequest extends FormRequest
         return [
             'date' => 'required',
             'job_title_id' => 'required|exists:job_titles,id',
-            'title' => 'required',
             'base_units_count' => 'required|numeric',
             'performance_amount' => 'required|numeric',
             'extra_units_amount' => 'required|numeric',

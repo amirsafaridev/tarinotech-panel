@@ -32,7 +32,7 @@
                             <x-admin.input identify="base_units_count" title="تعداد واحد پایه P" :old="number_format($variableAmount->base_units_count)"/>
                             <x-admin.input identify="extra_units_amount" title="قیمت واحد اکسترا E" :old="number_format($variableAmount->extra_units_amount)"/>
                             <x-admin.input identify="performance_amount" title="مبلغ عملکرد ویژه" :old="number_format($variableAmount->performance_amount)"/>
-                            <x-admin.input identify="reward_basis" title="مبنای پاداش بهره وری":old="number_format($variableAmount->reward_basis)"/>
+                            <x-admin.input identify="reward_basis" title="مبنای پاداش بهره وری" :old="number_format($variableAmount->reward_basis)"/>
                                 <x-admin.select-model identify="job_title_id"
                               title="سمت شغلی"
                               value="title"
@@ -40,7 +40,7 @@
                               :old="$variableAmount->job_title_id"
                               :items="$jobTitles"/>
                                 <x-admin.input
-                                identify="from_date"
+                                identify="date"
                                 title="تاریخ"
                                 :is-date-picker="true"
                                 :old="$variableAmount->date"
