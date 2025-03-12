@@ -51,7 +51,12 @@ class PersonnelAssistanceController extends Controller
             PersonnelAssistance::query()->create($inputs);
             DB::commit();
 
-            return $this->successResponse();
+            return response()->json([
+                'result' => 'success',
+                'back' => route('admin.admin.personnel-assistance.index'),
+                'message' => trans('panel.success_update'),
+            ]);
+            //  return $this->successResponse();
         } catch (Exception $exception) {
             DB::rollBack();
 
@@ -88,7 +93,11 @@ class PersonnelAssistanceController extends Controller
             $personnelAssistance->update($request->all());
             DB::commit();
 
-            return $this->successUpdateResponse();
+            return response()->json([
+                'result' => 'success',
+                'back' => route('admin.admin.personnel-assistance.index'),
+                'message' => trans('panel.success_update'),
+            ]);
         } catch (Exception $exception) {
             DB::rollBack();
 
