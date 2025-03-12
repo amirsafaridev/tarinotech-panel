@@ -94,6 +94,9 @@ return [
         'auto_factor' => 'فاکتور اتوماتیک',
         'change_password' => 'تغییر گذر واژه',
         'requirement' => 'فرم نیازسنجی',
+        'approve' => 'تایید',
+        'cancel' => 'عدم تایید',
+
     ],
     'setting' => [
         'title' => 'تنظیمات',

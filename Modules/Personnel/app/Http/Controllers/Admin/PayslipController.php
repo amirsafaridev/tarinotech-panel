@@ -45,4 +45,16 @@ class PayslipController extends Controller
 
         return view('personnel::admin.payslip.show', compact('payslip','fixedAmount','variableAmount','personnelSalay','personnelAssistance'));
     }
+    public function approved(Payslip $payslip)
+    {
+        $payslip->status = 1;
+        $payslip->save();
+        return $this->successBack(route('admin.personnel.payslip.index'),'فیش حقوقی مورد نظر تایید شد');
+    }
+    public function canceled(Payslip $payslip)
+    {
+        $payslip->status = 2;
+        $payslip->save();
+        return $this->successBack(route('admin.personnel.payslip.index'),'فیش حقوقی مورد نظر رد شد');
+    }
 }

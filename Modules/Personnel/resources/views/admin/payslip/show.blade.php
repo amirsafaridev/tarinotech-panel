@@ -91,7 +91,7 @@
           <td>تارگت تیمی</td>
           <td>0</td>
           <td>بیمه سهم کارمند</td>
-          <td>{{ $fixedAmount->employer_insurance??$fixedAmount->employer_insurance_remote }}</td>
+          <td>{{  number_format($fixedAmount->employer_insurance??0)}}</td>
         </tr>
         <tr class="blue-bg">
           <td>واریزی سئو</td>
@@ -169,7 +169,7 @@
           <td>مرخصی مجاز</td>
           <td>0</td>
           <td>بیمه سهم کارفرما</td>
-          <td>{{ number_format($fixedAmount->employer_insurance??$fixedAmount->employer_insurance_remote) }}</td>
+          <td>{{ number_format($fixedAmount->employer_insurance??0) }}</td>
           <td></td>
           <td></td>
         </tr>

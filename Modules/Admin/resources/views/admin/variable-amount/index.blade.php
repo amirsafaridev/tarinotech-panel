@@ -55,10 +55,10 @@
 
 
                                             <td>{{ $variableAmount->jobTitle->title }}</td>
-                                            <td>{{ $variableAmount->base_units_count }}</td>
-                                            <td>{{ $variableAmount->extra_units_amount }}</td>
-                                            <td>{{ $variableAmount->performance_amount }}</td>
-                                            <td>{{ $variableAmount->reward_basis }}</td>
+                                            <td>{{ number_format($variableAmount->base_units_count) }}</td>
+                                            <td>{{ number_format($variableAmount->extra_units_amount) }}</td>
+                                            <td>{{ number_format($variableAmount->performance_amount) }}</td>
+                                            <td>{{ number_format($variableAmount->reward_basis) }}</td>
 
                                             <td>{{ $variableAmount->date }}</td>
 

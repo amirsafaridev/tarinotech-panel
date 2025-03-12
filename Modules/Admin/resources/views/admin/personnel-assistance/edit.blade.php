@@ -34,15 +34,17 @@
                         action="{{ route('admin.admin.personnel-assistance.update', $personnelAssistance->id) }}">
                         @csrf
                         @method('PATCH')
-                        <x-admin.input identify="price" title="مبلغ" :old="$personnelAssistance->price" />
-                        <x-admin.select-model title="انتخاب پرسنل" identify="user_id" key="id":items="$users"
-                        value="fullName" :old="$personnelAssistance->user_id" />
+                        <x-admin.input identify="price" title="مبلغ" :old="number_format($personnelAssistance->price)" />
+                        <x-admin.select-model title="انتخاب پرسنل" identify="user_id" key="id"
+                        :old="$personnelAssistance->user_id"
+                        :items="$users"
+                        value="fullName"  />
                             <x-admin.input
-                            identify="from_date"
+                            identify="date"
                             title="تاریخ"
                             :is-date-picker="true"
                             :old="$personnelAssistance->date"
-                    />
+                        />
                         <x-admin.textarea identify="description" title="توضیحات" :old="$personnelAssistance->description" />
 
                         <x-admin.button title="ویرایش" />
@@ -74,6 +76,7 @@
     <script>
         $(document).ready(function() {
             jalaliDatepicker.startWatch();
+            makeInputPrice($('#price'));
 
             activeParentUl('{{ route('admin.admin.personnel-assistance.index') }}');
         })

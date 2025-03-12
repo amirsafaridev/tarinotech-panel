@@ -12,12 +12,20 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'date' => 'required',
+
             'price' => 'required|numeric',
             'description' => 'required',
-
+            'reason_id' => 'required|exists:reasons,id',
+            'user_id' => 'required|exists:admins,id',
         ];
     }
-
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'price' => str_replace(',', '', $this->input('price')),
+        ]);
+    }
     /**
      * Determine if the user is authorized to make this request.
      */

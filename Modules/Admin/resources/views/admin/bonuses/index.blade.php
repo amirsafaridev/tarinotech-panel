@@ -54,9 +54,9 @@
                                             <td>{{ $bonus->id }}</td>
 
 
-                                            <td>{{ $bonus->user->first_name . ' ' . $bonus->user->last_name }}
+                                            <td>{{ $bonus->user->fullname }}
                                             </td>
-                                            <td>{{ $bonus->price }}</td>
+                                            <td>{{ number_format($bonus->price) }}</td>
                                             <td>{{ $bonus->reason->title }}</td>
 
                                             <td>{{ $bonus->description }}</td>

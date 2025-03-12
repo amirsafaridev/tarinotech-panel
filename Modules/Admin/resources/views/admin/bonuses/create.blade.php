@@ -66,6 +66,7 @@
     <script>
         $(document).ready(function() {
             jalaliDatepicker.startWatch();
+            makeInputPrice($('#price'));
 
             activeParentUl('{{ route('admin.admin.bonuses.index') }}');
         })

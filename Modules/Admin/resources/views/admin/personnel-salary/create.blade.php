@@ -59,7 +59,6 @@
 ]])
     @include('admin.partial.request')
     @include('admin.partial.script.global')
-    @include('project::admin.web.part.script')
 
     <script>
         $(document).ready(function() {

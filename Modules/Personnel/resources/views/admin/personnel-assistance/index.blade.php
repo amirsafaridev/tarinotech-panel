@@ -23,10 +23,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title">مساعده ها</h3>
-                    @can('ADMIN_ADMIN_PERSONNEL_ASSISTANCE_CREATE')
-                        <a class="btn btn-success btn-sm" href="{{ route('admin.admin.personnel-assistance.create') }}">ایجاد
-                            مساعده</a>
-                    @endcan
+               
                 </div>
                 <div class="card-body">
                     @include('admin.partial.message')
@@ -70,10 +67,27 @@
                                             <td>{{ $personnelAssistance->date }}</td>
 
                                             <td>
-                                                @can('ADMIN_ADMIN_PERSONNEL_ASSISTANCE_EDIT')
-                                                    <a href="{{ route('admin.admin.personnel-assistance.edit', $personnelAssistance->id) }}"
-                                                        class="btn btn-warning btn-sm">ویرایش</a>
-                                                @endcan
+
+                                                <div class="dropdown">
+                                                    <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                                                        {{ __('panel.action.manage') }}
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="{{ route('admin.personnel.personnel-assistance.edit',$personnelAssistance->id) }}">{{ __('panel.action.edit') }}</a>
+                                                        @if($personnelAssistance->status === 0)
+                                                        @can('ADMIN_PERSONNEL_PERSONNEL_ASSISTANCE_APPROVED')
+
+                                                        <a class="dropdown-item" href="{{ route('admin.personnel.personnel-assistance.approved',$personnelAssistance->id) }}">{{ __('panel.action.approve') }}</a>
+                                                        @endcan
+
+                                                        @can('ADMIN_PERSONNEL_PERSONNEL_ASSISTANCE_CANCELED')
+
+                                                        <a class="dropdown-item" href="{{ route('admin.personnel.personnel-assistance.canceled',$personnelAssistance->id) }}">{{ __('panel.action.cancel') }}</a>
+                                                        @endcan
+                                                        @endif
+                                                        
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach

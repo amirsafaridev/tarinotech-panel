@@ -26,7 +26,21 @@ class StoreRequest extends FormRequest
 
         ];
     }
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'basic_rights' => str_replace(',', '', $this->input('basic_rights')),
+            'right_to_housing' => str_replace(',', '', $this->input('right_to_housing')),
+            'right_to_marry' => str_replace(',', '', $this->input('right_to_marry')),
+            'childrens_right' => str_replace(',', '', $this->input('childrens_right')),
+            'right_to_eat_and_drink' => str_replace(',', '', $this->input('right_to_eat_and_drink')),
+            'employer_insurance' => str_replace(',', '', $this->input('employer_insurance')),
+            'personnel_insurance' => str_replace(',', '', $this->input('personnel_insurance')),
+            'employer_insurance_remote' => str_replace(',', '', $this->input('employer_insurance_remote')),
+            'personnel_insurance_remote' => str_replace(',', '', $this->input('personnel_insurance_remote')),
 
+        ]);
+    }
     /**
      * Determine if the user is authorized to make this request.
      */

@@ -33,11 +33,11 @@
                         action="{{ route('admin.admin.personnel-salary.update', $personnelSalary->id) }}">
                         @csrf
                         @method('PATCH')
-                        <x-admin.input identify="price" title="مبلغ" :old="$personnelSalary->price" />
-                        <x-admin.select-model title="انتخاب پرسنل" identify="user_id" key="id" :items="$users"
-                        value="fullName":old="$personnelSalary->user_id" />
+                        <x-admin.input identify="price" title="مبلغ" :old="number_format($personnelSalary->price)" />
+                        <x-admin.select-model title="انتخاب پرسنل" identify="user_id" key="id" :old="$personnelSalary->user_id" :items="$users"
+                        value="fullName" />
                             <x-admin.input
-                            identify="from_date"
+                            identify="date"
                             title="تاریخ"
                             :is-date-picker="true"
                             :old="$personnelSalary->date"
@@ -73,6 +73,7 @@
     <script>
         $(document).ready(function() {
             jalaliDatepicker.startWatch();
+            makeInputPrice($('#price'));
 
             activeParentUl('{{ route('admin.admin.personnel-salary.index') }}');
         })

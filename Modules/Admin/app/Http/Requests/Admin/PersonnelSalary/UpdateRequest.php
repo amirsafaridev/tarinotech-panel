@@ -15,7 +15,7 @@ class UpdateRequest extends FormRequest
             'price' => 'required|numeric',
             'description' => 'required',
             'user_id' => 'required|exists:admins,id',
-            'date' => 'required|jdate',
+            'date' => 'required',
 
         ];
     }

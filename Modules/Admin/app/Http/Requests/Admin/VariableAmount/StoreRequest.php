@@ -21,6 +21,17 @@ class StoreRequest extends FormRequest
             'reward_basis' => 'required|numeric',
         ];
     }
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'base_units_count' => str_replace(',', '', $this->input('base_units_count')),
+            'performance_amount' => str_replace(',', '', $this->input('performance_amount')),
+            'extra_units_amount' => str_replace(',', '', $this->input('extra_units_amount')),
+            'reward_basis' => str_replace(',', '', $this->input('reward_basis')),
+        
+
+        ]);
+    }
 
     /**
      * Determine if the user is authorized to make this request.

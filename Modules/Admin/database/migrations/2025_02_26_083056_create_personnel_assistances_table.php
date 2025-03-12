@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('admins')->onUpdate('cascade')->onDelete('cascade');
             $table->string('price');
             $table->text('description');
+            $table->tinyInteger('status')->default(0);
+
             $table->date('date');
 
             $table->timestamps();

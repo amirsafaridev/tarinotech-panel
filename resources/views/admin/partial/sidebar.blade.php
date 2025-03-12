@@ -31,7 +31,7 @@
                         <span class="side-menu__label">{{ trans('panel.dashboard.title') }}</span>
                     </a>
                 </li>
-                @canany(['ADMIN_PERSONNEL_PAYSLIP_INDEX'])
+                @canany(['ADMIN_PERSONNEL_PAYSLIP_INDEX','ADMIN_PERSONNEL_PERSONNEL_ASSISTANCE_INDEX'])
                 <li class="slide can-expand">
                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navRole">
                         <i class="side-menu__icon fal fa-user"></i>
@@ -44,7 +44,10 @@
                             <li><a href="{{ route('admin.personnel.payslip.index') }}" class="slide-item">فیش حقوقی</a>
                             </li>
                         @endcan
-
+                        @can('ADMIN_PERSONNEL_PERSONNEL_ASSISTANCE_INDEX')
+                        <li><a href="{{ route('admin.personnel.personnel-assistance.index') }}" class="slide-item">مساعده ها</a>
+                        </li>
+                    @endcan
                     
                     </ul>
                 </li>

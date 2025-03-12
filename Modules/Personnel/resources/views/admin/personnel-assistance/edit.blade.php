@@ -7,7 +7,6 @@
     \App\Enums\Assets\StyleLoader::Toast(),
     \App\Enums\Assets\StyleLoader::Alert(),
     \App\Enums\Assets\StyleLoader::Datepicker(),
-    \App\Enums\Assets\StyleLoader::Select2(),
 
 
 ]])
@@ -19,7 +18,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a
                         href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.admin.deductions.index') }}">کسورات</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.personnel.personnel-assistance.index') }}">مساعده</a></li>
                 <li class="breadcrumb-item active">ویرایش</li>
             </ol>
         </div>
@@ -31,22 +30,17 @@
                 <div class="card-body pb-4">
                     @include('admin.partial.message')
                     <form class="request-form forms-sample" method="post"
-                        action="{{ route('admin.admin.deductions.update', $bonusesDeduction->id) }}">
+                        action="{{ route('admin.personnel.personnel-assistance.update', $personnelAssistance->id) }}">
                         @csrf
                         @method('PATCH')
-                        <x-admin.input identify="price" title="مبلغ" :old="number_format($bonusesDeduction->price)" />
-                        <x-admin.select-model title="انتخاب پرسنل" identify="user_id" key="id" :old="$bonusesDeduction->user_id" 
-                        :items="$users"
-                        value="fullName" />
-                            <x-admin.select-model title="علت" identify="reason_id" key="id" value="title"
-                            :items="$reasons" :old="$bonusesDeduction->reason->id" />
+                        <x-admin.input identify="price" title="مبلغ" :old="number_format($personnelAssistance->price)" />
                             <x-admin.input
                             identify="date"
                             title="تاریخ"
                             :is-date-picker="true"
-                            :old="$bonusesDeduction->date"
-                    />
-                        <x-admin.textarea identify="description" title="توضیحات" :old="$bonusesDeduction->description" />
+                            :old="$personnelAssistance->date"
+                        />
+                        <x-admin.textarea identify="description" title="توضیحات" :old="$personnelAssistance->description" />
 
                         <x-admin.button title="ویرایش" />
 
@@ -58,8 +52,8 @@
         </div>
     </div>
 
-    <form id="deleteItem" action="{{ route('admin.admin.deductions.destroy', $bonusesDeduction->id) }}" method="post"
-        class="form-inline">
+    <form id="deleteItem" action="{{ route('admin.admin.personnel-assistance.destroy', $personnelAssistance->id) }}"
+        method="post" class="form-inline">
         @csrf
         @method('DELETE')
     </form>
@@ -69,17 +63,16 @@
     @include('admin.partial.script.global')
 
     @include('admin.partial.loader.script', ['load' => [
-        \App\Enums\Assets\ScriptLoader::Alert(),
-        \App\Enums\Assets\ScriptLoader::Datepicker(),
-        \App\Enums\Assets\ScriptLoader::Select2(),
+    \App\Enums\Assets\ScriptLoader::Alert(),
+    \App\Enums\Assets\ScriptLoader::Datepicker(),
 
-        ]])
+    ]])
     <script>
         $(document).ready(function() {
             jalaliDatepicker.startWatch();
             makeInputPrice($('#price'));
 
-            activeParentUl('{{ route('admin.admin.deductions.index') }}');
+            activeParentUl('{{ route('admin.personnel.personnel-assistance.index') }}');
         })
     </script>
 @endsection

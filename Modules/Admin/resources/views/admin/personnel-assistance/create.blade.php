@@ -55,14 +55,12 @@
     @include('admin.partial.script.global')
 
     <script>
-        function applyTypeInput() {
-        makeInputPrice($('#price'));
-    }
+       
 
         $(document).ready(function() {
             jalaliDatepicker.startWatch();
 
-            applyTypeInput();
+            makeInputPrice($('#price'));
             activeParentUl('{{ route('admin.admin.personnel-assistance.index') }}');
         })
     </script>

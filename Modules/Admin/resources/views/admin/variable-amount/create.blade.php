@@ -54,10 +54,16 @@
     \App\Enums\Assets\ScriptLoader::Datepicker(),
 ]])
     @include('admin.partial.request')
+    @include('admin.partial.script.global')
+
     <script>
         $(document).ready(function () {
             jalaliDatepicker.startWatch();
-
+            makeInputPrice($('#base_units_count'));
+            makeInputPrice($('#extra_units_amount'));
+            makeInputPrice($('#performance_amount'));
+            makeInputPrice($('#reward_basis'));
+           
             activeParentUl('{{ route('admin.admin.variable-amount.index') }}');
         })
     </script>

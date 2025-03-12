@@ -29,10 +29,10 @@
                     <form class="request-form forms-sample" method="post" action="{{ route('admin.admin.variable-amount.update',$variableAmount->id) }}">
                         @csrf
                         @method('PATCH')
-                            <x-admin.input identify="base_units_count" title="تعداد واحد پایه P" :old="$variableAmount->base_units_count"/>
-                            <x-admin.input identify="extra_units_amount" title="قیمت واحد اکسترا E" :old="$variableAmount->extra_units_amount"/>
-                            <x-admin.input identify="performance_amount" title="مبلغ عملکرد ویژه" :old="$variableAmount->performance_amount"/>
-                            <x-admin.input identify="reward_basis" title="مبنای پاداش بهره وری":old="$variableAmount->reward_basis"/>
+                            <x-admin.input identify="base_units_count" title="تعداد واحد پایه P" :old="number_format($variableAmount->base_units_count)"/>
+                            <x-admin.input identify="extra_units_amount" title="قیمت واحد اکسترا E" :old="number_format($variableAmount->extra_units_amount)"/>
+                            <x-admin.input identify="performance_amount" title="مبلغ عملکرد ویژه" :old="number_format($variableAmount->performance_amount)"/>
+                            <x-admin.input identify="reward_basis" title="مبنای پاداش بهره وری":old="number_format($variableAmount->reward_basis)"/>
                                 <x-admin.select-model identify="job_title_id"
                               title="سمت شغلی"
                               value="title"
@@ -61,6 +61,8 @@
 @endsection
 @section('script')
     @include('admin.partial.request')
+    @include('admin.partial.script.global')
+
     @include('admin.partial.loader.script',['load'=>[
         \App\Enums\Assets\ScriptLoader::Alert(),
         \App\Enums\Assets\ScriptLoader::Datepicker(),
@@ -69,7 +71,11 @@
     <script>
         $(document).ready(function () {
             jalaliDatepicker.startWatch();
-
+            makeInputPrice($('#base_units_count'));
+            makeInputPrice($('#extra_units_amount'));
+            makeInputPrice($('#performance_amount'));
+            makeInputPrice($('#reward_basis'));
+           
             activeParentUl('{{ route('admin.admin.variable-amount.index') }}');
         })
     </script>

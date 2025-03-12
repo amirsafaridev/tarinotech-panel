@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Admin\app\Http\Requests\Admin\PersonnelAssistance;
+namespace Modules\Personnel\app\Http\Requests\Admin\PersonnelAssistance;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,8 +14,7 @@ class UpdateRequest extends FormRequest
         return [
             'price' => 'required|numeric',
             'description' => 'required',
-            'user_id' => 'required|exists:admins,id',
-            'date' => 'required',
+            'date' => 'required|jdate',
 
         ];
     }
@@ -25,7 +24,6 @@ class UpdateRequest extends FormRequest
             'price' => str_replace(',', '', $this->input('price')),
         ]);
     }
-
     /**
      * Determine if the user is authorized to make this request.
      */

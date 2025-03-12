@@ -12,7 +12,7 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'date' => 'required|jdate',
+            'date' => 'required',
             'job_title_id' => 'required|exists:job_titles,id',
             'title' => 'required',
             'base_units_count' => 'required|numeric',
@@ -20,6 +20,17 @@ class UpdateRequest extends FormRequest
             'extra_units_amount' => 'required|numeric',
             'reward_basis' => 'required|numeric',
         ];
+    }
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'base_units_count' => str_replace(',', '', $this->input('base_units_count')),
+            'performance_amount' => str_replace(',', '', $this->input('performance_amount')),
+            'extra_units_amount' => str_replace(',', '', $this->input('extra_units_amount')),
+            'reward_basis' => str_replace(',', '', $this->input('reward_basis')),
+        
+
+        ]);
     }
 
     /**

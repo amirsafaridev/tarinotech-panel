@@ -52,21 +52,44 @@
                                             <td>{{ $payslip->created_at->toJalali()->format('d F Y') }}</td>
                                             <td>{{ $payslip->created_at->toJalali()->format('F') }}</td>
                                             <td>{{ $payslip->created_at->toJalali()->format('d') }}</td>
-                                            <td>{{ $payslip->status === 0 ? 'در انتظار تایید' : 'تایید شده' }}
+                                            <td>
+                                                @if ($payslip->status === 0)
+                                                    در انتظار تایید
+                                                @elseif ($personnelAssistance->status === 1)
+                                                    تایید شده
+                                                @else
+                                                    رد شده
+                                                @endif
+                                            </td>
                                             </td>
 
                                             <td>
-                                                @can('ADMIN_PERSONNEL_PAYSLIP_SHOW')
-                                                    <a href="{{ route('admin.personnel.payslip.show', $payslip->id) }}"
-                                                        class="btn btn-warning btn-sm">مشاهده</a>
-                                                @endcan
-                                                @can('ADMIN_PERSONNEL_PAYSLIP_SHOW')
-                                                <a href="{{ route('admin.personnel.payslip.show', $payslip->id) }}"
-                                                    class="btn btn-success btn-sm">تایید</a>
-                                            @endcan @can('ADMIN_PERSONNEL_PAYSLIP_SHOW')
-                                            <a href="{{ route('admin.personnel.payslip.show', $payslip->id) }}"
-                                                class="btn btn-danger btn-sm">عدم تایید</a>
-                                        @endcan
+                                                <div class="dropdown">
+
+                                                    <button type="button" class="btn btn-success btn-sm dropdown-toggle"
+                                                        data-bs-toggle="dropdown">
+                                                        {{ __('panel.action.manage') }}
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        @can('ADMIN_PERSONNEL_PAYSLIP_SHOW')
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('admin.personnel.payslip.show', $payslip->id) }}">{{ __('panel.action.show') }}</a>
+                                                        @endcan
+                                                        @if ($payslip->status === 0)
+                                                            @can('ADMIN_PERSONNEL_PAYSLIP_APPROVED')
+                                                                <a class="dropdown-item"
+                                                                    href="{{ route('admin.personnel.payslip.approved', $payslip->id) }}">{{ __('panel.action.approve') }}</a>
+                                                            @endcan
+
+                                                            @can('ADMIN_PERSONNEL_PAYSLIP_CANCELED')
+                                                                <a class="dropdown-item"
+                                                                    href="{{ route('admin.personnel.payslip.canceled', $payslip->id) }}">{{ __('panel.action.cancel') }}</a>
+                                                            @endcan
+                                                        @endif
+
+                                                    </div>
+                                                </div>
+
                                             </td>
                                         </tr>
                                     @endforeach
