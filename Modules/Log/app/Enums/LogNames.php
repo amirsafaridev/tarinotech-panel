@@ -74,4 +74,16 @@ class LogNames extends Enum implements LocalizedEnum
     const USER = 'user';
 
     const DEFAULT = 'default';
+
+    const SURVEY = 'survey';
+
+    const QUESTION = 'question';
+
+    const QUESTION_OPTION = 'question_option';
+
+    const SURVEY_RESPONSE = 'survey_response';
+
+    const SURVEY_ANSWER = 'survey_answer';
+
+    const ANSWER_OPTION = 'answer_option';
 }
