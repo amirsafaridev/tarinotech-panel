@@ -21,13 +21,14 @@ return new class extends Migration
             $table->foreignId('admin_id')->constrained('users')->onDelete('cascade');
 
             $table->boolean('requires_auth')->default(false);
-            $table->string('auth_guard')->nullable();
+            $table->unsignedTinyInteger('auth_guard')->nullable();
 
             $table->boolean('is_active')->default(true);
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
             $table->string('access_token')->unique()->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

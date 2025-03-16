@@ -15,6 +15,8 @@ use BenSampo\Enum\Enum;
  * @method static static Datepicker()
  * @method static static Acf()
  * @method static static Dropzone()
+ * @method static static JQueryUI()
+ * @method static static SpectrumColorPicker()
  */
 final class StyleLoader extends Enum
 {
@@ -37,4 +39,8 @@ final class StyleLoader extends Enum
     const CellPhone = 9;
 
     const Dropzone = 10;
+
+    const JQueryUI = 11;
+
+    const SpectrumColorPicker = 12;
 }

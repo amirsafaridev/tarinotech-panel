@@ -30,6 +30,8 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapApiRoutes();
 
         $this->mapWebRoutes();
+
+        $this->mapAdminRoutes();
     }
 
     /**
@@ -55,5 +57,20 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('api')
             ->namespace($this->moduleNamespace)
             ->group(module_path('Survey', '/routes/api.php'));
+    }
+
+    /**
+     * Define the "admin" routes for the application.
+     *
+     * These routes are typically stateless.
+     */
+    protected function mapAdminRoutes(): void
+    {
+        $prefix = config('routes.admin-prefix');
+        Route::prefix($prefix.'/survey')
+            ->namespace($this->moduleNamespace)
+            ->middleware(['web', 'admin.auth', /*'acl',*/ 'admin.scope'])
+            ->as('admin.survey.')
+            ->group(module_path('Survey', '/routes/admin.php'));
     }
 }

@@ -2,11 +2,14 @@
 
 namespace Modules\Survey\app\Models;
 
+use App\Traits\Filterable;
+use App\Traits\HasUniqueIdentify;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Admin\app\Models\Admin;
 use Modules\Log\app\Enums\LogNames;
 use Spatie\Activitylog\LogOptions;
@@ -14,8 +17,11 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Survey extends Model
 {
+    use Filterable;
     use HasFactory;
+    use HasUniqueIdentify;
     use LogsActivity;
+    use SoftDeletes;
 
     protected $fillable = [
         'title',
@@ -63,5 +69,10 @@ class Survey extends Model
         return LogOptions::defaults()
             ->useLogName(LogNames::SURVEY)
             ->logAll();
+    }
+
+    public function identifiable(): string
+    {
+        return 'access_token';
     }
 }
