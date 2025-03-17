@@ -7,6 +7,7 @@
     \App\Enums\Assets\StyleLoader::Toast(),
     \App\Enums\Assets\StyleLoader::Alert(),
     \App\Enums\Assets\StyleLoader::Datepicker(),
+    \App\Enums\Assets\StyleLoader::DataTable()
 ]])
 @endsection
 @section('content')
@@ -139,7 +140,10 @@
     @include('admin.partial.loader.script', ['load' => [
         \App\Enums\Assets\ScriptLoader::Alert(),
         \App\Enums\Assets\ScriptLoader::Datepicker(),
+        \App\Enums\Assets\ScriptLoader::DataTable()
     ]])
+    @include('admin.partial.datatable_offline')
+
     <script>
         $(document).ready(function() {
             activeParentUl('{{ route('admin.personnel.daily-activity.index') }}');

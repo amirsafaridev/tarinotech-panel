@@ -4,7 +4,7 @@
 @endsection
 @section('head')
     @include('admin.partial.loader.style', [
-        'load' => [\App\Enums\Assets\StyleLoader::Toast(), \App\Enums\Assets\StyleLoader::Alert()],
+        'load' => [\App\Enums\Assets\StyleLoader::DataTable()],
     ])
 @endsection
 @section('content')
@@ -88,9 +88,9 @@
 @endsection
 
 @section('script')
-    @include('admin.partial.request')
-    @include('admin.partial.script.global')
-    @include('admin.partial.loader.script', ['load' => [\App\Enums\Assets\ScriptLoader::Alert()]])
+@include('admin.partial.loader.script', ['load' => [\App\Enums\Assets\ScriptLoader::DataTable()]])
+@include('admin.partial.datatable_offline')
+
     
 @endsection
 

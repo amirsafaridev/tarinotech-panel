@@ -31,7 +31,7 @@ class DailyActivityController extends Controller
         try {
             $user = auth()->user();
             $today = now();
-            $isPhysicalDay = false; // فعلا همه روزها غیرحضوری
+            $isPhysicalDay = $this->isPhysicalDay($user); // فعلا همه روزها غیرحضوری
 
             // چک کردن آخرین فعالیت امروز
             $lastActivity = DailyActivity::where('user_id', $user->id)

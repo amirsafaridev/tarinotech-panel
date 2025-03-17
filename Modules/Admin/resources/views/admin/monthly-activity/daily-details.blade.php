@@ -2,7 +2,9 @@
 @section('title')
     {{ $title }}
 @endsection
-
+@section('head')
+    @include('admin.partial.loader.style', ['load' => [\App\Enums\Assets\StyleLoader::DataTable()]])
+@endsection
 @section('content')
 
     <div class="page-header">
@@ -86,4 +88,11 @@
     </div>
 
 
+@endsection
+
+@section('script')
+@include('admin.partial.loader.script', ['load' => [\App\Enums\Assets\ScriptLoader::DataTable()]])
+@include('admin.partial.datatable_offline')
+
+    
 @endsection
