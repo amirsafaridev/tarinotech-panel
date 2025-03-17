@@ -5,8 +5,7 @@ namespace Modules\Personnel\app\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Modules\Personnel\app\Models\DailyActivity;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
-use Hekmatinasser\Verta\Verta;
+
 
 class DailyActivityController extends Controller
 {
@@ -15,89 +14,23 @@ class DailyActivityController extends Controller
     public function index()
     {
         $user = auth()->user();
-
-        $title = self::INDEX_TITLE;
-
+      
+       $title= self::INDEX_TITLE;
+      
         $activities = DailyActivity::where('user_id', $user->id)
-            ->orderBy('date', 'desc')
+        ->orderBy('created_at', 'desc')
             ->get();
 
-
-        return view(
-            'personnel::daily-activity.index',
-            compact('title', 'activities')
-        );
+        return view('personnel::daily-activity.index',
+        compact('title', 'activities'));
     }
 
-    public function approveEdit(Request $request, DailyActivity $activity)
-    {
-        if (!$activity->edit_request || !$activity->edit_request_data) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'درخواست ویرایشی برای این رکورد وجود ندارد'
-            ], 400);
-        }
-
-        $editData = $activity->edit_request_data;
-        $activityDate = Carbon::parse($activity->date);
-
-        // تبدیل زمان‌های درخواستی به DateTime
-        $startTime = Carbon::createFromFormat('H:i', $editData['requested_start_time'])
-            ->setDate($activityDate->year, $activityDate->month, $activityDate->day);
-
-        $endTime = Carbon::createFromFormat('H:i', $editData['requested_end_time'])
-            ->setDate($activityDate->year, $activityDate->month, $activityDate->day);
-
-        $activity->update([
-            'start_time' => $startTime,
-            'end_time' => $endTime,
-            'total_duration' => $endTime->diffInSeconds($startTime),
-            'status' => DailyActivity::STATUS_INACTIVE,
-            'edit_request' => false,
-            'edit_request_data' => array_merge($editData, [
-                'approved_at' => now(),
-                'approved_by' => auth()->id()
-            ])
-        ]);
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'درخواست ویرایش با موفقیت تایید شد'
-        ]);
-    }
-
-    public function rejectEdit(Request $request, DailyActivity $activity)
-    {
-        if (!$activity->edit_request || !$activity->edit_request_data) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'درخواست ویرایشی برای این رکورد وجود ندارد'
-            ], 400);
-        }
-
-        $request->validate([
-            'reject_reason' => 'required|string|max:500'
-        ]);
-
-        $activity->update([
-            'edit_request' => false,
-            'edit_request_data' => array_merge($activity->edit_request_data, [
-                'rejected_at' => now(),
-                'rejected_by' => auth()->id(),
-                'reject_reason' => $request->reject_reason
-            ])
-        ]);
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'درخواست ویرایش رد شد'
-        ]);
-    }
+    
     public function toggle(Request $request)
     {
         try {
             $user = auth()->user();
-            $today = Carbon::now();
+            $today = now();
             $isPhysicalDay = false; // فعلا همه روزها غیرحضوری
 
             // چک کردن آخرین فعالیت امروز
@@ -107,7 +40,7 @@ class DailyActivityController extends Controller
                 ->first();
 
             // اگر فعالیت قبلی نداریم یا آخرین فعالیت پایان یافته، یک فعالیت جدید شروع میکنیم
-            if (!$lastActivity || $lastActivity->status === DailyActivity::STATUS_INACTIVE) {
+            if (!$lastActivity || $lastActivity->status === DailyActivity::STATUS_INACTIVE ||  $lastActivity->status === DailyActivity::STATUS_REJECT) {
                 $activity = DailyActivity::create([
                     'user_id' => $user->id,
                     'date' => $today->toDateString(),
@@ -153,6 +86,7 @@ class DailyActivityController extends Controller
                     'duration' => gmdate('H:i:s', $lastActivity->total_duration)
                 ]);
             }
+
         } catch (\Exception $e) {
             \Log::error('خطا در ثبت فعالیت: ' . $e->getMessage());
             return response()->json([
@@ -172,9 +106,9 @@ class DailyActivityController extends Controller
         }
 
         $request->validate([
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i|after:start_time',
-            'reason' => 'required|string|max:500'
+            'start_time' => 'required',
+            'end_time' => 'required',
+            'reason' => 'required'
         ]);
 
         $activity->update([
@@ -186,11 +120,12 @@ class DailyActivityController extends Controller
                 'requested_at' => now()
             ]
         ]);
-
         return response()->json([
-            'status' => 'success',
-            'message' => 'درخواست ویرایش با موفقیت ثبت شد'
+            'result' => 'success',
+            'back' => route('admin.admin.daily-activity.index'),
+            'message' => trans('panel.success_update'),
         ]);
+      
     }
 
     private function isMobileDevice()
@@ -205,4 +140,4 @@ class DailyActivityController extends Controller
         // فعلاً به صورت مثال همه روزها رو حضوری در نظر می‌گیریم
         return false;
     }
-}
+} 

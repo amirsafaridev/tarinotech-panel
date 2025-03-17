@@ -31,7 +31,7 @@
                         <span class="side-menu__label">{{ trans('panel.dashboard.title') }}</span>
                     </a>
                 </li>
-                @canany(['ADMIN_PERSONNEL_PAYSLIP_INDEX','ADMIN_PERSONNEL_PERSONNEL_ASSISTANCE_INDEX'])
+                @canany(['ADMIN_PERSONNEL_PAYSLIP_INDEX','ADMIN_PERSONNEL_PERSONNEL_ASSISTANCE_INDEX','ADMIN_PERSONNEL_DAILY_ACTIVITY_INDEX'])
                 <li class="slide can-expand">
                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navRole">
                         <i class="side-menu__icon fal fa-user"></i>
@@ -59,7 +59,7 @@
                     'ADMIN_ADMIN_GROUP_GOAL', 'ADMIN_REPORT_GOAL', 'ADMIN_REPORT_GOAL_GROUP',
                     'ADMIN_ADMIN_PERSONNEL_ASSISTANCE_INDEX', 'ADMIN_ADMIN_PERSONNEL_SALARY_INDEX',
                     'ADMIN_ADMIN_PERSONNEL_REPORT_INDEX', 'ADMIN_ADMIN_VARIABLE_AMOUNT_INDEX',
-                    'ADMIN_ADMIN_FIXED_AMOUNT_INDEX'])
+                    'ADMIN_ADMIN_FIXED_AMOUNT_INDEX', 'ADMIN_ADMIN_DAILY_ACTIVITY_INDEX'])
                     <li class="sub-category">
                         <h3>مدیریت پرسنل</h3>
                     </li>
@@ -98,6 +98,10 @@
                                 <li><a href="{{ route('admin.report.goal-group') }}" class="slide-item">گزارش هدف های
                                         گروهی</a></li>
                             @endcan
+                            @can('ADMIN_ADMIN_DAILY_ACTIVITY_INDEX')
+                            <li><a href="{{ route('admin.admin.daily-activity.index') }}" class="slide-item">ساعت فعال پرسنل</a>
+                            </li>
+                        @endcan
                             @can('ADMIN_ADMIN_FIXED_AMOUNT_INDEX')
                                 <li><a href="{{ route('admin.admin.fixed-amount.index') }}" class="slide-item">مبالغ ثابت</a>
                                 </li>

@@ -25,9 +25,7 @@ Route::group(['guard' => 'admin'], function () {
         Route::prefix('daily-activity')->name('daily-activity.')->group(function () {
             Route::get('/', [DailyActivityController::class, 'index'])->name('index');
             Route::post('/toggle', [DailyActivityController::class, 'toggle'])->name('toggle');
-            Route::post('/{activity}/request-edit', [DailyActivityController::class, 'requestEdit'])->name('request-edit');
-            Route::post('/{activity}/approve', [DailyActivityController::class, 'approveEdit'])->name('approve');
-            Route::post('/{activity}/reject', [DailyActivityController::class, 'rejectEdit'])->name('reject');
+            Route::post('/request-edit/{activity}', [DailyActivityController::class, 'requestEdit'])->name('request-edit');
         });
     });
 

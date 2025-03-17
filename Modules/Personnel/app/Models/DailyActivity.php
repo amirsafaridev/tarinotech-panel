@@ -15,6 +15,7 @@ class DailyActivity extends Model
     const STATUS_INACTIVE = 'inactive';
     const STATUS_INCORRECT = 'incorrect_entry';
     const STATUS_ABSENT = 'absent';
+    const STATUS_REJECT = 'reject';
 
     protected $fillable = [
         'user_id',
@@ -46,6 +47,26 @@ class DailyActivity extends Model
         'edit_request' => false
     ];
 
+    public function getStartTimeAttribute($value)
+    {
+        return $value ? Carbon::parse($value)->timezone('Asia/Tehran') : null;
+    }
+
+    public function getEndTimeAttribute($value)
+    {
+        return $value ? Carbon::parse($value)->timezone('Asia/Tehran') : null;
+    }
+
+    public function setStartTimeAttribute($value)
+    {
+        $this->attributes['start_time'] = $value ? Carbon::parse($value)->timezone('Asia/Tehran') : null;
+    }
+
+    public function setEndTimeAttribute($value)
+    {
+        $this->attributes['end_time'] = $value ? Carbon::parse($value)->timezone('Asia/Tehran') : null;
+    }
+
     public function user()
     {
         return $this->belongsTo(Admin::class);
@@ -53,7 +74,7 @@ class DailyActivity extends Model
 
     public function canRequestEdit()
     {
-        return !$this->edit_request;
+        return !$this->edit_request && $this->edit_request_data === null && $this->status !== self::STATUS_ABSENT;
     }
 
     public function markAsIncorrect()
@@ -94,12 +115,12 @@ class DailyActivity extends Model
         $latDelta = deg2rad($lat2 - $lat1);
         $lngDelta = deg2rad($lng2 - $lng1);
 
-        $a = sin($latDelta/2) * sin($latDelta/2) +
+        $a = sin($latDelta / 2) * sin($latDelta / 2) +
             cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
-            sin($lngDelta/2) * sin($lngDelta/2);
-        
-        $c = 2 * atan2(sqrt($a), sqrt(1-$a));
-        
+            sin($lngDelta / 2) * sin($lngDelta / 2);
+
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
         return $earthRadius * $c;
     }
 

@@ -99,31 +99,35 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="card-body d-md-block d-none">
-        <div class="text-center mb-4">
-            <h5 class="persian-font">{{ $persianDayOfWeek }}</h5>
-            <h3 class="persian-font">{{ $persianDate }}</h3>
-            <h2 id="current-time" class="persian-font">{{ $currentTime }}</h2>
-        </div>
-
-        <div id="desktop-only" class="text-center mb-4" style="display: none;">
-            <button id="activity-toggle"
-                class="btn btn-lg {{ $currentActivity && $currentActivity->status === 'active' ? 'btn-success' : 'btn-secondary' }}"
-                style="min-width: 200px; min-height: 60px;">
-                {{ $currentActivity && $currentActivity->status === 'active' ? 'پایان کار' : 'شروع کار' }}
-            </button>
-        </div>
-
-        <div id="mobile-warning" class="alert alert-warning text-center" style="display: none;">
-            ثبت فعالیت فقط از طریق کامپیوتر امکان‌پذیر است
-        </div>
-
-        @if ($currentActivity && $currentActivity->status === 'active')
-            <div class="text-center mb-4">
-                <h4 id="activity-timer" class="text-success">00:00:00</h4>
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-order">
+                        <div id="desktop-only" class="text-center mb-4" style="display: none;">
+                            <button id="activity-toggle"
+                                class="btn btn-lg {{ $currentActivity && $currentActivity->status === 'active' ? 'btn-success' : 'btn-secondary' }}"
+                                style="min-width: 200px; min-height: 60px;">
+                                {{ $currentActivity && $currentActivity->status === 'active' ? 'پایان کار' : 'شروع کار' }}
+                            </button>
+                        </div>
+                
+                        <div id="mobile-warning" class="alert alert-warning text-center" style="display: none;">
+                            ثبت فعالیت فقط از طریق کامپیوتر امکان‌پذیر است
+                        </div>
+                
+                        @if ($currentActivity && $currentActivity->status === 'active')
+                            <div class="text-center mb-4">
+                                <h4 id="activity-timer" class="text-success">00:00:00</h4>
+                            </div>
+                        @endif
+                    </div>
+                </div>
             </div>
-        @endif
+        </div>
+    </div>
+   
+
+       
         <div class="row">
 
         </div>

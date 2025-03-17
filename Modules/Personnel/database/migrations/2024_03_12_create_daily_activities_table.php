@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('daily_activities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('admins')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->date('date');
             $table->dateTime('start_time')->nullable();
             $table->dateTime('end_time')->nullable();
