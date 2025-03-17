@@ -98,6 +98,10 @@
                                 <li><a href="{{ route('admin.report.goal-group') }}" class="slide-item">گزارش هدف های
                                         گروهی</a></li>
                             @endcan
+                            @can('ADMIN_ADMIN_MONTHLY_ACTIVITY_INDEX')
+                            <li><a href="{{ route('admin.admin.monthly-activity.index') }}" class="slide-item">فعالیت ماهانه پرسنل</a>
+                            </li>
+                        @endcan
                             @can('ADMIN_ADMIN_DAILY_ACTIVITY_INDEX')
                             <li><a href="{{ route('admin.admin.daily-activity.index') }}" class="slide-item">ساعت فعال پرسنل</a>
                             </li>

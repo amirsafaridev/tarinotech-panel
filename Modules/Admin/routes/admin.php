@@ -16,6 +16,7 @@ use Modules\Admin\app\Http\Controllers\Admin\FixedAmountController;
 use Modules\Admin\app\Http\Controllers\Admin\ProfileController;
 use Modules\Admin\app\Http\Controllers\Admin\ReasonController;
 use Modules\Admin\app\Http\Controllers\Admin\DailyActivityController;
+use Modules\Admin\app\Http\Controllers\Admin\MonthlyActivityController;
 
 Route::group(['guard' => 'admin'], function () {
 
@@ -117,6 +118,13 @@ Route::group(['guard' => 'admin'], function () {
         
         Route::get('/approve/{activity}', [DailyActivityController::class, 'approveEdit'])->name('approve');
         Route::post('/reject/{activity}', [DailyActivityController::class, 'rejectEdit'])->name('reject');
+    });
+    Route::prefix('monthly-activity')->name('monthly-activity.')->group(function () {
+        Route::get('/', [MonthlyActivityController::class, 'index'])->name('index');
+        
+        Route::get('/daily-details/{userId}/{startOfMonth}/{endOfMonth}', [MonthlyActivityController::class, 'dailyDetails'])->name('daily-details');
+
+        
     });
     Route::group([], function () {
         Route::get('/{admin}', [AdminController::class, 'edit'])->name('edit');
