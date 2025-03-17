@@ -48,7 +48,10 @@
                         <li><a href="{{ route('admin.personnel.personnel-assistance.index') }}" class="slide-item">مساعده ها</a>
                         </li>
                     @endcan
-                    
+                    @can('ADMIN_PERSONNEL_DAILY_ACTIVITY_INDEX')
+                        <li><a href="{{ route('admin.personnel.daily-activity.index') }}" class="slide-item">فعالیت روزانه</a>
+                        </li>
+                    @endcan
                     </ul>
                 </li>
             @endcanany

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Personnel\app\Http\Controllers\Admin\PayslipController;
 use Modules\Personnel\app\Http\Controllers\Admin\PersonnelAssistanceController;
+use Modules\Personnel\app\Http\Controllers\Admin\DailyActivityController;
 
 Route::group(['guard' => 'admin'], function () {
     Route::group(['prefix' => 'payslip', 'as' => 'payslip.'], function () {
@@ -21,4 +22,14 @@ Route::group(['guard' => 'admin'], function () {
         Route::get('/canceled/{personnelAssistance}', [PersonnelAssistanceController::class, 'canceled'])->name('canceled');
 
     });
-});
+        Route::prefix('daily-activity')->name('daily-activity.')->group(function () {
+            Route::get('/', [DailyActivityController::class, 'index'])->name('index');
+            Route::post('/toggle', [DailyActivityController::class, 'toggle'])->name('toggle');
+            Route::post('/{activity}/request-edit', [DailyActivityController::class, 'requestEdit'])->name('request-edit');
+            Route::post('/{activity}/approve', [DailyActivityController::class, 'approveEdit'])->name('approve');
+            Route::post('/{activity}/reject', [DailyActivityController::class, 'rejectEdit'])->name('reject');
+        });
+    });
+
+
+

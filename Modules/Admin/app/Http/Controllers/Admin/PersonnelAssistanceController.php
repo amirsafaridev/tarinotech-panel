@@ -45,6 +45,7 @@ class PersonnelAssistanceController extends Controller
      */
     public function store(StoreRequest $request)
     {
+       
         try {
             DB::beginTransaction();
             $inputs = $request->all();
