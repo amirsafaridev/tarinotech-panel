@@ -1,15 +1,17 @@
 @extends('admin.master')
-@section('title') {{ $title }} @endsection
+@section('title')
+    {{ $title }}
+@endsection
 @section('head')
-    @include('admin.partial.loader.style',['load'=>[\App\Enums\Assets\StyleLoader::DataTable()]])
+    @include('admin.partial.loader.style', ['load' => [\App\Enums\Assets\StyleLoader::DataTable()]])
 @endsection
 @section('content')
-
     <div class="page-header">
         <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a
+                        href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item active">{{ $title }}</li>
             </ol>
         </div>
@@ -24,19 +26,19 @@
                     <div class="table-responsive">
                         <table id="data-table" class="table">
                             <thead>
-                            <tr>
-                                @foreach ($dataTable['columns'] as $column)
-                                    <th>{{ $column['as'] }}</th>
-                                @endforeach
-                            </tr>
+                                <tr>
+                                    @foreach ($dataTable['columns'] as $column)
+                                        <th>{{ $column['as'] }}</th>
+                                    @endforeach
+                                </tr>
                             </thead>
 
                             <tfoot>
-                            <tr>
-                                @foreach ($dataTable['columns'] as $column)
-                                    <th>{{ $column['as'] }}</th>
-                                @endforeach
-                            </tr>
+                                <tr>
+                                    @foreach ($dataTable['columns'] as $column)
+                                        <th>{{ $column['as'] }}</th>
+                                    @endforeach
+                                </tr>
                             </tfoot>
 
                             <tbody>
@@ -49,15 +51,15 @@
     </div>
 @endsection
 @section('script')
-    @include('admin.partial.loader.script',['load'=>[\App\Enums\Assets\ScriptLoader::DataTable()]])
+    @include('admin.partial.loader.script', ['load' => [\App\Enums\Assets\ScriptLoader::DataTable()]])
     @include('admin.partial.datatable2')
     <script>
-        $(document).ready(function (){
+        $(document).ready(function() {
             @foreach ($dataTable['externalFilters'] as $filter)
-            const {{ $filter['key'] }} = $('#{{$filter['key']}}');
-            {{$filter['key']}}.change(function (){
-                dataTable.ajax.reload();
-            });
+                const {{ $filter['key'] }} = $('#{{ $filter['key'] }}');
+                {{ $filter['key'] }}.change(function() {
+                    dataTable.ajax.reload();
+                });
             @endforeach
         })
     </script>

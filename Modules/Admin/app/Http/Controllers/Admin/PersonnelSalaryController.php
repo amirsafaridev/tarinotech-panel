@@ -51,7 +51,11 @@ class PersonnelSalaryController extends Controller
             PersonnelSalary::query()->create($inputs);
             DB::commit();
 
-            return $this->successResponse();
+            return response()->json([
+                'result' => 'success',
+                'back' => route('admin.admin.personnel-salary.index'),
+                'message' => trans('panel.success_update'),
+            ]);
         } catch (Exception $exception) {
             DB::rollBack();
 
@@ -88,7 +92,11 @@ class PersonnelSalaryController extends Controller
             $personnelSalary->update($request->all());
             DB::commit();
 
-            return $this->successUpdateResponse();
+            return response()->json([
+                'result' => 'success',
+                'back' => route('admin.admin.personnel-salary.index'),
+                'message' => trans('panel.success_update'),
+            ]);
         } catch (Exception $exception) {
             DB::rollBack();
 

@@ -54,11 +54,17 @@
                                             <td>{{ $payslip->created_at->toJalali()->format('d') }}</td>
                                             <td>
                                                 @if ($payslip->status === 0)
-                                                    در انتظار تایید
-                                                @elseif ($personnelAssistance->status === 1)
-                                                    تایید شده
+                                                    <span class="badge bg-warning">
+                                                        در انتظار تایید
+                                                    </span>
+                                                @elseif ($payslip->status === 1)
+                                                    <span class="badge bg-success">
+                                                        تایید شده
+                                                    </span>
                                                 @else
-                                                    رد شده
+                                                    <span class="badge bg-danger">
+                                                        رد شده
+                                                    </span>
                                                 @endif
                                             </td>
                                             </td>

@@ -40,8 +40,8 @@ class BonusController extends Controller
     {
         $title = self::CREATE_TITLE;
         $users = Admin::query()->get();
-        $reasons = Reason::where('type',0)->get();
-        return view('admin::admin.bonuses.create', compact('title', 'users','reasons'));
+        $reasons = Reason::where('type', 0)->get();
+        return view('admin::admin.bonuses.create', compact('title', 'users', 'reasons'));
     }
 
     /**
@@ -54,10 +54,14 @@ class BonusController extends Controller
             $inputs = $request->all();
             $inputs['type'] = 0;
             BonusesDeduction::query()->create($inputs);
-           
+
             DB::commit();
 
-            return $this->successResponse();
+            return response()->json([
+                'result' => 'success',
+                'back' => route('admin.admin.bonuses.index'),
+                'message' => trans('panel.success_update'),
+            ]);
         } catch (Exception $exception) {
             DB::rollBack();
 
@@ -80,7 +84,7 @@ class BonusController extends Controller
     {
         $title = self::EDIT_TITLE;
         $users = Admin::query()->get();
-        $reasons = Reason::where('type',0)->get();
+        $reasons = Reason::where('type', 0)->get();
         return view('admin::admin.bonuses.edit', compact('title', 'bonusesDeduction', 'users', 'reasons'));
     }
 
@@ -92,10 +96,14 @@ class BonusController extends Controller
         try {
             DB::beginTransaction();
             $bonusesDeduction->update($request->all());
-         
+
             DB::commit();
 
-            return $this->successUpdateResponse();
+            return response()->json([
+                'result' => 'success',
+                'back' => route('admin.admin.bonuses.index'),
+                'message' => trans('panel.success_update'),
+            ]);
         } catch (Exception $exception) {
             DB::rollBack();
 

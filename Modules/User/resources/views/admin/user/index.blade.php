@@ -1,15 +1,17 @@
 @extends('admin.master')
-@section('title') {{ $title }} @endsection
+@section('title')
+    {{ $title }}
+@endsection
 @section('head')
-    @include('admin.partial.loader.style',['load'=>[\App\Enums\Assets\StyleLoader::DataTable()]])
+    @include('admin.partial.loader.style', ['load' => [\App\Enums\Assets\StyleLoader::DataTable()]])
 @endsection
 @section('content')
-
     <div class="page-header">
         <h1 class="page-title">مدیریت کارفرمایان</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a
+                        href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item active">لیست کارفرمایان</li>
             </ol>
         </div>
@@ -23,23 +25,23 @@
                     <a class="btn btn-success btn-sm" href="{{ route('admin.user.import.index') }}">Excel</a>
                 </div>
                 <div class="card-body">
-                    @include('admin.partial.message')
+                    {{-- @include('admin.partial.message') --}}
                     <div class="table-responsive">
                         <table id="data-table" class="table">
                             <thead>
-                            <tr>
-                                @foreach ($dataTable['columns'] as $column)
-                                    <th>{{ $column['as'] }}</th>
-                                @endforeach
-                            </tr>
+                                <tr>
+                                    @foreach ($dataTable['columns'] as $column)
+                                        <th>{{ $column['as'] }}</th>
+                                    @endforeach
+                                </tr>
                             </thead>
 
                             <tfoot>
-                            <tr>
-                                @foreach ($dataTable['columns'] as $column)
-                                    <th>{{ $column['as'] }}</th>
-                                @endforeach
-                            </tr>
+                                <tr>
+                                    @foreach ($dataTable['columns'] as $column)
+                                        <th>{{ $column['as'] }}</th>
+                                    @endforeach
+                                </tr>
                             </tfoot>
 
                             <tbody>
@@ -52,6 +54,6 @@
     </div>
 @endsection
 @section('script')
-    @include('admin.partial.loader.script',['load'=>[\App\Enums\Assets\ScriptLoader::DataTable()]])
+    @include('admin.partial.loader.script', ['load' => [\App\Enums\Assets\ScriptLoader::DataTable()]])
     @include('admin.partial.datatable2')
 @endsection

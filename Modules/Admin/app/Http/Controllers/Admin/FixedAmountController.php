@@ -45,13 +45,17 @@ class FixedAmountController extends Controller
     public function store(StoreRequest $request)
     {
         try {
-            
+
             DB::beginTransaction();
             $inputs = $request->all();
             FixedAmount::query()->create($inputs);
             DB::commit();
 
-            return $this->successResponse();
+            return response()->json([
+                'result' => 'success',
+                'back' => route('admin.admin.fixed-amount.index'),
+                'message' => trans('panel.success_update'),
+            ]);
         } catch (Exception $exception) {
             DB::rollBack();
 
@@ -87,7 +91,11 @@ class FixedAmountController extends Controller
             $fixedAmount->update($request->all());
             DB::commit();
 
-            return $this->successUpdateResponse();
+            return response()->json([
+                'result' => 'success',
+                'back' => route('admin.admin.fixed-amount.index'),
+                'message' => trans('panel.success_update'),
+            ]);
         } catch (Exception $exception) {
             DB::rollBack();
 

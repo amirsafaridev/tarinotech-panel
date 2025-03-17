@@ -39,9 +39,9 @@ class DeductionController extends Controller
     {
         $title = self::CREATE_TITLE;
         $users = Admin::query()->get();
-        $reasons = Reason::where('type',1)->get();
+        $reasons = Reason::where('type', 1)->get();
 
-        return view('admin::admin.deductions.create', compact('title', 'users','reasons'));
+        return view('admin::admin.deductions.create', compact('title', 'users', 'reasons'));
     }
 
     /**
@@ -53,11 +53,15 @@ class DeductionController extends Controller
             DB::beginTransaction();
             $inputs = $request->all();
             $inputs['type'] = 1;
-           BonusesDeduction::query()->create($inputs);
-           
+            BonusesDeduction::query()->create($inputs);
+
             DB::commit();
 
-            return $this->successResponse();
+            return response()->json([
+                'result' => 'success',
+                'back' => route('admin.admin.deductions.index'),
+                'message' => trans('panel.success_update'),
+            ]);
         } catch (Exception $exception) {
             DB::rollBack();
 
@@ -80,7 +84,7 @@ class DeductionController extends Controller
     {
         $title = self::EDIT_TITLE;
         $users = Admin::query()->get();
-        $reasons = Reason::where('type',1)->get();
+        $reasons = Reason::where('type', 1)->get();
 
         return view('admin::admin.deductions.edit', compact('title', 'bonusesDeduction', 'reason', 'users', 'reasons'));
     }
@@ -93,11 +97,15 @@ class DeductionController extends Controller
         try {
             DB::beginTransaction();
             $bonusesDeduction->update($request->all());
-          
+
 
             DB::commit();
 
-            return $this->successUpdateResponse();
+            return response()->json([
+                'result' => 'success',
+                'back' => route('admin.admin.deductions.index'),
+                'message' => trans('panel.success_update'),
+            ]);
         } catch (Exception $exception) {
             DB::rollBack();
 
@@ -112,7 +120,7 @@ class DeductionController extends Controller
     {
         try {
             $bonusesDeduction->delete();
-          
+
             return $this->successDestroyBack(route('admin.admin.deductions.index'));
         } catch (Exception $exception) {
             return $this->exceptionBack($exception);

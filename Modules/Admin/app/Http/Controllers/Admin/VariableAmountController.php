@@ -51,7 +51,11 @@ class VariableAmountController extends Controller
             VariableAmount::query()->create($inputs);
             DB::commit();
 
-            return $this->successResponse();
+            return response()->json([
+                'result' => 'success',
+                'back' => route('admin.admin.variable-amount.index'),
+                'message' => trans('panel.success_update'),
+            ]);
         } catch (Exception $exception) {
             DB::rollBack();
 
@@ -87,7 +91,11 @@ class VariableAmountController extends Controller
             $variableAmount->update($request->all());
             DB::commit();
 
-            return $this->successUpdateResponse();
+            return response()->json([
+                'result' => 'success',
+                'back' => route('admin.admin.variable-amount.index'),
+                'message' => trans('panel.success_update'),
+            ]);
         } catch (Exception $exception) {
             DB::rollBack();
 
