@@ -37,8 +37,8 @@ class PersonnelReport extends Model
         'start_date' => 'date',
         'end_date' => 'date',
         'date' => 'date',
-        'start_time' => 'datetime',
-        'end_time' => 'datetime',
+        'start_time' => 'string',
+        'end_time' => 'string',
         'rules_accepted' => 'boolean',
         'is_emergency' => 'boolean'
     ];

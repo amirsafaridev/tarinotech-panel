@@ -14,7 +14,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a
                         href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.admin.personnel-report.index') }}">گزارش تردد و مرخصی</a>
+                <li class="breadcrumb-item"><a href="{{ route('admin.personnel.personnel-report.index') }}">گزارش تردد و مرخصی</a>
                 </li>
                 <li class="breadcrumb-item active">ایجاد درخواست مرخصی</li>
             </ol>
@@ -27,7 +27,7 @@
                 <div class="card-body pb-4">
                     @include('admin.partial.message')
                     <form id="leaveRequestForm" class="request-form forms-sample" method="post"
-                        action="{{ route('admin.admin.personnel-report.store') }}">
+                        action="{{ route('admin.personnel.personnel-report.store') }}">
                         @csrf
 
                         <div class="mb-3">

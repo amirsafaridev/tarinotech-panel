@@ -5,7 +5,6 @@ namespace Modules\Admin\app\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Modules\Personnel\app\Models\DailyActivity;
 use Illuminate\Http\Request;
-use Morilog\Jalali\Jalalian;
 
 class MonthlyActivityController extends Controller
 {

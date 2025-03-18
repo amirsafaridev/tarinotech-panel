@@ -11,7 +11,6 @@ use Modules\Admin\app\Http\Requests\Admin\PersonnelReport\UpdateRequest;
 use Modules\Admin\app\Services\LeaveRequestValidator;
 use Exception;
 use Modules\Admin\app\Models\PersonnelReport;
-use Carbon\Carbon;
 
 class PersonnelReportController extends Controller
 {
@@ -63,56 +62,7 @@ class PersonnelReportController extends Controller
         return view('admin::admin.personnel-report.index', compact('title', 'personnelReports'));
     }
 
-    public function create()
-    {
-        $title = self::CREATE_TITLE;
-        return view('admin::admin.personnel-report.create', compact('title'));
-    }
-
-    public function store(StoreRequest $request)
-    {
-        try {
-            $data = $request->validated();
-            $data['user_id'] = auth()->id();
-            $data['status'] = 'pending';
-
-            // تبدیل تاریخ‌های شمسی به میلادی
-            if ($data['type'] === 'daily') {
-                $data['start_date'] = verta()->parse($data['start_date'])->toCarbon()->startOfDay();
-                $data['end_date'] = verta()->parse($data['end_date'])->toCarbon()->endOfDay();
-                $data['date'] = null;
-                $data['start_time'] = null;
-                $data['end_time'] = null;
-            } else {
-                $data['date'] = verta()->parse($data['date'])->toCarbon()->startOfDay();
-                $data['start_date'] = null;
-                $data['end_date'] = null;
-            }
-
-            // اعتبارسنجی قوانین مرخصی
-            $validator = new LeaveRequestValidator(auth()->user(), $data);
-            $validationResult = $validator->validate();
-
-            if (!$validationResult['is_valid']) {
-                return response()->json([
-                    'result' => 'warning',
-                    'message' => $validationResult['errors'][0]
-                ]);
-            }
-
-            $report = PersonnelReport::create($data);
-
-            return response()->json([
-                'result' => 'success',
-                'back' => route('admin.admin.personnel-report.index'),
-                'message' =>'درخواست مرخصی با موفقیت ثبت شد',
-            ]);
-            
-        } catch (Exception $exception) {
-            return $this->exceptionResponse($exception);
-        }
-    }
-
+    
     public function edit(PersonnelReport $personnelReport)
     {
         if ($personnelReport->user_id !== Auth::id()) {
