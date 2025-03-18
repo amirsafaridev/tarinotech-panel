@@ -72,37 +72,43 @@ class PersonnelReportController extends Controller
     public function store(StoreRequest $request)
     {
         try {
-            DB::beginTransaction();
+            $data = $request->validated();
+            $data['user_id'] = auth()->id();
+            $data['status'] = 'pending';
 
-            // اعتبارسنجی درخواست
-            $validator = new LeaveRequestValidator(Auth::user(), $request->validated());
+            // تبدیل تاریخ‌های شمسی به میلادی
+            if ($data['type'] === 'daily') {
+                $data['start_date'] = verta()->parse($data['start_date'])->toCarbon()->startOfDay();
+                $data['end_date'] = verta()->parse($data['end_date'])->toCarbon()->endOfDay();
+                $data['date'] = null;
+                $data['start_time'] = null;
+                $data['end_time'] = null;
+            } else {
+                $data['date'] = verta()->parse($data['date'])->toCarbon()->startOfDay();
+                $data['start_date'] = null;
+                $data['end_date'] = null;
+            }
+
+            // اعتبارسنجی قوانین مرخصی
+            $validator = new LeaveRequestValidator(auth()->user(), $data);
             $validationResult = $validator->validate();
 
             if (!$validationResult['is_valid']) {
-                return $this->errorResponse(implode('<br>', $validationResult['errors']));
+                return response()->json([
+                    'result' => 'warning',
+                    'message' => $validationResult['errors'][0]
+                ]);
             }
 
-            $inputs = $request->validated();
-            $inputs['user_id'] = Auth::id();
-            $inputs['status'] = 'pending';
+            $report = PersonnelReport::create($data);
 
-            // تبدیل تاریخ‌ها به فرمت مناسب
-            if ($inputs['type'] === 'daily') {
-                $inputs['start_date'] = verta()->parse($inputs['start_date'])->toCarbon();
-                $inputs['end_date'] = verta()->parse($inputs['end_date'])->toCarbon();
-            } else {
-                $inputs['date'] = verta()->parse($inputs['date'])->toCarbon();
-                $inputs['start_time'] = $inputs['start_time'];
-                $inputs['end_time'] = $inputs['end_time'];
-            }
-
-            PersonnelReport::create($inputs);
-            DB::commit();
-
-            return $this->successResponse('درخواست مرخصی با موفقیت ثبت شد');
-
+            return response()->json([
+                'result' => 'success',
+                'back' => route('admin.admin.personnel-report.index'),
+                'message' =>'درخواست مرخصی با موفقیت ثبت شد',
+            ]);
+            
         } catch (Exception $exception) {
-            DB::rollBack();
             return $this->exceptionResponse($exception);
         }
     }
@@ -133,7 +139,7 @@ class PersonnelReportController extends Controller
             }
 
             DB::beginTransaction();
-
+            
             // اعتبارسنجی درخواست
             $validator = new LeaveRequestValidator(Auth::user(), $request->validated());
             $validationResult = $validator->validate();
@@ -146,18 +152,29 @@ class PersonnelReportController extends Controller
 
             // تبدیل تاریخ‌ها به فرمت مناسب
             if ($inputs['type'] === 'daily') {
-                $inputs['start_date'] = verta()->parse($inputs['start_date'])->toCarbon();
-                $inputs['end_date'] = verta()->parse($inputs['end_date'])->toCarbon();
+                $inputs['start_date'] = verta()->parse($inputs['start_date'])->toCarbon()->startOfDay();
+                $inputs['end_date'] = verta()->parse($inputs['end_date'])->toCarbon()->endOfDay();
+
+                // تنظیم فیلدهای مرخصی ساعتی به null
+                $inputs['date'] = null;
+                $inputs['start_time'] = null;
+                $inputs['end_time'] = null;
             } else {
-                $inputs['date'] = verta()->parse($inputs['date'])->toCarbon();
-                $inputs['start_time'] = $inputs['start_time'];
-                $inputs['end_time'] = $inputs['end_time'];
+                $inputs['date'] = verta()->parse($inputs['date'])->toCarbon()->startOfDay();
+
+                // تنظیم فیلدهای مرخصی روزانه به null
+                $inputs['start_date'] = null;
+                $inputs['end_date'] = null;
             }
 
             $personnelReport->update($inputs);
             DB::commit();
 
-            return $this->successResponse('درخواست مرخصی با موفقیت بروزرسانی شد');
+            return response()->json([
+                'result' => 'success',
+                'back' => route('admin.admin.personnel-report.index'),
+                'message' =>'درخواست مرخصی با موفقیت بروزرسانی شد',
+            ]);
 
         } catch (Exception $exception) {
             DB::rollBack();
@@ -177,7 +194,7 @@ class PersonnelReportController extends Controller
             }
 
             $personnelReport->delete();
-            return $this->successResponse('درخواست مرخصی با موفقیت حذف شد');
+            return $this->successDestroyBack(route('admin.admin.personnel-report.index'));
 
         } catch (Exception $exception) {
             return $this->exceptionResponse($exception);

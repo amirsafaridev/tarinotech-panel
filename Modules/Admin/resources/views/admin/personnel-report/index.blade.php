@@ -1,7 +1,11 @@
 @extends('admin.master')
 @section('title') {{ $title }} @endsection
 @section('head')
-    @include('admin.partial.loader.style',['load'=>[\App\Enums\Assets\StyleLoader::DataTable()]])
+    @include('admin.partial.loader.style',['load'=>[
+        \App\Enums\Assets\StyleLoader::DataTable(),
+        \App\Enums\Assets\StyleLoader::Alert(),
+
+    ]])
 @endsection
 @section('content')
     <div class="page-header">
@@ -82,12 +86,17 @@
                                                 <button type="button" 
                                                         class="btn btn-danger btn-sm" 
                                                         title="حذف"
-                                                        onclick="deleteItem({{ $personnelReport->id }})">
+                                                        onclick="confirmDelete()">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                             @endif
                                         </td>
                                     </tr>
+                                    <form id="deleteItem" action="{{ route('admin.admin.personnel-report.destroy', $personnelReport->id) }}"
+                                        method="post" class="form-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
                                 @endforeach
                             @endif
                             </tbody>
@@ -98,48 +107,17 @@
         </div>
     </div>
 
-    <!-- Modal حذف -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">حذف درخواست مرخصی</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    آیا از حذف این درخواست مرخصی اطمینان دارید؟
-                </div>
-                <div class="modal-footer">
-                    <form id="deleteForm" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
-                        <button type="submit" class="btn btn-danger">حذف</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+   
 @endsection
 @section('script')
-    @include('admin.partial.loader.script',['load'=>[\App\Enums\Assets\ScriptLoader::DataTable()]])
-    @include('admin.partial.datatable_offline')
-    <script>
-        function deleteItem(id) {
-            const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
-            const form = document.getElementById('deleteForm');
-            form.action = `/admin/personnel-report/${id}`;
-            modal.show();
-        }
+    @include('admin.partial.loader.script',['load'=>[
+        \App\Enums\Assets\ScriptLoader::DataTable(),
+        \App\Enums\Assets\ScriptLoader::Alert(),
 
-        $(document).ready(function() {
-            $('#data-table').DataTable({
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/fa.json"
-                },
-                "order": [[1, "desc"]], // مرتب‌سازی بر اساس تاریخ ایجاد
-                "pageLength": 25
-            });
-        });
-    </script>
+    ]])
+    
+    @include('admin.partial.request')
+    @include('admin.partial.script.global')
+    @include('admin.partial.datatable_offline')
+ 
 @endsection

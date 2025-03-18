@@ -4,17 +4,18 @@ namespace Modules\Admin\app\Services;
 
 use App\Models\User;
 use Carbon\Carbon;
-use Hekmatinasser\Verta\Verta;
 use Illuminate\Support\Facades\DB;
+use Modules\Admin\app\Models\Admin;
+use Modules\Admin\app\Models\PersonnelReport;
 
 class LeaveRequestValidator
 {
-    private User $user;
+    private Admin $user;
     private array $data;
     private array $errors = [];
     private bool $isValid = true;
 
-    public function __construct(User $user, array $data)
+    public function __construct(Admin $user, array $data)
     {
         $this->user = $user;
         $this->data = $data;
@@ -71,48 +72,52 @@ class LeaveRequestValidator
         $currentMonth = Carbon::now()->startOfMonth();
         $nextMonth = Carbon::now()->endOfMonth();
 
-        // محاسبه مرخصی‌های روزانه در ماه جاری
-        $dailyLeaves = DB::table('personnel_reports')
-            ->where('user_id', $this->user->id)
-            ->where('type', 'daily')
+        // محاسبه مجموع مرخصی‌های تایید شده در ماه جاری
+        $monthlyLeave = PersonnelReport::where('user_id', $this->user->id)
             ->where('status', 'approved')
-            ->whereBetween('start_date', [$currentMonth, $nextMonth])
-            ->count();
-
-        // محاسبه مرخصی‌های ساعتی در ماه جاری
-        $hourlyLeaves = DB::table('personnel_reports')
-            ->where('user_id', $this->user->id)
-            ->where('type', 'hourly')
-            ->where('status', 'approved')
-            ->whereBetween('date', [$currentMonth, $nextMonth])
+            ->where(function ($query) use ($currentMonth, $nextMonth) {
+                $query->whereBetween('start_date', [$currentMonth, $nextMonth])
+                    ->orWhereBetween('end_date', [$currentMonth, $nextMonth]);
+            })
             ->get();
 
-        $totalHourlyHours = $hourlyLeaves->sum(function ($leave) {
-            return Carbon::parse($leave->end_time)->diffInHours(Carbon::parse($leave->start_time));
-        });
+        $totalHours = 0;
+        $totalDailyLeaves = 0;
+        $totalHourlyLeaves = 0;
 
-        // محاسبه کل ساعت‌های مرخصی (روزانه + ساعتی)
-        $totalLeaveHours = ($dailyLeaves * 9) + $totalHourlyHours;
+        foreach ($monthlyLeave as $leave) {
+            if ($leave->type === 'daily') {
+                $totalDailyLeaves += $leave->start_date->diffInDays($leave->end_date) + 1;
+                $totalHours += ($leave->start_date->diffInDays($leave->end_date) + 1) * 9; // هر روز 9 ساعت
+            } else {
+                $totalHourlyLeaves++;
+                $totalHours += $leave->total_hours;
+            }
+        }
 
+        // اعمال محدودیت‌های ماهانه
         if ($this->data['type'] === 'daily') {
-            // بررسی محدودیت مرخصی روزانه (2 روز)
-            if ($dailyLeaves >= 2) {
-                $this->addError('شما در این ماه حداکثر 2 روز مرخصی روزانه می‌توانید داشته باشید.');
+            $requestDays = Carbon::parse($this->data['start_date'])->diffInDays(Carbon::parse($this->data['end_date'])) + 1;
+            
+            // بررسی محدودیت 2 روز مرخصی روزانه در ماه
+            if ($totalDailyLeaves + $requestDays > 2) {
+                $this->addError('شما نمی‌توانید بیش از 2 روز مرخصی روزانه در ماه داشته باشید.');
             }
 
-            // بررسی محدودیت ترکیبی (18 ساعت)
-            if ($totalLeaveHours + 9 > 20) {
-                $this->addError('مجموع مرخصی‌های شما در این ماه نمی‌تواند از 20 ساعت تجاوز کند.');
+            // بررسی محدودیت مجموع ساعت مرخصی (20 ساعت)
+            $requestHours = $requestDays * 9;
+            if ($totalHours + $requestHours > 20) {
+                $this->addError('مجموع مرخصی‌های شما در ماه نمی‌تواند از 20 ساعت بیشتر باشد.');
             }
         } else {
-            // بررسی محدودیت مرخصی ساعتی (20 ساعت)
-            if ($totalLeaveHours + $this->getRequestHours() > 20) {
-                $this->addError('مجموع مرخصی‌های شما در این ماه نمی‌تواند از 20 ساعت تجاوز کند.');
+            // بررسی محدودیت تعداد مرخصی‌های ساعتی (4 بار)
+            if ($totalHourlyLeaves >= 4) {
+                $this->addError('شما نمی‌توانید بیش از 4 بار مرخصی ساعتی در ماه داشته باشید.');
             }
 
-            // بررسی تعداد مرخصی‌های ساعتی (4 بار)
-            if ($hourlyLeaves->count() >= 4) {
-                $this->addError('شما در این ماه حداکثر 4 بار مرخصی ساعتی می‌توانید داشته باشید.');
+            // بررسی محدودیت مجموع ساعت مرخصی (20 ساعت)
+            if ($totalHours + $this->getRequestHours() > 20) {
+                $this->addError('مجموع مرخصی‌های شما در ماه نمی‌تواند از 20 ساعت بیشتر باشد.');
             }
         }
     }
@@ -156,5 +161,6 @@ class LeaveRequestValidator
     {
         $this->isValid = false;
         $this->errors[] = $message;
+        
     }
 } 

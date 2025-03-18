@@ -26,7 +26,7 @@
             <div class="card">
                 <div class="card-body pb-4">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post"
+                    <form id="leaveRequestForm" class="request-form forms-sample" method="post"
                         action="{{ route('admin.admin.personnel-report.store') }}">
                         @csrf
 
@@ -43,23 +43,32 @@
                         </div>
 
                         <div id="dailyFields">
-                            <x-admin.input type="date" identify="start_date" title="از تاریخ" />
-                            <x-admin.input type="date" identify="end_date" title="تا تاریخ" />
+                            <x-admin.input identify="start_date" title="از تاریخ" :is-date-picker="true" required />
+                            <x-admin.input identify="end_date" title="تا تاریخ" :is-date-picker="true" required />
                         </div>
 
                         <div id="hourlyFields" style="display: none;">
-                            <x-admin.input type="date" identify="date" title="تاریخ" />
-                            <x-admin.input type="time" identify="start_time" title="از ساعت" />
-                            <x-admin.input type="time" identify="end_time" title="تا ساعت" />
+                            <x-admin.input identify="date" title="تاریخ" :is-date-picker="true" required />
+                            <x-admin.input type="time" identify="start_time" title="از ساعت" required />
+                            <x-admin.input type="time" identify="end_time" title="تا ساعت" required />
                         </div>
 
                         <x-admin.textarea identify="description" title="توضیحات" />
 
                         <div class="mb-3">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="rules_accepted" id="rulesAccepted" required>
+                                <input class="form-check-input" type="checkbox" name="rules_accepted" id="rulesAccepted" value="1" required>
                                 <label class="form-check-label" for="rulesAccepted">
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#rulesModal">قوانین مرخصی</a> را مطالعه کردم و می‌پذیرم
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="is_emergency" id="isEmergency" value="1">
+                                <label class="form-check-label" for="isEmergency">
+                                    این درخواست مرخصی اضطراری است
                                 </label>
                             </div>
                         </div>
@@ -94,9 +103,16 @@
     </div>
 @endsection
 @section('script')
+@include('admin.partial.loader.script',['load'=>[
+    \App\Enums\Assets\ScriptLoader::Datepicker(),
+]])
     @include('admin.partial.request')
+    @include('admin.partial.script.global')
+
     <script>
         $(document).ready(function() {
+            jalaliDatepicker.startWatch();
+
             activeParentUl('{{ route('admin.admin.personnel-report.index') }}');
 
             // تغییر نوع مرخصی
@@ -111,7 +127,7 @@
             });
 
             // اعتبارسنجی فرم
-            $('.request-form').submit(function(e) {
+            $('#leaveRequestForm').submit(function(e) {
                 const type = $('input[name="type"]:checked').val();
                 
                 if (type === 'daily') {
