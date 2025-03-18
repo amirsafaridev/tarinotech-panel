@@ -14,10 +14,15 @@ return new class extends Migration
         Schema::create('personnel_reports', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('admins')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('price');
-            $table->text('description');
-            $table->date('date');
-
+            $table->enum('type', ['daily', 'hourly'])->comment('نوع مرخصی: روزانه یا ساعتی');
+            $table->date('start_date')->nullable()->comment('تاریخ شروع مرخصی روزانه');
+            $table->date('end_date')->nullable()->comment('تاریخ پایان مرخصی روزانه');
+            $table->date('date')->nullable()->comment('تاریخ مرخصی ساعتی');
+            $table->time('start_time')->nullable()->comment('ساعت شروع مرخصی ساعتی');
+            $table->time('end_time')->nullable()->comment('ساعت پایان مرخصی ساعتی');
+            $table->text('description')->nullable()->comment('توضیحات');
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending')->comment('وضعیت درخواست');
+            $table->boolean('rules_accepted')->default(false)->comment('پذیرش قوانین مرخصی');
             $table->timestamps();
             $table->softDeletes();
         });
