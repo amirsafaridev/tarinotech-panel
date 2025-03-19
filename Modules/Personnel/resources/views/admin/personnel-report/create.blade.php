@@ -4,7 +4,9 @@
 @endsection
 @section('head')
     @include('admin.partial.loader.style', [
-        'load' => [\App\Enums\Assets\StyleLoader::Toast(), \App\Enums\Assets\StyleLoader::Datepicker()],
+        'load' => [
+        \App\Enums\Assets\StyleLoader::Toast(),
+         \App\Enums\Assets\StyleLoader::Datepicker()],
     ])
 @endsection
 @section('content')
@@ -103,9 +105,9 @@
     </div>
 @endsection
 @section('script')
-@include('admin.partial.loader.script',['load'=>[
-    \App\Enums\Assets\ScriptLoader::Datepicker(),
-]])
+    @include('admin.partial.loader.script',['load'=>[
+        \App\Enums\Assets\ScriptLoader::Datepicker(),
+    ]])
     @include('admin.partial.request')
     @include('admin.partial.script.global')
 

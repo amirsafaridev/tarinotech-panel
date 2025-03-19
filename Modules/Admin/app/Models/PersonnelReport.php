@@ -18,6 +18,7 @@ class PersonnelReport extends Model
      */
     protected $fillable = [
         'user_id',
+        'diterminant_user_id',
         'type',
         'start_date',
         'end_date',
@@ -49,6 +50,10 @@ class PersonnelReport extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(Admin::class, 'user_id');
+    }
+    public function diterminantUser(): BelongsTo
+    {
+        return $this->belongsTo(Admin::class, 'diterminant_user_id');
     }
 
     /**

@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('personnel_reports', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('admins')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('diterminant_user_id')->constrained('admins')->onUpdate('cascade')->onDelete('cascade')->nullable()->default(null);
+
             $table->enum('type', ['daily', 'hourly'])->comment('نوع مرخصی: روزانه یا ساعتی');
             $table->date('start_date')->nullable()->comment('تاریخ شروع مرخصی روزانه');
             $table->date('end_date')->nullable()->comment('تاریخ پایان مرخصی روزانه');

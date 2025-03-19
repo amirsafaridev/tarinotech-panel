@@ -17,6 +17,7 @@ use Modules\Admin\app\Http\Controllers\Admin\ProfileController;
 use Modules\Admin\app\Http\Controllers\Admin\ReasonController;
 use Modules\Admin\app\Http\Controllers\Admin\DailyActivityController;
 use Modules\Admin\app\Http\Controllers\Admin\MonthlyActivityController;
+use Illuminate\Support\Facades\Route;
 
 Route::group(['guard' => 'admin'], function () {
 
@@ -67,9 +68,9 @@ Route::group(['guard' => 'admin'], function () {
     });
     Route::group(['prefix' => 'personnel-report', 'as' => 'personnel-report.'], function () {
         Route::get('/', [PersonnelReportController::class, 'index'])->name('index');
-        Route::get('/{personnelReport}', [PersonnelReportController::class, 'edit'])->name('edit');
-        Route::patch('/{personnelReport}', [PersonnelReportController::class, 'update'])->name('update');
-        Route::delete('/{personnelReport}', [PersonnelReportController::class, 'destroy'])->name('destroy');
+        Route::get('/approve/{personnelReport}', [PersonnelReportController::class, 'approve'])->name('approve');
+        Route::post('/reject/{personnelReport}', [PersonnelReportController::class, 'reject'])->name('reject');
+      
     });
     Route::group(['prefix' => 'variable-amount', 'as' => 'variable-amount.'], function () {
         Route::get('/', [VariableAmountController::class, 'index'])->name('index');

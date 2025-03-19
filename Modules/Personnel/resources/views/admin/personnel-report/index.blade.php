@@ -1,74 +1,119 @@
 @extends('admin.master')
+@section('title') {{ $title }} @endsection
+@section('head')
+    @include('admin.partial.loader.style',['load'=>[
+        \App\Enums\Assets\StyleLoader::DataTable(),
 
-@section('title', $title)
-
+    ]])
+@endsection
 @section('content')
-    <div class="card">
-        <div class="card-header">
-            <div class="d-flex justify-content-between align-items-center w-100">
-                <h5 class="mb-0">{{ $title }}</h5>
-                <div class="btn-group">
-                    <a href="{{ $prevMonthUrl }}" class="btn btn-outline-primary btn-sm me-2">&lt;&lt;</a>
-
-                    
-                    <span class="btn btn-light btn-sm">{{ $currentMonth }}</span>
-                    <a href="{{ $nextMonthUrl }}" class="btn btn-outline-primary btn-sm ms-2">&gt;&gt;</a>
-
-                </div>
-            </div>
+    <div class="page-header">
+        <h1 class="page-title">{{ $title }}</h1>
+        <div>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item active">{{ $title }}</li>
+            </ol>
         </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered text-center">
-                    <thead>
-                        <tr>
-                            <th class="bg-light">شنبه</th>
-                            <th class="bg-light">یکشنبه</th>
-                            <th class="bg-light">دوشنبه</th>
-                            <th class="bg-light">سه شنبه</th>
-                            <th class="bg-light">چهارشنبه</th>
-                            <th class="bg-light">پنج شنبه</th>
-                            <th class="bg-light">جمعه</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($weeksOfMonth as $week)
-                            <tr style="height: 150px;">
-                                @foreach($week as $day)
-                                    <td class="{{ !$day['isCurrentMonth'] ? 'text-muted bg-light' : '' }} {{ $day['isHoliday'] ? 'bg-danger' : '' }}">
-                                        <div class="d-flex flex-column h-100">
-                                            <small class="text-muted">{{ $day['date']->format('%d %B') }}</small>
-                                            <div class="flex-grow-1">
-                                                @if($day['leaves']->isNotEmpty())
-                                                    @foreach($day['leaves'] as $leave)
-                                                        <div class="mb-1">
-                                                            <small class="d-block text-truncate">
-                                                                {{ optional($leave->user)->full_name }}
-                                                                @if($leave->type === 'hourly')
-                                                                <br>
-                                                                ({{ $leave->start_time }} - {{ $leave->end_time }})                                                                @endif
-                                                            </small>
-                                                        </div>
-                                                    @endforeach
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </td>
-                                @endforeach
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title">لیست درخواست‌های مرخصی</h3>
+                    @can('ADMIN_PERSONNEL_PERSONNEL_REPORT_CREATE')
+                        <a class="btn btn-success btn-sm" href="{{ route('admin.personnel.personnel-report.create') }}">
+                            <i class="fa fa-plus"></i> ثبت مرخصی
+                        </a>
+                    @endcan
+                </div>
+                <div class="card-body">
+                    @include('admin.partial.message')
+                    <div class="table-responsive">
+                        <table id="data-table" class="table">
+                            <thead>
+                            <tr>
+                                <th>نوع مرخصی</th>
+                                <th>تاریخ ایجاد</th>
+                                <th>مرخصی برای تاریخ</th>
+                                <th>به مدت</th>
+                                <th>وضعیت</th>
+                                <th>مرخصی اضطراری</th>
+
+                                <th>تعیین کننده وضعیت</th>
+                                <th>عملیات</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                            </thead>
+                            <tbody>
+                            @if($personnelReports->isNotEmpty())
+                                @foreach($personnelReports as $personnelReport)
+                                    <tr>
+                                        <td>{{ $personnelReport->type_text }}</td>
+                                        <td>{{ verta($personnelReport->created_at)->format('Y/m/d H:i') }}</td>
+                                        <td>
+                                            @if($personnelReport->type === 'daily')
+                                                {{ verta($personnelReport->start_date)->format('Y/m/d') }} تا {{ verta($personnelReport->end_date)->format('Y/m/d') }}
+                                            @else
+                                                {{ verta($personnelReport->date)->format('Y/m/d') }} از {{ $personnelReport->start_time }} تا {{ $personnelReport->end_time }}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($personnelReport->type === 'daily')
+                                                {{ $personnelReport->start_date->diffInDays($personnelReport->end_date) + 1 }} روز
+                                            @else
+                                                {{ $personnelReport->total_hours }} ساعت
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-{{ $personnelReport->status === 'approved' ? 'success' : ($personnelReport->status === 'rejected' ? 'danger' : 'warning') }}">
+                                                {{ $personnelReport->status_text }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            {{ $personnelReport->is_emergency ? 'بله' : 'خیر' }}
+                                        </td>
+                                        <td>
+                                            @if($personnelReport->status !== 'pending')
+                                                {{ $personnelReport->diterminantUser->fullname }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($personnelReport->status === 'pending')
+                                            @can('ADMIN_PERSONNEL_PERSONNEL_REPORT_EDIT')
+                                                <a href="{{ route('admin.personnel.personnel-report.edit', $personnelReport->id) }}" 
+                                                   class="btn btn-info btn-sm" 
+                                                   title="ویرایش">
+                                                   ویرایش                                                </a>
+                                                @endcan
+                                                
+
+                                            @endif
+                                        </td>
+                                    </tr>
+                            
+                                @endforeach
+                            @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <style>
-        .table-danger {
-            background-color: #ffebee !important;
-        }
-        .text-muted {
-            opacity: 0.6;
-        }
-    </style>
-@endsection 
+   
+@endsection
+@section('script')
+    @include('admin.partial.loader.script',['load'=>[
+        \App\Enums\Assets\ScriptLoader::DataTable(),
+
+    ]])
+    
+    @include('admin.partial.request')
+    @include('admin.partial.script.global')
+    @include('admin.partial.datatable_offline')
+ 
+@endsection

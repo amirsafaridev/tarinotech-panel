@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Traits\HasJsonCommonResponseTrait;
 use Illuminate\Support\Facades\Auth;
 use Modules\Personnel\app\Http\Requests\Admin\PersonnelReport\StoreRequest;
+use Modules\Personnel\app\Http\Requests\Admin\PersonnelReport\UpdateRequest;
+use Illuminate\Support\Facades\DB;
+
 use Modules\Admin\app\Services\LeaveRequestValidator;
 use Exception;
 use Modules\Admin\app\Models\PersonnelReport;
@@ -18,8 +21,49 @@ class PersonnelReportController extends Controller
 
     const INDEX_TITLE = 'لیست درخواست‌های مرخصی';
     const CREATE_TITLE = 'ثبت درخواست مرخصی';
+    const EDIT_TITLE = 'ویرایش درخواست مرخصی';
+    public function index()
+    {
+        $title = self::INDEX_TITLE;
+        
+        // دریافت درخواست‌های مرخصی کاربر با مرتب‌سازی بر اساس تاریخ ایجاد
+        $personnelReports = PersonnelReport::where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($report) {
+                // اضافه کردن اطلاعات مورد نیاز برای نمایش
+                $report->type_text = $report->type === 'daily' ? 'روزانه' : 'ساعتی';
+                $report->status_text = match($report->status) {
+                    'pending' => 'در انتظار تایید',
+                    'approved' => 'تایید شده',
+                    'rejected' => 'رد شده',
+                    default => 'نامشخص'
+                };
+                
+                // محاسبه مدت زمان مرخصی
+                if ($report->type === 'daily') {
+                    $report->duration = $report->start_date->diffInDays($report->end_date) + 1 . ' روز';
+                } else {
+                    $report->duration = $report->total_hours . ' ساعت';
+                }
 
-    public function index(Request $request)
+                // تبدیل تاریخ‌ها به فرمت شمسی
+                $report->created_at_formatted = verta($report->created_at)->format('Y/m/d H:i');
+                
+                if ($report->type === 'daily') {
+                    $report->leave_date = verta($report->start_date)->format('Y/m/d') . ' تا ' . 
+                                        verta($report->end_date)->format('Y/m/d');
+                } else {
+                    $report->leave_date = verta($report->date)->format('Y/m/d') . ' از ' . 
+                                        $report->start_time . ' تا ' . $report->end_time;
+                }
+
+                return $report;
+            });
+
+        return view('personnel::admin.personnel-report.index', compact('title', 'personnelReports'));
+    }
+    public function leaveCalender(Request $request)
     {
         // تنظیم تاریخ جاری با در نظر گرفتن ماه قبل/بعد
         $currentDate = verta();
@@ -65,11 +109,10 @@ class PersonnelReportController extends Controller
             ->where('status', 'approved')
             ->where(function($query) use ($startDate, $endDate) {
                 $query->whereBetween('start_date', [$startDate, $endDate])
-                    ->orWhereBetween('end_date', [$startDate, $endDate]);
+                    ->orWhereBetween('end_date', [$startDate, $endDate])
+                    ->orWhereBetween('date', [$startDate, $endDate]);
             })
             ->get();
-
-       
         // گروه‌بندی مرخصی‌ها بر اساس تاریخ
         $groupedLeaves = collect();
         foreach ($approvedLeaves as $leave) {
@@ -89,7 +132,6 @@ class PersonnelReportController extends Controller
         }
 
         // تنظیم روزهای ماه
-        $weekDays = [];
         $currentDay = clone $startOfWeek;
         $weeksOfMonth = [];
         $currentWeek = [];
@@ -117,12 +159,12 @@ class PersonnelReportController extends Controller
             $weeksOfMonth[] = $currentWeek;
         }
 
-        return view('personnel::admin.personnel-report.index', [
+        return view('personnel::admin.personnel-report.leave-calender', [
             'title' => 'تقویم مرخصی‌ها',
             'weeksOfMonth' => $weeksOfMonth,
             'currentMonth' => $currentDate->format('%B %Y'),
-            'prevMonthUrl' => route('admin.personnel.personnel-report.index', ['month' => 'prev']),
-            'nextMonthUrl' => route('admin.personnel.personnel-report.index', ['month' => 'next']),
+            'prevMonthUrl' => route('admin.personnel.personnel-report.leave-calender', ['month' => 'prev']),
+            'nextMonthUrl' => route('admin.personnel.personnel-report.leave-calender', ['month' => 'next']),
         ]);
     }
 
@@ -196,5 +238,100 @@ class PersonnelReportController extends Controller
         }
     }
 
-   
+    public function edit(PersonnelReport $personnelReport)
+    {
+        if ($personnelReport->user_id !== Auth::id()) {
+            return $this->errorResponse('شما دسترسی به این درخواست را ندارید');
+        }
+
+        if ($personnelReport->status !== 'pending') {
+            return $this->errorResponse('این درخواست قابل ویرایش نیست');
+        }
+
+        $title = self::EDIT_TITLE;
+        return view('personnel::admin.personnel-report.edit', compact('title', 'personnelReport'));
+    }
+
+    public function update(UpdateRequest $request, PersonnelReport $personnelReport)
+    {
+        try {
+            if ($personnelReport->user_id !== Auth::id()) {
+                return response()->json([
+                    'result' => 'warning',
+                    'message' => 'شما دسترسی به این درخواست را ندارید'
+                ]);
+            }
+
+            if ($personnelReport->status !== 'pending') {
+                return response()->json([
+                    'result' => 'warning',
+                    'message' => 'این درخواست قابل ویرایش نیست'
+                ]);
+            }
+
+            DB::beginTransaction();
+            
+            // اعتبارسنجی درخواست
+            $validator = new LeaveRequestValidator(Auth::user(), $request->validated());
+            $validationResult = $validator->validate();
+
+            if (!$validationResult['is_valid']) {
+                      return response()->json([
+                    'result' => 'warning',
+                    'message' => $validationResult['errors'][0]
+                ]);
+            }
+
+            $inputs = $request->validated();
+
+            // تبدیل تاریخ‌ها به فرمت مناسب
+            if ($inputs['type'] === 'daily') {
+                $inputs['start_date'] = verta()->parse($inputs['start_date'])->toCarbon()->startOfDay();
+                $inputs['end_date'] = verta()->parse($inputs['end_date'])->toCarbon()->endOfDay();
+
+                // تنظیم فیلدهای مرخصی ساعتی به null
+                $inputs['date'] = null;
+                $inputs['start_time'] = null;
+                $inputs['end_time'] = null;
+            } else {
+                $inputs['date'] = verta()->parse($inputs['date'])->toCarbon()->startOfDay();
+
+                // تنظیم فیلدهای مرخصی روزانه به null
+                $inputs['start_date'] = null;
+                $inputs['end_date'] = null;
+            }
+
+            $personnelReport->update($inputs);
+            DB::commit();
+
+            return response()->json([
+                'result' => 'success',
+                'back' => route('admin.personnel.personnel-report.index'),
+                'message' =>'درخواست مرخصی با موفقیت بروزرسانی شد',
+            ]);
+
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $this->exceptionResponse($exception);
+        }
+    }
+
+    public function destroy(PersonnelReport $personnelReport)
+    {
+        try {
+            if ($personnelReport->user_id !== Auth::id()) {
+                return $this->errorResponse('شما دسترسی به این درخواست را ندارید');
+            }
+
+            if ($personnelReport->status !== 'pending') {
+                return $this->errorResponse('این درخواست قابل حذف نیست');
+            }
+
+            $personnelReport->delete();
+            return $this->successDestroyBack(route('admin.personnel.personnel-report.index'));
+
+        } catch (Exception $exception) {
+            return $this->exceptionResponse($exception);
+        }
+    }
 }

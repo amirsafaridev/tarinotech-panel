@@ -88,7 +88,6 @@ class DailyActivityController extends Controller
             }
 
         } catch (\Exception $e) {
-            \Log::error('خطا در ثبت فعالیت: ' . $e->getMessage());
             return response()->json([
                 'status' => 'error',
                 'message' => 'خطا در ثبت فعالیت. لطفاً دوباره تلاش کنید.'

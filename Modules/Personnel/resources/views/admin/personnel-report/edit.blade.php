@@ -4,7 +4,8 @@
 @endsection
 @section('head')
     @include('admin.partial.loader.style', [
-        'load' => [\App\Enums\Assets\StyleLoader::Toast(), \App\Enums\Assets\StyleLoader::Datepicker()],
+        'load' => [\App\Enums\Assets\StyleLoader::Toast(),    \App\Enums\Assets\StyleLoader::Alert(),
+        \App\Enums\Assets\StyleLoader::Datepicker()],
     ])
 @endsection
 @section('content')
@@ -14,7 +15,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a
                         href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.admin.personnel-report.index') }}">گزارش تردد و مرخصی</a>
+                <li class="breadcrumb-item"><a href="{{ route('admin.personnel.personnel-report.index') }}">گزارش تردد و مرخصی</a>
                 </li>
                 <li class="breadcrumb-item active">ویرایش درخواست مرخصی</li>
             </ol>
@@ -27,7 +28,7 @@
                 <div class="card-body pb-4">
                     @include('admin.partial.message')
                     <form id="leaveRequestForm" class="request-form forms-sample" method="post"
-                        action="{{ route('admin.admin.personnel-report.update', $personnelReport->id) }}">
+                        action="{{ route('admin.personnel.personnel-report.update', $personnelReport->id) }}">
                         @csrf
                         @method('PATCH')
 
@@ -83,6 +84,12 @@
                         </div>
 
                         <x-admin.button title="ویرایش درخواست" />
+                        @can('ADMIN_PERSONNEL_PERSONNEL_REPORT_DESTROY')
+
+                        <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger"
+                        on-click="confirmDelete()" />
+                        @endcan
+
                     </form>
                 </div>
             </div>
@@ -110,11 +117,25 @@
             </div>
         </div>
     </div>
+    <form id="deleteItem" action="{{ route('admin.personnel.personnel-report.destroy', $personnelReport->id) }}" method="post"
+        class="form-inline">
+        @csrf
+        @method('DELETE')
+    </form>
 @endsection
 @section('script')
+@include('admin.partial.loader.script',['load'=>[
+    \App\Enums\Assets\ScriptLoader::Datepicker(),
+    \App\Enums\Assets\ScriptLoader::Alert(),
+
+]])
     @include('admin.partial.request')
+    @include('admin.partial.script.global')
+
     <script>
         $(document).ready(function() {
+            jalaliDatepicker.startWatch();
+
             activeParentUl('{{ route('admin.admin.personnel-report.index') }}');
 
             // تغییر نوع مرخصی

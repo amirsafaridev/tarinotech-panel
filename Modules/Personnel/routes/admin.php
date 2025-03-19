@@ -30,8 +30,13 @@ Route::group(['guard' => 'admin'], function () {
         });
         Route::group(['prefix' => 'personnel-report', 'as' => 'personnel-report.'], function () {
             Route::get('/', [PersonnelReportController::class, 'index'])->name('index');
+            Route::get('/leave-calender', [PersonnelReportController::class, 'leaveCalender'])->name('leave-calender');
+
             Route::get('/create', [PersonnelReportController::class, 'create'])->name('create');
             Route::post('/', [PersonnelReportController::class, 'store'])->name('store');
+            Route::get('/{personnelReport}', [PersonnelReportController::class, 'edit'])->name('edit');
+            Route::patch('/{personnelReport}', [PersonnelReportController::class, 'update'])->name('update');
+            Route::delete('/{personnelReport}', [PersonnelReportController::class, 'destroy'])->name('destroy');
           
         });
     });

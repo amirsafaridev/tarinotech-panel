@@ -31,7 +31,7 @@
                         <span class="side-menu__label">{{ trans('panel.dashboard.title') }}</span>
                     </a>
                 </li>
-                @canany(['ADMIN_PERSONNEL_PAYSLIP_INDEX','ADMIN_PERSONNEL_PERSONNEL_ASSISTANCE_INDEX','ADMIN_PERSONNEL_DAILY_ACTIVITY_INDEX','ADMIN_PERSONNEL_PERSONNEL_REPORT_INDEX'])
+                @canany(['ADMIN_PERSONNEL_PAYSLIP_INDEX','ADMIN_PERSONNEL_PERSONNEL_ASSISTANCE_INDEX','ADMIN_PERSONNEL_DAILY_ACTIVITY_INDEX','ADMIN_PERSONNEL_PERSONNEL_REPORT_INDEX','ADMIN_PERSONNEL_PERSONNEL_REPORT_LEAVE_CALENDER'])
                 <li class="slide can-expand">
                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navRole">
                         <i class="side-menu__icon fal fa-user"></i>
@@ -52,9 +52,11 @@
                         <li><a href="{{ route('admin.personnel.daily-activity.index') }}" class="slide-item">فعالیت روزانه</a>
                         </li>
                     @endcan
+                    @can('ADMIN_PERSONNEL_PERSONNEL_REPORT_LEAVE_CALENDER')
+                    <li><a href="{{ route('admin.personnel.personnel-report.leave-calender') }}" class="slide-item">نمای مرخصی شرکت</a></li>
+                    @endcan
                     @can('ADMIN_PERSONNEL_PERSONNEL_REPORT_INDEX')
-                    <li><a href="{{ route('admin.personnel.personnel-report.index') }}" class="slide-item">گزارش تردد و
-                            مرخصی ها</a></li>
+                    <li><a href="{{ route('admin.personnel.personnel-report.index') }}" class="slide-item">مرخصی</a></li>
                 @endcan
                     </ul>
                 </li>
@@ -140,8 +142,7 @@
                                         ها</a></li>
                             @endcan
                             @can('ADMIN_ADMIN_PERSONNEL_REPORT_INDEX')
-                                <li><a href="{{ route('admin.admin.personnel-report.index') }}" class="slide-item">گزارش تردد و
-                                        مرخصی ها</a></li>
+                                <li><a href="{{ route('admin.admin.personnel-report.index') }}" class="slide-item">درخواست مرخصی</a></li>
                             @endcan
                         </ul>
                     </li>
