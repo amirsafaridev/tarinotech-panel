@@ -65,117 +65,115 @@
   <body>
     <div style="display: flex;justify-content: center;">
     <div class="container">
-      <h2>📑 فیش حقوقی پرسنل - مهر ماه</h2>
+      <h2>📑 فیش حقوقی پرسنل - {{ verta($payslip->created_at)->format('F Y') }}</h2>
       <table>
         <tr>
           <th>جزئیات عملکرد</th>
           <th>مقادیر</th>
-
           <th>مزایا و دریافتی ها</th>
           <th>مقادیر</th>
-
           <th>کسورات و تعهدات مالی</th>
           <th>مقادیر</th>
         </tr>
         <tr class="blue-bg">
           <td>میزان قرارداد</td>
-          <td>15</td>
-          <td>تارگت فردی</td>
-          <td>128,550,568</td>
+          <td>{{ number_format($contractAmount) }}</td>
+          <td>میزان حقوق پایه</td>
+          <td>{{ number_format($fixedAmount->basic_rights) }}</td>
           <td>مالیات حقوق</td>
           <td>0</td>
         </tr>
         <tr>
           <td>واریزی طراحی سایت</td>
-          <td>128,550,568</td>
-          <td>تارگت تیمی</td>
+          <td>{{ number_format($sitePayment) }}</td>
+          <td>اضافه کار</td>
           <td>0</td>
           <td>بیمه سهم کارمند</td>
-          <td>{{  number_format($fixedAmount->employer_insurance??0)}}</td>
+          <td>{{ number_format($fixedAmount->employer_insurance) }}</td>
         </tr>
         <tr class="blue-bg">
           <td>واریزی سئو</td>
-          <td>0</td>
-          <td>پورسانت</td>
-          <td>0</td>
+          <td>{{ number_format($seoPayment) }}</td>
+          <td>پاداش عملکرد ویژه</td>
+          <td>{{ number_format($variableAmount->performance_amount) }}</td>
           <td>تنخواه</td>
-          <td>{{ number_format($personnelSalay->price ?? 0) }}</td>
+          <td>{{ number_format($personnelSalary->price) }}</td>
         </tr>
         <tr>
           <td>تعداد پروژه های پیشرفته</td>
           <td>0</td>
-          <td>میزان حقوق پایه</td>
-          <td>{{ number_format($fixedAmount->basic_rights?? 0) }}</td>
+          <td>پاداش بهره وری مضاعف</td>
+          <td>{{ number_format($variableAmount->performance_amount ??0) }}</td>
           <td>مساعده اخذ شده</td>
-          <td>{{ number_format($personnelAssistance->price ?? 0) }}</td>
+          <td>{{ number_format($personnelAssistance->price) }}</td>
         </tr>
         <tr class="blue-bg">
           <td>تعداد پروژه های اقتصادی</td>
           <td>0</td>
-          <td>اضافه کار</td>
-          <td>0</td>
+          <td>حق مسکن</td>
+          <td>{{ number_format($fixedAmount->right_to_housing) }}</td>
           <td>سایر کسورات</td>
-          <td>11,566,000</td>
+          <td>{{ number_format($personnelOtherDeduction->price ?? 0) }}</td>
         </tr>
         <tr>
           <td>تعداد پروژه های سئو(جاری)</td>
           <td>0</td>
-          <td>پاداش عملکرد ویژه</td>
-          <td>{{ number_format($variableAmount->performance_amount ??0) }}</td>
+          <td>حق تاهل</td>
+          <td>{{ $payslip->user->is_married ? number_format($fixedAmount->right_to_marry) : '0' }}</td>
           <th>جمع بندی مالی</th>
           <th>مقادیر</th>
         </tr>
         <tr class="blue-bg">
           <td>واحدهای انجام شده(اصلی)</td>
-          <td>0</td>
-          <td>پاداش بهره وری مضاعف</td>
-          <td>{{ number_format($variableAmount->reward_basis ?? 0)}}</td>
+          <td>{{0 }}</td>
+          <td>حق اولاد</td>
+          <td>{{ number_format($childrenRights??0) }}</td>
           <td>مجموع دریافتی ها</td>
-          <td>0</td>
+          <td>{{ number_format($totalBenefits??0) }}</td>
         </tr>
         <tr>
           <td>واحدهای انجام شده(اکسترا)</td>
-          <td>0</td>
-          <td>حق مسکن</td>
-          <td>{{number_format($fixedAmount->right_to_housing?? 0)}}</td>
+          <td>{{ number_format(0) }}</td>
+          <td>حق خوار و بار</td>
+          <td>{{ number_format($fixedAmount->right_to_eat_and_drink) }}</td>
           <td>مجموع کسورات</td>
-          <td>0</td>
+          <td>{{ number_format($totalDeductions) }}</td>
         </tr>
         <tr class="blue-bg">
           <td>واحدهای تشویقی</td>
           <td>0</td>
-          <td>حق تاهل</td>
-          <td>{{ number_format($fixedAmount->right_to_marry ?? 0)}}</td>
+          <td>بیمه سهم کارفرما</td>
+          <td>{{ number_format($fixedAmount->employer_insurance) }}</td>
           <td class="font-weight-bold">حقوق قابل پرداخت نهایی</td>
-          <td class="font-weight-bold">0</td>
+          <td class="font-weight-bold">{{ number_format($finalSalary) }}</td>
         </tr>
         <tr>
           <td>محموع واحدهای انجام شده</td>
-          <td>0</td>
-          <td>حق اولاد</td>
-          <td>{{ number_format($fixedAmount->childrens_right ?? 0 )}}</td>
+          <td>{{0 }}</td>
+          <td></td>
+          <td></td>
           <td></td>
           <td></td>
         </tr>
-        <tr class="blue-bg">
+        <tr class="blue-bg">($baseU
           <th>وضعیت حضور و غباب</th>
           <th>مقادیر</th>
-          <td>حق خوار و بار</td>
-          <td>{{number_format( $fixedAmount->right_to_eat_and_drink?? 0)}}</td>
+          <td></td>
+          <td></td>
           <td></td>
           <td></td>
         </tr>
         <tr>
           <td>مرخصی مجاز</td>
-          <td>0</td>
-          <td>بیمه سهم کارفرما</td>
-          <td>{{ number_format($fixedAmount->employer_insurance??0) }}</td>
+          <td>{{ number_format($allowedLeaveHours) }} ساعت</td>
+          <td></td>
+          <td></td>
           <td></td>
           <td></td>
         </tr>
         <tr class="blue-bg">
           <td>مرخصی بیش از حدمجاز</td>
-          <td>0</td>
+          <td>{{ number_format($excessLeaveHours) }} ساعت</td>
           <td></td>
           <td></td>
           <td></td>
@@ -183,7 +181,7 @@
         </tr>
         <tr>
           <td>مرخصی استفاده شده</td>
-          <td>0</td>
+          <td>{{ number_format($usedLeaveHours) }} ساعت</td>
           <td></td>
           <td></td>
           <td></td>
@@ -191,7 +189,7 @@
         </tr>
         <tr class="blue-bg">
           <td>مرخصی ذخیره شده</td>
-          <td>0</td>
+          <td>{{ number_format($savedLeaveDays) }} روز و {{ number_format($savedLeaveHours) }} ساعت</td>
           <td></td>
           <td></td>
           <td></td>
@@ -199,7 +197,7 @@
         </tr>
         <tr>
           <td>غیبت</td>
-          <td>0</td>
+          <td>{{ number_format($absenceHours) }} ساعت</td>
           <td></td>
           <td></td>
           <td></td>
@@ -207,7 +205,7 @@
         </tr>
         <tr class="blue-bg">
           <td>تاخیر بیش از حدمجاز</td>
-          <td>0</td>
+          <td>{{ number_format($lateHours) }} ساعت</td>
           <td></td>
           <td></td>
           <td></td>
@@ -215,7 +213,7 @@
         </tr>
         <tr>
           <td>کارکرد ساعتی / روزانه</td>
-          <td>0</td>
+          <td>{{ number_format($workHours) }} ساعت</td>
           <td></td>
           <td></td>
           <td></td>

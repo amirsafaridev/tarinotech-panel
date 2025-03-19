@@ -57,7 +57,7 @@
                                             <td>{{ $deduction->user->fullname }}
                                             </td>
                                             <td>{{ number_format($deduction->price) }}</td>
-                                            <td>{{ $bonus->reason->title }}</td>
+                                            <td>{{ $deduction->reason->title }}</td>
 
                                             <td>{{ $deduction->description }}</td>
                                             <td>{{ $deduction->date }}</td>

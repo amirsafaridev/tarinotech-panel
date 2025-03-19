@@ -29,7 +29,15 @@
                     <form class="request-form forms-sample" method="post"
                         action="{{ route('admin.admin.reason.store') }}">
                         @csrf
-                        <x-admin.input identify="price" title="مبلغ" />
+                        <div class="form-group">
+                            <label for="status">نوع</label>
+                            <select name="type" id="type" class="form-control form-control-sm">
+                                <option value="0" @if (old('type') == 0) selected @endif>پاداش
+                                </option>
+                                <option value="1" @if (old('type') == 1) selected @endif>کسورات
+                                </option>
+                            </select>
+                        </div>
                         <x-admin.textarea identify="title" title="علت" />
 
                         <x-admin.button title="{{ trans('panel.create') }}" />

@@ -5,7 +5,7 @@ namespace Modules\Personnel\app\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Modules\Personnel\app\Models\DailyActivity;
 use Illuminate\Http\Request;
-
+use Modules\Admin\app\Models\Admin;
 
 class DailyActivityController extends Controller
 {
@@ -133,10 +133,16 @@ class DailyActivityController extends Controller
         return preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i', $userAgent);
     }
 
-    private function isPhysicalDay($user)
+    private function isPhysicalDay(Admin $user)
     {
         // این متد باید بر اساس تنظیمات سیستم و روزهای حضوری کاربر پیاده‌سازی شود
         // فعلاً به صورت مثال همه روزها رو حضوری در نظر می‌گیریم
-        return false;
+        if($user->work_location == 2)
+        {
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 } 

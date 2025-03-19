@@ -24,8 +24,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title">علت</h3>
                     @can('ADMIN_ADMIN_REASON_CREATE')
-                        <a class="btn btn-success btn-sm"
-                            href="{{ route('admin.admin.reason.create') }}">ایجاد
+                        <a class="btn btn-success btn-sm" href="{{ route('admin.admin.reason.create') }}">ایجاد
                             علت</a>
                     @endcan
 
@@ -37,6 +36,7 @@
                             <thead>
                                 <tr>
                                     <th>شناسه</th>
+                                    <th>نوع</th>
 
                                     <th>علت</th>
                                     <th>تاریخ</th>
@@ -50,12 +50,14 @@
                                         <tr>
 
                                             <td>{{ $reason->id }}</td>
+                                            <td>{{ $reason->type === 0 ? 'پاداش' : 'کسورات' }}</td>
+
                                             <td>{{ $reason->title }}</td>
                                             <td>{{ $reason->created_at->toJalali()->format('d F Y') }}</td>
 
                                             <td>
                                                 @can('ADMIN_ADMIN_REASON_EDIT')
-                                                    <a href="{{ route('admin.admin.reason.edit',  $reason->id) }}"
+                                                    <a href="{{ route('admin.admin.reason.edit', $reason->id) }}"
                                                         class="btn btn-warning btn-sm">ویرایش</a>
                                                 @endcan
                                             </td>
