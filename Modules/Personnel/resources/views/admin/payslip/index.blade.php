@@ -3,7 +3,9 @@
     {{ $title }}
 @endsection
 @section('head')
-    @include('admin.partial.loader.style', ['load' => [\App\Enums\Assets\StyleLoader::DataTable()]])
+    @include('admin.partial.loader.style', [
+        'load' => [\App\Enums\Assets\StyleLoader::DataTable(), \App\Enums\Assets\StyleLoader::Toast()],
+    ])
 @endsection
 @section('content')
 
@@ -54,17 +56,11 @@
                                             <td>{{ $payslip->created_at->toJalali()->format('d') }}</td>
                                             <td>
                                                 @if ($payslip->status === 0)
-                                                    <span class="badge bg-warning">
-                                                        در انتظار تایید
-                                                    </span>
+                                                    <span class="badge bg-warning">در انتظار تایید</span>
                                                 @elseif ($payslip->status === 1)
-                                                    <span class="badge bg-success">
-                                                        تایید شده
-                                                    </span>
+                                                    <span class="badge bg-success">تایید شده</span>
                                                 @else
-                                                    <span class="badge bg-danger">
-                                                        رد شده
-                                                    </span>
+                                                    <span class="badge bg-danger">رد شده</span>
                                                 @endif
                                             </td>
                                             </td>
@@ -88,8 +84,13 @@
                                                             @endcan
 
                                                             @can('ADMIN_PERSONNEL_PAYSLIP_CANCELED')
-                                                                <a class="dropdown-item"
-                                                                    href="{{ route('admin.personnel.payslip.canceled', $payslip->id) }}">{{ __('panel.action.cancel') }}</a>
+                                                                <button type="button"
+                                                                    class="dropdown-item"
+                                                                    data-payslip-id="{{ $payslip->id }}"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#rejectModal-{{ $payslip->id }}">
+                                                                    {{ __('panel.action.cancel') }}
+                                                                </button>
                                                             @endcan
                                                         @endif
 
@@ -98,6 +99,31 @@
 
                                             </td>
                                         </tr>
+                                        <!-- Reject Modal -->
+                                        <div class="modal fade" id="rejectModal-{{ $payslip->id }}" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">رد درخواست</h5>
+                                                        <button type="button" class="btn-close"
+                                                            data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <form class="request-form forms-sample" method="post"
+                                                        action="{{ route('admin.personnel.payslip.canceled', $payslip->id) }}">
+                                                        @csrf
+                                                        <div class="modal-body">
+                                                            <x-admin.textarea title="دلیل رد درخواست"
+                                                                identify="reject_reason" rows="3" />
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">انصراف</button>
+                                                            <x-admin.button title="ثبت" />
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endforeach
                                 @endif
                             </tbody>
@@ -109,6 +135,7 @@
     </div>
 @endsection
 @section('script')
+    @include('admin.partial.request')
     @include('admin.partial.loader.script', ['load' => [\App\Enums\Assets\ScriptLoader::DataTable()]])
     @include('admin.partial.datatable_offline')
 @endsection

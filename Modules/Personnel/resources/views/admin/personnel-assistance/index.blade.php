@@ -3,7 +3,10 @@
     {{ $title }}
 @endsection
 @section('head')
-    @include('admin.partial.loader.style', ['load' => [\App\Enums\Assets\StyleLoader::DataTable()]])
+    @include('admin.partial.loader.style', ['load' => [
+    \App\Enums\Assets\StyleLoader::DataTable(),
+     \App\Enums\Assets\StyleLoader::Toast()
+    ]])
 @endsection
 @section('content')
 
@@ -87,17 +90,47 @@
                                                                 <a class="dropdown-item"
                                                                     href="{{ route('admin.personnel.personnel-assistance.approved', $personnelAssistance->id) }}">{{ __('panel.action.approve') }}</a>
                                                             @endcan
-
-                                                            @can('ADMIN_PERSONNEL_PERSONNEL_ASSISTANCE_CANCELED')
-                                                                <a class="dropdown-item"
-                                                                    href="{{ route('admin.personnel.personnel-assistance.canceled', $personnelAssistance->id) }}">{{ __('panel.action.cancel') }}</a>
-                                                            @endcan
+                                                            @can('ADMIN_PERSONNEL_PAYSLIP_CANCELED')
+                                                            <button type="button"
+                                                                class="dropdown-item"
+                                                                data-payslip-id="{{ $personnelAssistance->id }}"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#rejectModal-{{ $personnelAssistance->id }}">
+                                                                {{ __('panel.action.cancel') }}
+                                                            </button>
+                                                        @endcan
+                                                          
                                                         @endif
 
                                                     </div>
                                                 </div>
                                             </td>
                                         </tr>
+                                            <!-- Reject Modal -->
+                                            <div class="modal fade" id="rejectModal-{{ $personnelAssistance->id }}" tabindex="-1">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">رد درخواست</h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal"></button>
+                                                        </div>
+                                                        <form class="request-form forms-sample" method="post"
+                                                            action="{{ route('admin.personnel.personnel-assistance.canceled', $personnelAssistance->id) }}">
+                                                            @csrf
+                                                            <div class="modal-body">
+                                                                <x-admin.textarea title="دلیل رد درخواست"
+                                                                    identify="reject_reason" rows="3" />
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">انصراف</button>
+                                                                <x-admin.button title="ثبت" />
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                     @endforeach
                                 @endif
                             </tbody>
@@ -109,6 +142,8 @@
     </div>
 @endsection
 @section('script')
+@include('admin.partial.request')
+
     @include('admin.partial.loader.script', ['load' => [\App\Enums\Assets\ScriptLoader::DataTable()]])
     @include('admin.partial.datatable_offline')
 @endsection

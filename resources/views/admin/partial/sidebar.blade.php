@@ -104,6 +104,10 @@
                                 <li><a href="{{ route('admin.report.goal-group') }}" class="slide-item">گزارش هدف های
                                         گروهی</a></li>
                             @endcan
+                            @can('ADMIN_ADMIN_PAYSLIP_TEXT_MANAGER_INDEX')
+                            <li><a href="{{ route('admin.admin.payslip-text-manager.index') }}" class="slide-item">مدیریت متن فیش حقوقی</a>
+                            </li>
+                        @endcan
                             @can('ADMIN_ADMIN_MONTHLY_ACTIVITY_INDEX')
                             <li><a href="{{ route('admin.admin.monthly-activity.index') }}" class="slide-item">فعالیت ماهانه پرسنل</a>
                             </li>

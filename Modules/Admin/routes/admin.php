@@ -9,6 +9,8 @@ use Modules\Admin\app\Http\Controllers\Admin\JobTitleController;
 use Modules\Admin\app\Http\Controllers\Admin\PasswordController;
 use Modules\Admin\app\Http\Controllers\Admin\PersonnelAssistanceController;
 use Modules\Admin\app\Http\Controllers\Admin\PersonnelSalaryController;
+use Modules\Admin\app\Http\Controllers\Admin\PayslipTextManagerController;
+
 use Modules\Admin\app\Http\Controllers\Admin\PersonnelReportController;
 use Modules\Admin\app\Http\Controllers\Admin\VariableAmountController;
 use Modules\Admin\app\Http\Controllers\Admin\FixedAmountController;
@@ -65,6 +67,14 @@ Route::group(['guard' => 'admin'], function () {
         Route::post('/', [PersonnelSalaryController::class, 'store'])->name('store');
         Route::patch('/{personnelSalary}', [PersonnelSalaryController::class, 'update'])->name('update');
         Route::delete('/{personnelSalary}', [PersonnelSalaryController::class, 'destroy'])->name('destroy');
+    });
+    Route::group(['prefix' => 'payslip-text-manager', 'as' => 'payslip-text-manager.'], function () {
+        Route::get('/', [PayslipTextManagerController::class, 'index'])->name('index');
+        Route::get('/create', [PayslipTextManagerController::class, 'create'])->name('create');
+        Route::get('/{payslipTextManager}', [PayslipTextManagerController::class, 'edit'])->name('edit');
+        Route::post('/', [PayslipTextManagerController::class, 'store'])->name('store');
+        Route::patch('/{payslipTextManager}', [PayslipTextManagerController::class, 'update'])->name('update');
+        Route::delete('/{payslipTextManager}', [PayslipTextManagerController::class, 'destroy'])->name('destroy');
     });
     Route::group(['prefix' => 'personnel-report', 'as' => 'personnel-report.'], function () {
         Route::get('/', [PersonnelReportController::class, 'index'])->name('index');

@@ -4,19 +4,16 @@ namespace Modules\Admin\app\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\Admin\Database\factories\PayslipTextManagerFactory;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
+ 
 class PayslipTextManager extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [];
+    protected $fillable = ['start_text', 'end_text'];
     
-    protected static function newFactory(): PayslipTextManagerFactory
-    {
-        //return PayslipTextManagerFactory::new();
-    }
+    
 }

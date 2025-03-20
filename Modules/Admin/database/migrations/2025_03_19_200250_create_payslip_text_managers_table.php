@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('payslip_text_managers', function (Blueprint $table) {
             $table->id();
-            
+            $table->text('start_text');
+            $table->text('end_text');
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

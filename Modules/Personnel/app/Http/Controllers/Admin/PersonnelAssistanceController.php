@@ -10,6 +10,7 @@ use Modules\Personnel\app\Http\Requests\Admin\PersonnelAssistance\StoreRequest;
 use Modules\Personnel\app\Http\Requests\Admin\PersonnelAssistance\UpdateRequest;
 use Modules\Admin\app\Models\PersonnelAssistance;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 
 class PersonnelAssistanceController extends Controller
@@ -116,10 +117,19 @@ class PersonnelAssistanceController extends Controller
         $personnelAssistance->save();
         return $this->successBack(route('admin.personnel.personnel-assistance.index'),'مساعده مورد نظر تایید شد');
     }
-    public function canceled(PersonnelAssistance $personnelAssistance)
+    public function canceled(Request $request, PersonnelAssistance $personnelAssistance)
     {
-        $personnelAssistance->status = 2;
-        $personnelAssistance->save();
-        return $this->successBack(route('admin.personnel.personnel-assistance.index'),'مساعده مورد نظر رد شد');
+        $request->validate([
+            'reject_reason' => 'required'
+        ]);
+        $personnelAssistance->update([
+            'reject_reason' => $request->reject_reason,
+            'status' => 2
+        ]);
+        return response()->json([
+            'result' => 'success',
+            'back' => route('admin.personnel.personnel-assistance.index'),
+            'message' => 'مساعده مورد نظر رد شد',
+        ]);
     }
 }

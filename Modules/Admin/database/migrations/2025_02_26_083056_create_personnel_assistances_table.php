@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('price');
             $table->text('description');
             $table->tinyInteger('status')->default(0);
+            $table->text('reject_reason')->nullable();
 
             $table->date('date');
 

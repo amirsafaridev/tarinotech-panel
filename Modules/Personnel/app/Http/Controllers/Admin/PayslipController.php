@@ -15,6 +15,7 @@ use Modules\Admin\app\Models\PersonnelAssistance;
 
 use Modules\Admin\app\Models\PersonnelReport;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 
 class PayslipController extends Controller
@@ -244,10 +245,25 @@ class PayslipController extends Controller
         return $this->successBack(route('admin.personnel.payslip.index'),'فیش حقوقی مورد نظر تایید شد');
     }
 
-    public function canceled(Payslip $payslip)
+    public function canceled(Request $request, Payslip $payslip)
     {
-        $payslip->status = 2;
-        $payslip->save();
-        return $this->successBack(route('admin.personnel.payslip.index'),'فیش حقوقی مورد نظر رد شد');
+      
+
+        $request->validate([
+            'reject_reason' => 'required'
+        ]);
+
+        $payslip->update([
+            'reject_reason' => $request->reject_reason,
+            'status' => 2
+           
+        ]);
+        
+
+        return response()->json([
+            'result' => 'success',
+            'back' => route('admin.personnel.payslip.index'),
+            'message' => trans('panel.success_update'),
+        ]);
     }
 }
