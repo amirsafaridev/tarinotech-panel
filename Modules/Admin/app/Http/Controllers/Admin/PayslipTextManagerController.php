@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Admin\app\Http\Requests\Admin\PayslipTextManager\StoreRequest;
 use Modules\Admin\app\Http\Requests\Admin\PayslipTextManager\UpdateRequest;
 use Modules\Admin\app\Models\PayslipTextManager;
+use Carbon\Carbon;
 
 class PayslipTextManagerController extends Controller
 {
@@ -44,11 +45,21 @@ class PayslipTextManagerController extends Controller
      */
     public function store(StoreRequest $request)
     {
-       
+        $monthName = Carbon::now()->translatedFormat('F');
+        $replacements = [
+            '{{month}}'    => Carbon::now()->translatedFormat('F'),
+            '{{fullname}}' => auth()->user()->fullname, 
+        ];
         try {
             DB::beginTransaction();
             $inputs = $request->all();
-            PayslipTextManager::query()->create($inputs);
+            $startText = str_replace(array_keys($replacements), array_values($replacements), $inputs['start_text']);
+            $endText = str_replace(array_keys($replacements), array_values($replacements), $inputs['end_text']);
+
+            PayslipTextManager::query()->create([
+                'start_text' => $startText,
+                'end_text' => $endText
+            ]);
             DB::commit();
 
             return response()->json([
@@ -87,9 +98,20 @@ class PayslipTextManagerController extends Controller
      */
     public function update(UpdateRequest $request, PayslipTextManager $payslipTextManager)
     {
+        $monthName = Carbon::now()->translatedFormat('F');
+        $replacements = [
+            '{{month}}'    => Carbon::now()->translatedFormat('F'),
+            '{{fullname}}' => auth()->user()->fullname, 
+        ];
         try {
             DB::beginTransaction();
-            $payslipTextManager->update($request->all());
+            $inputs = $request->all();
+            $startText = str_replace(array_keys($replacements), array_values($replacements), $inputs['start_text']);
+            $endText = str_replace(array_keys($replacements), array_values($replacements), $inputs['end_text']);
+            $payslipTextManager->update([
+                'start_text' => $startText,
+                'end_text' => $endText
+            ]);
             DB::commit();
 
             return response()->json([
