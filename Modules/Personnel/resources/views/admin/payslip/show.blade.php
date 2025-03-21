@@ -1,230 +1,246 @@
 <!DOCTYPE html>
 <html lang="fa">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>فیش حقوقی</title>
     <link href="{{ asset('res-admin/assets/font-awesome/css/light.css') }}" rel="stylesheet" />
     <link href="{{ asset('res-admin/assets/font-awesome/css/solid.css') }}" rel="stylesheet" />
     <style>
-      body {
-        font-family: Tahoma, sans-serif;
-        direction: rtl;
-        text-align: right;
-        padding: 20px;
-        background-color: #f8f8f8;
-      }
-      .container {
-        max-width: 900px;
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        border: 2px solid #000;
-      }
-      h2 {
-        text-align: start;
-        font-size: 20px;
-        font-weight: bold;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-      }
-      th,
-      td {
-        border: 1px solid #7882da;
-        padding: 8px;
-        text-align: center;
-      }
-      th {
-        background-color: #2738d6;
-        color: #fff;
-        font-weight: bold;
-      }
-      .blue-bg {
-        background-color: #cbd5fd;
-      }
-      .font-weight-bold {
-        font-weight: bold;
-        padding: 6px 0 6px 0 !important;
-      }
-      .highlight {
-        background-color: #dbe5f1;
-        font-weight: bold;
-        font-size: 16px;
-      }
-      .signature {
-        margin-top: 30px;
-        font-size: 16px;
-        font-weight: bold;
-      }
+        body {
+            font-family: Tahoma, sans-serif;
+            direction: rtl;
+            text-align: right;
+            padding: 20px;
+            background-color: #f8f8f8;
+        }
+
+        .container {
+            max-width: 900px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid #000;
+        }
+
+        h2 {
+            text-align: start;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #7882da;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #2738d6;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .blue-bg {
+            background-color: #cbd5fd;
+        }
+
+        .font-weight-bold {
+            font-weight: bold;
+            padding: 6px 0 6px 0 !important;
+        }
+
+        .highlight {
+            background-color: #dbe5f1;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .signature {
+            margin-top: 30px;
+            font-size: 16px;
+            font-weight: bold;
+        }
     </style>
-  </head>
-  <body>
+</head>
+
+<body>
     <div style="display: flex;justify-content: center;">
-    <div class="container">
-      <h2>📑 فیش حقوقی پرسنل - {{ verta($payslip->created_at)->format('F Y') }}</h2>
-      <table>
-        <tr>
-          <th>جزئیات عملکرد</th>
-          <th>مقادیر</th>
-          <th>مزایا و دریافتی ها</th>
-          <th>مقادیر</th>
-          <th>کسورات و تعهدات مالی</th>
-          <th>مقادیر</th>
-        </tr>
-        <tr class="blue-bg">
-          <td>میزان قرارداد</td>
-          <td>{{ number_format($contractAmount) }}</td>
-          <td>میزان حقوق پایه</td>
-          <td>{{ number_format($fixedAmount->basic_rights) }}</td>
-          <td>مالیات حقوق</td>
-          <td>0</td>
-        </tr>
-        <tr>
-          <td>واریزی طراحی سایت</td>
-          <td>{{ number_format($sitePayment) }}</td>
-          <td>اضافه کار</td>
-          <td>0</td>
-          <td>بیمه سهم کارمند</td>
-          <td>{{ number_format($fixedAmount->employer_insurance) }}</td>
-        </tr>
-        <tr class="blue-bg">
-          <td>واریزی سئو</td>
-          <td>{{ number_format($seoPayment) }}</td>
-          <td>پاداش عملکرد ویژه</td>
-          <td>{{ number_format($variableAmount->performance_amount) }}</td>
-          <td>تنخواه</td>
-          <td>{{ number_format($personnelSalary->price) }}</td>
-        </tr>
-        <tr>
-          <td>تعداد پروژه های پیشرفته</td>
-          <td>0</td>
-          <td>پاداش بهره وری مضاعف</td>
-          <td>{{ number_format($variableAmount->performance_amount ??0) }}</td>
-          <td>مساعده اخذ شده</td>
-          <td>{{ number_format($personnelAssistance->price) }}</td>
-        </tr>
-        <tr class="blue-bg">
-          <td>تعداد پروژه های اقتصادی</td>
-          <td>0</td>
-          <td>حق مسکن</td>
-          <td>{{ number_format($fixedAmount->right_to_housing) }}</td>
-          <td>سایر کسورات</td>
-          <td>{{ number_format($personnelOtherDeduction->price ?? 0) }}</td>
-        </tr>
-        <tr>
-          <td>تعداد پروژه های سئو(جاری)</td>
-          <td>0</td>
-          <td>حق تاهل</td>
-          <td>{{ $payslip->user->is_married ? number_format($fixedAmount->right_to_marry) : '0' }}</td>
-          <th>جمع بندی مالی</th>
-          <th>مقادیر</th>
-        </tr>
-        <tr class="blue-bg">
-          <td>واحدهای انجام شده(اصلی)</td>
-          <td>{{0 }}</td>
-          <td>حق اولاد</td>
-          <td>{{ number_format($childrenRights??0) }}</td>
-          <td>مجموع دریافتی ها</td>
-          <td>{{ number_format($totalBenefits??0) }}</td>
-        </tr>
-        <tr>
-          <td>واحدهای انجام شده(اکسترا)</td>
-          <td>{{ number_format(0) }}</td>
-          <td>حق خوار و بار</td>
-          <td>{{ number_format($fixedAmount->right_to_eat_and_drink) }}</td>
-          <td>مجموع کسورات</td>
-          <td>{{ number_format($totalDeductions) }}</td>
-        </tr>
-        <tr class="blue-bg">
-          <td>واحدهای تشویقی</td>
-          <td>0</td>
-          <td>بیمه سهم کارفرما</td>
-          <td>{{ number_format($fixedAmount->employer_insurance) }}</td>
-          <td class="font-weight-bold">حقوق قابل پرداخت نهایی</td>
-          <td class="font-weight-bold">{{ number_format($finalSalary) }}</td>
-        </tr>
-        <tr>
-          <td>محموع واحدهای انجام شده</td>
-          <td>{{0 }}</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr class="blue-bg">($baseU
-          <th>وضعیت حضور و غباب</th>
-          <th>مقادیر</th>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>مرخصی مجاز</td>
-          <td>{{ number_format($allowedLeaveHours) }} ساعت</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr class="blue-bg">
-          <td>مرخصی بیش از حدمجاز</td>
-          <td>{{ number_format($excessLeaveHours) }} ساعت</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>مرخصی استفاده شده</td>
-          <td>{{ number_format($usedLeaveHours) }} ساعت</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr class="blue-bg">
-          <td>مرخصی ذخیره شده</td>
-          <td>{{ number_format($savedLeaveDays) }} روز و {{ number_format($savedLeaveHours) }} ساعت</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>غیبت</td>
-          <td>{{ number_format($absenceHours) }} ساعت</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr class="blue-bg">
-          <td>تاخیر بیش از حدمجاز</td>
-          <td>{{ number_format($lateHours) }} ساعت</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>کارکرد ساعتی / روزانه</td>
-          <td>{{ number_format($workHours) }} ساعت</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-      </table>
-      <div class="signature">
-        <p>✦ امضاء و تأیید مدیر مالی: __________</p>
-        <p>✦ امضاء و تأیید پرسنل: __________</p>
-      </div>
+        <div class="container">
+            <h2>📑 فیش حقوقی پرسنل - {{ verta($payslip->created_at)->format('F Y') }}</h2>
+            <p>{!! nl2br(e($startText)) !!}</p>
+            <table>
+                <tr>
+                    <th>جزئیات عملکرد</th>
+                    <th>مقادیر</th>
+                    <th>مزایا و دریافتی ها</th>
+                    <th>مقادیر</th>
+                    <th>کسورات و تعهدات مالی</th>
+                    <th>مقادیر</th>
+                </tr>
+                <tr class="blue-bg">
+                    <td>میزان قرارداد</td>
+                    <td>{{ number_format($contractAmount) }}</td>
+                    <td>میزان حقوق پایه</td>
+                    <td>{{ number_format($fixedAmount->basic_rights ?? 0) }}</td>
+                    <td>مالیات حقوق</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>واریزی طراحی سایت</td>
+                    <td>{{ number_format($sitePayment ?? 0) }}</td>
+                    <td>اضافه کار</td>
+                    <td>0</td>
+                    <td>بیمه سهم کارمند</td>
+                    <td>{{ number_format($fixedAmount->employer_insurance ?? 0) }}</td>
+                </tr>
+                <tr class="blue-bg">
+                    <td>واریزی سئو</td>
+                    <td>{{ number_format($seoPayment ?? 0) }}</td>
+                    <td>پاداش عملکرد ویژه</td>
+                    <td>{{ number_format($variableAmount->performance_amount ?? 0) }}</td>
+                    <td>تنخواه</td>
+                    <td>{{ number_format($personnelSalary->price ?? 0) }}</td>
+                </tr>
+                <tr>
+                    <td>تعداد پروژه های پیشرفته</td>
+                    <td>0</td>
+                    <td>پاداش بهره وری مضاعف</td>
+                    <td>{{ number_format($variableAmount->performance_amount ?? 0) }}</td>
+                    <td>مساعده اخذ شده</td>
+                    <td>{{ number_format($personnelAssistance->price ?? 0) }}</td>
+                </tr>
+                <tr class="blue-bg">
+                    <td>تعداد پروژه های اقتصادی</td>
+                    <td>0</td>
+                    <td>حق مسکن</td>
+                    <td>{{ number_format($fixedAmount->right_to_housing ?? 0) }}</td>
+                    <td>سایر کسورات</td>
+                    <td>{{ number_format($personnelOtherDeduction->price ?? 0) }}</td>
+                </tr>
+                <tr>
+                    <td>تعداد پروژه های سئو(جاری)</td>
+                    <td>0</td>
+                    <td>حق تاهل</td>
+                    <td>{{ $payslip->user->is_married ? number_format($fixedAmount->right_to_marry) : '0' }}</td>
+                    <th>جمع بندی مالی</th>
+                    <th>مقادیر</th>
+                </tr>
+                <tr class="blue-bg">
+                    <td>واحدهای انجام شده(اصلی)</td>
+                    <td>{{ 0 }}</td>
+                    <td>حق اولاد</td>
+                    <td>{{ number_format($childrenRights ?? 0) }}</td>
+                    <td>مجموع دریافتی ها</td>
+                    <td>{{ number_format($totalBenefits ?? 0) }}</td>
+                </tr>
+                <tr>
+                    <td>واحدهای انجام شده(اکسترا)</td>
+                    <td>{{ number_format(0) }}</td>
+                    <td>حق خوار و بار</td>
+                    <td>{{ number_format($fixedAmount->right_to_eat_and_drink ?? 0) }}</td>
+                    <td>مجموع کسورات</td>
+                    <td>{{ number_format($totalDeductions ?? 0) }}</td>
+                </tr>
+                <tr class="blue-bg">
+                    <td>واحدهای تشویقی</td>
+                    <td>0</td>
+                    <td>بیمه سهم کارفرما</td>
+                    <td>{{ number_format($fixedAmount->employer_insurance ?? 0) }}</td>
+                    <td class="font-weight-bold">حقوق قابل پرداخت نهایی</td>
+                    <td class="font-weight-bold">{{ number_format($finalSalary ?? 0) }}</td>
+                </tr>
+                <tr>
+                    <td>محموع واحدهای انجام شده</td>
+                    <td>{{ 0 }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="blue-bg">
+                    <th>وضعیت حضور و غباب</th>
+                    <th>مقادیر</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>مرخصی مجاز</td>
+                    <td>{{ number_format($allowedLeaveHours ?? 0) }} ساعت</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="blue-bg">
+                    <td>مرخصی بیش از حدمجاز</td>
+                    <td>{{ number_format($excessLeaveHours ?? 0) }} ساعت</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>مرخصی استفاده شده</td>
+                    <td>{{ number_format($usedLeaveHours ?? 0) }} ساعت</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="blue-bg">
+                    <td>مرخصی ذخیره شده</td>
+                    <td>{{ number_format($savedLeaveDays ?? 0) }} روز و {{ number_format($savedLeaveHours ?? 0) }} ساعت
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>غیبت</td>
+                    <td>{{ number_format($absenceHours ?? 0) }} ساعت</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="blue-bg">
+                    <td>تاخیر بیش از حدمجاز</td>
+                    <td>{{ number_format($lateHours ?? 0) }} ساعت</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>کارکرد ساعتی / روزانه</td>
+                    <td>{{ number_format($workHours ?? 0) }} ساعت</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            <p>{!! nl2br(e($endText)) !!}</p>
+
+            <div class="signature">
+                <p>✦ امضاء و تأیید مدیر مالی: __________</p>
+                <p>✦ امضاء و تأیید پرسنل: __________</p>
+            </div>
+        </div>
     </div>
-    </div>
-  </body>
+</body>
+
 </html>

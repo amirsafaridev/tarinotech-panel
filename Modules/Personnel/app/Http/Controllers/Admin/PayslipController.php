@@ -12,10 +12,11 @@ use Modules\Admin\app\Models\FixedAmount;
 use Modules\Admin\app\Models\VariableAmount;
 use Modules\Admin\app\Models\PersonnelSalary;
 use Modules\Admin\app\Models\PersonnelAssistance;
-
+use Modules\Admin\app\Models\PayslipTextManager;
 use Modules\Admin\app\Models\PersonnelReport;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Hekmatinasser\Verta\Verta;
 
 
 class PayslipController extends Controller
@@ -53,7 +54,15 @@ class PayslipController extends Controller
         $personnelSalary = PersonnelSalary::where('user_id', $payslip->user->id)->first();
         $personnelAssistance = PersonnelAssistance::where('user_id', $payslip->user->id)->first();
         $personnelOtherDeduction = BonusesDeduction::where('type', 1)->first();
-        
+        $payslipTextManager = PayslipTextManager::query()->first();
+
+        $monthName = (new Verta())->format('%B');
+        $replacements = [
+            '{{month}}'    => $monthName,
+            '{{fullname}}' => auth()->user()->fullname, 
+        ];
+        $startText = str_replace(array_keys($replacements), array_values($replacements), $payslipTextManager->start_text);
+        $endText = str_replace(array_keys($replacements), array_values($replacements), $payslipTextManager->end_text);
         // محاسبه مقادیر پورسانت برای کارشناس مشاوره و فروش
         $contractAmount = 0;
         $sitePayment = 0;
@@ -92,19 +101,27 @@ class PayslipController extends Controller
         }
 
         // محاسبه مجموع دریافتی‌ها
-        $totalBenefits = $fixedAmount->basic_rights + 
-                        $variableAmount->performance_amount + 
-                        $commission + 
-                        $fixedAmount->right_to_housing + 
-                        ($payslip->user->is_married ? $fixedAmount->right_to_marry : 0) + 
-                        $fixedAmount->right_to_eat_and_drink;
+        $totalBenefits =0;
+        if($fixedAmount && $variableAmount)
+        {
+            $totalBenefits = $fixedAmount->basic_rights + 
+            $variableAmount->performance_amount + 
+            $commission + 
+            $fixedAmount->right_to_housing + 
+            ($payslip->user->is_married ? $fixedAmount->right_to_marry : 0) + 
+            $fixedAmount->right_to_eat_and_drink;
+        }
+        
 
         // محاسبه مجموع کسورات
+        $totalDeductions =0;
+        if($personnelSalary && $personnelAssistance)
+        {
         $totalDeductions = $personnelSalary->price + 
                           $personnelAssistance->price + 
                           ($personnelOtherDeduction->price ?? 0) + 
                           ($payslip->user->work_location == 2 ? $fixedAmount->employer_insurance : 0);
-
+        }
         // محاسبه حقوق قابل پرداخت نهایی
         $finalSalary = $totalBenefits - $totalDeductions;
 
@@ -191,7 +208,9 @@ class PayslipController extends Controller
             'savedLeaveHours',
             'absenceHours',
             'lateHours',
-            'workHours'
+            'workHours',
+            'startText',
+            'endText'
         ));
     }
 

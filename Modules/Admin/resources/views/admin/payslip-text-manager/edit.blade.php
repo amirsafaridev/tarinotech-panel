@@ -21,7 +21,21 @@
             </ol>
         </div>
     </div>
-
+    <p class="text-muted">
+        📌 <strong>راهنمای استفاده از متغیرهای داینامیک:</strong><br>
+        شما می‌توانید از متغیرهای زیر در متن خود استفاده کنید. هنگام نمایش، این متغیرها به‌صورت خودکار جایگزین می‌شوند:
+    </p>
+    
+    <ul class="text-muted">
+        <li><strong>@{{month}}</strong> → نمایش نام ماه جاری (مثلاً: اسفند)</li>
+        <li><strong>@{{fullname}}</strong> → نمایش نام و نام خانوادگی کاربر (مثلاً: علی رضایی)</li>
+    </ul>
+    
+    <p class="text-muted">
+        🔹 <strong>مثال:</strong><br>
+        <strong>متن ورودی:</strong> <code>گزارش ماه @{{month}} توسط @{{fullname}} ثبت شد.</code><br>
+        <strong>نمایش نهایی:</strong> <code>گزارش ماه اسفند توسط علی رضایی ثبت شد.</code>
+    </p>
     <div class="row">
         <div class="col-xl-4 col-lg-4 col-md-4 col-12">
             <div class="card">

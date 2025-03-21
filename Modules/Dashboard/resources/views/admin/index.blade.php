@@ -105,8 +105,8 @@
                     <div class="card-order">
                         <div id="desktop-only" class="text-center mb-4" style="display: none;">
                             <button id="activity-toggle"
-                                class="btn btn-lg {{ $currentActivity && $currentActivity->status === 'active' ? 'btn-success' : 'btn-secondary' }}"
-                                style="min-width: 200px; min-height: 60px;">
+                                class="btn btn-lg {{ $currentActivity && $currentActivity->status === 'active' ? 'btn-success' : '' }}"
+                                style="min-width: 200px; min-height: 60px;background-color:grey;color:white;">
                                 {{ $currentActivity && $currentActivity->status === 'active' ? 'پایان کار' : 'شروع کار' }}
                             </button>
                         </div>
