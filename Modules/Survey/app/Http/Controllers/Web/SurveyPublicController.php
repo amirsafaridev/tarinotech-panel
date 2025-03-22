@@ -18,7 +18,6 @@ use Modules\Survey\app\Models\SurveyResponse;
 
 class SurveyPublicController extends Controller
 {
-    // Constants for session keys
     const SESSION_SURVEY_START_TIME = 'survey_start_time';
 
     const SESSION_SURVEY_ID = 'survey_session_id';
@@ -32,7 +31,7 @@ class SurveyPublicController extends Controller
         }
 
         if ($survey->requires_auth && ! Auth::check()) {
-            return redirect()->route('login', ['redirect' => url()->full()]);
+            return view('survey::web.login_required', compact('survey'));
         }
 
         if ($survey->requires_auth && $this->hasUserSubmitted($survey)) {
@@ -49,12 +48,17 @@ class SurveyPublicController extends Controller
         return view('survey::web.show', compact('survey'));
     }
 
-    public function submit(Request $request, string $accessToken): RedirectResponse
+    public function submit(Request $request, string $accessToken)
     {
         $survey = $this->findActiveSurvey($accessToken);
 
         if (! $survey) {
             abort(404, 'نظرسنجی مورد نظر یافت نشد یا در دسترس نیست.');
+        }
+
+        // Check authentication if required
+        if ($survey->requires_auth && ! Auth::check()) {
+            return view('survey::web.login_required', compact('survey'));
         }
 
         $this->validateSurveySubmission($request, $survey);
