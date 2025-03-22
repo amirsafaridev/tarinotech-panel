@@ -11,12 +11,12 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
-/*use Modules\Survey\app\Exports\Admin\Report\DatatableExport;
+use Modules\Survey\app\Exports\Admin\SurveyExport;
 use Modules\Survey\app\Filters\Survey\DateFilter;
 use Modules\Survey\app\Filters\Survey\RequiresAuthFilter;
 use Modules\Survey\app\Filters\Survey\SearchFilter;
 use Modules\Survey\app\Filters\Survey\SortFilter;
-use Modules\Survey\app\Filters\Survey\StatusFilter;*/
+use Modules\Survey\app\Filters\Survey\StatusFilter;
 use Modules\Survey\app\Http\Requests\Admin\Survey\StoreRequest;
 use Modules\Survey\app\Http\Requests\Admin\Survey\UpdateRequest;
 use Modules\Survey\app\Models\Survey;
@@ -55,11 +55,11 @@ class SurveyController extends Controller
             ->withCount(['questions', 'responses'])
             ->join('admins', 'surveys.admin_id', '=', 'admins.id')
             ->filter([
-                /*StatusFilter::class,
-                RequiresAuthFilter::class,
                 DateFilter::class,
+                SearchFilter::class,
                 SortFilter::class,
-                SearchFilter::class,*/
+                StatusFilter::class,
+                RequiresAuthFilter::class,
             ]);
 
         if (request('export')) {
@@ -72,18 +72,18 @@ class SurveyController extends Controller
         return view('survey::admin.index', compact('title', 'surveys'));
     }
 
-    /*private function export($surveys)
+    private function export($surveys)
     {
         try {
-            $fileName = 'Surveys-'.Carbon::now()->format('Y-m-d').'.xlsx';
+            $fileName = 'نظرسنجی‌ها-'.Carbon::now()->format('Y-m-d').'.xlsx';
 
-            return Excel::download(new DatatableExport(collect($surveys)), $fileName);
+            return Excel::download(new SurveyExport($surveys), $fileName);
         } catch (Exception $exception) {
             report($exception);
 
             return back()->with('danger', 'خطا در هنگام صادر کردن اطلاعات');
         }
-    }*/
+    }
 
     public function create()
     {

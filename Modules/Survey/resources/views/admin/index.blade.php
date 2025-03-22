@@ -1,8 +1,12 @@
+@php use App\Enums\Assets\StyleLoader; @endphp
+@php use App\Enums\Assets\ScriptLoader; @endphp
 @extends('admin.master')
-@section('title') {{ $title }} @endsection
+@section('title')
+    {{ $title }}
+@endsection
 @section('head')
     @include('admin.partial.loader.style',['load'=>[
-        \App\Enums\Assets\StyleLoader::Datepicker(),
+        StyleLoader::Datepicker(),
    ]])
 @endsection
 @section('content')
@@ -11,7 +15,8 @@
         <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a
+                        href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item active">{{ $title }}</li>
             </ol>
         </div>
@@ -26,18 +31,21 @@
                         @can('ADMIN_SURVEY_CREATE')
                             <a class="btn btn-primary" href="{{ route('admin.survey.create') }}">ایجاد</a>
                         @endcan
-                        <a class="btn btn-success datatable-export-button" href="{{ request()->fullUrlWithQuery(['export' => 'true']) }}" id="exportButton">خروجی Excel</a>
+                        <a class="btn btn-success datatable-export-button"
+                           href="{{ request()->fullUrlWithQuery(['export' => 'true']) }}" id="exportButton">خروجی
+                            Excel</a>
                     </div>
                 </div>
                 <div class="card-body">
                     @include('admin.partial.message')
+                    @include('survey::admin.part.filter')
                     <div class="table-responsive">
                         <table id="data-table" class="table">
                             <thead>
                             <tr>
                                 <td>شناسه</td>
                                 <td>عنوان</td>
-                                <td>مدیر</td>
+                                <td>کارشناس</td>
                                 <td>تعداد سوالات</td>
                                 <td>تعداد پاسخ‌ها</td>
                                 <td>نیاز به احراز هویت</td>
@@ -93,35 +101,44 @@
                                                     aria-labelledby="surveyActionDropdown-{{ $survey->id }}">
 
                                                     <li>
-                                                        <a class="dropdown-item" href="{{ route('survey.public.show', $survey->access_token) }}" target="_blank">
+                                                        <a class="dropdown-item"
+                                                           href="{{ route('survey.public.show', $survey->access_token) }}"
+                                                           target="_blank">
                                                             <i class="fas fa-eye me-2"></i> نمایش
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="{{ route('admin.survey.edit', $survey->id) }}">
+                                                        <a class="dropdown-item"
+                                                           href="{{ route('admin.survey.edit', $survey->id) }}">
                                                             <i class="fas fa-edit me-2"></i> {{ __('panel.action.edit') }}
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="{{ route('admin.survey.question.index', $survey->id) }}">
+                                                        <a class="dropdown-item"
+                                                           href="{{ route('admin.survey.question.index', $survey->id) }}">
                                                             <i class="fas fa-question-circle me-2"></i> سوالات
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="{{ route('admin.survey.response.index', $survey->id) }}">
+                                                        <a class="dropdown-item"
+                                                           href="{{ route('admin.survey.response.index', $survey->id) }}">
                                                             <i class="fas fa-reply me-2"></i> پاسخ‌ها
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="{{ route('admin.survey.report.index', ['survey' => $survey->id]) }}">
+                                                        <a class="dropdown-item"
+                                                           href="{{ route('admin.survey.report.index', ['survey' => $survey->id]) }}">
                                                             <i class="fas fa-chart-bar me-2"></i> گزارش
                                                         </a>
                                                     </li>
 
-                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
 
                                                     <li>
-                                                        <a class="dropdown-item" href="{{ route('admin.survey.duplicate', $survey->id) }}">
+                                                        <a class="dropdown-item"
+                                                           href="{{ route('admin.survey.duplicate', $survey->id) }}">
                                                             <i class="fas fa-copy me-2"></i> تکثیر نظرسنجی
                                                         </a>
                                                     </li>
@@ -145,11 +162,11 @@
 @endsection
 @section('script')
     @include('admin.partial.loader.script',['load'=>[
-        \App\Enums\Assets\ScriptLoader::Datepicker(),
+        ScriptLoader::Datepicker(),
     ]])
     @include('admin.partial.script.global')
     <script>
-        $(document).ready(function (){
+        $(document).ready(function () {
             jalaliDatepicker.startWatch();
         })
     </script>

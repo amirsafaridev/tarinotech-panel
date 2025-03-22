@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $survey->title ?? 'نظرسنجی' }}</title>
 
-    <link href="{{ asset('res-admin/assets/plugins/bootstrap/css/bootstrap.rtl.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('res-admin/assets/font-awesome/css/fontawesome.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('res-admin/assets/font-awesome/css/light.css') }}" rel="stylesheet" />
-    <link href="{{ asset('res-admin/assets/font-awesome/css/solid.css') }}" rel="stylesheet" />
-    <link href="{{ asset('res-admin/assets/css/fonts.css') }}" rel="stylesheet" />
+    <link href="{{ asset('res-admin/assets/plugins/bootstrap/css/bootstrap.rtl.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('res-admin/assets/font-awesome/css/fontawesome.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('res-admin/assets/font-awesome/css/light.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('res-admin/assets/font-awesome/css/solid.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('res-admin/assets/css/fonts.css') }}" rel="stylesheet"/>
     <link rel="stylesheet" href="{{ asset('res-admin/assets/css/survey.css') }}">
     @yield('styles')
 </head>

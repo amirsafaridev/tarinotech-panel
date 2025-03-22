@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('survey_id')->constrained()->onDelete('cascade');
 
-            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete(); // If authenticated
-            $table->string('respondent_email')->nullable(); // If provided but not authenticated
+            // Morphable relationship for user - allows any user type
+            $table->nullableMorphs('respondent');
+            $table->string('respondent_email')->nullable();
             $table->string('respondent_name')->nullable();
 
-            $table->ipAddress()->nullable();
+            $table->ipAddress('ip_address')->nullable();
             $table->string('session_id')->nullable();
 
             $table->timestamp('started_at')->nullable();

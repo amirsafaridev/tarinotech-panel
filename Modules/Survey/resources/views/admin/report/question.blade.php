@@ -1,9 +1,13 @@
+@php use App\Enums\Assets\StyleLoader; @endphp
+@php use App\Enums\Assets\ScriptLoader; @endphp
+@php use Modules\Survey\app\Enums\Database\QuestionTypeEnum; @endphp
 @extends('admin.master')
-@section('title') {{ $title }} @endsection
+@section('title')
+    {{ $title }}
+@endsection
 @section('head')
     @include('admin.partial.loader.style',['load'=>[
-        \App\Enums\Assets\StyleLoader::Toast(),
-        /*\App\Enums\Assets\StyleLoader::Chart(),*/
+        StyleLoader::Toast(),
    ]])
     <style>
         .chart-container {
@@ -11,11 +15,13 @@
             height: 350px;
             margin-bottom: 20px;
         }
+
         .chart-container-small {
             position: relative;
             height: 250px;
             margin-bottom: 20px;
         }
+
         .option-badge {
             display: inline-block;
             margin-right: 5px;
@@ -25,26 +31,29 @@
             font-size: 0.85rem;
             color: #fff;
         }
+
         .stats-card {
             transition: all 0.3s;
             border-radius: 10px;
         }
+
         .stats-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
+
         .text-answer {
-            background-color: #f9f9f9;
             border-right: 3px solid #5d87ff;
             padding: 10px 15px;
             margin-bottom: 15px;
             border-radius: 4px;
             transition: all 0.2s;
         }
+
         .text-answer:hover {
-            background-color: #f0f0f0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
+
         .word-cloud-item {
             display: inline-block;
             margin: 5px;
@@ -54,11 +63,30 @@
             color: white;
             font-size: 14px;
         }
-        .word-cloud-item.size-1 { font-size: 14px; opacity: 0.7; }
-        .word-cloud-item.size-2 { font-size: 16px; opacity: 0.8; }
-        .word-cloud-item.size-3 { font-size: 18px; opacity: 0.9; }
-        .word-cloud-item.size-4 { font-size: 20px; }
-        .word-cloud-item.size-5 { font-size: 22px; font-weight: bold; }
+
+        .word-cloud-item.size-1 {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        .word-cloud-item.size-2 {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+        .word-cloud-item.size-3 {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .word-cloud-item.size-4 {
+            font-size: 20px;
+        }
+
+        .word-cloud-item.size-5 {
+            font-size: 22px;
+            font-weight: bold;
+        }
     </style>
 @endsection
 @section('content')
@@ -67,11 +95,15 @@
         <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a
+                        href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">نظرسنجی‌ها</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.survey.edit', $survey->id) }}">{{ $survey->title }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.survey.report.index', $survey->id) }}">گزارش</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.survey.report.summary', $survey->id) }}">خلاصه نتایج</a></li>
+                <li class="breadcrumb-item"><a
+                        href="{{ route('admin.survey.edit', $survey->id) }}">{{ $survey->title }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.survey.report.index', $survey->id) }}">گزارش</a>
+                </li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.survey.report.summary', $survey->id) }}">خلاصه
+                        نتایج</a></li>
                 <li class="breadcrumb-item active">گزارش سوال</li>
             </ol>
         </div>
@@ -102,7 +134,8 @@
                             <a href="{{ route('admin.survey.report.summary', $survey->id) }}" class="btn btn-secondary">
                                 <i class="fa fa-arrow-right me-1"></i> بازگشت به خلاصه نتایج
                             </a>
-                            <a href="{{ route('admin.survey.report.export', $survey->id) }}?question={{ $question->id }}" class="btn btn-primary">
+                            <a href="{{ route('admin.survey.report.export', $survey->id) }}?question={{ $question->id }}"
+                               class="btn btn-primary">
                                 <i class="fa fa-file-excel me-1"></i> خروجی اکسل
                             </a>
                         </div>
@@ -112,7 +145,7 @@
         </div>
 
         <!-- Main content based on question type -->
-        @if($question->question_type == \Modules\Survey\app\Enums\Database\QuestionTypeEnum::Text)
+        @if($question->question_type == QuestionTypeEnum::Text)
             <!-- Text question report -->
             <div class="col-xl-8">
                 <div class="card mb-4">
@@ -195,7 +228,8 @@
                                         $sizeClass = ceil(min(5, max(1, (($word['count'] - $minCount) / $range) * 5)));
                                     @endphp
                                     <div class="word-cloud-item size-{{ $sizeClass }}">
-                                        {{ $word['word'] }} <span class="badge bg-light text-dark">{{ $word['count'] }}</span>
+                                        {{ $word['word'] }} <span
+                                            class="badge bg-light text-dark">{{ $word['count'] }}</span>
                                     </div>
                                 @endforeach
                             </div>
@@ -239,7 +273,8 @@
                                     @foreach($questionData['options'] as $option)
                                         <tr>
                                             <td>
-                                                    <span class="option-badge" style="background-color: {{ $option['color'] }}">
+                                                    <span class="option-badge"
+                                                          style="background-color: {{ $option['color'] }}">
                                                         {{ $option['text'] }}
                                                     </span>
                                             </td>
@@ -401,13 +436,13 @@
 @endsection
 @section('script')
     @include('admin.partial.loader.script',['load'=>[
-        \App\Enums\Assets\ScriptLoader::Chart(),
+        ScriptLoader::Chart(),
     ]])
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             activeParentUl('{{ route('admin.survey.index') }}');
 
-            @if($question->question_type != \Modules\Survey\app\Enums\Database\QuestionTypeEnum::Text && isset($questionData['options']) && count($questionData['options']) > 0)
+            @if($question->question_type != QuestionTypeEnum::Text && isset($questionData['options']) && count($questionData['options']) > 0)
             // Prepare data for charts
             const labels = [@foreach($questionData['options'] as $option) '{{ $option['text'] }}', @endforeach];
             const data = [@foreach($questionData['options'] as $option) {{ $option['count'] }}, @endforeach];
@@ -438,7 +473,7 @@
                         },
                         tooltip: {
                             callbacks: {
-                                label: function(context) {
+                                label: function (context) {
                                     const label = context.label || '';
                                     const value = context.formattedValue || '';
                                     const dataset = context.dataset;
@@ -482,7 +517,7 @@
                         },
                         tooltip: {
                             callbacks: {
-                                label: function(context) {
+                                label: function (context) {
                                     const label = context.dataset.label || '';
                                     const value = context.formattedValue || '';
                                     const dataset = context.dataset;

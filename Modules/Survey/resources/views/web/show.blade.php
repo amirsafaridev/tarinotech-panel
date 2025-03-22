@@ -31,13 +31,15 @@
                         <div class="col-md-6">
                             <div class="survey-form-group">
                                 <label for="name" class="survey-form-label">نام (اختیاری)</label>
-                                <input type="text" id="name" name="name" class="survey-form-control" value="{{ old('name') }}" placeholder="نام خود را وارد کنید">
+                                <input type="text" id="name" name="name" class="survey-form-control"
+                                       value="{{ old('name') }}" placeholder="نام خود را وارد کنید">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="survey-form-group">
                                 <label for="email" class="survey-form-label">ایمیل (اختیاری)</label>
-                                <input type="email" id="email" name="email" class="survey-form-control" value="{{ old('email') }}" placeholder="ایمیل خود را وارد کنید">
+                                <input type="email" id="email" name="email" class="survey-form-control"
+                                       value="{{ old('email') }}" placeholder="ایمیل خود را وارد کنید">
                             </div>
                         </div>
                     </div>
@@ -53,9 +55,10 @@
             @endif
 
             @foreach($survey->questions as $index => $question)
-                <div class="survey-question-container {{ ($index == 0 && (auth()->check() || $survey->requires_auth)) ? 'active' : '' }}"
-                     id="survey-question-{{ $question->id }}"
-                     data-question-id="{{ $question->id }}">
+                <div
+                    class="survey-question-container {{ ($index == 0 && (auth()->check() || $survey->requires_auth)) ? 'active' : '' }}"
+                    id="survey-question-{{ $question->id }}"
+                    data-question-id="{{ $question->id }}">
 
                     <div class="survey-question-text">
                         @if($question->is_required)
@@ -144,7 +147,7 @@
 @section('scripts')
     <!-- Bootstrap JS Bundle with Popper -->
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             const totalQuestions = {{ count($survey->questions) }};
             const hasPersonalInfoSection = {{ (!auth()->check() && !$survey->requires_auth) ? 'true' : 'false' }};
             const totalSteps = hasPersonalInfoSection ? totalQuestions + 1 : totalQuestions;
@@ -174,7 +177,7 @@
             updateProgressBar();
 
 // Add touch-friendly behavior for options
-            $('.survey-option-item').on('click', function(e) {
+            $('.survey-option-item').on('click', function (e) {
                 if (e.target.tagName !== 'INPUT') {
                     const input = $(this).find('input');
                     if (input.attr('type') === 'radio') {
@@ -186,7 +189,7 @@
             });
 
 // Handle next button click
-            $('.survey-next-button').click(function() {
+            $('.survey-next-button').click(function () {
                 const currentContainer = $(this).closest('.survey-question-container, .survey-personal-info');
 
 // For personal info section
@@ -205,12 +208,12 @@
             });
 
 // Handle previous button click
-            $('.survey-prev-button').click(function() {
+            $('.survey-prev-button').click(function () {
                 moveToPreviousQuestion();
             });
 
 // Handle form submission
-            $('#survey-form').submit(function(e) {
+            $('#survey-form').submit(function (e) {
                 e.preventDefault();
 
 // Get the last question
@@ -255,7 +258,7 @@
                     errorMessage.show();
 // Add shake animation
                     errorMessage.css('animation', 'shake 0.5s');
-                    setTimeout(function() {
+                    setTimeout(function () {
                         errorMessage.css('animation', '');
                     }, 500);
 

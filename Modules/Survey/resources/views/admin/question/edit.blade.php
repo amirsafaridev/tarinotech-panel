@@ -1,10 +1,15 @@
+@php use App\Enums\Assets\StyleLoader; @endphp
+@php use App\Enums\Assets\ScriptLoader; @endphp
+@php use Modules\Survey\app\Enums\Database\QuestionTypeEnum; @endphp
 @extends('admin.master')
-@section('title') {{ $title }} @endsection
+@section('title')
+    {{ $title }}
+@endsection
 @section('head')
     @include('admin.partial.loader.style',[
         'load'=>[
-            \App\Enums\Assets\StyleLoader::Toast(),
-            \App\Enums\Assets\StyleLoader::Alert(),
+            StyleLoader::Toast(),
+            StyleLoader::Alert(),
         ]
     ])
 @endsection
@@ -14,9 +19,11 @@
         <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a
+                        href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">نظرسنجی‌ها</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.survey.question.index', $survey->id) }}">سوالات نظرسنجی</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.survey.question.index', $survey->id) }}">سوالات
+                        نظرسنجی</a></li>
                 <li class="breadcrumb-item active">ویرایش سوال</li>
             </ol>
         </div>
@@ -32,13 +39,15 @@
                 </div>
                 <div class="card-body pb-3">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ route('admin.survey.question.update', [$survey->id, $question->id]) }}">
+                    <form class="request-form forms-sample" method="post"
+                          action="{{ route('admin.survey.question.update', [$survey->id, $question->id]) }}">
                         @csrf
                         @method('PATCH')
 
                         <div class="row">
                             <div class="col-md-12">
-                                <x-admin.input identify="question_text" title="متن سوال" :required="true" :old="$question->question_text"/>
+                                <x-admin.input identify="question_text" title="متن سوال" :required="true"
+                                               :old="$question->question_text"/>
                             </div>
                         </div>
 
@@ -50,19 +59,21 @@
                                     :required="true"
                                     :old="$question->question_type"
                                     :is-small="false"
-                                    :enum-class="\Modules\Survey\app\Enums\Database\QuestionTypeEnum::class"
+                                    :enum-class="QuestionTypeEnum::class"
                                 />
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-12">
-                                <x-admin.checkbox identify="is_required" description="پاسخ به این سوال اجباری است" :is-checked="$question->is_required"/>
+                                <x-admin.checkbox identify="is_required" description="پاسخ به این سوال اجباری است"
+                                                  :is-checked="$question->is_required"/>
                             </div>
                         </div>
 
                         <!-- گزینه‌های سوال انتخابی -->
-                        <div id="choice-options" class="mt-4 mb-3 p-3  {{ in_array($question->question_type, [\Modules\Survey\app\Enums\Database\QuestionTypeEnum::Single, \Modules\Survey\app\Enums\Database\QuestionTypeEnum::Multiple]) ? '' : 'd-none' }}">
+                        <div id="choice-options"
+                             class="mt-4 mb-3 p-3  {{ in_array($question->question_type, [QuestionTypeEnum::Single, QuestionTypeEnum::Multiple]) ? '' : 'd-none' }}">
                             <h5>گزینه‌های سوال</h5>
 
                             @if($question->options && $question->options->count() > 0)
@@ -81,7 +92,8 @@
                                                 <td>{{ $option->option_text }}</td>
                                                 <td>{{ $option->order }}</td>
                                                 <td>
-                                                    <a href="{{ route('admin.survey.question.option.edit', [$survey->id, $question->id, $option->id]) }}" class="btn btn-sm btn-warning">ویرایش</a>
+                                                    <a href="{{ route('admin.survey.question.option.edit', [$survey->id, $question->id, $option->id]) }}"
+                                                       class="btn btn-sm btn-warning">ویرایش</a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -94,7 +106,8 @@
                                 </div>
                             @endif
 
-                            <a href="{{ route('admin.survey.question.option.index', [$survey->id, $question->id]) }}" class="btn btn-sm btn-primary mt-2">
+                            <a href="{{ route('admin.survey.question.option.index', [$survey->id, $question->id]) }}"
+                               class="btn btn-sm btn-primary mt-2">
                                 مدیریت گزینه‌ها
                             </a>
                         </div>
@@ -102,7 +115,8 @@
                         <div class="d-flex mt-4">
                             <x-admin.button title="{{ trans('panel.update') }}" class="me-2"/>
 
-                            <a href="{{ route('admin.survey.question.index', $survey->id) }}" class="btn btn-light me-2">
+                            <a href="{{ route('admin.survey.question.index', $survey->id) }}"
+                               class="btn btn-light me-2">
                                 بازگشت
                             </a>
 
@@ -112,7 +126,9 @@
                         </div>
                     </form>
 
-                    <form id="deleteItem" action="{{ route('admin.survey.question.destroy', [$survey->id, $question->id]) }}" method="post" class="form-inline">
+                    <form id="deleteItem"
+                          action="{{ route('admin.survey.question.destroy', [$survey->id, $question->id]) }}"
+                          method="post" class="form-inline">
                         @csrf
                         @method('DELETE')
                     </form>
@@ -141,16 +157,16 @@
                             <span class="font-weight-bold">
                                 @php
                                     $type = $question->question_type;
-                                    $typeName = \Modules\Survey\app\Enums\Database\QuestionTypeEnum::getDescription($type);
+                                    $typeName = QuestionTypeEnum::getDescription($type);
                                     $badgeClass = '';
 
-                                    if ($type == \Modules\Survey\app\Enums\Database\QuestionTypeEnum::Text) {
+                                    if ($type == QuestionTypeEnum::Text) {
                                         $badgeClass = 'bg-primary';
                                         $icon = '<i class="fa fa-align-left me-1"></i>';
-                                    } elseif ($type == \Modules\Survey\app\Enums\Database\QuestionTypeEnum::Single) {
+                                    } elseif ($type == QuestionTypeEnum::Single) {
                                         $badgeClass = 'bg-success';
                                         $icon = '<i class="fa fa-dot-circle me-1"></i>';
-                                    } elseif ($type == \Modules\Survey\app\Enums\Database\QuestionTypeEnum::Multiple) {
+                                    } elseif ($type == QuestionTypeEnum::Multiple) {
                                         $badgeClass = 'bg-info';
                                         $icon = '<i class="fa fa-check-square me-1"></i>';
                                     } else {
@@ -177,15 +193,18 @@
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
                             <span>تعداد پاسخ‌ها:</span>
-                            <span class="font-weight-bold">{{ $question->answers_count ?? $question->answers->count() }}</span>
+                            <span
+                                class="font-weight-bold">{{ $question->answers_count ?? $question->answers->count() }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
                             <span>تاریخ ایجاد:</span>
-                            <span class="font-weight-bold">{{ $question->created_at->toJalali()->format(formatJalaliDateTime()) }}</span>
+                            <span
+                                class="font-weight-bold">{{ $question->created_at->toJalali()->format(formatJalaliDateTime()) }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
                             <span>آخرین بروزرسانی:</span>
-                            <span class="font-weight-bold">{{ $question->updated_at->toJalali()->format(formatJalaliDateTime()) }}</span>
+                            <span
+                                class="font-weight-bold">{{ $question->updated_at->toJalali()->format(formatJalaliDateTime()) }}</span>
                         </li>
                     </ul>
                 </div>
@@ -245,7 +264,8 @@
                         <div class="d-flex">
                             <span class="me-2"><i class="fa fa-lightbulb"></i></span>
                             <div>
-                                <strong>نکته:</strong> سوالات تک انتخابی و چند انتخابی برای تحلیل آماری و ایجاد نمودار مناسب‌تر هستند.
+                                <strong>نکته:</strong> سوالات تک انتخابی و چند انتخابی برای تحلیل آماری و ایجاد نمودار
+                                مناسب‌تر هستند.
                             </div>
                         </div>
                     </div>
@@ -257,24 +277,24 @@
 @section('script')
     @include('admin.partial.loader.script',[
         'load'=>[
-            \App\Enums\Assets\ScriptLoader::Alert(),
+            ScriptLoader::Alert(),
         ],
     ])
     @include('admin.partial.request')
     <script>
-        $(document).ready(function (){
+        $(document).ready(function () {
             activeParentUl('{{ route('admin.survey.index') }}');
 
             // Handle question type change
-            $('#question_type').on('change', function() {
+            $('#question_type').on('change', function () {
                 const questionType = parseInt($(this).val());
 
                 // Hide choice options section by default
                 $('#choice-options').addClass('d-none');
 
                 // Show choice options section for Single(1) and Multiple(2) choice questions
-                if (questionType === {{ \Modules\Survey\app\Enums\Database\QuestionTypeEnum::Single }} ||
-                    questionType === {{ \Modules\Survey\app\Enums\Database\QuestionTypeEnum::Multiple }}) {
+                if (questionType === {{ QuestionTypeEnum::Single }} ||
+                    questionType === {{ QuestionTypeEnum::Multiple }}) {
                     $('#choice-options').removeClass('d-none');
                 }
             });

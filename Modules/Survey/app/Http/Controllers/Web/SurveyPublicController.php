@@ -18,6 +18,11 @@ use Modules\Survey\app\Models\SurveyResponse;
 
 class SurveyPublicController extends Controller
 {
+    // Constants for session keys
+    const SESSION_SURVEY_START_TIME = 'survey_start_time';
+
+    const SESSION_SURVEY_ID = 'survey_session_id';
+
     public function show(string $accessToken): View|RedirectResponse
     {
         $survey = $this->findActiveSurvey($accessToken);
@@ -31,7 +36,7 @@ class SurveyPublicController extends Controller
         }
 
         if ($survey->requires_auth && $this->hasUserSubmitted($survey)) {
-            return redirect()->route('survey.public.thankyou', $survey->access_token)
+            return redirect()->route('survey.public.thank', $survey->access_token)
                 ->with('message', 'شما قبلا در این نظرسنجی شرکت کرده‌اید.');
         }
 
@@ -39,7 +44,7 @@ class SurveyPublicController extends Controller
         $this->initiateSurveySession();
 
         // Record start time
-        session(['survey_start_time' => now()]);
+        session([self::SESSION_SURVEY_START_TIME => now()]);
 
         return view('survey::web.show', compact('survey'));
     }
@@ -57,7 +62,7 @@ class SurveyPublicController extends Controller
         try {
             DB::beginTransaction();
 
-            $startTime = session('survey_start_time');
+            $startTime = session(self::SESSION_SURVEY_START_TIME);
 
             $response = $this->createSurveyResponse($request, $survey, $startTime);
             $this->processAnswers($request, $response, $survey);
@@ -65,9 +70,9 @@ class SurveyPublicController extends Controller
             DB::commit();
 
             // Clear survey session data
-            session()->forget(['survey_session_id', 'survey_start_time']);
+            session()->forget([self::SESSION_SURVEY_ID, self::SESSION_SURVEY_START_TIME]);
 
-            return redirect()->route('survey.public.thankyou', $survey->access_token);
+            return redirect()->route('survey.public.thank', $survey->access_token);
         } catch (Exception $e) {
             DB::rollBack();
 
@@ -100,8 +105,15 @@ class SurveyPublicController extends Controller
 
     private function hasUserSubmitted(Survey $survey): bool
     {
+        if (! Auth::check()) {
+            return false;
+        }
+
+        $user = Auth::user();
+
         return SurveyResponse::where('survey_id', $survey->id)
-            ->where('user_id', Auth::id())
+            ->where('respondent_type', get_class($user))
+            ->where('respondent_id', $user->id)
             ->exists();
     }
 
@@ -120,22 +132,29 @@ class SurveyPublicController extends Controller
     private function initiateSurveySession(): void
     {
         $sessionId = Str::random(40);
-        session(['survey_session_id' => $sessionId]);
+        session([self::SESSION_SURVEY_ID => $sessionId]);
     }
 
     private function createSurveyResponse(Request $request, Survey $survey, $startTime): SurveyResponse
     {
-        $response = new SurveyResponse([
+        $responseData = [
             'survey_id' => $survey->id,
-            'user_id' => Auth::check() ? Auth::id() : null,
             'respondent_email' => $request->input('email'),
             'respondent_name' => $request->input('name'),
             'ip_address' => $request->ip(),
-            'session_id' => session('survey_session_id'),
+            'session_id' => session(self::SESSION_SURVEY_ID),
             'started_at' => $startTime,
             'completed_at' => now(),
-        ]);
+        ];
 
+        // Add respondent morphable relationship if user is authenticated
+        if (Auth::check()) {
+            $user = Auth::user();
+            $responseData['respondent_type'] = get_class($user);
+            $responseData['respondent_id'] = $user->id;
+        }
+
+        $response = new SurveyResponse($responseData);
         $response->save();
 
         return $response;

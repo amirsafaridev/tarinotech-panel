@@ -1,8 +1,12 @@
+@php use App\Enums\Assets\StyleLoader; @endphp
+@php use Modules\Survey\app\Enums\Database\QuestionTypeEnum; @endphp
 @extends('admin.master')
-@section('title') {{ $title }} @endsection
+@section('title')
+    {{ $title }}
+@endsection
 @section('head')
     @include('admin.partial.loader.style',['load'=>[
-       \App\Enums\Assets\StyleLoader::Toast(),
+       StyleLoader::Toast(),
    ]])
 @endsection
 @section('content')
@@ -11,9 +15,11 @@
         <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a
+                        href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">نظرسنجی‌ها</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.survey.question.index', $survey->id) }}">سوالات نظرسنجی</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.survey.question.index', $survey->id) }}">سوالات
+                        نظرسنجی</a></li>
                 <li class="breadcrumb-item active">افزودن سوال جدید</li>
             </ol>
         </div>
@@ -29,7 +35,8 @@
                 </div>
                 <div class="card-body pb-4">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ route('admin.survey.question.store', $survey->id) }}">
+                    <form class="request-form forms-sample" method="post"
+                          action="{{ route('admin.survey.question.store', $survey->id) }}">
                         @csrf
 
                         <div class="row">
@@ -46,7 +53,7 @@
                                     :required="true"
                                     :old="request('question_type')"
                                     :is-small="false"
-                                    :enum-class="\Modules\Survey\app\Enums\Database\QuestionTypeEnum::class"
+                                    :enum-class="QuestionTypeEnum::class"
                                 />
                             </div>
                         </div>
@@ -130,7 +137,8 @@
                         <div class="d-flex">
                             <span class="me-2"><i class="fa fa-lightbulb"></i></span>
                             <div>
-                                <strong>نکته:</strong> سوالات تک انتخابی و چند انتخابی برای تحلیل آماری و ایجاد نمودار مناسب‌تر هستند.
+                                <strong>نکته:</strong> سوالات تک انتخابی و چند انتخابی برای تحلیل آماری و ایجاد نمودار
+                                مناسب‌تر هستند.
                             </div>
                         </div>
                     </div>
@@ -155,15 +163,15 @@
             activeParentUl('{{ route('admin.survey.index') }}');
 
             // Handle question type change
-            $('#question_type').on('change', function() {
+            $('#question_type').on('change', function () {
                 const questionType = parseInt($(this).val());
 
                 // Hide choice options section by default
                 $('#choice-options').addClass('d-none');
 
                 // Show choice options section for Single(1) and Multiple(2) choice questions
-                if (questionType === {{ \Modules\Survey\app\Enums\Database\QuestionTypeEnum::Single }} ||
-                    questionType === {{ \Modules\Survey\app\Enums\Database\QuestionTypeEnum::Multiple }}) {
+                if (questionType === {{ QuestionTypeEnum::Single }} ||
+                    questionType === {{ QuestionTypeEnum::Multiple }}) {
                     $('#choice-options').removeClass('d-none');
                 }
             });

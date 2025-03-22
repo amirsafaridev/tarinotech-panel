@@ -25,7 +25,8 @@
                 @if(session('message'))
                     <p class="tank-message">{{ session('message') }}</p>
                 @else
-                    <p class="tank-message">پاسخ‌های شما با موفقیت ثبت شد. از مشارکت شما در این نظرسنجی سپاسگزاریم.<br>نظر شما برای ما ارزشمند است.</p>
+                    <p class="tank-message">پاسخ‌های شما با موفقیت ثبت شد. از مشارکت شما در این نظرسنجی سپاسگزاریم.<br>نظر
+                        شما برای ما ارزشمند است.</p>
                 @endif
 
                 <a href="https://tarinotech.com" class="tank-btn-primary">
@@ -38,7 +39,7 @@
 
 @section('scripts')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Create confetti elements
             const colors = ['#28a745', '#20c997', '#75b798', '#40916c', '#52b788', '#b7e4c7'];
             const confettiCount = 50;

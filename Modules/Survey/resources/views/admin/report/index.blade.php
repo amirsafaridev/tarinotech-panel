@@ -1,26 +1,33 @@
+@php use App\Enums\Assets\StyleLoader; @endphp
+@php use App\Enums\Assets\ScriptLoader; @endphp
 @extends('admin.master')
-@section('title') {{ $title }} @endsection
+@section('title')
+    {{ $title }}
+@endsection
 @section('head')
     @include('admin.partial.loader.style',['load'=>[
-        \App\Enums\Assets\StyleLoader::Toast(),
-       /* \App\Enums\Assets\StyleLoader::Chart(),*/
+        StyleLoader::Toast(),
    ]])
     <style>
         .stat-card {
             transition: all 0.3s ease;
         }
+
         .stat-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
+
         .stat-icon {
             font-size: 2.5rem;
             opacity: 0.8;
         }
+
         .chart-container {
             position: relative;
             height: 350px;
         }
+
         .completion-progress {
             height: 25px;
             border-radius: 12px;
@@ -33,9 +40,11 @@
         <h1 class="page-title">{{ $title }}: {{ $survey->title }}</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a
+                        href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">نظرسنجی‌ها</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.survey.edit', $survey->id) }}">{{ $survey->title }}</a></li>
+                <li class="breadcrumb-item"><a
+                        href="{{ route('admin.survey.edit', $survey->id) }}">{{ $survey->title }}</a></li>
                 <li class="breadcrumb-item active">گزارش</li>
             </ol>
         </div>
@@ -44,6 +53,7 @@
     <div class="row">
         <!-- Report actions -->
         <div class="col-xl-12">
+            @include('admin.partial.message')
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="d-flex flex-wrap justify-content-between align-items-center">
@@ -242,14 +252,20 @@
                                         <td>
                                             <div class="d-flex align-items-center">
                                                 <div class="ms-2">
-                                                    <p class="mb-0 text-truncate" style="max-width: 250px;">{{ $question['text'] }}</p>
+                                                    <p class="mb-0 text-truncate"
+                                                       style="max-width: 250px;">{{ $question['text'] }}</p>
                                                 </div>
                                             </div>
                                         </td>
                                         <td>{{ $question['answers_count'] }}</td>
                                         <td>
                                             <div class="progress completion-progress">
-                                                <div class="progress-bar bg-success" role="progressbar" style="width: {{ $question['completion_rate'] }}%;" aria-valuenow="{{ $question['completion_rate'] }}" aria-valuemin="0" aria-valuemax="100">{{ $question['completion_rate'] }}%</div>
+                                                <div class="progress-bar bg-success" role="progressbar"
+                                                     style="width: {{ $question['completion_rate'] }}%;"
+                                                     aria-valuenow="{{ $question['completion_rate'] }}"
+                                                     aria-valuemin="0"
+                                                     aria-valuemax="100">{{ $question['completion_rate'] }}%
+                                                </div>
                                             </div>
                                         </td>
                                         <td>
@@ -260,7 +276,8 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('admin.survey.report.question', [$survey->id, $question['id']]) }}" class="btn btn-sm btn-primary">
+                                            <a href="{{ route('admin.survey.report.question', [$survey->id, $question['id']]) }}"
+                                               class="btn btn-sm btn-primary">
                                                 <i class="fa fa-eye"></i>
                                             </a>
                                         </td>
@@ -304,14 +321,20 @@
                                         <td>
                                             <div class="d-flex align-items-center">
                                                 <div class="ms-2">
-                                                    <p class="mb-0 text-truncate" style="max-width: 250px;">{{ $question['text'] }}</p>
+                                                    <p class="mb-0 text-truncate"
+                                                       style="max-width: 250px;">{{ $question['text'] }}</p>
                                                 </div>
                                             </div>
                                         </td>
                                         <td>{{ $question['answers_count'] }}</td>
                                         <td>
                                             <div class="progress completion-progress">
-                                                <div class="progress-bar bg-warning" role="progressbar" style="width: {{ $question['completion_rate'] }}%;" aria-valuenow="{{ $question['completion_rate'] }}" aria-valuemin="0" aria-valuemax="100">{{ $question['completion_rate'] }}%</div>
+                                                <div class="progress-bar bg-warning" role="progressbar"
+                                                     style="width: {{ $question['completion_rate'] }}%;"
+                                                     aria-valuenow="{{ $question['completion_rate'] }}"
+                                                     aria-valuemin="0"
+                                                     aria-valuemax="100">{{ $question['completion_rate'] }}%
+                                                </div>
                                             </div>
                                         </td>
                                         <td>
@@ -322,7 +345,8 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('admin.survey.report.question', [$survey->id, $question['id']]) }}" class="btn btn-sm btn-primary">
+                                            <a href="{{ route('admin.survey.report.question', [$survey->id, $question['id']]) }}"
+                                               class="btn btn-sm btn-primary">
                                                 <i class="fa fa-eye"></i>
                                             </a>
                                         </td>
@@ -340,10 +364,10 @@
 @endsection
 @section('script')
     @include('admin.partial.loader.script',['load'=>[
-        \App\Enums\Assets\ScriptLoader::Chart(),
+        ScriptLoader::Chart(),
     ]])
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             activeParentUl('{{ route('admin.survey.index') }}');
 
             @if(!empty($responseTrend))

@@ -99,7 +99,6 @@ class QuestionOptionController extends Controller
 
             return $this->successResponse(
                 route('admin.survey.question.option.index', [$survey->id, $question->id]),
-                'گزینه با موفقیت بروزرسانی شد.'
             );
         } catch (Exception $exception) {
             DB::rollBack();
@@ -113,7 +112,6 @@ class QuestionOptionController extends Controller
         try {
             $option->delete();
 
-            // Reorder remaining options
             $this->reorderOptions($question);
 
             return $this->successDestroyBack(
@@ -124,7 +122,7 @@ class QuestionOptionController extends Controller
         }
     }
 
-    public function reorder(Request $request, Survey $survey, SurveyQuestion $question)
+    public function reorder(Request $request, SurveyQuestion $question)
     {
         try {
             $items = $request->input('items', []);

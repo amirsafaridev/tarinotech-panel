@@ -4,7 +4,10 @@ use Illuminate\Support\Facades\Route;
 use Modules\Survey\app\Http\Controllers\Admin\QuestionController;
 use Modules\Survey\app\Http\Controllers\Admin\QuestionOptionController;
 use Modules\Survey\app\Http\Controllers\Admin\SurveyController;
+use Modules\Survey\app\Http\Controllers\Admin\SurveyReportChartController;
 use Modules\Survey\app\Http\Controllers\Admin\SurveyReportController;
+use Modules\Survey\app\Http\Controllers\Admin\SurveyReportQuestionController;
+use Modules\Survey\app\Http\Controllers\Admin\SurveyReportSummaryController;
 use Modules\Survey\app\Http\Controllers\Admin\SurveyResponseController;
 
 Route::group(['guard' => 'admin'], function () {
@@ -53,10 +56,10 @@ Route::group(['guard' => 'admin'], function () {
     // Survey Reports
     Route::group(['as' => 'report.', 'prefix' => '{survey}/report'], function () {
         Route::get('/', [SurveyReportController::class, 'index'])->name('index');
-        Route::get('/summary', [SurveyReportController::class, 'summary'])->name('summary');
-        Route::get('/question/{question}', [SurveyReportController::class, 'questionReport'])->name('question');
+        Route::get('/summary', [SurveyReportSummaryController::class, 'index'])->name('summary');
+        Route::get('/question/{question}', [SurveyReportQuestionController::class, 'index'])->name('question');
         Route::get('/export', [SurveyReportController::class, 'export'])->name('export');
-        Route::get('/charts', [SurveyReportController::class, 'charts'])->name('charts');
+        Route::get('/charts', [SurveyReportChartController::class, 'index'])->name('charts');
     });
 
 });

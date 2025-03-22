@@ -6,12 +6,12 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest
 {
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    public function rules()
+    public function rules(): array
     {
         $rules = [
             'question_text' => 'required|string|max:500',
@@ -36,7 +36,7 @@ class UpdateRequest extends FormRequest
         return $rules;
     }
 
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'question_text' => 'متن سوال',

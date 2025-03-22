@@ -1,9 +1,12 @@
+@php use App\Enums\Assets\StyleLoader; @endphp
+@php use App\Enums\Assets\ScriptLoader; @endphp
 @extends('admin.master')
-@section('title') {{ $title }} @endsection
+@section('title')
+    {{ $title }}
+@endsection
 @section('head')
     @include('admin.partial.loader.style',['load'=>[
-        \App\Enums\Assets\StyleLoader::Toast(),
-        /*\App\Enums\Assets\StyleLoader::Chart(),*/
+        StyleLoader::Toast(),
    ]])
     <style>
         .question-card {
@@ -11,14 +14,17 @@
             border-right: 4px solid #5d87ff;
             transition: all 0.3s ease;
         }
+
         .question-card:hover {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
+
         .chart-container {
             position: relative;
             height: 250px;
             margin-top: 15px;
         }
+
         .option-badge {
             display: inline-block;
             margin-right: 5px;
@@ -28,13 +34,14 @@
             font-size: 0.85rem;
             color: #fff;
         }
+
         .text-answer {
-            background-color: #f9f9f9;
             border-right: 3px solid #5d87ff;
             padding: 10px 15px;
             margin-bottom: 10px;
             border-radius: 4px;
         }
+
         .nav-link.active {
             background-color: #5d87ff !important;
             color: white !important;
@@ -47,10 +54,13 @@
         <h1 class="page-title">{{ $title }}: {{ $survey->title }}</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a
+                        href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">نظرسنجی‌ها</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.survey.edit', $survey->id) }}">{{ $survey->title }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.survey.report.index', $survey->id) }}">گزارش</a></li>
+                <li class="breadcrumb-item"><a
+                        href="{{ route('admin.survey.edit', $survey->id) }}">{{ $survey->title }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.survey.report.index', $survey->id) }}">گزارش</a>
+                </li>
                 <li class="breadcrumb-item active">خلاصه نتایج</li>
             </ol>
         </div>
@@ -89,17 +99,20 @@
         <div class="col-xl-12 mb-4">
             <ul class="nav nav-tabs nav-justified" id="questionTypeTabs" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all-questions" type="button" role="tab" aria-controls="all-questions" aria-selected="true">
+                    <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all-questions"
+                            type="button" role="tab" aria-controls="all-questions" aria-selected="true">
                         <i class="fa fa-list me-1"></i> همه سوالات
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="choice-tab" data-bs-toggle="tab" data-bs-target="#choice-questions" type="button" role="tab" aria-controls="choice-questions" aria-selected="false">
+                    <button class="nav-link" id="choice-tab" data-bs-toggle="tab" data-bs-target="#choice-questions"
+                            type="button" role="tab" aria-controls="choice-questions" aria-selected="false">
                         <i class="fa fa-check-circle me-1"></i> سوالات انتخابی
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="text-tab" data-bs-toggle="tab" data-bs-target="#text-questions" type="button" role="tab" aria-controls="text-questions" aria-selected="false">
+                    <button class="nav-link" id="text-tab" data-bs-toggle="tab" data-bs-target="#text-questions"
+                            type="button" role="tab" aria-controls="text-questions" aria-selected="false">
                         <i class="fa fa-align-left me-1"></i> سوالات متنی
                     </button>
                 </li>
@@ -129,7 +142,8 @@
                                     </h5>
                                     <div>
                                         <span class="badge bg-primary">{{ $question['type_name'] }}</span>
-                                        <a href="{{ route('admin.survey.report.question', [$survey->id, $question['id']]) }}" class="btn btn-sm btn-outline-primary ms-2">
+                                        <a href="{{ route('admin.survey.report.question', [$survey->id, $question['id']]) }}"
+                                           class="btn btn-sm btn-outline-primary ms-2">
                                             <i class="fa fa-chart-line"></i> گزارش تفصیلی
                                         </a>
                                     </div>
@@ -146,60 +160,67 @@
                                                 <span class="fw-bold">{{ $question['response_rate'] }}%</span>
                                             </div>
                                             <div class="progress mb-4" style="height: 15px;">
-                                                <div class="progress-bar {{ $question['response_rate'] < 40 ? 'bg-danger' : ($question['response_rate'] < 70 ? 'bg-warning' : 'bg-success') }}"
-                                                     role="progressbar"
-                                                     style="width: {{ $question['response_rate'] }}%;"
-                                                     aria-valuenow="{{ $question['response_rate'] }}"
-                                                     aria-valuemin="0"
-                                                     aria-valuemax="100">
+                                                <div
+                                                    class="progress-bar {{ $question['response_rate'] < 40 ? 'bg-danger' : ($question['response_rate'] < 70 ? 'bg-warning' : 'bg-success') }}"
+                                                    role="progressbar"
+                                                    style="width: {{ $question['response_rate'] }}%;"
+                                                    aria-valuenow="{{ $question['response_rate'] }}"
+                                                    aria-valuemin="0"
+                                                    aria-valuemax="100">
                                                     {{ $question['response_rate'] }}%
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-8">
-                                            @if(in_array($question['type'], [1, 2])) <!-- Single or Multiple choice -->
-                                            @if(isset($question['options']) && count($question['options']) > 0)
-                                                <div class="chart-container">
-                                                    <canvas id="questionChart{{ $question['id'] }}" width="400" height="250"></canvas>
-                                                </div>
-                                                <div class="mt-3">
-                                                    @foreach($question['options'] as $option)
-                                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                                            <div>
-                                                                    <span class="option-badge" style="background-color: {{ $option['color'] }}">
+                                            @if(in_array($question['type'], [1, 2]))
+                                                <!-- Single or Multiple choice -->
+                                                @if(isset($question['options']) && count($question['options']) > 0)
+                                                    <div class="chart-container">
+                                                        <canvas id="questionChart{{ $question['id'] }}" width="400"
+                                                                height="250"></canvas>
+                                                    </div>
+                                                    <div class="mt-3">
+                                                        @foreach($question['options'] as $option)
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center mb-2">
+                                                                <div>
+                                                                    <span class="option-badge"
+                                                                          style="background-color: {{ $option['color'] }}">
                                                                         {{ $option['text'] }}
                                                                     </span>
+                                                                </div>
+                                                                <div>
+                                                                    <span class="fw-bold">{{ $option['count'] }}</span>
+                                                                    <span class="text-muted">({{ $option['percentage'] }}%)</span>
+                                                                </div>
                                                             </div>
-                                                            <div>
-                                                                <span class="fw-bold">{{ $option['count'] }}</span>
-                                                                <span class="text-muted">({{ $option['percentage'] }}%)</span>
-                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                @else
+                                                    <div class="alert alert-warning">
+                                                        <i class="fa fa-exclamation-circle me-1"></i>
+                                                        هیچ پاسخی برای این سوال ثبت نشده است.
+                                                    </div>
+                                                @endif
+                                            @elseif($question['type'] == 3)
+                                                <!-- Text -->
+                                                @if(isset($question['text_samples']) && count($question['text_samples']) > 0)
+                                                    <h6 class="mb-3">نمونه پاسخ‌های متنی:</h6>
+                                                    @foreach($question['text_samples'] as $textAnswer)
+                                                        <div class="text-answer">
+                                                            "{{ $textAnswer }}"
                                                         </div>
                                                     @endforeach
-                                                </div>
-                                            @else
-                                                <div class="alert alert-warning">
-                                                    <i class="fa fa-exclamation-circle me-1"></i>
-                                                    هیچ پاسخی برای این سوال ثبت نشده است.
-                                                </div>
-                                            @endif
-                                            @elseif($question['type'] == 3) <!-- Text -->
-                                            @if(isset($question['text_samples']) && count($question['text_samples']) > 0)
-                                                <h6 class="mb-3">نمونه پاسخ‌های متنی:</h6>
-                                                @foreach($question['text_samples'] as $textAnswer)
-                                                    <div class="text-answer">
-                                                        "{{ $textAnswer }}"
+                                                    <a href="{{ route('admin.survey.report.question', [$survey->id, $question['id']]) }}"
+                                                       class="btn btn-sm btn-outline-primary mt-2">
+                                                        <i class="fa fa-eye"></i> مشاهده همه پاسخ‌ها
+                                                    </a>
+                                                @else
+                                                    <div class="alert alert-warning">
+                                                        <i class="fa fa-exclamation-circle me-1"></i>
+                                                        هیچ پاسخ متنی برای این سوال ثبت نشده است.
                                                     </div>
-                                                @endforeach
-                                                <a href="{{ route('admin.survey.report.question', [$survey->id, $question['id']]) }}" class="btn btn-sm btn-outline-primary mt-2">
-                                                    <i class="fa fa-eye"></i> مشاهده همه پاسخ‌ها
-                                                </a>
-                                            @else
-                                                <div class="alert alert-warning">
-                                                    <i class="fa fa-exclamation-circle me-1"></i>
-                                                    هیچ پاسخ متنی برای این سوال ثبت نشده است.
-                                                </div>
-                                            @endif
+                                                @endif
                                             @endif
                                         </div>
                                     </div>
@@ -241,7 +262,8 @@
                                     <div class="row">
                                         <div class="col-md-5">
                                             <div class="chart-container">
-                                                <canvas id="choiceQuestionChart{{ $question['id'] }}" width="400" height="250"></canvas>
+                                                <canvas id="choiceQuestionChart{{ $question['id'] }}" width="400"
+                                                        height="250"></canvas>
                                             </div>
                                         </div>
                                         <div class="col-md-7">
@@ -260,12 +282,14 @@
                                                         @foreach($question['options'] as $option)
                                                             <tr>
                                                                 <td>
-                                                                        <span class="option-badge" style="background-color: {{ $option['color'] }}">
+                                                                        <span class="option-badge"
+                                                                              style="background-color: {{ $option['color'] }}">
                                                                             {{ $option['text'] }}
                                                                         </span>
                                                                 </td>
                                                                 <td class="text-center">{{ $option['count'] }}</td>
-                                                                <td class="text-center">{{ $option['percentage'] }}%</td>
+                                                                <td class="text-center">{{ $option['percentage'] }}%
+                                                                </td>
                                                                 <td>
                                                                     <div class="progress" style="height: 15px;">
                                                                         <div class="progress-bar"
@@ -292,7 +316,8 @@
                                     </div>
                                 </div>
                                 <div class="card-footer text-end">
-                                    <a href="{{ route('admin.survey.report.question', [$survey->id, $question['id']]) }}" class="btn btn-primary">
+                                    <a href="{{ route('admin.survey.report.question', [$survey->id, $question['id']]) }}"
+                                       class="btn btn-primary">
                                         <i class="fa fa-chart-line me-1"></i> گزارش تفصیلی
                                     </a>
                                 </div>
@@ -341,12 +366,13 @@
                                                 <span class="fw-bold">{{ $question['response_rate'] }}%</span>
                                             </div>
                                             <div class="progress mb-4" style="height: 15px;">
-                                                <div class="progress-bar {{ $question['response_rate'] < 40 ? 'bg-danger' : ($question['response_rate'] < 70 ? 'bg-warning' : 'bg-success') }}"
-                                                     role="progressbar"
-                                                     style="width: {{ $question['response_rate'] }}%;"
-                                                     aria-valuenow="{{ $question['response_rate'] }}"
-                                                     aria-valuemin="0"
-                                                     aria-valuemax="100">
+                                                <div
+                                                    class="progress-bar {{ $question['response_rate'] < 40 ? 'bg-danger' : ($question['response_rate'] < 70 ? 'bg-warning' : 'bg-success') }}"
+                                                    role="progressbar"
+                                                    style="width: {{ $question['response_rate'] }}%;"
+                                                    aria-valuenow="{{ $question['response_rate'] }}"
+                                                    aria-valuemin="0"
+                                                    aria-valuemax="100">
                                                     {{ $question['response_rate'] }}%
                                                 </div>
                                             </div>
@@ -368,7 +394,8 @@
                                     @endif
                                 </div>
                                 <div class="card-footer text-end">
-                                    <a href="{{ route('admin.survey.report.question', [$survey->id, $question['id']]) }}" class="btn btn-primary">
+                                    <a href="{{ route('admin.survey.report.question', [$survey->id, $question['id']]) }}"
+                                       class="btn btn-primary">
                                         <i class="fa fa-eye me-1"></i> مشاهده همه پاسخ‌ها
                                     </a>
                                 </div>
@@ -383,10 +410,10 @@
 @endsection
 @section('script')
     @include('admin.partial.loader.script',['load'=>[
-        \App\Enums\Assets\ScriptLoader::Chart(),
+        ScriptLoader::Chart(),
     ]])
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             activeParentUl('{{ route('admin.survey.index') }}');
 
             // Generate charts for choice questions
@@ -422,7 +449,7 @@
                         },
                         tooltip: {
                             callbacks: {
-                                label: function(context) {
+                                label: function (context) {
                                     const label = context.label || '';
                                     const value = context.formattedValue || '';
                                     const dataset = context.dataset;
@@ -462,7 +489,7 @@
                             },
                             tooltip: {
                                 callbacks: {
-                                    label: function(context) {
+                                    label: function (context) {
                                         const label = context.label || '';
                                         const value = context.formattedValue || '';
                                         const dataset = context.dataset;

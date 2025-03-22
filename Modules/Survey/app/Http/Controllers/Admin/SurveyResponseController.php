@@ -153,29 +153,22 @@ class SurveyResponseController extends Controller
     {
         $responseItems = collect($responses->items());
         $responsesWithTimes = $responseItems->filter(function ($response) {
-            return $response->started_at && $response->completed_at;
+            return $response->getCompletionTimeInSeconds() !== null;
         });
 
         if ($responsesWithTimes->isEmpty()) {
             return 'اطلاعات موجود نیست';
         }
 
-        $totalSeconds = 0;
-
-        foreach ($responsesWithTimes as $response) {
-            $totalSeconds += $response->completed_at->diffInSeconds($response->started_at);
-        }
+        $totalSeconds = $responsesWithTimes->sum(function ($response) {
+            return $response->getCompletionTimeInSeconds();
+        });
 
         $count = $responsesWithTimes->count();
-
-        if ($count === 0) {
-            return 'اطلاعات موجود نیست';
-        }
-
         $averageSeconds = $totalSeconds / $count;
         $minutes = floor($averageSeconds / 60);
         $seconds = round($averageSeconds % 60);
 
-        return "{$minutes} دقیقه و {$seconds} ثانیه";
+        return "$minutes دقیقه و $seconds ثانیه";
     }
 }

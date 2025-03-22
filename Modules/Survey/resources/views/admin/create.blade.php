@@ -1,9 +1,14 @@
+@php use App\Enums\Assets\StyleLoader; @endphp
+@php use Modules\Survey\app\Enums\Database\AuthTypeEnum; @endphp
+@php use App\Enums\Assets\ScriptLoader; @endphp
 @extends('admin.master')
-@section('title') {{ $title }} @endsection
+@section('title')
+    {{ $title }}
+@endsection
 @section('head')
     @include('admin.partial.loader.style',['load'=>[
-       \App\Enums\Assets\StyleLoader::Toast(),
-       \App\Enums\Assets\StyleLoader::Datepicker(),
+       StyleLoader::Toast(),
+       StyleLoader::Datepicker(),
    ]])
 @endsection
 @section('content')
@@ -12,7 +17,8 @@
         <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a
+                        href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">نظرسنجی‌ها</a></li>
                 <li class="breadcrumb-item active">ایجاد</li>
             </ol>
@@ -68,7 +74,7 @@
                                     title="انتخاب گارد احراز هویت"
                                     :old="request('auth_guard')"
                                     :is-small="false"
-                                    :enum-class="\Modules\Survey\app\Enums\Database\AuthTypeEnum::class"
+                                    :enum-class="AuthTypeEnum::class"
                                 />
                             </div>
                         </div>
@@ -82,15 +88,15 @@
 @endsection
 @section('script')
     @include('admin.partial.loader.script',['load'=>[
-        \App\Enums\Assets\ScriptLoader::Datepicker(),
+        ScriptLoader::Datepicker(),
     ]])
     @include('admin.partial.request')
     <script>
-        $(document).ready(function (){
+        $(document).ready(function () {
             activeParentUl('{{ route('admin.survey.index') }}');
             jalaliDatepicker.startWatch();
 
-            $('#requires_auth').on('change', function() {
+            $('#requires_auth').on('change', function () {
                 if ($(this).is(':checked')) {
                     $('.auth-guard-container').removeClass('d-none');
                 } else {

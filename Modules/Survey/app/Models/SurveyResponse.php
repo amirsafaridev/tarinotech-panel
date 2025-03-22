@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Modules\Log\app\Enums\LogNames;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -40,14 +41,36 @@ class SurveyResponse extends Model
         return $this->belongsTo(Survey::class);
     }
 
-    public function user(): BelongsTo
+    public function respondent(): MorphTo
     {
-        return $this->belongsTo(User::class);
+        return $this->morphTo();
     }
 
     public function answers(): HasMany
     {
         return $this->hasMany(SurveyAnswer::class, 'response_id');
+    }
+
+    public function getCompletionTimeInSeconds(): ?int
+    {
+        if (! $this->started_at || ! $this->completed_at) {
+            return null;
+        }
+
+        return $this->completed_at->diffInSeconds($this->started_at);
+    }
+
+    public function getCompletionTimeString(): string
+    {
+        if (! $this->started_at || ! $this->completed_at) {
+            return 'نامشخص';
+        }
+
+        $seconds = $this->getCompletionTimeInSeconds();
+        $minutes = floor($seconds / 60);
+        $remainingSeconds = $seconds % 60;
+
+        return "$minutes دقیقه و $remainingSeconds ثانیه";
     }
 
     public function getActivitylogOptions(): LogOptions

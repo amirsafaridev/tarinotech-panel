@@ -1,9 +1,13 @@
+@php use App\Enums\Assets\StyleLoader; @endphp
+@php use App\Enums\Assets\ScriptLoader; @endphp
 @extends('admin.master')
-@section('title') {{ $title }} @endsection
+@section('title')
+    {{ $title }}
+@endsection
 @section('head')
     @include('admin.partial.loader.style',['load'=>[
-        \App\Enums\Assets\StyleLoader::Datepicker(),
-        \App\Enums\Assets\StyleLoader::Toast(),
+        StyleLoader::Datepicker(),
+        StyleLoader::Toast(),
    ]])
 @endsection
 @section('content')
@@ -12,9 +16,11 @@
         <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a
+                        href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">نظرسنجی‌ها</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.survey.edit', $survey->id) }}">{{ $survey->title }}</a></li>
+                <li class="breadcrumb-item"><a
+                        href="{{ route('admin.survey.edit', $survey->id) }}">{{ $survey->title }}</a></li>
                 <li class="breadcrumb-item active">پاسخ‌ها</li>
             </ol>
         </div>
@@ -77,7 +83,8 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <div class="card-title">لیست پاسخ‌ها</div>
-                    <a class="btn btn-sm btn-success datatable-export-button" href="{{ request()->fullUrlWithQuery(['export' => 'true']) }}" id="exportButton">خروجی Excel</a>
+                    <a class="btn btn-success datatable-export-button"
+                       href="{{ request()->fullUrlWithQuery(['export' => 'true']) }}" id="exportButton">خروجی Excel</a>
                 </div>
                 <div class="card-body">
                     @include('admin.partial.message')
@@ -125,7 +132,8 @@
                                         <td>{{ $response->created_at->toJalali()->format(formatJalaliDateTime()) }}</td>
                                         <td>
                                             <div class="d-flex gap-2">
-                                                <a href="{{ route('admin.survey.response.show', [$survey->id, $response->id]) }}" class="btn btn-sm btn-info">
+                                                <a href="{{ route('admin.survey.response.show', [$survey->id, $response->id]) }}"
+                                                   class="btn btn-sm btn-info">
                                                     <i class="fa fa-eye"></i> مشاهده
                                                 </a>
                                                 <button type="button" class="btn btn-sm btn-danger"
@@ -156,11 +164,11 @@
 @endsection
 @section('script')
     @include('admin.partial.loader.script',['load'=>[
-        \App\Enums\Assets\ScriptLoader::Alert(),
-        \App\Enums\Assets\ScriptLoader::Datepicker(),
+        ScriptLoader::Alert(),
+        ScriptLoader::Datepicker(),
     ]])
     <script>
-        $(document).ready(function (){
+        $(document).ready(function () {
             activeParentUl('{{ route('admin.survey.index') }}');
             jalaliDatepicker.startWatch();
         });
@@ -176,7 +184,7 @@
                 confirmButtonText: 'بله، حذف کن!',
                 cancelButtonText: 'خیر، انصراف',
                 closeOnConfirm: false
-            }, function(){
+            }, function () {
                 const form = $('#delete-form');
                 form.attr('action', url);
                 form.submit();

@@ -1,9 +1,14 @@
+@php use App\Enums\Assets\StyleLoader; @endphp
+@php use Modules\Survey\app\Enums\Database\QuestionTypeEnum; @endphp
+@php use App\Enums\Assets\ScriptLoader; @endphp
 @extends('admin.master')
-@section('title') {{ $title }} @endsection
+@section('title')
+    {{ $title }}
+@endsection
 @section('head')
     @include('admin.partial.loader.style',['load'=>[
-        \App\Enums\Assets\StyleLoader::Toast(),
-        \App\Enums\Assets\StyleLoader::JQueryUI(),
+        StyleLoader::Toast(),
+        StyleLoader::JQueryUI(),
    ]])
 @endsection
 @section('content')
@@ -12,9 +17,11 @@
         <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a
+                        href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">نظرسنجی‌ها</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.survey.question.index', $survey->id) }}">سوالات نظرسنجی</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.survey.question.index', $survey->id) }}">سوالات
+                        نظرسنجی</a></li>
                 <li class="breadcrumb-item active">گزینه‌های سوال</li>
             </ol>
         </div>
@@ -30,16 +37,16 @@
                             نوع سوال:
                             @php
                                 $type = $question->question_type;
-                                $typeName = \Modules\Survey\app\Enums\Database\QuestionTypeEnum::getDescription($type);
+                                $typeName = QuestionTypeEnum::getDescription($type);
                                 $badgeClass = '';
 
-                                if ($type == \Modules\Survey\app\Enums\Database\QuestionTypeEnum::Text) {
+                                if ($type == QuestionTypeEnum::Text) {
                                     $badgeClass = 'bg-primary';
                                     $icon = '<i class="fa fa-align-left me-1"></i>';
-                                } elseif ($type == \Modules\Survey\app\Enums\Database\QuestionTypeEnum::Single) {
+                                } elseif ($type == QuestionTypeEnum::Single) {
                                     $badgeClass = 'bg-success';
                                     $icon = '<i class="fa fa-dot-circle me-1"></i>';
-                                } elseif ($type == \Modules\Survey\app\Enums\Database\QuestionTypeEnum::Multiple) {
+                                } elseif ($type == QuestionTypeEnum::Multiple) {
                                     $badgeClass = 'bg-info';
                                     $icon = '<i class="fa fa-check-square me-1"></i>';
                                 } else {
@@ -51,8 +58,11 @@
                         </p>
                     </div>
                     <div>
-                        <a class="btn btn-primary" href="{{ route('admin.survey.question.option.create', [$survey->id, $question->id]) }}">افزودن گزینه جدید</a>
-                        <a class="btn btn-secondary" href="{{ route('admin.survey.question.index', $survey->id) }}">بازگشت به سوالات</a>
+                        <a class="btn btn-primary"
+                           href="{{ route('admin.survey.question.option.create', [$survey->id, $question->id]) }}">افزودن
+                            گزینه جدید</a>
+                        <a class="btn btn-secondary" href="{{ route('admin.survey.question.index', $survey->id) }}">بازگشت
+                            به سوالات</a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -60,7 +70,8 @@
 
                     @if($options->isEmpty())
                         <div class="alert alert-info">
-                            هنوز گزینه‌ای برای این سوال تعریف نشده است. برای افزودن گزینه روی دکمه "افزودن گزینه جدید" کلیک کنید.
+                            هنوز گزینه‌ای برای این سوال تعریف نشده است. برای افزودن گزینه روی دکمه "افزودن گزینه جدید"
+                            کلیک کنید.
                         </div>
                     @else
                         <div class="table-responsive">
@@ -87,18 +98,23 @@
                                         <td>{{ $option->order }}</td>
                                         <td>{{ $option->option_text }}</td>
                                         <td>
-                                            <span class="color-swatch" style="background-color: {{ $option->color_code }}; display: inline-block; width: 20px; height: 20px; border-radius: 4px; border: 1px solid #ccc;"></span>
+                                            <span class="color-swatch"
+                                                  style="background-color: {{ $option->color_code }}; display: inline-block; width: 20px; height: 20px; border-radius: 4px; border: 1px solid #ccc;"></span>
                                             <small>{{ $option->color_code }}</small>
                                         </td>
                                         <td>
                                             <div class="d-flex gap-1">
-                                                <a href="{{ route('admin.survey.question.option.edit', [$survey->id, $question->id, $option->id]) }}" class="btn btn-sm btn-warning">
+                                                <a href="{{ route('admin.survey.question.option.edit', [$survey->id, $question->id, $option->id]) }}"
+                                                   class="btn btn-sm btn-warning">
                                                     <i class="fa fa-edit"></i> ویرایش
                                                 </a>
-                                                <button type="button" class="btn btn-sm btn-danger" onclick="confirmDeleteOption({{ $option->id }})">
+                                                <button type="button" class="btn btn-sm btn-danger"
+                                                        onclick="confirmDeleteOption({{ $option->id }})">
                                                     <i class="fa fa-trash"></i> حذف
                                                 </button>
-                                                <form id="delete-option-{{ $option->id }}" action="{{ route('admin.survey.question.option.destroy', [$survey->id, $question->id, $option->id]) }}" method="POST" class="d-none">
+                                                <form id="delete-option-{{ $option->id }}"
+                                                      action="{{ route('admin.survey.question.option.destroy', [$survey->id, $question->id, $option->id]) }}"
+                                                      method="POST" class="d-none">
                                                     @csrf
                                                     @method('DELETE')
                                                 </form>
@@ -118,20 +134,20 @@
 @endsection
 @section('script')
     @include('admin.partial.loader.script',['load'=>[
-        \App\Enums\Assets\ScriptLoader::Alert(),
-        \App\Enums\Assets\ScriptLoader::JQueryUI(),
-        \App\Enums\Assets\ScriptLoader::Toast(),
+        ScriptLoader::Alert(),
+        ScriptLoader::JQueryUI(),
+        ScriptLoader::Toast(),
     ]])
     <script>
-        $(document).ready(function (){
+        $(document).ready(function () {
             activeParentUl('{{ route('admin.survey.index') }}');
 
             // Initialize sortable
             $('#sortable-options').sortable({
                 handle: '.drag-handle',
-                update: function(event, ui) {
+                update: function (event, ui) {
                     let items = [];
-                    $('#sortable-options tr').each(function(index) {
+                    $('#sortable-options tr').each(function (index) {
                         items.push({
                             id: $(this).data('id'),
                             order: index + 1
@@ -146,30 +162,30 @@
                             _token: '{{ csrf_token() }}',
                             items: items
                         },
-                        success: function(response) {
+                        success: function (response) {
 
                             $.toast({
                                 heading: 'ترتیب گزینه‌ها با موفقیت ذخیره شد.',
-                                text: response.message ,
+                                text: response.message,
                                 allowToastClose: false,
-                                position:'bottom-left',
-                                hideAfter:4400,
-                                textAlign : 'right',
+                                position: 'bottom-left',
+                                hideAfter: 4400,
+                                textAlign: 'right',
                                 icon: 'success'
                             });
                             // Update displayed order numbers
-                            $('#sortable-options tr').each(function(index) {
+                            $('#sortable-options tr').each(function (index) {
                                 $(this).find('td:eq(2)').text(index + 1);
                             });
                         },
-                        error: function() {
+                        error: function () {
                             $.toast({
                                 heading: 'خطا در ذخیره ترتیب سوالات.',
-                                text: response.message ,
+                                text: response.message,
                                 allowToastClose: false,
-                                position:'bottom-left',
-                                hideAfter:4400,
-                                textAlign : 'right',
+                                position: 'bottom-left',
+                                hideAfter: 4400,
+                                textAlign: 'right',
                                 icon: 'warning'
                             })
                         }
@@ -189,7 +205,7 @@
                 confirmButtonText: 'بله، حذف کن!',
                 cancelButtonText: 'خیر، انصراف',
                 closeOnConfirm: false
-            }, function(){
+            }, function () {
                 document.getElementById('delete-option-' + id).submit();
             });
         }
