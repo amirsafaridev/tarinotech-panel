@@ -61,3 +61,7 @@
 @if (in_array(\App\Enums\Assets\ScriptLoader::SpectrumColorPicker(),$load))
     <script type="text/javascript" src="{{asset('res-admin/assets/plugins/spectrum-colorpicker/spectrum.min.js')}}"></script>
 @endif
+
+@if (in_array(\App\Enums\Assets\ScriptLoader::Chart(),$load))
+    <script type="text/javascript" src="{{asset('res-admin/assets/plugins/Chart.js/chart.min.js')}}"></script>
+@endif

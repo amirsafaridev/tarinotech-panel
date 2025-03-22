@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Survey\app\Http\Controllers\SurveyController;
+use Modules\Survey\app\Http\Controllers\Web\SurveyPublicController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,5 +15,7 @@ use Modules\Survey\app\Http\Controllers\SurveyController;
 */
 
 Route::group([], function () {
-    Route::resource('survey', SurveyController::class)->names('survey');
+    Route::get('survey/{accessToken}', [SurveyPublicController::class, 'show'])->name('survey.public.show');
+    Route::post('survey/{accessToken}/submit', [SurveyPublicController::class, 'submit'])->name('survey.public.submit');
+    Route::get('survey/{accessToken}/thankyou', [SurveyPublicController::class, 'thankYou'])->name('survey.public.thankyou');
 });

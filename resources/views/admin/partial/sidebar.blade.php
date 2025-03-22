@@ -296,7 +296,6 @@
                         'ADMIN_SURVEY_CREATE',
                         'ADMIN_SURVEY_QUESTION_INDEX',
                         'ADMIN_SURVEY_RESPONSE_INDEX',
-                        'ADMIN_SURVEY_REPORT_INDEX'
                     ])
                     <li class="sub-category">
                         <h3>نظرسنجی‌ها</h3>
@@ -315,10 +314,6 @@
 
                             @can('ADMIN_SURVEY_CREATE')
                                 <li><a href="{{ route('admin.survey.create') }}" class="slide-item">ایجاد</a></li>
-                            @endcan
-
-                            @can('ADMIN_SURVEY_REPORT_INDEX')
-                                <li><a href="{{ route('admin.survey.report.index') }}" class="slide-item">گزارشات</a></li>
                             @endcan
                         </ul>
                     </li>

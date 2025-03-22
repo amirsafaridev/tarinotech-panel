@@ -21,6 +21,7 @@ use BenSampo\Enum\Enum;
  * @method static Dropzone()
  * @method static JQueryUI)
  * @method static SpectrumColorPicker)
+ * @method static Chart)
  */
 final class ScriptLoader extends Enum
 {
@@ -55,4 +56,6 @@ final class ScriptLoader extends Enum
     const JQueryUI = 15;
 
     const SpectrumColorPicker = 16;
+
+    const Chart = 17;
 }

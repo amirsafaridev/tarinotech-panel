@@ -80,12 +80,52 @@
                                         <td>{{ $survey->end_date ? $survey->end_date->toJalali()->format(formatJalaliDate()) : 'نامشخص' }}</td>
                                         <td>{{ $survey->created_at->toJalali()->format(formatJalaliDateTime()) }}</td>
                                         <td>
-                                            <div class="d-flex gap-2">
-                                                <a class="btn btn-sm btn-warning" href="{{ route('admin.survey.edit', $survey->id) }}">{{ __('panel.action.edit') }}</a>
-                                                <a class="btn btn-sm btn-info" href="{{ route('admin.survey.question.index', $survey->id) }}">سوالات</a>
-                                                {{--<a class="btn btn-sm btn-success" href="{{ route('admin.survey.report.index', $survey->id) }}">گزارش</a>--}}
-                                                <a class="btn btn-sm btn-primary" href="{{ route('admin.survey.preview', $survey->id) }}" target="_blank">پیش‌نمایش</a>
-                                                <a class="btn btn-sm btn-secondary me-2" href="{{ route('admin.survey.duplicate', $survey->id) }}">تکثیر نظرسنجی</a>
+                                            <div class="dropdown position-static">
+                                                <button class="btn btn-sm btn-primary dropdown-toggle"
+                                                        type="button"
+                                                        id="surveyActionDropdown-{{ $survey->id }}"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    عملیات
+                                                </button>
+                                                <ul class="dropdown-menu position-absolute"
+                                                    style="right: auto; z-index: 1000;"
+                                                    aria-labelledby="surveyActionDropdown-{{ $survey->id }}">
+
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ route('survey.public.show', $survey->access_token) }}" target="_blank">
+                                                            <i class="fas fa-eye me-2"></i> نمایش
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ route('admin.survey.edit', $survey->id) }}">
+                                                            <i class="fas fa-edit me-2"></i> {{ __('panel.action.edit') }}
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ route('admin.survey.question.index', $survey->id) }}">
+                                                            <i class="fas fa-question-circle me-2"></i> سوالات
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ route('admin.survey.response.index', $survey->id) }}">
+                                                            <i class="fas fa-reply me-2"></i> پاسخ‌ها
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ route('admin.survey.report.index', ['survey' => $survey->id]) }}">
+                                                            <i class="fas fa-chart-bar me-2"></i> گزارش
+                                                        </a>
+                                                    </li>
+
+                                                    <li><hr class="dropdown-divider"></li>
+
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ route('admin.survey.duplicate', $survey->id) }}">
+                                                            <i class="fas fa-copy me-2"></i> تکثیر نظرسنجی
+                                                        </a>
+                                                    </li>
+                                                </ul>
                                             </div>
                                         </td>
                                     </tr>

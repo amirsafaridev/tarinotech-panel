@@ -92,7 +92,7 @@
                             <x-admin.button title="{{ trans('panel.update') }}" class="ml-2"/>
                             <a href="{{ route('admin.survey.question.index', $survey->id) }}" class="btn btn-info me-2">مدیریت سوالات</a>
                             {{--<a href="{{ route('admin.survey.response.index', $survey->id) }}" class="btn btn-success me-2">مشاهده پاسخ‌ها</a>--}}
-                            <a href="{{ route('admin.survey.preview', $survey->id) }}" class="btn btn-primary me-2" target="_blank">پیش‌نمایش</a>
+                            <a href="" class="btn btn-primary me-2" target="_blank">پیش‌نمایش</a>
                             <button type="button" class="btn btn-danger" onclick="confirmDelete()">{{ trans('panel.delete') }}</button>
                         </div>
                     </form>

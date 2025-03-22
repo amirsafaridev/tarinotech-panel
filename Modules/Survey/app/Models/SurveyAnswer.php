@@ -17,7 +17,7 @@ class SurveyAnswer extends Model
 
     protected $fillable = [
         'response_id',
-        'question_id',
+        'survey_question_id',
         'answer_text',
         'rating_value',
         'created_at',
@@ -31,7 +31,7 @@ class SurveyAnswer extends Model
 
     public function question(): BelongsTo
     {
-        return $this->belongsTo(SurveyQuestion::class);
+        return $this->belongsTo(SurveyQuestion::class, 'survey_question_id');
     }
 
     public function options(): HasMany

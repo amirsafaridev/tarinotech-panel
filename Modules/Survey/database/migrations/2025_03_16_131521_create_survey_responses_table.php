@@ -22,9 +22,11 @@ return new class extends Migration
             $table->ipAddress()->nullable();
             $table->string('session_id')->nullable();
 
+            $table->timestamp('started_at')->nullable();
+            $table->timestamp('completed_at')->nullable();
+
             $table->timestamps();
 
-            // Add index for faster reporting
             $table->index(['survey_id', 'created_at']);
         });
     }

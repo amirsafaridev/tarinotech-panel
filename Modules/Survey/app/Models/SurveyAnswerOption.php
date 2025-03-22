@@ -16,7 +16,7 @@ class SurveyAnswerOption extends Model
 
     protected $fillable = [
         'answer_id',
-        'question_option_id',
+        'survey_question_option_id',
         'created_at',
         'updated_at',
     ];
@@ -28,7 +28,7 @@ class SurveyAnswerOption extends Model
 
     public function questionOption(): BelongsTo
     {
-        return $this->belongsTo(SurveyQuestionOption::class);
+        return $this->belongsTo(SurveyQuestionOption::class, 'survey_question_option_id');
     }
 
     public function getActivitylogOptions(): LogOptions
