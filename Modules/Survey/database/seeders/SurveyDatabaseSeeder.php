@@ -108,7 +108,6 @@ class SurveyDatabaseSeeder extends Seeder
 
             $response = SurveyResponse::query()->create([
                 'survey_id' => $survey->id,
-                'user_id' => null,
                 'respondent_email' => fake()->email(),
                 'respondent_name' => $firstName.' '.$lastName,
                 'ip_address' => fake()->ipv4(),

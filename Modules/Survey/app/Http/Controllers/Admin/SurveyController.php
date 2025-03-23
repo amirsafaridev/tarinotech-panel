@@ -212,6 +212,7 @@ class SurveyController extends Controller
             'requires_auth' => $request->boolean('requires_auth'),
             'auth_guard' => $request->input('auth_guard'),
             'is_active' => $request->boolean('is_active', true),
+            'has_meta' => $request->boolean('has_meta', true),
         ];
 
         if ($request->filled('start_date')) {

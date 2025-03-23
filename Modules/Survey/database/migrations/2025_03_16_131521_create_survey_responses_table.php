@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('survey_responses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('survey_id')->constrained()->onDelete('cascade');
+            $table->foreignId('survey_meta_id')->nullable()->constrained()->onDelete('cascade');
 
             // Morphable relationship for user - allows any user type
             $table->nullableMorphs('respondent');

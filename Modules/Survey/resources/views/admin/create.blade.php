@@ -63,6 +63,9 @@
                                 <x-admin.checkbox identify="is_active" description="فعال"/>
                             </div>
                             <div class="col-md-6">
+                                <x-admin.checkbox identify="has_meta" description="دارای متا"/>
+                            </div>
+                            <div class="col-md-6">
                                 <x-admin.checkbox identify="requires_auth" description="نیاز به احراز هویت"/>
                             </div>
                         </div>

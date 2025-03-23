@@ -16,14 +16,13 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
 
-            $table->nullableMorphs('surveyable');
-
             $table->foreignId('admin_id')->constrained('users')->onDelete('cascade');
 
             $table->boolean('requires_auth')->default(false);
             $table->unsignedTinyInteger('auth_guard')->nullable();
 
             $table->boolean('is_active')->default(true);
+            $table->boolean('has_meta')->default(false);
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
             $table->string('access_token')->unique()->nullable();

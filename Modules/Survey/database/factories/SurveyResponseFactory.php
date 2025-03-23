@@ -18,7 +18,6 @@ class SurveyResponseFactory extends Factory
 
         return [
             'survey_id' => Survey::factory(),
-            'user_id' => null,
             'respondent_email' => fake()->email(),
             'respondent_name' => fake()->name().' '.fake()->lastName(),
             'ip_address' => fake()->ipv4(),

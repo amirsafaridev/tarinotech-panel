@@ -20,6 +20,7 @@ class StoreRequest extends FormRequest
             'requires_auth' => 'boolean',
             'auth_guard' => ['nullable', 'required_if:requires_auth,true', 'in:'.implode(',', AuthTypeEnum::getValues())],
             'is_active' => 'boolean',
+            'has_meta' => 'boolean',
             'start_date' => 'nullable|date_format:Y/m/d',
             'end_date' => 'nullable|date_format:Y/m/d|after_or_equal:start_date',
         ];
@@ -43,6 +44,7 @@ class StoreRequest extends FormRequest
         $this->merge([
             'auth_guard' => $this->has('requires_auth') && $this->input('auth_guard') ? (int) $this->input('auth_guard') : null,
             'is_active' => $this->has('is_active'),
+            'has_meta' => $this->has('has_meta'),
             'requires_auth' => $this->has('requires_auth'),
         ]);
     }

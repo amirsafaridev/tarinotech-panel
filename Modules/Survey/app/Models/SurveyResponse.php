@@ -51,6 +51,11 @@ class SurveyResponse extends Model
         return $this->hasMany(SurveyAnswer::class, 'response_id');
     }
 
+    public function meta(): BelongsTo
+    {
+        return $this->belongsTo(SurveyMeta::class, 'survey_meta_id');
+    }
+
     public function getCompletionTimeInSeconds(): ?int
     {
         if (! $this->started_at || ! $this->completed_at) {

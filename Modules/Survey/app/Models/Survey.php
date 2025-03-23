@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Admin\app\Models\Admin;
 use Modules\Log\app\Enums\LogNames;
@@ -30,6 +29,7 @@ class Survey extends Model
         'requires_auth',
         'auth_guard',
         'is_active',
+        'has_meta',
         'start_date',
         'end_date',
         'access_token',
@@ -40,14 +40,10 @@ class Survey extends Model
     protected $casts = [
         'requires_auth' => 'boolean',
         'is_active' => 'boolean',
+        'has_meta' => 'boolean',
         'start_date' => 'datetime',
         'end_date' => 'datetime',
     ];
-
-    public function surveyable(): MorphTo
-    {
-        return $this->morphTo();
-    }
 
     public function admin(): BelongsTo
     {
@@ -62,6 +58,11 @@ class Survey extends Model
     public function responses(): HasMany
     {
         return $this->hasMany(SurveyResponse::class);
+    }
+
+    public function metas(): HasMany
+    {
+        return $this->hasMany(SurveyMeta::class);
     }
 
     public function getActivitylogOptions(): LogOptions
