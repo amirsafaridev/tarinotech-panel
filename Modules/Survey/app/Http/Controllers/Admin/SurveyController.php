@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
+use Modules\Survey\app\Enums\Database\QuestionTypeEnum;
 use Modules\Survey\app\Exports\Admin\SurveyExport;
 use Modules\Survey\app\Filters\Survey\DateFilter;
 use Modules\Survey\app\Filters\Survey\RequiresAuthFilter;
@@ -182,10 +183,10 @@ class SurveyController extends Controller
                 $newQuestion->survey_id = $newSurvey->id;
                 $newQuestion->save();
 
-                if (in_array($question->question_type, ['single_choice', 'multiple_choice'])) {
+                if (in_array($question->question_type, [QuestionTypeEnum::Single, QuestionTypeEnum::Multiple])) {
                     foreach ($question->options as $option) {
                         $newOption = $option->replicate();
-                        $newOption->question_id = $newQuestion->id;
+                        $newOption->survey_question_id = $newQuestion->id;
                         $newOption->save();
                     }
                 }
@@ -212,7 +213,7 @@ class SurveyController extends Controller
             'requires_auth' => $request->boolean('requires_auth'),
             'auth_guard' => $request->input('auth_guard'),
             'is_active' => $request->boolean('is_active', true),
-            'has_meta' => $request->boolean('has_meta', true),
+            'has_meta' => $request->boolean('has_meta'),
         ];
 
         if ($request->filled('start_date')) {

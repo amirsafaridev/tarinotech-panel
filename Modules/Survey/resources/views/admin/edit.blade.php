@@ -68,11 +68,15 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <x-admin.checkbox identify="is_active" description="فعال"
-                                                  :is-checked="$survey->is_active"/>
+                                                  :old="$survey->is_active"/>
+                            </div>
+                            <div class="col-md-6">
+                                <x-admin.checkbox identify="has_meta" description="دارای متا"
+                                                  :old="$survey->has_meta"/>
                             </div>
                             <div class="col-md-6">
                                 <x-admin.checkbox identify="requires_auth" description="نیاز به احراز هویت"
-                                                  :is-checked="$survey->requires_auth"/>
+                                                  :old="$survey->requires_auth"/>
                             </div>
                         </div>
 

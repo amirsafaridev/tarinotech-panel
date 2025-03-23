@@ -69,7 +69,7 @@ class RouteServiceProvider extends ServiceProvider
         $prefix = config('routes.admin-prefix');
         Route::prefix($prefix.'/survey')
             ->namespace($this->moduleNamespace)
-            ->middleware(['web', 'admin.auth', /*'acl',*/ 'admin.scope'])
+            ->middleware(['web', 'admin.auth', 'acl', 'admin.scope'])
             ->as('admin.survey.')
             ->group(module_path('Survey', '/routes/admin.php'));
     }
