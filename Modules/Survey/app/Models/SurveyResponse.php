@@ -20,15 +20,17 @@ class SurveyResponse extends Model
 
     protected $fillable = [
         'survey_id',
-        'user_id',
+        'survey_meta_id',
+        'respondent_type',
+        'respondent_id',
         'respondent_email',
         'respondent_name',
         'ip_address',
         'session_id',
-        'created_at',
-        'updated_at',
         'started_at',
         'completed_at',
+        'created_at',
+        'updated_at',
     ];
 
     protected $casts = [

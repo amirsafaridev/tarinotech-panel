@@ -28,14 +28,15 @@ class SurveyResponseController extends Controller
 
     const SHOW_TITLE = 'جزئیات پاسخ';
 
-    public function index(Survey $survey): View
+    public function index(Survey $survey)
     {
         $title = self::INDEX_TITLE;
 
         $responses = SurveyResponse::query()
             ->select([
                 'survey_responses.id',
-                'survey_responses.user_id',
+                'survey_responses.respondent_type',
+                'survey_responses.respondent_id',
                 'survey_responses.respondent_email',
                 'survey_responses.respondent_name',
                 'survey_responses.ip_address',
@@ -48,7 +49,8 @@ class SurveyResponseController extends Controller
             ->leftJoin('survey_answers', 'survey_responses.id', '=', 'survey_answers.response_id')
             ->groupBy(
                 'survey_responses.id',
-                'survey_responses.user_id',
+                'survey_responses.respondent_type',
+                'survey_responses.respondent_id',
                 'survey_responses.respondent_email',
                 'survey_responses.respondent_name',
                 'survey_responses.ip_address',

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Modules\Survey\app\Http\Controllers\Admin\QuestionController;
 use Modules\Survey\app\Http\Controllers\Admin\QuestionOptionController;
 use Modules\Survey\app\Http\Controllers\Admin\SurveyController;
+use Modules\Survey\app\Http\Controllers\Admin\SurveyMetaController;
 use Modules\Survey\app\Http\Controllers\Admin\SurveyReportChartController;
 use Modules\Survey\app\Http\Controllers\Admin\SurveyReportController;
 use Modules\Survey\app\Http\Controllers\Admin\SurveyReportQuestionController;
@@ -11,6 +12,13 @@ use Modules\Survey\app\Http\Controllers\Admin\SurveyReportSummaryController;
 use Modules\Survey\app\Http\Controllers\Admin\SurveyResponseController;
 
 Route::group(['guard' => 'admin'], function () {
+
+    // Survey Metas
+    Route::group(['as' => 'meta.', 'prefix' => 'meta'], function () {
+        Route::get('/', [SurveyMetaController::class, 'index'])->name('index');
+        Route::post('/', [SurveyMetaController::class, 'store'])->name('store');
+        Route::delete('/{meta}', [SurveyMetaController::class, 'destroy'])->name('destroy');
+    });
 
     // Surveys
     Route::get('/', [SurveyController::class, 'index'])->name('index');

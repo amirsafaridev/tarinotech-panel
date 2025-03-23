@@ -182,6 +182,7 @@ class ProjectController extends Controller
             'target.userSignable.attachments',
             'target.userSignable.files',
             'facilities',
+            'survey.survey',
         ]);
     }
 }

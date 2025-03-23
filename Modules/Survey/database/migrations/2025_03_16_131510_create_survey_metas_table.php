@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('survey_metas', function (Blueprint $table) {
             $table->id();
             $table->string('access_token')->unique()->nullable();
-            $table->nullableMorphs('surveyable');
+            $table->morphs('surveyable');
             $table->foreignId('survey_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

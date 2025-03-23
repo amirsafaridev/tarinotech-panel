@@ -24,7 +24,9 @@
         <form id="survey-form" action="{{ route('survey.public.submit', $survey->access_token) }}" method="POST">
             @csrf
 
-            @if(!auth()->check() && !$survey->requires_auth)
+            {{-- $showPersonalInfo is now passed from the controller --}}
+
+            @if($showPersonalInfo)
                 <div class="survey-personal-info active" id="survey-personal-info">
                     <h3>اطلاعات شما</h3>
                     <div class="row">
@@ -40,13 +42,16 @@
                                 <label for="email" class="survey-form-label">ایمیل (اختیاری)</label>
                                 <input type="email" id="email" name="email" class="survey-form-control"
                                        value="{{ old('email') }}" placeholder="ایمیل خود را وارد کنید">
+                                <small class="survey-error-message" id="email-validation-error" style="display: none;">
+                                    <i class="fas fa-exclamation-circle me-2"></i> ایمیل وارد شده معتبر نیست.
+                                </small>
                             </div>
                         </div>
                     </div>
 
                     <div class="survey-navigation-buttons d-flex justify-content-between mt-3">
                         <div></div>
-                        <button type="button" class="survey-btn survey-btn-primary survey-next-button">
+                        <button type="button" class="survey-btn survey-btn-primary survey-next-button" id="personal-info-next">
                             <span>بعدی</span>
                             <i class="fas fa-arrow-left ml-2"></i>
                         </button>
@@ -56,7 +61,7 @@
 
             @foreach($survey->questions as $index => $question)
                 <div
-                    class="survey-question-container {{ ($index == 0 && (auth()->check() || $survey->requires_auth)) ? 'active' : '' }}"
+                    class="survey-question-container {{ ($index == 0 && !$showPersonalInfo) ? 'active' : '' }}"
                     id="survey-question-{{ $question->id }}"
                     data-question-id="{{ $question->id }}">
 
@@ -83,7 +88,7 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                <div class="survey-error-message" id="survey-error-{{ $question->id }}">
+                                <div class="survey-error-message" id="survey-error-{{ $question->id }}" style="display: none;">
                                     <i class="fas fa-exclamation-circle me-2"></i> لطفاً یک گزینه را انتخاب کنید.
                                 </div>
                                 @break
@@ -102,7 +107,7 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                <div class="survey-error-message" id="survey-error-{{ $question->id }}">
+                                <div class="survey-error-message" id="survey-error-{{ $question->id }}" style="display: none;">
                                     <i class="fas fa-exclamation-circle me-2"></i> لطفاً حداقل یک گزینه را انتخاب کنید.
                                 </div>
                                 @break
@@ -112,7 +117,7 @@
                                           name="question_{{ $question->id }}"
                                           rows="5"
                                           placeholder="پاسخ خود را اینجا بنویسید...">{{ old("question_{$question->id}") }}</textarea>
-                                <div class="survey-error-message" id="survey-error-{{ $question->id }}">
+                                <div class="survey-error-message" id="survey-error-{{ $question->id }}" style="display: none;">
                                     <i class="fas fa-exclamation-circle me-2"></i> لطفاً پاسخ خود را وارد کنید.
                                 </div>
                                 @break
@@ -120,7 +125,7 @@
                     </div>
 
                     <div class="survey-navigation-buttons d-flex justify-content-between mt-4">
-                        @if($index > 0)
+                        @if($index > 0 || $showPersonalInfo)
                             <button type="button" class="survey-btn survey-btn-secondary survey-prev-button">
                                 <i class="fas fa-arrow-right me-2"></i> قبلی
                             </button>
@@ -149,11 +154,11 @@
     <script>
         $(document).ready(function () {
             const totalQuestions = {{ count($survey->questions) }};
-            const hasPersonalInfoSection = {{ (!auth()->check() && !$survey->requires_auth) ? 'true' : 'false' }};
+            const hasPersonalInfoSection = {{ $showPersonalInfo ? 'true' : 'false' }};
             const totalSteps = hasPersonalInfoSection ? totalQuestions + 1 : totalQuestions;
             let currentQuestionIndex = hasPersonalInfoSection ? 0 : 0;
 
-// Create step indicators
+            // Create step indicators
             function createStepIndicators() {
                 const stepIndicator = $('#survey-step-indicator');
                 stepIndicator.empty();
@@ -170,13 +175,50 @@
                 }
             }
 
-// Initialize step indicators
+            // Initialize step indicators
             createStepIndicators();
 
-// Initialize progress bar
+            // Initialize progress bar
             updateProgressBar();
 
-// Add touch-friendly behavior for options
+            // Email validation
+            $('#email').on('input', function() {
+                validateEmail($(this).val());
+            });
+
+            function validateEmail(email) {
+                const errorElement = $('#email-validation-error');
+
+                if (!email) {
+                    // Empty is fine since it's optional
+                    errorElement.hide();
+                    return true;
+                }
+
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const isValid = emailPattern.test(email);
+
+                if (isValid) {
+                    errorElement.hide();
+                    return true;
+                } else {
+                    errorElement.show();
+                    return false;
+                }
+            }
+
+            // Add validation to the personal info next button
+            $('#personal-info-next').click(function() {
+                const emailValue = $('#email').val();
+                if (emailValue && !validateEmail(emailValue)) {
+                    // Don't proceed if email is invalid
+                    $('#email').focus();
+                    return;
+                }
+                moveToNextQuestion();
+            });
+
+            // Add touch-friendly behavior for options
             $('.survey-option-item').on('click', function (e) {
                 if (e.target.tagName !== 'INPUT') {
                     const input = $(this).find('input');
@@ -188,47 +230,41 @@
                 }
             });
 
-// Handle next button click
-            $('.survey-next-button').click(function () {
-                const currentContainer = $(this).closest('.survey-question-container, .survey-personal-info');
+            // Handle next button click (excluding personal info which is handled separately)
+            $('.survey-next-button:not(#personal-info-next)').click(function () {
+                const currentContainer = $(this).closest('.survey-question-container');
 
-// For personal info section
-                if (currentContainer.hasClass('survey-personal-info')) {
-                    moveToNextQuestion();
-                    return;
-                }
-
-// For questions
+                // For questions
                 const questionId = currentContainer.data('question-id');
 
-// Validate current question if required
+                // Validate current question if required
                 if (validateQuestion(questionId)) {
                     moveToNextQuestion();
                 }
             });
 
-// Handle previous button click
+            // Handle previous button click
             $('.survey-prev-button').click(function () {
                 moveToPreviousQuestion();
             });
 
-// Handle form submission
+            // Handle form submission
             $('#survey-form').submit(function (e) {
                 e.preventDefault();
 
-// Get the last question
+                // Get the last question
                 const lastQuestionContainer = $('.survey-question-container').last();
                 const lastQuestionId = lastQuestionContainer.data('question-id');
 
-// Validate the last question if required
+                // Validate the last question if required
                 if (validateQuestion(lastQuestionId)) {
-// Submit the form if validation passes
+                    // Submit the form if validation passes
                     $(this).find('.survey-submit-button').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i> در حال ارسال...');
                     this.submit();
                 }
             });
 
-// Function to validate a question
+            // Function to validate a question
             function validateQuestion(questionId) {
                 const questionContainer = $(`#survey-question-${questionId}`);
                 const questionType = getQuestionType(questionContainer);
@@ -256,13 +292,13 @@
 
                 if (!isValid) {
                     errorMessage.show();
-// Add shake animation
+                    // Add shake animation
                     errorMessage.css('animation', 'shake 0.5s');
                     setTimeout(function () {
                         errorMessage.css('animation', '');
                     }, 500);
 
-// Scroll to error
+                    // Scroll to error
                     $('html, body').animate({
                         scrollTop: errorMessage.offset().top - 100
                     }, 300);
@@ -273,7 +309,7 @@
                 return isValid;
             }
 
-// Function to get question type
+            // Function to get question type
             function getQuestionType(questionContainer) {
                 if (questionContainer.find('input[type="radio"]').length > 0) {
                     return 'single';
@@ -285,45 +321,45 @@
                 return '';
             }
 
-// Function to move to the next question
+            // Function to move to the next question
             function moveToNextQuestion() {
-// Hide current question/section
+                // Hide current question/section
                 if (currentQuestionIndex === 0 && hasPersonalInfoSection) {
                     $('.survey-personal-info.active').removeClass('active');
                 } else {
                     $('.survey-question-container.active').removeClass('active');
                 }
 
-// Increment index
+                // Increment index
                 currentQuestionIndex++;
 
-// Show next question
+                // Show next question
                 if (hasPersonalInfoSection) {
-// If we have a personal info section, adjust index for questions
+                    // If we have a personal info section, adjust index for questions
                     $(`.survey-question-container:eq(${currentQuestionIndex - 1})`).addClass('active');
                 } else {
                     $(`.survey-question-container:eq(${currentQuestionIndex})`).addClass('active');
                 }
 
-// Update progress bar and step indicators
+                // Update progress bar and step indicators
                 updateProgressBar();
                 createStepIndicators();
 
-// Scroll to top of the active question
+                // Scroll to top of the active question
                 $('html, body').animate({
                     scrollTop: $('.survey-question-container.active, .survey-personal-info.active').offset().top - 20
                 }, 300);
             }
 
-// Function to move to the previous question
+            // Function to move to the previous question
             function moveToPreviousQuestion() {
-// Hide current question
+                // Hide current question
                 $('.survey-question-container.active').removeClass('active');
 
-// Decrement index
+                // Decrement index
                 currentQuestionIndex--;
 
-// Show previous question/section
+                // Show previous question/section
                 if (currentQuestionIndex === 0 && hasPersonalInfoSection) {
                     $('.survey-personal-info').addClass('active');
                 } else {
@@ -334,23 +370,23 @@
                     }
                 }
 
-// Update progress bar and step indicators
+                // Update progress bar and step indicators
                 updateProgressBar();
                 createStepIndicators();
 
-// Scroll to top of the active question
+                // Scroll to top of the active question
                 $('html, body').animate({
                     scrollTop: $('.survey-question-container.active, .survey-personal-info.active').offset().top - 20
                 }, 300);
             }
 
-// Function to update progress bar
+            // Function to update progress bar
             function updateProgressBar() {
                 const progress = (currentQuestionIndex / totalSteps) * 100;
                 $('#survey-progress').css('width', `${progress}%`);
             }
 
-// Initialize first section as active
+            // Initialize first section as active
             if (hasPersonalInfoSection) {
                 $('.survey-personal-info').addClass('active');
             } else {

@@ -14,15 +14,24 @@ use Modules\Survey\app\Enums\Database\QuestionTypeEnum;
 use Modules\Survey\app\Models\Survey;
 use Modules\Survey\app\Models\SurveyAnswer;
 use Modules\Survey\app\Models\SurveyAnswerOption;
+use Modules\Survey\app\Models\SurveyMeta;
 use Modules\Survey\app\Models\SurveyResponse;
+use Modules\User\app\Models\User;
 
-class SurveyPublicController extends Controller
+class SurveyController extends Controller
 {
     const SESSION_SURVEY_START_TIME = 'survey_start_time';
 
     const SESSION_SURVEY_ID = 'survey_session_id';
 
-    public function show(string $accessToken): View|RedirectResponse
+    const SESSION_SURVEY_META_ID = 'survey_meta_id';
+
+    /**
+     * @var Survey|null The current survey being processed
+     */
+    protected ?Survey $survey = null;
+
+    public function show(Request $request, string $accessToken): View|RedirectResponse
     {
         $survey = $this->findActiveSurvey($accessToken);
 
@@ -30,22 +39,43 @@ class SurveyPublicController extends Controller
             abort(404, 'نظرسنجی مورد نظر یافت نشد یا در دسترس نیست.');
         }
 
+        $this->survey = $survey;
+
+        if ($survey->has_meta) {
+            $metaToken = $request->query('meta');
+
+            if (! $metaToken) {
+                abort(404, 'این نظرسنجی نیازمند پارامتر meta است.');
+            }
+
+            $meta = SurveyMeta::query()->where('access_token', $metaToken)
+                ->where('survey_id', $survey->id)
+                ->first();
+
+            if (! $meta) {
+                abort(404, 'پارامتر meta نامعتبر است.');
+            }
+
+            session([self::SESSION_SURVEY_META_ID => $meta->id]);
+        }
+
         if ($survey->requires_auth && ! Auth::check()) {
             return view('survey::web.login_required', compact('survey'));
         }
 
-        if ($survey->requires_auth && $this->hasUserSubmitted($survey)) {
-            return redirect()->route('survey.public.thank', $survey->access_token)
+        if ($this->hasUserSubmitted($survey)) {
+            return redirect()->route('survey.public.thankYou', $survey->access_token)
                 ->with('message', 'شما قبلا در این نظرسنجی شرکت کرده‌اید.');
         }
 
         $this->loadSurveyWithQuestions($survey);
         $this->initiateSurveySession();
 
-        // Record start time
         session([self::SESSION_SURVEY_START_TIME => now()]);
 
-        return view('survey::web.show', compact('survey'));
+        $showPersonalInfo = $this->shouldShowPersonalInfo();
+
+        return view('survey::web.show', compact('survey', 'showPersonalInfo'));
     }
 
     public function submit(Request $request, string $accessToken)
@@ -56,7 +86,10 @@ class SurveyPublicController extends Controller
             abort(404, 'نظرسنجی مورد نظر یافت نشد یا در دسترس نیست.');
         }
 
-        // Check authentication if required
+        if ($survey->has_meta && ! session(self::SESSION_SURVEY_META_ID)) {
+            abort(404, 'این نظرسنجی نیازمند پارامتر meta است.');
+        }
+
         if ($survey->requires_auth && ! Auth::check()) {
             return view('survey::web.login_required', compact('survey'));
         }
@@ -73,10 +106,13 @@ class SurveyPublicController extends Controller
 
             DB::commit();
 
-            // Clear survey session data
-            session()->forget([self::SESSION_SURVEY_ID, self::SESSION_SURVEY_START_TIME]);
+            session()->forget([
+                self::SESSION_SURVEY_ID,
+                self::SESSION_SURVEY_START_TIME,
+                self::SESSION_SURVEY_META_ID,
+            ]);
 
-            return redirect()->route('survey.public.thank', $survey->access_token);
+            return redirect()->route('survey.public.thankYou', $survey->access_token);
         } catch (Exception $e) {
             DB::rollBack();
 
@@ -86,7 +122,7 @@ class SurveyPublicController extends Controller
 
     public function thankYou(string $accessToken): View
     {
-        $survey = Survey::where('access_token', $accessToken)->first();
+        $survey = Survey::query()->where('access_token', $accessToken)->first();
 
         if (! $survey) {
             abort(404);
@@ -97,7 +133,7 @@ class SurveyPublicController extends Controller
 
     private function findActiveSurvey(string $accessToken): ?Survey
     {
-        return Survey::where('access_token', $accessToken)
+        return Survey::query()->where('access_token', $accessToken)
             ->where('is_active', true)
             ->whereDate('start_date', '<=', now())
             ->where(function ($query) {
@@ -109,16 +145,24 @@ class SurveyPublicController extends Controller
 
     private function hasUserSubmitted(Survey $survey): bool
     {
-        if (! Auth::check()) {
-            return false;
+        if (session()->has(self::SESSION_SURVEY_META_ID)) {
+            $metaId = session(self::SESSION_SURVEY_META_ID);
+
+            return SurveyResponse::query()->where('survey_id', $survey->id)
+                ->where('survey_meta_id', $metaId)
+                ->exists();
         }
 
-        $user = Auth::user();
+        if (Auth::check()) {
+            $user = Auth::user();
 
-        return SurveyResponse::where('survey_id', $survey->id)
-            ->where('respondent_type', get_class($user))
-            ->where('respondent_id', $user->id)
-            ->exists();
+            return SurveyResponse::query()->where('survey_id', $survey->id)
+                ->where('respondent_type', get_class($user))
+                ->where('respondent_id', $user->id)
+                ->exists();
+        }
+
+        return false;
     }
 
     private function loadSurveyWithQuestions(Survey $survey): void
@@ -139,29 +183,70 @@ class SurveyPublicController extends Controller
         session([self::SESSION_SURVEY_ID => $sessionId]);
     }
 
+    /**
+     * Check if personal info section should be shown
+     */
+    private function shouldShowPersonalInfo(): bool
+    {
+        return ! Auth::check() && ! $this->survey->requires_auth && ! session()->has(self::SESSION_SURVEY_META_ID);
+    }
+
     private function createSurveyResponse(Request $request, Survey $survey, $startTime): SurveyResponse
     {
         $responseData = [
             'survey_id' => $survey->id,
-            'respondent_email' => $request->input('email'),
-            'respondent_name' => $request->input('name'),
             'ip_address' => $request->ip(),
             'session_id' => session(self::SESSION_SURVEY_ID),
             'started_at' => $startTime,
             'completed_at' => now(),
         ];
 
-        // Add respondent morphable relationship if user is authenticated
-        if (Auth::check()) {
-            $user = Auth::user();
-            $responseData['respondent_type'] = get_class($user);
+        $responseData['respondent_email'] = $request->input('email');
+        $responseData['respondent_name'] = $request->input('name');
+
+        $user = $this->getUserForResponse();
+
+        if ($user) {
+            $responseData['respondent_type'] = User::class;
             $responseData['respondent_id'] = $user->id;
+
+            if (empty($responseData['respondent_name'])) {
+                $responseData['respondent_name'] = trim($user->first_name.' '.$user->last_name) ?: null;
+            }
+
+            if (empty($responseData['respondent_email']) && $user->email) {
+                $responseData['respondent_email'] = $user->email;
+            }
         }
 
-        $response = new SurveyResponse($responseData);
-        $response->save();
+        if (session()->has(self::SESSION_SURVEY_META_ID)) {
+            $responseData['survey_meta_id'] = session(self::SESSION_SURVEY_META_ID);
+        }
 
-        return $response;
+        return SurveyResponse::query()->create($responseData);
+    }
+
+    /**
+     * Get the user for the survey response
+     */
+    private function getUserForResponse(): ?User
+    {
+        if (session()->has(self::SESSION_SURVEY_META_ID)) {
+            $meta = SurveyMeta::query()->find(session(self::SESSION_SURVEY_META_ID));
+
+            if ($meta && $meta->surveyable && method_exists($meta->surveyable, 'user')) {
+                $user = $meta->surveyable->user;
+                if ($user) {
+                    return $user;
+                }
+            }
+        }
+
+        if (Auth::check()) {
+            return Auth::user();
+        }
+
+        return null;
     }
 
     private function validateSurveySubmission(Request $request, Survey $survey): void
@@ -225,7 +310,7 @@ class SurveyPublicController extends Controller
                     $optionId = $request->input($questionId);
                     $answer->save();
 
-                    SurveyAnswerOption::create([
+                    SurveyAnswerOption::query()->create([
                         'answer_id' => $answer->id,
                         'survey_question_option_id' => $optionId,
                     ]);
@@ -236,7 +321,7 @@ class SurveyPublicController extends Controller
                     $answer->save();
 
                     foreach ($optionIds as $optionId) {
-                        SurveyAnswerOption::create([
+                        SurveyAnswerOption::query()->create([
                             'answer_id' => $answer->id,
                             'survey_question_option_id' => $optionId,
                         ]);

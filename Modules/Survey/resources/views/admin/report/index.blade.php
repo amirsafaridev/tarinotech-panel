@@ -85,69 +85,61 @@
         <!-- Key stats cards -->
         <div class="col-xl-12">
             <div class="row">
-                <div class="col-sm-6 col-xl-3">
-                    <div class="card stat-card mb-4">
-                        <div class="card-body">
+                <div class="col-sm-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body p-3">
                             <div class="d-flex align-items-center">
-                                <div class="me-3">
-                                    <span class="avatar avatar-lg bg-primary-transparent stat-icon">
-                                        <i class="fa fa-users"></i>
-                                    </span>
-                                </div>
+                        <span class="avatar avatar-md bg-primary-transparent me-3">
+                            <i class="fa fa-users"></i>
+                        </span>
                                 <div>
-                                    <h3 class="mb-1">{{ $stats['total_responses'] }}</h3>
-                                    <p class="text-muted mb-0">کل پاسخ‌ها</p>
+                                    <h5 class="mb-0 fw-bold">{{ $stats['total_responses'] }}</h5>
+                                    <p class="text-muted mb-0 small">کل پاسخ‌ها</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6 col-xl-3">
-                    <div class="card stat-card mb-4">
-                        <div class="card-body">
+                <div class="col-sm-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body p-3">
                             <div class="d-flex align-items-center">
-                                <div class="me-3">
-                                    <span class="avatar avatar-lg bg-success-transparent stat-icon">
-                                        <i class="fa fa-check-circle"></i>
-                                    </span>
-                                </div>
+                        <span class="avatar avatar-md bg-success-transparent me-3">
+                            <i class="fa fa-check-circle"></i>
+                        </span>
                                 <div>
-                                    <h3 class="mb-1">{{ $stats['completion_rate'] }}%</h3>
-                                    <p class="text-muted mb-0">نرخ تکمیل</p>
+                                    <h5 class="mb-0 fw-bold">{{ $stats['completion_rate'] }}%</h5>
+                                    <p class="text-muted mb-0 small">نرخ تکمیل</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6 col-xl-3">
-                    <div class="card stat-card mb-4">
-                        <div class="card-body">
+                <div class="col-sm-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body p-3">
                             <div class="d-flex align-items-center">
-                                <div class="me-3">
-                                    <span class="avatar avatar-lg bg-warning-transparent stat-icon">
-                                        <i class="fa fa-question-circle"></i>
-                                    </span>
-                                </div>
+                        <span class="avatar avatar-md bg-warning-transparent me-3">
+                            <i class="fa fa-question-circle"></i>
+                        </span>
                                 <div>
-                                    <h3 class="mb-1">{{ $stats['total_questions'] }}</h3>
-                                    <p class="text-muted mb-0">تعداد سوالات</p>
+                                    <h5 class="mb-0 fw-bold">{{ $stats['total_questions'] }}</h5>
+                                    <p class="text-muted mb-0 small">تعداد سوالات</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6 col-xl-3">
-                    <div class="card stat-card mb-4">
-                        <div class="card-body">
+                <div class="col-sm-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body p-3">
                             <div class="d-flex align-items-center">
-                                <div class="me-3">
-                                    <span class="avatar avatar-lg bg-info-transparent stat-icon">
-                                        <i class="fa fa-clipboard-check"></i>
-                                    </span>
-                                </div>
+                        <span class="avatar avatar-md bg-info-transparent me-3">
+                            <i class="fa fa-clipboard-check"></i>
+                        </span>
                                 <div>
-                                    <h3 class="mb-1">{{ $stats['average_answers_per_response'] }}</h3>
-                                    <p class="text-muted mb-0">میانگین پاسخ‌ها</p>
+                                    <h5 class="mb-0 fw-bold">{{ $stats['average_answers_per_response'] }}</h5>
+                                    <p class="text-muted mb-0 small">میانگین پاسخ‌ها</p>
                                 </div>
                             </div>
                         </div>
