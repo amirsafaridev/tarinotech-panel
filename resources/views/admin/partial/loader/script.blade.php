@@ -53,3 +53,15 @@
 @if (in_array(\App\Enums\Assets\ScriptLoader::Dropzone(),$load))
     <script type="text/javascript" src="{{asset('res-admin/assets/plugins/dropzone/dropzone.min.js.js')}}"></script>
 @endif
+
+@if (in_array(\App\Enums\Assets\ScriptLoader::JQueryUI(),$load))
+    <script type="text/javascript" src="{{asset('res-admin/assets/plugins/jqueryui/js/jquery-ui.min.js')}}"></script>
+@endif
+
+@if (in_array(\App\Enums\Assets\ScriptLoader::SpectrumColorPicker(),$load))
+    <script type="text/javascript" src="{{asset('res-admin/assets/plugins/spectrum-colorpicker/spectrum.min.js')}}"></script>
+@endif
+
+@if (in_array(\App\Enums\Assets\ScriptLoader::Chart(),$load))
+    <script type="text/javascript" src="{{asset('res-admin/assets/plugins/Chart.js/chart.min.js')}}"></script>
+@endif

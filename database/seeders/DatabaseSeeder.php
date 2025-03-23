@@ -16,6 +16,7 @@ use Modules\Project\database\seeders\ProjectDatabaseSeeder;
 use Modules\Project\database\seeders\ProjectTypeSeeder;
 use Modules\Setting\database\seeders\SettingDatabaseSeeder;
 use Modules\Support\database\seeders\SupportDatabaseSeeder;
+use Modules\Survey\database\seeders\SurveyDatabaseSeeder;
 use Modules\User\database\seeders\UserDatabaseSeeder;
 
 class DatabaseSeeder extends Seeder
@@ -41,6 +42,7 @@ class DatabaseSeeder extends Seeder
             BlogCategoryDatabaseSeeder::class, //DONE
             BlogDatabaseSeeder::class, //DONE
             ContentDatabaseSeeder::class, //DONE
+            SurveyDatabaseSeeder::class, //DONE
         ]);
 
         resolve(PermissionService::class)->sync();

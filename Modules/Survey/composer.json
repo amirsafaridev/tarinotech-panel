@@ -1,0 +1,30 @@
+{
+    "name": "tarinotech/survey",
+    "description": "",
+    "authors": [
+        {
+            "name": "Ali Mousavi",
+            "email": "mosaviali701@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Survey\\": "",
+            "Modules\\Survey\\App\\": "app/",
+            "Modules\\Survey\\Database\\Factories\\": "database/factories/",
+            "Modules\\Survey\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Survey\\Tests\\": "tests/"
+        }
+    }
+}

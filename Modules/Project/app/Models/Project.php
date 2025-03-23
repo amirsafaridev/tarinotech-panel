@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Admin\app\Models\Admin;
@@ -16,6 +17,7 @@ use Modules\Admin\app\Models\PresenterProject;
 use Modules\Factor\app\Models\Factor;
 use Modules\Log\app\Enums\LogNames;
 use Modules\Support\app\Models\Chat;
+use Modules\Survey\app\Models\SurveyMeta;
 use Modules\User\app\Models\User;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -118,6 +120,11 @@ class Project extends Model
     public function renewals(): HasMany
     {
         return $this->hasMany(ProjectRenewal::class, 'project_id');
+    }
+
+    public function survey(): MorphOne
+    {
+        return $this->morphOne(SurveyMeta::class, 'surveyable');
     }
 
     public static function findSeoTarget($projectId): ?self

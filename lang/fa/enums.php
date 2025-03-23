@@ -21,6 +21,8 @@ use Modules\Project\app\Enums\SeoHostLocation;
 use Modules\Project\app\Enums\WebFacility;
 use Modules\Project\app\Enums\WebHostLocation;
 use Modules\Project\app\Enums\WebLanguage;
+use Modules\Survey\app\Enums\Database\AuthTypeEnum;
+use Modules\Survey\app\Enums\Database\QuestionTypeEnum;
 use Modules\User\app\Enums\IrnicStatus;
 use Modules\User\app\Enums\PersonType;
 use Modules\User\app\Enums\UserType;
@@ -216,5 +218,15 @@ return [
         UserSignableStatus::Uploaded => 'آپلود شده',
         UserSignableStatus::Reject => 'رد شده',
         UserSignableStatus::Accepted => 'قبول شده',
+    ],
+
+    AuthTypeEnum::class => [
+        AuthTypeEnum::Admin => 'مدیران',
+        AuthTypeEnum::Web => 'وب سایت',
+    ],
+    QuestionTypeEnum::class => [
+        QuestionTypeEnum::Single => 'تک انتخابی',
+        QuestionTypeEnum::Multiple => 'چند انتخابی',
+        QuestionTypeEnum::Text => 'متنی',
     ],
 ];

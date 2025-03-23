@@ -37,3 +37,16 @@
 @if (in_array(\App\Enums\Assets\StyleLoader::Dropzone(),$load))
     <link rel="stylesheet" href="{{ asset('res-admin/assets/plugins/dropzone/dropzone.min.css') }}">
 @endif
+
+@if (in_array(\App\Enums\Assets\StyleLoader::JQueryUI(),$load))
+
+@endif
+
+@if (in_array(\App\Enums\Assets\StyleLoader::SpectrumColorPicker(),$load))
+    <link rel="stylesheet" src="{{asset('res-admin/assets/plugins/spectrum-colorpicker/spectrum.min.css')}}">
+    <style>
+        .sp-colorize{
+            height: 39px !important;
+        }
+    </style>
+@endif

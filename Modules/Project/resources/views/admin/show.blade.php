@@ -36,6 +36,8 @@
                 @include('project::admin.part.user-signable-card')
             @endif
 
+
+
         </div>
 
         <div class="col-xl-6 col-lg-6 col-md-6 col-12">
@@ -50,6 +52,9 @@
             @if($project->target_type  === \Modules\Project\app\Models\ProjectAds::class)
                 @include('project::admin.part.ads-info-card')
             @endif
+
+
+            @include('project::admin.part.survey-info-card')
         </div>
 
         @if($project->factors->isNotEmpty())
@@ -57,6 +62,8 @@
                 @include('project::admin.part.factor-card')
             </div>
         @endif
+
+
 
     </div>
 @endsection

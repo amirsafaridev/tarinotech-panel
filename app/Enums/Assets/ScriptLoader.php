@@ -19,6 +19,9 @@ use BenSampo\Enum\Enum;
  * @method static Recorder()
  * @method static CellPhone()
  * @method static Dropzone()
+ * @method static JQueryUI)
+ * @method static SpectrumColorPicker)
+ * @method static Chart)
  */
 final class ScriptLoader extends Enum
 {
@@ -49,4 +52,10 @@ final class ScriptLoader extends Enum
     const CellPhone = 13;
 
     const Dropzone = 14;
+
+    const JQueryUI = 15;
+
+    const SpectrumColorPicker = 16;
+
+    const Chart = 17;
 }
