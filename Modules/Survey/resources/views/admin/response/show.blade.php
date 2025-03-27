@@ -138,7 +138,7 @@
                                                 @include('survey::admin.response.partials.unsupported')
                                         @endswitch
                                     @else
-                                    @include('survey::admin.response.partials.no-answer')
+                                        @include('survey::admin.response.partials.no-answer')
                                     @endif
                                 </div>
                             </div>

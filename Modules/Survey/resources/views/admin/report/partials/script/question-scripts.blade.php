@@ -1,3 +1,4 @@
+@php use Modules\Survey\app\Enums\Database\QuestionTypeEnum; @endphp
 <script>
     $(document).ready(function () {
         activeParentUl('{{ route('admin.survey.index') }}');

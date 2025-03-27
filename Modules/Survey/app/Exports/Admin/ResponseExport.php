@@ -89,6 +89,10 @@ class ResponseExport implements FromCollection, ShouldAutoSize, WithHeadings, Wi
                     $result[] = $answer->answer_text ?? 'بدون پاسخ';
                     break;
 
+                case QuestionTypeEnum::Number:
+                    $result[] = $answer->rating_value ?? 'بدون پاسخ';
+                    break;
+
                 case QuestionTypeEnum::Single:
                 case QuestionTypeEnum::Multiple:
                     $selectedOptions = [];
