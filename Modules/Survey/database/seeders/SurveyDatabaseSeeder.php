@@ -141,6 +141,10 @@ class SurveyDatabaseSeeder extends Seeder
                 case QuestionTypeEnum::Multiple:
                     $this->createMultipleChoiceAnswer($response, $question);
                     break;
+
+                case QuestionTypeEnum::Number:
+                    $this->createNumberAnswer($response, $question);
+                    break;
             }
         }
     }
@@ -178,6 +182,27 @@ class SurveyDatabaseSeeder extends Seeder
                 'survey_question_option_id' => $option->id,
             ]);
         }
+    }
+
+    private function createNumberAnswer(SurveyResponse $response, SurveyQuestion $question): void
+    {
+        $settings = $question->settings ?? [];
+        $min = $settings['min'] ?? 1;
+        $max = $settings['max'] ?? 10;
+        $step = $settings['step'] ?? 1;
+
+        $min = max(1, $min);
+        $max = min(10, $max);
+        $step = max(0.1, $step);
+
+        $value = round(rand($min * 10, $max * 10) / 10, 1);
+
+        // Create the answer
+        SurveyAnswer::query()->create([
+            'response_id' => $response->id,
+            'survey_question_id' => $question->id,
+            'rating_value' => $value,
+        ]);
     }
 
     private function getPersianNames(): array
@@ -255,6 +280,28 @@ class SurveyDatabaseSeeder extends Seeder
                 'question_text' => 'لطفاً نظرات و پیشنهادات خود را درباره خدمات طراحی وب‌سایت ما بنویسید:',
                 'question_type' => QuestionTypeEnum::Text,
                 'is_required' => false,
+            ],
+            [
+                'question_text' => 'تا چه میزان از کیفیت خدمات ما راضی هستید؟ (از 1 تا 10)',
+                'question_type' => QuestionTypeEnum::Number,
+                'is_required' => true,
+                'settings' => [
+                    'min' => 1,
+                    'max' => 10,
+                    'step' => 1,
+                    'default' => 5,
+                ],
+            ],
+            [
+                'question_text' => 'احتمال توصیه خدمات ما به دیگران چقدر است؟ (از 0 تا 10 - NPS)',
+                'question_type' => QuestionTypeEnum::Number,
+                'is_required' => true,
+                'settings' => [
+                    'min' => 0,
+                    'max' => 10,
+                    'step' => 1,
+                    'default' => 5,
+                ],
             ],
         ];
     }

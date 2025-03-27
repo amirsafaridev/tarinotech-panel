@@ -4,7 +4,6 @@ namespace Modules\Survey\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Traits\HasJsonCommonResponseTrait;
-use Illuminate\View\View;
 use Modules\Survey\app\Enums\Database\QuestionTypeEnum;
 use Modules\Survey\app\Models\Survey;
 use Modules\Survey\app\Traits\HasSurveyQuestionOptionsTrait;
@@ -18,11 +17,6 @@ class SurveyReportSummaryController extends Controller
 
     const SUMMARY_TITLE = 'خلاصه نتایج نظرسنجی';
 
-    /**
-     * Display summary of the survey results.
-     *
-     * @return View
-     */
     public function index(Survey $survey)
     {
         $title = self::SUMMARY_TITLE;
@@ -64,6 +58,23 @@ class SurveyReportSummaryController extends Controller
                 $summary['text_samples'] = $this->getQuestionTextSamples($question);
             }
 
+            // For number questions, calculate summary statistics
+            if ($question->question_type == QuestionTypeEnum::Number) {
+                $numberAnswers = $question->answers()->whereNotNull('rating_value')->get();
+
+                if ($numberAnswers->isNotEmpty()) {
+                    $summary['number_stats'] = [
+                        'min' => $numberAnswers->min('rating_value'),
+                        'max' => $numberAnswers->max('rating_value'),
+                        'avg' => round($numberAnswers->avg('rating_value'), 2),
+                        'median' => $this->calculateMedian($numberAnswers->pluck('rating_value')->toArray()),
+                    ];
+
+                    // Calculate distribution
+                    $summary['number_distribution'] = $this->calculateNumberDistribution($numberAnswers);
+                }
+            }
+
             $questionsSummary[] = $summary;
         }
 
@@ -73,5 +84,62 @@ class SurveyReportSummaryController extends Controller
             'stats',
             'questionsSummary'
         ));
+    }
+
+    /**
+     * Calculate median of a number array
+     */
+    private function calculateMedian(array $numbers): ?float
+    {
+        if (empty($numbers)) {
+            return null;
+        }
+
+        sort($numbers);
+        $count = count($numbers);
+        $middle = floor(($count - 1) / 2);
+
+        if ($count % 2 == 0) {
+            return ($numbers[$middle] + $numbers[$middle + 1]) / 2;
+        }
+
+        return $numbers[$middle];
+    }
+
+    /**
+     * Calculate distribution of numbers
+     */
+    private function calculateNumberDistribution($numberAnswers)
+    {
+        if ($numberAnswers->isEmpty()) {
+            return [];
+        }
+
+        $numbers = $numberAnswers->pluck('rating_value');
+        $min = $numbers->min();
+        $max = $numbers->max();
+        $range = $max - $min;
+
+        // Create 5 buckets for distribution
+        $bucketCount = 5;
+        $bucketSize = $range / $bucketCount;
+
+        $distribution = [];
+        for ($i = 0; $i < $bucketCount; $i++) {
+            $lowerBound = $min + ($i * $bucketSize);
+            $upperBound = $min + (($i + 1) * $bucketSize);
+
+            $count = $numbers->filter(function ($value) use ($lowerBound, $upperBound) {
+                return $value >= $lowerBound && $value < $upperBound;
+            })->count();
+
+            $distribution[] = [
+                'range' => sprintf('%.2f - %.2f', $lowerBound, $upperBound),
+                'count' => $count,
+                'percentage' => round(($count / $numberAnswers->count()) * 100, 1),
+            ];
+        }
+
+        return $distribution;
     }
 }

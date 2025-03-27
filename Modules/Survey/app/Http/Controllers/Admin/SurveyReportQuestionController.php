@@ -28,8 +28,8 @@ class SurveyReportQuestionController extends Controller
     {
         $title = self::QUESTION_TITLE.': '.$question->question_text;
 
-        // Load question with options and answers
-        $question->load(['options', 'answers.options.questionOption']);
+        // Load question with its answers
+        $question->load(['answers']);
 
         // Get basic stats
         $stats = $this->getBasicStats($survey);
@@ -50,57 +50,79 @@ class SurveyReportQuestionController extends Controller
             'is_required' => $question->is_required,
         ];
 
-        // For choice questions, calculate detailed option distribution
-        if (in_array($question->question_type, [QuestionTypeEnum::Single, QuestionTypeEnum::Multiple])) {
-            $optionStats = [];
+        // Handling different question types
+        switch ($question->question_type) {
+            // Number type specific analysis
+            case QuestionTypeEnum::Number:
+                $numberAnswers = $question->answers()->whereNotNull('rating_value')->get();
 
-            foreach ($question->options as $option) {
-                $count = DB::table('survey_answer_options')
-                    ->join('survey_answers', 'survey_answers.id', '=', 'survey_answer_options.answer_id')
-                    ->where('survey_answer_options.survey_question_option_id', $option->id)
-                    ->where('survey_answers.survey_question_id', $question->id)
-                    ->count();
-
-                $optionStats[] = [
-                    'id' => $option->id,
-                    'text' => $option->option_text,
-                    'color' => $option->color_code,
-                    'count' => $count,
-                    'percentage' => $totalAnswers > 0 ? round(($count / $totalAnswers) * 100, 1) : 0,
+                $questionData['number_stats'] = [
+                    'min' => $numberAnswers->min('rating_value'),
+                    'max' => $numberAnswers->max('rating_value'),
+                    'avg' => round($numberAnswers->avg('rating_value'), 2),
+                    'median' => $this->calculateMedian($numberAnswers->pluck('rating_value')->toArray()),
                 ];
-            }
 
-            $questionData['options'] = $optionStats;
+                // Optional settings from the question
+                $questionData['settings'] = $question->settings ?? [];
 
-            // Get selections breakdown by demographic (like time period)
-            // Responses by month for this question
-            $monthlyResponses = DB::table('survey_answers')
-                ->select(DB::raw('DATE_FORMAT(survey_answers.created_at, "%Y-%m") as month'), DB::raw('COUNT(*) as count'))
-                ->where('survey_question_id', $question->id)
-                ->groupBy('month')
-                ->orderBy('month')
-                ->get()
-                ->keyBy('month')
-                ->map(function ($item) {
-                    return $item->count;
-                })
-                ->toArray();
+                // Distribution of numbers
+                $questionData['number_distribution'] = $this->calculateNumberDistribution($numberAnswers);
 
-            $questionData['monthly_responses'] = $monthlyResponses;
-        }
+                break;
 
-        // For text questions, get all text answers paginated
-        if ($question->question_type == QuestionTypeEnum::Text) {
-            $textAnswers = SurveyAnswer::where('survey_question_id', $question->id)
-                ->whereNotNull('answer_text')
-                ->orderBy('created_at', 'desc')
-                ->paginate(20);
+            case QuestionTypeEnum::Single:
+            case QuestionTypeEnum::Multiple:
+                // Existing choice question implementation
+                $optionStats = [];
 
-            $questionData['text_answers'] = $textAnswers;
+                foreach ($question->options as $option) {
+                    $count = DB::table('survey_answer_options')
+                        ->join('survey_answers', 'survey_answers.id', '=', 'survey_answer_options.answer_id')
+                        ->where('survey_answer_options.survey_question_option_id', $option->id)
+                        ->where('survey_answers.survey_question_id', $question->id)
+                        ->count();
 
-            // Get word frequency for text analysis
-            $wordFrequency = $this->analyzeTextResponses($question);
-            $questionData['word_frequency'] = array_slice($wordFrequency, 0, 20);
+                    $optionStats[] = [
+                        'id' => $option->id,
+                        'text' => $option->option_text,
+                        'color' => $option->color_code,
+                        'count' => $count,
+                        'percentage' => $totalAnswers > 0 ? round(($count / $totalAnswers) * 100, 1) : 0,
+                    ];
+                }
+
+                $questionData['options'] = $optionStats;
+
+                // Monthly responses trend
+                $monthlyResponses = DB::table('survey_answers')
+                    ->select(DB::raw('DATE_FORMAT(survey_answers.created_at, "%Y-%m") as month'), DB::raw('COUNT(*) as count'))
+                    ->where('survey_question_id', $question->id)
+                    ->groupBy('month')
+                    ->orderBy('month')
+                    ->get()
+                    ->keyBy('month')
+                    ->map(function ($item) {
+                        return $item->count;
+                    })
+                    ->toArray();
+
+                $questionData['monthly_responses'] = $monthlyResponses;
+                break;
+
+            case QuestionTypeEnum::Text:
+                // Existing text question implementation
+                $textAnswers = SurveyAnswer::where('survey_question_id', $question->id)
+                    ->whereNotNull('answer_text')
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(20);
+
+                $questionData['text_answers'] = $textAnswers;
+
+                // Get word frequency for text analysis
+                $wordFrequency = $this->analyzeTextResponses($question);
+                $questionData['word_frequency'] = array_slice($wordFrequency, 0, 20);
+                break;
         }
 
         return view('survey::admin.report.question', compact(
@@ -113,13 +135,70 @@ class SurveyReportQuestionController extends Controller
     }
 
     /**
+     * Calculate median of a number array
+     */
+    private function calculateMedian(array $numbers): ?float
+    {
+        if (empty($numbers)) {
+            return null;
+        }
+
+        sort($numbers);
+        $count = count($numbers);
+        $middle = floor(($count - 1) / 2);
+
+        if ($count % 2 == 0) {
+            return ($numbers[$middle] + $numbers[$middle + 1]) / 2;
+        }
+
+        return $numbers[$middle];
+    }
+
+    /**
+     * Calculate distribution of numbers
+     */
+    private function calculateNumberDistribution($numberAnswers)
+    {
+        if ($numberAnswers->isEmpty()) {
+            return [];
+        }
+
+        $numbers = $numberAnswers->pluck('rating_value');
+        $min = $numbers->min();
+        $max = $numbers->max();
+        $range = $max - $min;
+
+        // Create 5 buckets for distribution
+        $bucketCount = 5;
+        $bucketSize = $range / $bucketCount;
+
+        $distribution = [];
+        for ($i = 0; $i < $bucketCount; $i++) {
+            $lowerBound = $min + ($i * $bucketSize);
+            $upperBound = $min + (($i + 1) * $bucketSize);
+
+            $count = $numbers->filter(function ($value) use ($lowerBound, $upperBound) {
+                return $value >= $lowerBound && $value < $upperBound;
+            })->count();
+
+            $distribution[] = [
+                'range' => sprintf('%.2f - %.2f', $lowerBound, $upperBound),
+                'count' => $count,
+                'percentage' => round(($count / $numberAnswers->count()) * 100, 1),
+            ];
+        }
+
+        return $distribution;
+    }
+
+    /**
      * Analyze text responses for a question.
      *
      * @return array
      */
     private function analyzeTextResponses(SurveyQuestion $question)
     {
-        // Get all text answers
+        // Existing text analysis implementation remains the same
         $textAnswers = SurveyAnswer::where('survey_question_id', $question->id)
             ->whereNotNull('answer_text')
             ->pluck('answer_text')
