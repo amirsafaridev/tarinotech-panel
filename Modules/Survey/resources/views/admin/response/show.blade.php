@@ -52,6 +52,16 @@
             background-color: rgba(26, 26, 60, 0.49) !important;
             color: white !important;
         }
+
+        .answer-value {
+            font-weight: 500;
+            font-size: 1.1em;
+            color: #2e323e;
+        }
+
+        .dark-mode .answer-value {
+            color: #f0f0f5;
+        }
     </style>
 @endsection
 @section('content')
@@ -113,45 +123,22 @@
                                             $answer = $groupedAnswers[$question->id]->first();
                                         @endphp
 
-                                        @if($question->question_type == QuestionTypeEnum::Text)
-                                            <div class="p-3">
-                                                <p>{{ $answer->answer_text ?? 'بدون پاسخ' }}</p>
-                                            </div>
-                                        @elseif($question->question_type == QuestionTypeEnum::Single || $question->question_type == QuestionTypeEnum::Multiple)
-                                            @if($answer->options->isNotEmpty())
-                                                <div class="p-3">
-                                                    @php
-                                                        $selectedOptionIds = $answer->options->pluck('survey_question_option_id')->toArray();
-                                                    @endphp
-
-                                                    @foreach($question->options as $option)
-                                                        @php
-                                                            $isSelected = in_array($option->id, $selectedOptionIds);
-                                                            $optionClass = $isSelected ? 'option-selected' : 'option-unselected';
-                                                        @endphp
-
-                                                        <span class="option-badge {{ $optionClass }}">
-                                                            {{ $option->option_text }}
-                                                            @if($isSelected)
-                                                                <i class="fa fa-check ms-1"></i>
-                                                            @endif
-                                                        </span>
-                                                    @endforeach
-                                                </div>
-                                            @else
-                                                <div class="p-3">
-                                                    <p class="text-muted">هیچ گزینه‌ای انتخاب نشده است.</p>
-                                                </div>
-                                            @endif
-                                        @else
-                                            <div class="p-3">
-                                                <p class="text-muted">نوع سوال پشتیبانی نشده.</p>
-                                            </div>
-                                        @endif
+                                        @switch($question->question_type)
+                                            @case(QuestionTypeEnum::Text)
+                                                @include('survey::admin.response.partials.text', ['answer' => $answer])
+                                                @break
+                                            @case(QuestionTypeEnum::Number)
+                                                @include('survey::admin.response.partials.number', ['answer' => $answer])
+                                                @break
+                                            @case(QuestionTypeEnum::Single)
+                                            @case(QuestionTypeEnum::Multiple)
+                                                @include('survey::admin.response.partials.choice', ['answer' => $answer, 'question' => $question])
+                                                @break
+                                            @default
+                                                @include('survey::admin.response.partials.unsupported')
+                                        @endswitch
                                     @else
-                                        <div class="p-3">
-                                            <p class="text-muted">بدون پاسخ</p>
-                                        </div>
+                                    @include('survey::admin.response.partials.no-answer')
                                     @endif
                                 </div>
                             </div>
