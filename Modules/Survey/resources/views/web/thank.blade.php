@@ -31,7 +31,7 @@
                         شما برای ما ارزشمند است.</p>
                 @endif
 
-                <a href="https://tarinotech.com" class="tank-btn-primary">
+                <a href="{{ $returnUrl }}" class="tank-btn-primary">
                     <i class="fas fa-home me-2"></i> بازگشت به صفحه اصلی
                 </a>
             </div>

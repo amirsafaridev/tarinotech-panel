@@ -52,6 +52,13 @@
                         </div>
 
                         <div class="row">
+                            <div class="col-md-12">
+                                <x-admin.input identify="return_url" title="آدرس بازگشت (اختیاری)" placeholder="مثال: https://tarinotech.com/company"/>
+                                <small class="form-text text-muted">اگر می‌خواهید دکمه بازگشت در صفحه پایان به آدرس دیگری غیر از صفحه اصلی هدایت شود، آدرس را اینجا وارد کنید.</small>
+                            </div>
+                        </div>
+
+                        <div class="row">
                             <div class="col-md-6">
                                 <x-admin.input identify="start_date"
                                                title="تاریخ شروع"

@@ -128,7 +128,10 @@ class SurveyController extends Controller
             abort(404);
         }
 
-        return view('survey::web.thank', compact('survey'));
+        // Get custom return URL if set, otherwise use default app URL
+        $returnUrl = $survey->return_url ?: config('app.url', 'https://tarinotech.com');
+        
+        return view('survey::web.thank', compact('survey', 'returnUrl'));
     }
 
     private function findActiveSurvey(string $accessToken): ?Survey

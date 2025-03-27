@@ -26,6 +26,7 @@ class Survey extends Model
         'title',
         'description',
         'thank_you_message',
+        'return_url',
         'admin_id',
         'requires_auth',
         'auth_guard',
