@@ -65,16 +65,16 @@
                         </div>
 
                         <!-- گزینه‌های سوال انتخابی -->
-                        <div id="choice-options" class="mt-4 mb-3 p-3 border rounded d-none">
+                        <div id="choice-options" class="mt-4 mb-3 p-3  d-none">
                             <h5>گزینه‌های سوال</h5>
                             <div class="alert alert-info">
                                 <i class="fa fa-info-circle me-2"></i>
                                 پس از ایجاد سوال به صفحه مدیریت گزینه‌ها هدایت خواهید شد.
                             </div>
                         </div>
-                        
+
                         <!-- تنظیمات سوال عددی -->
-                        <div id="number-options" class="mt-4 mb-3 p-3 border rounded d-none">
+                        <div id="number-options" class="mt-4 mb-3 p-3 d-none">
                             <h5>تنظیمات ورودی عددی</h5>
                             <div class="row">
                                 <div class="col-md-6">
@@ -209,7 +209,7 @@
                     questionType === {{ QuestionTypeEnum::Multiple }}) {
                     $('#choice-options').removeClass('d-none');
                 }
-                
+
                 // Show number options section for Number(4) question type
                 if (questionType === {{ QuestionTypeEnum::Number }}) {
                     $('#number-options').removeClass('d-none');

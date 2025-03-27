@@ -111,28 +111,28 @@
                                 مدیریت گزینه‌ها
                             </a>
                         </div>
-                        
+
                         <!-- تنظیمات سوال عددی -->
                         <div id="number-options"
-                             class="mt-4 mb-3 p-3 border rounded {{ $question->question_type == QuestionTypeEnum::Number ? '' : 'd-none' }}">
+                             class="mt-4 mb-3 p-3  {{ $question->question_type == QuestionTypeEnum::Number ? '' : 'd-none' }}">
                             <h5>تنظیمات ورودی عددی</h5>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <x-admin.input identify="settings[min]" title="حداقل مقدار" type="number" step="any" 
+                                    <x-admin.input identify="settings[min]" title="حداقل مقدار" type="number" step="any"
                                     :old="$question->settings['min'] ?? null" />
                                 </div>
                                 <div class="col-md-6">
-                                    <x-admin.input identify="settings[max]" title="حداکثر مقدار" type="number" step="any" 
+                                    <x-admin.input identify="settings[max]" title="حداکثر مقدار" type="number" step="any"
                                     :old="$question->settings['max'] ?? null" />
                                 </div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-md-6">
-                                    <x-admin.input identify="settings[step]" title="گام" type="number" step="any" placeholder="مثال: 0.1، 1، 5" 
+                                    <x-admin.input identify="settings[step]" title="گام" type="number" step="any" placeholder="مثال: 0.1، 1، 5"
                                     :old="$question->settings['step'] ?? null" />
                                 </div>
                                 <div class="col-md-6">
-                                    <x-admin.input identify="settings[default]" title="مقدار پیش‌فرض" type="number" step="any" 
+                                    <x-admin.input identify="settings[default]" title="مقدار پیش‌فرض" type="number" step="any"
                                     :old="$question->settings['default'] ?? null" />
                                 </div>
                             </div>
@@ -340,7 +340,7 @@
                     questionType === {{ QuestionTypeEnum::Multiple }}) {
                     $('#choice-options').removeClass('d-none');
                 }
-                
+
                 // Show number options section for Number(4) question type
                 if (questionType === {{ QuestionTypeEnum::Number }}) {
                     $('#number-options').removeClass('d-none');
