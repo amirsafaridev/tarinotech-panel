@@ -6,7 +6,7 @@
     .survey-number-input {
         margin-bottom: 10px;
     }
-    
+
     .survey-number-answer {
         width: 100%;
         max-width: 300px;
@@ -16,13 +16,13 @@
         font-size: 16px;
         transition: border-color 0.3s;
     }
-    
+
     .survey-number-answer:focus {
         border-color: #4e73df;
         outline: none;
         box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
     }
-    
+
     .survey-number-answer::-webkit-inner-spin-button,
     .survey-number-answer::-webkit-outer-spin-button {
         opacity: 1;
@@ -51,9 +51,6 @@
 
         <form id="survey-form" action="{{ route('survey.public.submit', $survey->access_token) }}" method="POST">
             @csrf
-
-            {{-- $showPersonalInfo is now passed from the controller --}}
-
             @if($showPersonalInfo)
                 <div class="survey-personal-info active" id="survey-personal-info">
                     <h3>اطلاعات شما</h3>
@@ -149,7 +146,7 @@
                                     <i class="fas fa-exclamation-circle me-2"></i> لطفاً پاسخ خود را وارد کنید.
                                 </div>
                                 @break
-                                
+
                             @case(Modules\Survey\app\Enums\Database\QuestionTypeEnum::Number)
                                 @php
                                     $settings = $question->settings ?? [];
@@ -159,13 +156,13 @@
                                     $default = $settings['default'] ?? null;
                                 @endphp
                                 <div class="survey-number-input">
-                                    <input type="number" 
-                                           class="survey-number-answer" 
-                                           name="question_{{ $question->id }}" 
+                                    <input type="number"
+                                           class="survey-number-answer"
+                                           name="question_{{ $question->id }}"
                                            {{ $min !== null ? "min={$min}" : '' }}
                                            {{ $max !== null ? "max={$max}" : '' }}
-                                           step="{{ $step }}" 
-                                           placeholder="مقدار عددی را وارد کنید" 
+                                           step="{{ $step }}"
+                                           placeholder="مقدار عددی را وارد کنید"
                                            value="{{ old("question_{$question->id}") ?? $default }}">
                                 </div>
                                 <div class="survey-error-message" id="survey-error-{{ $question->id }}" style="display: none;">
@@ -342,24 +339,24 @@
                     case 'number':
                         const numberInput = questionContainer.find('input[type="number"]');
                         const numberValue = numberInput.val().trim();
-                        
+
                         // Check if the value is not empty
                         if (numberValue === '') {
                             isValid = false;
                             break;
                         }
-                        
+
                         // Check if the value is a valid number
                         const numValue = parseFloat(numberValue);
                         if (isNaN(numValue)) {
                             isValid = false;
                             break;
                         }
-                        
+
                         // Check min/max constraints
                         const min = numberInput.attr('min') ? parseFloat(numberInput.attr('min')) : null;
                         const max = numberInput.attr('max') ? parseFloat(numberInput.attr('max')) : null;
-                        
+
                         if (min !== null && numValue < min) {
                             isValid = false;
                             errorMessage.text(`لطفاً عددی بزرگتر یا مساوی ${min} وارد کنید.`);
