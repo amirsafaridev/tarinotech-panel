@@ -21,7 +21,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a
                         href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">نظرسنجی‌ها</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">پرسشنامه ها</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.survey.question.index', $survey->id) }}">سوالات
                         نظرسنجی</a></li>
                 <li class="breadcrumb-item active">ویرایش سوال</li>
@@ -34,7 +34,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        ویرایش سوال نظرسنجی: {{ $survey->title }}
+                        ویرایش سوال پرسشنامه: {{ $survey->title }}
                     </h3>
                 </div>
                 <div class="card-body pb-3">
@@ -179,7 +179,7 @@
                             <span class="font-weight-bold">{{ $question->id }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
-                            <span>نظرسنجی:</span>
+                            <span>پرسشنامه:</span>
                             <span class="font-weight-bold">{{ $survey->title }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">

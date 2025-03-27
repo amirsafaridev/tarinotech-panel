@@ -7,7 +7,7 @@
 @if($numberQuestions->isEmpty())
     <div class="alert alert-info">
         <i class="fa fa-info-circle me-1"></i>
-        هیچ سوال عددی در این نظرسنجی وجود ندارد.
+        هیچ سوال عددی در این پرسشنامه وجود ندارد.
     </div>
 @else
     @foreach($numberQuestions as $index => $question)

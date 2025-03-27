@@ -7,7 +7,7 @@
 @if($choiceQuestions->isEmpty())
     <div class="alert alert-info">
         <i class="fa fa-info-circle me-1"></i>
-        هیچ سوال انتخابی (تک گزینه‌ای یا چند گزینه‌ای) در این نظرسنجی وجود ندارد.
+        هیچ سوال انتخابی (تک گزینه‌ای یا چند گزینه‌ای) در این پرسشنامه وجود ندارد.
     </div>
 @else
     @foreach($choiceQuestions as $index => $question)

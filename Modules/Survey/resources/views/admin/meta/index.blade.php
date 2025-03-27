@@ -35,7 +35,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a
                         href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">نظرسنجی‌ها</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">پرسشنامه ها</a></li>
                 <li class="breadcrumb-item active">مدیریت متا</li>
             </ol>
         </div>
@@ -66,7 +66,7 @@
                                     <div class="d-flex align-items-center">
                                         <i class="fa fa-info-circle fs-4 me-2"></i>
                                         <div>
-                                            <strong>افزودن نظرسنجی به:</strong>
+                                            <strong>افزودن پرسشنامه به:</strong>
                                             <span class="fw-bold">{{ $modelInfo['class'] }}: {{ $modelInfo['title'] }}</span>
                                         </div>
                                     </div>
@@ -74,7 +74,7 @@
                             @else
                                 <div class="alert alert-info">
                                     <i class="fa fa-info-circle me-2"></i>
-                                    در حال افزودن متا نظرسنجی برای:
+                                    در حال افزودن متا پرسشنامه برای:
                                     <strong>{{ $surveyable_type }} #{{ $surveyable_id }}</strong>
                                 </div>
                             @endif
@@ -82,7 +82,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="survey_id">انتخاب نظرسنجی</label>
+                                        <label for="survey_id">انتخاب پرسشنامه</label>
                                         <select class="form-control select2" id="survey_id" name="survey_id" required>
                                             <option value="">انتخاب کنید...</option>
                                             @foreach($surveys as $survey)
@@ -130,7 +130,7 @@
                                 <thead>
                                 <tr>
                                     <th>شناسه</th>
-                                    <th>عنوان نظرسنجی</th>
+                                    <th>عنوان پرسشنامه</th>
                                     <th width="35%">لینک</th>
                                     <th>تاریخ ایجاد</th>
                                     <th>عملیات</th>
@@ -199,7 +199,7 @@
         function confirmDeleteMeta(id) {
             swal({
                 title: 'آیا مطمئن هستید؟',
-                text: "این متا نظرسنجی حذف خواهد شد و قابل بازیابی نیست!",
+                text: "این متا پرسشنامه حذف خواهد شد و قابل بازیابی نیست!",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -228,7 +228,7 @@
             // Show success message
             $.toast({
                 heading: 'کپی شد!',
-                text: 'لینک نظرسنجی در کلیپ بورد کپی شد.',
+                text: 'لینک پرسشنامه در کلیپ بورد کپی شد.',
                 position: 'bottom-left',
                 loaderBg: '#ff6849',
                 icon: 'success',

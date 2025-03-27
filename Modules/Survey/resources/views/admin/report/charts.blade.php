@@ -50,7 +50,7 @@
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">نظرسنجی‌ها</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">پرسشنامه ها</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.survey.edit', $survey->id) }}">{{ $survey->title }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.survey.report.index', $survey->id) }}">گزارش</a></li>
                 <li class="breadcrumb-item active">نمودارهای نظرسنجی</li>
@@ -110,7 +110,7 @@
         <div class="col-xl-4">
             <div class="card mb-4">
                 <div class="card-header">
-                    <h3 class="card-title">آمار کلی نظرسنجی</h3>
+                    <h3 class="card-title">آمار کلی پرسشنامه</h3>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -138,7 +138,7 @@
                                         </div>
                                         <div>
                                             <h5 class="mb-0">{{ $stats['completion_rate'] }}%</h5>
-                                            <p class="mb-0 opacity-75">نرخ تکمیل نظرسنجی</p>
+                                            <p class="mb-0 opacity-75">نرخ تکمیل پرسشنامه</p>
                                         </div>
                                     </div>
                                 </div>

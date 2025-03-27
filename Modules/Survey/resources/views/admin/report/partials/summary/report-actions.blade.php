@@ -4,7 +4,7 @@
         <div class="card-body">
             <div class="d-flex flex-wrap justify-content-between align-items-center">
                 <div class="mb-3 mb-md-0">
-                    <h4 class="mb-1">خلاصه نتایج نظرسنجی</h4>
+                    <h4 class="mb-1">خلاصه نتایج پرسشنامه</h4>
                     <p class="text-muted mb-0">
                         تعداد کل پاسخ‌ها: <span class="fw-bold">{{ $stats['total_responses'] }}</span> |
                         نرخ تکمیل: <span class="fw-bold">{{ $stats['completion_rate'] }}%</span>
