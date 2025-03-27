@@ -111,6 +111,36 @@
                                 مدیریت گزینه‌ها
                             </a>
                         </div>
+                        
+                        <!-- تنظیمات سوال عددی -->
+                        <div id="number-options"
+                             class="mt-4 mb-3 p-3 border rounded {{ $question->question_type == QuestionTypeEnum::Number ? '' : 'd-none' }}">
+                            <h5>تنظیمات ورودی عددی</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <x-admin.input identify="settings[min]" title="حداقل مقدار" type="number" step="any" 
+                                    :old="$question->settings['min'] ?? null" />
+                                </div>
+                                <div class="col-md-6">
+                                    <x-admin.input identify="settings[max]" title="حداکثر مقدار" type="number" step="any" 
+                                    :old="$question->settings['max'] ?? null" />
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <x-admin.input identify="settings[step]" title="گام" type="number" step="any" placeholder="مثال: 0.1، 1، 5" 
+                                    :old="$question->settings['step'] ?? null" />
+                                </div>
+                                <div class="col-md-6">
+                                    <x-admin.input identify="settings[default]" title="مقدار پیش‌فرض" type="number" step="any" 
+                                    :old="$question->settings['default'] ?? null" />
+                                </div>
+                            </div>
+                            <div class="alert alert-info mt-3">
+                                <i class="fa fa-info-circle me-2"></i>
+                                می‌توانید محدوده اعداد مجاز، گام‌های افزایش/کاهش و مقدار پیش‌فرض را تنظیم کنید.
+                            </div>
+                        </div>
 
                         <div class="d-flex mt-4">
                             <x-admin.button title="{{ trans('panel.update') }}" class="me-2"/>
@@ -169,6 +199,9 @@
                                     } elseif ($type == QuestionTypeEnum::Multiple) {
                                         $badgeClass = 'bg-info';
                                         $icon = '<i class="fa fa-check-square me-1"></i>';
+                                    } elseif ($type == QuestionTypeEnum::Number) {
+                                        $badgeClass = 'bg-warning';
+                                        $icon = '<i class="fa fa-calculator me-1"></i>';
                                     } else {
                                         $badgeClass = 'bg-secondary';
                                         $icon = '<i class="fa fa-question-circle me-1"></i>';
@@ -256,6 +289,16 @@
                                     <i class="fa fa-check-square text-info"></i>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>
+                                    <span class="d-block fw-bold">عددی</span>
+                                    <span class="badge bg-warning mt-1">Number</span>
+                                </td>
+                                <td>ورود مقادیر عددی و محدوده‌های کمی</td>
+                                <td class="text-center">
+                                    <i class="fa fa-calculator text-warning"></i>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -289,13 +332,18 @@
             $('#question_type').on('change', function () {
                 const questionType = parseInt($(this).val());
 
-                // Hide choice options section by default
-                $('#choice-options').addClass('d-none');
+                // Hide all option sections by default
+                $('#choice-options, #number-options').addClass('d-none');
 
                 // Show choice options section for Single(1) and Multiple(2) choice questions
                 if (questionType === {{ QuestionTypeEnum::Single }} ||
                     questionType === {{ QuestionTypeEnum::Multiple }}) {
                     $('#choice-options').removeClass('d-none');
+                }
+                
+                // Show number options section for Number(4) question type
+                if (questionType === {{ QuestionTypeEnum::Number }}) {
+                    $('#number-options').removeClass('d-none');
                 }
             });
 

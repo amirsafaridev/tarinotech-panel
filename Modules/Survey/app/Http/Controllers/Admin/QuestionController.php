@@ -58,6 +58,11 @@ class QuestionController extends Controller
                 'order' => $nextOrder,
             ];
 
+            // Handle settings for questions that need additional configuration
+            if ($request->input('question_type') == QuestionTypeEnum::Number) {
+                $questionData['settings'] = $request->input('settings', []);
+            }
+
             $question = SurveyQuestion::query()->create($questionData);
 
             DB::commit();
@@ -102,16 +107,16 @@ class QuestionController extends Controller
                 'is_required' => $request->boolean('is_required'),
             ];
 
-            // Handle settings for rating and scale questions
-            if (in_array($request->input('question_type'), ['rating', 'scale'])) {
-                $questionData['settings'] = json_encode($request->input('settings', []));
+            // Handle settings for questions that need additional configuration
+            if ($request->input('question_type') == QuestionTypeEnum::Number) {
+                $questionData['settings'] = $request->input('settings', []);
             } else {
                 $questionData['settings'] = null;
             }
 
             // If changing question type from choice to non-choice, delete options
-            if (! in_array($request->input('question_type'), ['single_choice', 'multiple_choice']) &&
-                in_array($question->question_type, ['single_choice', 'multiple_choice'])) {
+            if (! in_array($request->input('question_type'), [QuestionTypeEnum::Single, QuestionTypeEnum::Multiple]) &&
+                in_array($question->question_type, [QuestionTypeEnum::Single, QuestionTypeEnum::Multiple])) {
                 $question->options()->delete();
             }
 

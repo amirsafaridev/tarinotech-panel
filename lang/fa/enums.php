@@ -228,5 +228,6 @@ return [
         QuestionTypeEnum::Single => 'تک انتخابی',
         QuestionTypeEnum::Multiple => 'چند انتخابی',
         QuestionTypeEnum::Text => 'متنی',
+        QuestionTypeEnum::Number => 'عددی',
     ],
 ];

@@ -121,6 +121,29 @@ body {
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
 }
 
+.survey-number-input {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.survey-number-answer {
+    width: 100%;
+    max-width: 300px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: 'Yekan_Bakh', 'Vazir', 'Tahoma', sans-serif;
+    transition: border-color 0.3s;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.survey-number-answer:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
 .survey-btn {
     padding: 12px 24px;
     border: none;
