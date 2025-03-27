@@ -26,13 +26,13 @@ class SurveyController extends Controller
 {
     use HasJsonCommonResponseTrait;
 
-    const INDEX_TITLE = 'نظرسنجی‌ها';
+    const INDEX_TITLE = 'پرسش نامه ها';
 
-    const CREATE_TITLE = 'ایجاد نظرسنجی جدید';
+    const CREATE_TITLE = 'ایجاد پرسش نامه جدید';
 
-    const EDIT_TITLE = 'ویرایش نظرسنجی';
+    const EDIT_TITLE = 'ویرایش پرسش نامه';
 
-    const PREVIEW_TITLE = 'پیش‌نمایش نظرسنجی';
+    const PREVIEW_TITLE = 'پیش‌نمایش پرسش نامه';
 
     public function index()
     {
@@ -76,7 +76,7 @@ class SurveyController extends Controller
     private function export($surveys)
     {
         try {
-            $fileName = 'نظرسنجی‌ها-'.Carbon::now()->format('Y-m-d').'.xlsx';
+            $fileName = 'پرسش نامه ها-'.Carbon::now()->format('Y-m-d').'.xlsx';
 
             return Excel::download(new SurveyExport($surveys), $fileName);
         } catch (Exception $exception) {
@@ -196,7 +196,7 @@ class SurveyController extends Controller
 
             return $this->successBack(
                 route('admin.survey.edit', $newSurvey->id),
-                'نظرسنجی با موفقیت کپی شد. اکنون می‌توانید آن را ویرایش کنید.'
+                'پرسش نامه با موفقیت کپی شد. اکنون می‌توانید آن را ویرایش کنید.'
             );
         } catch (Exception $exception) {
             DB::rollBack();

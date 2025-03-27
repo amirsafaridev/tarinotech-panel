@@ -20,7 +20,7 @@
             </div>
 
             <div class="survey-auth-required-body">
-                <p class="survey-auth-required-message">برای شرکت در این نظرسنجی، ابتدا باید وارد حساب کاربری خود شوید.</p>
+                <p class="survey-auth-required-message">برای شرکت در این پرسش نامه، ابتدا باید وارد حساب کاربری خود شوید.</p>
             </div>
         </div>
     </div>

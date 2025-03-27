@@ -24,7 +24,7 @@ class SurveyResponseController extends Controller
 {
     use HasJsonCommonResponseTrait;
 
-    const INDEX_TITLE = 'پاسخ‌های نظرسنجی';
+    const INDEX_TITLE = 'پاسخ‌های پرسشنامه';
 
     const SHOW_TITLE = 'جزئیات پاسخ';
 
@@ -108,7 +108,7 @@ class SurveyResponseController extends Controller
         try {
             $survey->load('questions.options');
 
-            $fileName = 'پاسخ‌های-نظرسنجی-'.$survey->id.'-'.Carbon::now()->format('Y-m-d').'.xlsx';
+            $fileName = 'پاسخ‌های-پرسشنامه-'.$survey->id.'-'.Carbon::now()->format('Y-m-d').'.xlsx';
 
             return Excel::download(new ResponseExport($survey, $responses), $fileName);
         } catch (Exception $exception) {

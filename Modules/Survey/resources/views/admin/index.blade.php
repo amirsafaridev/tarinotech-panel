@@ -139,7 +139,7 @@
                                                     <li>
                                                         <a class="dropdown-item"
                                                            href="{{ route('admin.survey.duplicate', $survey->id) }}">
-                                                            <i class="fas fa-copy me-2"></i> تکثیر نظرسنجی
+                                                            <i class="fas fa-copy me-2"></i> تکثیر پرسش نامه
                                                         </a>
                                                     </li>
                                                 </ul>

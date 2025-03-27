@@ -36,7 +36,7 @@ class SurveyController extends Controller
         $survey = $this->findActiveSurvey($accessToken);
 
         if (! $survey) {
-            abort(404, 'نظرسنجی مورد نظر یافت نشد یا در دسترس نیست.');
+            abort(404, 'پرسش نامه مورد نظر یافت نشد یا در دسترس نیست.');
         }
 
         $this->survey = $survey;
@@ -45,7 +45,7 @@ class SurveyController extends Controller
             $metaToken = $request->query('meta');
 
             if (! $metaToken) {
-                abort(404, 'این نظرسنجی نیازمند پارامتر meta است.');
+                abort(404, 'این پرسش نامه نیازمند پارامتر meta است.');
             }
 
             $meta = SurveyMeta::query()->where('access_token', $metaToken)
@@ -65,7 +65,7 @@ class SurveyController extends Controller
 
         if ($this->hasUserSubmitted($survey)) {
             return redirect()->route('survey.public.thankYou', $survey->access_token)
-                ->with('message', 'شما قبلا در این نظرسنجی شرکت کرده‌اید.');
+                ->with('message', 'شما قبلا در این پرسش نامه شرکت کرده‌اید.');
         }
 
         $this->loadSurveyWithQuestions($survey);
@@ -83,11 +83,11 @@ class SurveyController extends Controller
         $survey = $this->findActiveSurvey($accessToken);
 
         if (! $survey) {
-            abort(404, 'نظرسنجی مورد نظر یافت نشد یا در دسترس نیست.');
+            abort(404, 'پرسش نامه مورد نظر یافت نشد یا در دسترس نیست.');
         }
 
         if ($survey->has_meta && ! session(self::SESSION_SURVEY_META_ID)) {
-            abort(404, 'این نظرسنجی نیازمند پارامتر meta است.');
+            abort(404, 'این پرسش نامه نیازمند پارامتر meta است.');
         }
 
         if ($survey->requires_auth && ! Auth::check()) {

@@ -22,7 +22,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a
                         href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">نظرسنجی‌ها</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">پرسش نامه ها</a></li>
                 <li class="breadcrumb-item active">ویرایش</li>
             </ol>
         </div>
@@ -40,7 +40,7 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <x-admin.input identify="title" title="عنوان نظرسنجی" :old="$survey->title"/>
+                                <x-admin.input identify="title" title="عنوان پرسش نامه" :old="$survey->title"/>
                             </div>
                         </div>
 
@@ -103,7 +103,7 @@
                                 </button>
                             </div>
                             <small class="form-text text-muted">این لینک را می‌توانید با دیگران به اشتراک بگذارید تا در
-                                نظرسنجی شرکت کنند.</small>
+                                پرسش نامه شرکت کنند.</small>
                         </div>
 
                         <div class="d-flex mt-4">
@@ -128,7 +128,7 @@
         <div class="col-xl-4 col-lg-4 col-md-4 col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">اطلاعات نظرسنجی</h3>
+                    <h3 class="card-title">اطلاعات پرسش نامه</h3>
                 </div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
@@ -190,7 +190,7 @@
             document.execCommand('copy');
             $.toast({
                 heading: 'موفق',
-                text: 'لینک نظرسنجی کپی شد',
+                text: 'لینک پرسش نامه کپی شد',
                 allowToastClose: false,
                 position: 'bottom-left',
                 hideAfter: 4400,

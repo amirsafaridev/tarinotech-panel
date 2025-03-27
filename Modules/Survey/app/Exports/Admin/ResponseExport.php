@@ -32,7 +32,7 @@ class ResponseExport implements FromCollection, ShouldAutoSize, WithHeadings, Wi
 
     public function title(): string
     {
-        return 'پاسخ‌های نظرسنجی';
+        return 'پاسخ‌های پرسش نامه';
     }
 
     public function collection(): Collection

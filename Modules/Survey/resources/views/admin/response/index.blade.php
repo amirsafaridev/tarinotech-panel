@@ -18,7 +18,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a
                         href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">نظرسنجی‌ها</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">پرسشنامه ها</a></li>
                 <li class="breadcrumb-item"><a
                         href="{{ route('admin.survey.edit', $survey->id) }}">{{ $survey->title }}</a></li>
                 <li class="breadcrumb-item active">پاسخ‌ها</li>
@@ -93,7 +93,7 @@
                     @if($responses->isEmpty())
                         <div class="alert alert-info">
                             <i class="fa fa-info-circle me-2"></i>
-                            هنوز هیچ پاسخی برای این نظرسنجی ثبت نشده است.
+                            هنوز هیچ پاسخی برای این پرسشنامه ثبت نشده است.
                         </div>
                     @else
                         <div class="table-responsive">

@@ -28,7 +28,7 @@ class SurveyExport implements FromCollection, WithHeadings, WithMapping, WithSty
 
     public function title(): string
     {
-        return 'لیست نظرسنجی‌ها';
+        return 'لیست پرسش نامه ها';
     }
 
     public function headings(): array

@@ -42,7 +42,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a
                         href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">نظرسنجی‌ها</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">پرسشنامه ها</a></li>
                 <li class="breadcrumb-item"><a
                         href="{{ route('admin.survey.edit', $survey->id) }}">{{ $survey->title }}</a></li>
                 <li class="breadcrumb-item active">گزارش</li>
@@ -58,7 +58,7 @@
                 <div class="card-body">
                     <div class="d-flex flex-wrap justify-content-between align-items-center">
                         <div class="mb-3 mb-md-0">
-                            <h4 class="mb-1">نمای کلی گزارش نظرسنجی</h4>
+                            <h4 class="mb-1">نمای کلی گزارش پرسشنامه</h4>
                             <p class="text-muted mb-0">
                                 آخرین به‌روزرسانی: {{ now()->toJalali()->format(formatJalaliDateTime()) }}
                             </p>

@@ -19,7 +19,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a
                         href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">نظرسنجی‌ها</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">پرسش نامه ها</a></li>
                 <li class="breadcrumb-item active">ایجاد</li>
             </ol>
         </div>
@@ -35,7 +35,7 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <x-admin.input identify="title" title="عنوان نظرسنجی"/>
+                                <x-admin.input identify="title" title="عنوان پرسش نامه"/>
                             </div>
                         </div>
 

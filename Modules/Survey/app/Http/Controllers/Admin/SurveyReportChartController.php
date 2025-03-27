@@ -19,7 +19,7 @@ class SurveyReportChartController extends Controller
     use HasSurveyResponseTrendTrait;
     use HasSurveyStatsTrait;
 
-    const CHARTS_TITLE = 'نمودارهای نظرسنجی';
+    const CHARTS_TITLE = 'نمودارهای پرسشنامه';
 
     /**
      * Display chart visualizations for survey data.

@@ -17,7 +17,7 @@ class QuestionController extends Controller
 {
     use HasJsonCommonResponseTrait;
 
-    const INDEX_TITLE = 'سوالات نظرسنجی';
+    const INDEX_TITLE = 'سوالات پرسشنامه';
 
     const CREATE_TITLE = 'افزودن سوال جدید';
 

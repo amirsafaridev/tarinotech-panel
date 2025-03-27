@@ -19,8 +19,8 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a
                         href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">نظرسنجی‌ها</a></li>
-                <li class="breadcrumb-item active">سوالات نظرسنجی</li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">پرسشنامه ها</a></li>
+                <li class="breadcrumb-item active">سوالات پرسشنامه</li>
             </ol>
         </div>
     </div>
@@ -37,7 +37,7 @@
                         <a class="btn btn-primary" href="{{ route('admin.survey.question.create', $survey->id) }}">افزودن
                             سوال جدید</a>
                         <a class="btn btn-secondary" href="{{ route('admin.survey.edit', $survey->id) }}">بازگشت به
-                            نظرسنجی</a>
+                            پرسشنامه</a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -45,7 +45,7 @@
 
                     @if($questions->isEmpty())
                         <div class="alert alert-info">
-                            هنوز سوالی برای این نظرسنجی تعریف نشده است. برای افزودن سوال روی دکمه "افزودن سوال جدید"
+                            هنوز سوالی برای این پرسشنامه تعریف نشده است. برای افزودن سوال روی دکمه "افزودن سوال جدید"
                             کلیک کنید.
                         </div>
                     @else

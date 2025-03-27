@@ -23,7 +23,7 @@ class SurveyReportController extends Controller
     use HasSurveyResponseTrendTrait;
     use HasSurveyStatsTrait;
 
-    const INDEX_TITLE = 'گزارش نظرسنجی';
+    const INDEX_TITLE = 'گزارش پرسشنامه';
 
     /**
      * Display the main report dashboard.

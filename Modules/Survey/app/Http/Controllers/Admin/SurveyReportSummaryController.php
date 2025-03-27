@@ -15,7 +15,7 @@ class SurveyReportSummaryController extends Controller
     use HasSurveyQuestionOptionsTrait;
     use HasSurveyStatsTrait;
 
-    const SUMMARY_TITLE = 'خلاصه نتایج نظرسنجی';
+    const SUMMARY_TITLE = 'خلاصه نتایج پرسشنامه';
 
     public function index(Survey $survey)
     {

@@ -71,7 +71,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a
                         href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">نظرسنجی‌ها</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">پرسش نامه ها</a></li>
                 <li class="breadcrumb-item"><a
                         href="{{ route('admin.survey.edit', $survey->id) }}">{{ $survey->title }}</a></li>
                 <li class="breadcrumb-item"><a
@@ -179,12 +179,12 @@
                             <span class="fw-bold">{{ $response->ip_address }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>شروع نظرسنجی:</span>
+                            <span>شروع پرسش نامه:</span>
                             <span
                                 class="fw-bold">{{ $response->started_at ? $response->started_at->toJalali()->format(formatJalaliDateTime()) : 'نامشخص' }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>پایان نظرسنجی:</span>
+                            <span>پایان پرسش نامه:</span>
                             <span
                                 class="fw-bold">{{ $response->completed_at ? $response->completed_at->toJalali()->format(formatJalaliDateTime()) : 'نامشخص' }}</span>
                         </li>
@@ -221,7 +221,7 @@
             <!-- Survey info -->
             <div class="card mt-4">
                 <div class="card-header">
-                    <h3 class="card-title">اطلاعات نظرسنجی</h3>
+                    <h3 class="card-title">اطلاعات پرسش نامه</h3>
                 </div>
                 <div class="card-body">
                     <h4>{{ $survey->title }}</h4>

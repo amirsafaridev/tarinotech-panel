@@ -25,7 +25,7 @@
                 @if(session('message'))
                     <p class="tank-message">{{ session('message') }}</p>
                 @else
-                    <p class="tank-message">پاسخ‌های شما با موفقیت ثبت شد. از مشارکت شما در این نظرسنجی سپاسگزاریم.<br>نظر
+                    <p class="tank-message">پاسخ‌های شما با موفقیت ثبت شد. از مشارکت شما در این پرسش نامه سپاسگزاریم.<br>نظر
                         شما برای ما ارزشمند است.</p>
                 @endif
 
