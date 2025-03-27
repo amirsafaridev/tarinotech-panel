@@ -45,7 +45,7 @@
         <div class="col-xl-12 col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <div class="card-title">افزودن متا نظرسنجی</div>
+                    <div class="card-title">افزودن متا پرسشنامه</div>
                     @if($surveyable_type && $surveyable_id)
                         <div>
                             <a class="btn btn-secondary"
@@ -107,7 +107,7 @@
                     @else
                         <div class="alert alert-warning">
                             <i class="fa fa-exclamation-triangle me-2"></i>
-                            برای افزودن متا نظرسنجی، باید پارامترهای <code>surveyable_type</code> و <code>surveyable_id</code> را در URL ارسال کنید.
+                            برای افزودن متا پرسشنامه، باید پارامترهای <code>surveyable_type</code> و <code>surveyable_id</code> را در URL ارسال کنید.
                             <div class="mt-2">
                                 <strong>مثال:</strong>
                                 <code>{{ route('admin.survey.meta.index') }}?surveyable_type=Project&surveyable_id=123</code>

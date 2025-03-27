@@ -19,7 +19,7 @@
                         href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.survey.index') }}">پرسشنامه ها</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.survey.question.index', $survey->id) }}">سوالات
-                        نظرسنجی</a></li>
+                        پرسشنامه</a></li>
                 <li class="breadcrumb-item active">افزودن سوال جدید</li>
             </ol>
         </div>

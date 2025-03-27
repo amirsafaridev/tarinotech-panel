@@ -1,7 +1,7 @@
 @if($project->survey && $project->survey->survey)
     <div class="card mb-3">
         <div class="card-header d-flex align-items-center justify-content-between">
-            <h3 class="card-title">اطلاعات نظرسنجی</h3>
+            <h3 class="card-title">اطلاعات پرسشنامه</h3>
             <a href="{{ route('admin.survey.meta.index', ['surveyable_type'=>'Project','surveyable_id'=>$project->id]) }}" class="btn btn-sm btn-primary btn-sm">
                 <i class="fe fe-edit"></i> ویرایش
             </a>
@@ -10,7 +10,7 @@
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <tr>
-                        <td style="width: 200px;">عنوان نظرسنجی</td>
+                        <td style="width: 200px;">عنوان پرسشنامه</td>
                         <td>{{ $project->survey->survey->title }}</td>
                     </tr>
                     @if($project->survey->survey->description)
@@ -61,7 +61,7 @@
 
             <div class="mt-3">
                 <a href="{{ route('admin.survey.report.index', $project->survey->survey->id) }}" class="btn btn-sm btn-primary">
-                    <i class="fe fe-eye"></i> مشاهده جزئیات نظرسنجی
+                    <i class="fe fe-eye"></i> مشاهده جزئیات پرسشنامه
                 </a>
 
                 @if($project->survey->survey->is_active)
@@ -75,12 +75,12 @@
 @else
     <div class="card mb-3">
         <div class="card-header">
-            <h3 class="card-title">نظرسنجی</h3>
+            <h3 class="card-title">پرسشنامه</h3>
         </div>
         <div class="card-body">
-            <p class="text-muted mb-3">هیچ نظرسنجی برای این پروژه ثبت نشده است.</p>
+            <p class="text-muted mb-3">هیچ پرسشنامه برای این پروژه ثبت نشده است.</p>
             <a href="{{ route('admin.survey.meta.index', ['surveyable_type'=>'Project','surveyable_id'=>$project->id]) }}" class="btn btn-sm btn-primary">
-                <i class="fe fe-plus"></i> افزودن نظرسنجی
+                <i class="fe fe-plus"></i> افزودن پرسشنامه
             </a>
         </div>
     </div>

@@ -17,7 +17,7 @@ class SurveyMetaController extends Controller
 {
     use HasJsonCommonResponseTrait;
 
-    const INDEX_TITLE = 'مدیریت متا نظرسنجی';
+    const INDEX_TITLE = 'مدیریت متا پرسشنامه';
 
     const CREATE_TITLE = 'افزودن متا جدید';
 
@@ -87,7 +87,7 @@ class SurveyMetaController extends Controller
             if ($existingMeta) {
                 DB::rollBack();
 
-                return $this->failure('این نظرسنجی قبلاً به این آیتم متصل شده است.', 400);
+                return $this->failure('این پرسشنامه قبلاً به این آیتم متصل شده است.', 400);
             }
 
             SurveyMeta::create([

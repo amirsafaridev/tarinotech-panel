@@ -31,13 +31,13 @@ class SurveyOverviewSheet implements FromCollection, ShouldAutoSize, WithEvents,
 
     public function title(): string
     {
-        return 'خلاصه نظرسنجی';
+        return 'خلاصه پرسشنامه';
     }
 
     public function collection(): Collection
     {
         $data = [
-            ['عنوان نظرسنجی', $this->survey->title],
+            ['عنوان پرسشنامه', $this->survey->title],
             ['توضیحات', $this->survey->description ?? '-'],
             ['وضعیت', $this->survey->is_active ? 'فعال' : 'غیرفعال'],
             ['تاریخ ایجاد', $this->survey->created_at ? $this->survey->created_at->toJalali()->format('Y/m/d H:i') : '-'],
@@ -86,7 +86,7 @@ class SurveyOverviewSheet implements FromCollection, ShouldAutoSize, WithEvents,
 
                 // Add title for the sheet
                 $sheet->mergeCells('A1:B1');
-                $sheet->setCellValue('A1', 'گزارش نظرسنجی: '.$this->survey->title);
+                $sheet->setCellValue('A1', 'گزارش پرسشنامه: '.$this->survey->title);
                 $sheet->getStyle('A1')->applyFromArray([
                     'font' => ['bold' => true, 'size' => 14],
                     'alignment' => [

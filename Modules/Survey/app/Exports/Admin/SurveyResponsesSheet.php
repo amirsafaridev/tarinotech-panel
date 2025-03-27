@@ -102,7 +102,7 @@ class SurveyResponsesSheet implements FromCollection, ShouldAutoSize, WithEvents
 
                 // Add title for the sheet
                 $sheet->mergeCells('A1:F1');
-                $sheet->setCellValue('A1', 'پاسخ‌های نظرسنجی: '.$this->survey->title);
+                $sheet->setCellValue('A1', 'پاسخ‌های پرسشنامه: '.$this->survey->title);
                 $sheet->getStyle('A1')->applyFromArray([
                     'font' => ['bold' => true, 'size' => 14],
                     'alignment' => [

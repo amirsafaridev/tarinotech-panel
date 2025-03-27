@@ -298,13 +298,13 @@
                         'ADMIN_SURVEY_RESPONSE_INDEX',
                     ])
                     <li class="sub-category">
-                        <h3>نظرسنجی‌ها</h3>
+                        <h3>پرسشنامه ها</h3>
                     </li>
 
                     <li class="slide can-expand">
                         <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navSurvey">
                             <i class="side-menu__icon fal fa-poll"></i>
-                            <span class="side-menu__label">نظرسنجی‌ها</span><i class="angle fal fa-angle-left"></i>
+                            <span class="side-menu__label">پرسشنامه ها</span><i class="angle fal fa-angle-left"></i>
                         </a>
 
                         <ul class="slide-menu">

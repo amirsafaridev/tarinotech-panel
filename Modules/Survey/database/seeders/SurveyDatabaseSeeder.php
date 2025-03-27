@@ -41,8 +41,8 @@ class SurveyDatabaseSeeder extends Seeder
     private function createSurvey(Admin $admin): Survey
     {
         return Survey::query()->create([
-            'title' => 'نظرسنجی رضایت مشتریان شرکت طراحی وب و سئو پارس دیجیتال',
-            'description' => 'با تشکر از شما برای شرکت در این نظرسنجی. نظرات شما به ما کمک می‌کند تا خدمات خود را بهبود دهیم.',
+            'title' => 'پرسشنامه رضایت مشتریان شرکت طراحی وب و سئو پارس دیجیتال',
+            'description' => 'با تشکر از شما برای شرکت در این پرسشنامه. نظرات شما به ما کمک می‌کند تا خدمات خود را بهبود دهیم.',
             'admin_id' => $admin->id,
             'requires_auth' => false,
             'auth_guard' => null,

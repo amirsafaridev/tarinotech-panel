@@ -29,7 +29,7 @@ class StoreRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'title' => 'عنوان نظرسنجی',
+            'title' => 'عنوان پرسشنامه',
             'description' => 'توضیحات',
             'requires_auth' => 'نیاز به احراز هویت',
             'auth_guard' => 'گارد احراز هویت',
