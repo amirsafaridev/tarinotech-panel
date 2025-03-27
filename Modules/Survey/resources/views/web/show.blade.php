@@ -91,10 +91,10 @@
                     data-question-id="{{ $question->id }}">
 
                     <div class="survey-question-text">
-                        @if($question->is_required)
-                            <span class="survey-required-badge">ضروری</span>
-                        @endif
                         {{ $question->question_text }}
+                        @if($question->is_required)
+                            <span class="survey-required-badge">*</span>
+                        @endif
                     </div>
 
                     <div class="survey-question-options">

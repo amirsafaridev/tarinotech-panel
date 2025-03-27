@@ -62,13 +62,10 @@ body {
 
 .survey-required-badge {
     display: inline-block;
-    background-color: #e74c3c;
-    color: white;
-    padding: 3px 10px;
-    border-radius: 50px;
-    font-size: 0.8rem;
-    margin-right: 10px;
-    font-weight: 500;
+    color: #e74c3c;
+    font-size: 1.2rem;
+    margin-left: 5px;
+    font-weight: 700;
 }
 
 .survey-option-item {
