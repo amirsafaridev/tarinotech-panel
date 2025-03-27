@@ -25,6 +25,7 @@ class Survey extends Model
     protected $fillable = [
         'title',
         'description',
+        'thank_you_message',
         'admin_id',
         'requires_auth',
         'auth_guard',

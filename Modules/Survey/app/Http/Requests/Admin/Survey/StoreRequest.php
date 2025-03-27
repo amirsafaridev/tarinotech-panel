@@ -17,6 +17,7 @@ class StoreRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'thank_you_message' => 'nullable|string',
             'requires_auth' => 'boolean',
             'auth_guard' => ['nullable', 'required_if:requires_auth,true', 'in:'.implode(',', AuthTypeEnum::getValues())],
             'is_active' => 'boolean',
@@ -31,6 +32,7 @@ class StoreRequest extends FormRequest
         return [
             'title' => 'عنوان پرسشنامه',
             'description' => 'توضیحات',
+            'thank_you_message' => 'متن انتهایی پرسشنامه',
             'requires_auth' => 'نیاز به احراز هویت',
             'auth_guard' => 'گارد احراز هویت',
             'is_active' => 'وضعیت',

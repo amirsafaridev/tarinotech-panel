@@ -51,6 +51,12 @@
                         </div>
 
                         <div class="row">
+                            <div class="col-md-12">
+                                <x-admin.textarea identify="thank_you_message" title="متن انتهایی پرسشنامه" :old="$survey->thank_you_message" placeholder="متنی که بعد از تکمیل پرسشنامه به کاربر نمایش داده می‌شود"/>
+                            </div>
+                        </div>
+
+                        <div class="row">
                             <div class="col-md-6">
                                 <x-admin.input identify="start_date"
                                                title="تاریخ شروع"

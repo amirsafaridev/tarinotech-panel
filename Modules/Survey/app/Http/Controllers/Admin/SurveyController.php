@@ -210,6 +210,7 @@ class SurveyController extends Controller
         $data = [
             'title' => $request->input('title'),
             'description' => $request->input('description'),
+            'thank_you_message' => $request->input('thank_you_message'),
             'requires_auth' => $request->boolean('requires_auth'),
             'auth_guard' => $request->input('auth_guard'),
             'is_active' => $request->boolean('is_active', true),
