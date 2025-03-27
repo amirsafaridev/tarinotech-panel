@@ -101,7 +101,7 @@ body {
     height: 20px;
     margin-left: 12px;
     cursor: pointer;
-    accent-color: #3498db;
+    accent-color: #040096;
 }
 
 .survey-text-answer {
@@ -117,8 +117,8 @@ body {
 
 .survey-text-answer:focus {
     outline: none;
-    border-color: #3498db;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    border-color: #040096;
+    box-shadow: 0 0 0 3px rgba(4, 0, 150, 0.2);
 }
 
 .survey-number-input {
@@ -140,8 +140,8 @@ body {
 
 .survey-number-answer:focus {
     outline: none;
-    border-color: #3498db;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    border-color: #040096;
+    box-shadow: 0 0 0 3px rgba(4, 0, 150, 0.2);
 }
 
 .survey-btn {
@@ -159,14 +159,14 @@ body {
 }
 
 .survey-btn-primary {
-    background-color: #3498db;
+    background-color: #040096;
     color: white;
 }
 
 .survey-btn-primary:hover {
-    background-color: #2980b9;
+    background-color: #020065;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+    box-shadow: 0 4px 8px rgba(4, 0, 150, 0.3);
 }
 
 .survey-btn-secondary {
@@ -181,14 +181,14 @@ body {
 }
 
 .survey-btn-success {
-    background-color: #2ecc71;
-    color: white;
+    background-color: #ffd50d;
+    color: #040096;
 }
 
 .survey-btn-success:hover {
-    background-color: #27ae60;
+    background-color: #e6c000;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(46, 204, 113, 0.3);
+    box-shadow: 0 4px 8px rgba(255, 213, 13, 0.3);
 }
 
 .survey-progress-container {
@@ -202,7 +202,7 @@ body {
 
 .survey-progress-bar {
     height: 100%;
-    background: linear-gradient(to right, #3498db, #2ecc71);
+    background: linear-gradient(to right, #040096, #ffd50d);
     border-radius: 50px;
     transition: width 0.5s ease;
 }
@@ -253,8 +253,8 @@ body {
 
 .survey-form-control:focus {
     outline: none;
-    border-color: #3498db;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    border-color: #040096;
+    box-shadow: 0 0 0 3px rgba(4, 0, 150, 0.2);
 }
 
 .survey-form-label {
@@ -302,19 +302,19 @@ body {
 }
 
 .survey-step-bullet.active {
-    background-color: #3498db;
+    background-color: #040096;
     color: white;
     transform: scale(1.1);
-    box-shadow: 0 0 0 5px rgba(52, 152, 219, 0.2);
+    box-shadow: 0 0 0 5px rgba(4, 0, 150, 0.2);
 }
 
 .survey-step-bullet.completed {
-    background-color: #2ecc71;
-    color: white;
+    background-color: #ffd50d;
+    color: #040096;
 }
 
 .survey-step-bullet.completed::after {
-    background-color: #2ecc71;
+    background-color: #ffd50d;
 }
 
 /* Mobile Optimizations */
@@ -385,7 +385,7 @@ body {
 }
 
 .tank-header {
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    background: linear-gradient(135deg, #040096 0%, #0300c7 100%);
     padding: 30px;
     text-align: center;
     position: relative;
@@ -419,7 +419,7 @@ body {
 
 .tank-icon-success i {
     font-size: 50px;
-    color: #28a745;
+    color: #040096;
 }
 
 .tank-confetti {
@@ -458,20 +458,20 @@ body {
 
 .tank-message {
     font-size: 1.3rem;
-    color: #2c6e49;
+    color: #040096;
     margin-bottom: 35px;
     line-height: 1.6;
 }
 
 .tank-btn-primary {
-    background: linear-gradient(to right, #28a745, #20c997);
+    background: linear-gradient(to right, #040096, #0300c7);
     border: none;
     padding: 12px 30px;
     font-size: 1.1rem;
     border-radius: 50px;
     font-weight: 600;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+    box-shadow: 0 4px 15px rgba(4, 0, 150, 0.4);
     color: white;
     text-decoration: none;
     display: inline-block;
@@ -479,7 +479,7 @@ body {
 
 .tank-btn-primary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.6);
+    box-shadow: 0 8px 20px rgba(4, 0, 150, 0.6);
     color: white;
 }
 
@@ -491,7 +491,7 @@ body {
     position: absolute;
     border-radius: 50%;
     opacity: 0.1;
-    background-color: #28a745;
+    background-color: #040096;
 }
 
 .tank-decoration-1 {
@@ -521,7 +521,7 @@ body {
 }
 
 .tank-star:hover, .tank-star.active {
-    color: #28a745;
+    color: #040096;
 }
 
 @media (max-width: 768px) {
@@ -551,7 +551,7 @@ body {
 /* Survey Auth Required */
 .survey-auth-required-icon {
     font-size: 4rem;
-    color: #3498db;
+    color: #040096;
     margin-bottom: 1.5rem;
     display: inline-block;
     animation: survey-auth-required-pulse 2s infinite;
@@ -571,7 +571,7 @@ body {
 }
 
 .survey-auth-required-decoration-1 {
-    background-color: #3498db;
+    background-color: #040096;
     width: 200px;
     height: 200px;
     top: -50px;
@@ -579,7 +579,7 @@ body {
 }
 
 .survey-auth-required-decoration-2 {
-    background-color: #3498db;
+    background-color: #040096;
     width: 150px;
     height: 150px;
     bottom: -30px;

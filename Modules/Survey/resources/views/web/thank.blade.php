@@ -41,7 +41,7 @@
     <script>
         $(document).ready(function () {
             // Create confetti elements
-            const colors = ['#28a745', '#20c997', '#75b798', '#40916c', '#52b788', '#b7e4c7'];
+            const colors = ['#040096', '#0300c7', '#ffd50d', '#edc500', '#2c3e8d', '#e7c400'];
             const confettiCount = 50;
 
             for (let i = 0; i < confettiCount; i++) {

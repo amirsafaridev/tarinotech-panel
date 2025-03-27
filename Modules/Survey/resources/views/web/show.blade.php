@@ -18,9 +18,9 @@
     }
 
     .survey-number-answer:focus {
-        border-color: #4e73df;
+        border-color: #040096;
         outline: none;
-        box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+        box-shadow: 0 0 0 0.2rem rgba(4, 0, 150, 0.25);
     }
 
     .survey-number-answer::-webkit-inner-spin-button,
