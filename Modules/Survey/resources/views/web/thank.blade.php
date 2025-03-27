@@ -24,6 +24,8 @@
             <div class="tank-body">
                 @if(session('message'))
                     <p class="tank-message">{{ session('message') }}</p>
+                @elseif($survey->thank_you_message)
+                    <p class="tank-message">{{ $survey->thank_you_message }}</p>
                 @else
                     <p class="tank-message">پاسخ‌های شما با موفقیت ثبت شد. از مشارکت شما در این پرسش نامه سپاسگزاریم.<br>نظر
                         شما برای ما ارزشمند است.</p>
