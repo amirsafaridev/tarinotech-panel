@@ -1,5 +1,6 @@
+@import "pinar.css";
 body {
-    font-family: "Yekan_Bakh", "Vazir", "Tahoma", sans-serif;
+    font-family: "Pinar", "Tahoma", sans-serif;
     background-color: #f8f9fa;
     color: #333;
     line-height: 1.6;
@@ -122,7 +123,7 @@ body {
     border-radius: 8px;
     resize: vertical;
     min-height: 120px;
-    font-family: "Yekan_Bakh", "Vazir", "Tahoma", sans-serif;
+    font-family: "Pinar", "Yekan_Bakh", "Vazir", "Tahoma", sans-serif;
     transition: border-color 0.3s;
 }
 
@@ -143,7 +144,7 @@ body {
     padding: 15px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    font-family: "Yekan_Bakh", "Vazir", "Tahoma", sans-serif;
+    font-family: "Pinar", "Yekan_Bakh", "Vazir", "Tahoma", sans-serif;
     transition: border-color 0.3s;
     text-align: center;
     font-size: 1.1rem;
@@ -161,7 +162,7 @@ body {
     border-radius: 8px;
     font-weight: 600;
     transition: all 0.3s;
-    font-family: "Yekan_Bakh", "Vazir", "Tahoma", sans-serif;
+    font-family: "Pinar", "Yekan_Bakh", "Vazir", "Tahoma", sans-serif;
     font-size: 1rem;
     display: flex;
     justify-content: center;
@@ -257,7 +258,7 @@ body {
     padding: 12px 15px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    font-family: "Yekan_Bakh", "Vazir", "Tahoma", sans-serif;
+    font-family: "Pinar", "Yekan_Bakh", "Vazir", "Tahoma", sans-serif;
     transition: all 0.3s;
     width: 100%;
 }

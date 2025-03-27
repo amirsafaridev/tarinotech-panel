@@ -1,0 +1,61 @@
+@font-face {
+    font-family: "Pinar";
+    src: url("../../../fonts/pinar/ttf/Pinar-DS4-Regular.ttf")
+            format("truetype"),
+        url("../../../fonts/pinar/woff2/Pinar-DS4-Regular.woff2")
+            format("woff2");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Pinar";
+    src: url("../../../fonts/pinar/ttf/Pinar-DS4-Light.ttf") format("truetype"),
+        url("../../../fonts/pinar/woff2/Pinar-DS4-Light.woff2") format("woff2");
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Pinar";
+    src: url("../../../fonts/pinar/ttf/Pinar-DS4-Medium.ttf") format("truetype"),
+        url("../../../fonts/pinar/woff2/Pinar-DS4-Medium.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Pinar";
+    src: url("../../../fonts/pinar/ttf/Pinar-DS4-SemiBold.ttf")
+            format("truetype"),
+        url("../../../fonts/pinar/woff2/Pinar-DS4-SemiBold.woff2")
+            format("woff2");
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Pinar";
+    src: url("../../../fonts/pinar/ttf/Pinar-DS4-Bold.ttf") format("truetype"),
+        url("../../../fonts/pinar/woff2/Pinar-DS4-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Pinar";
+    src: url("../../../fonts/pinar/ttf/Pinar-DS4-ExtraBold.ttf")
+            format("truetype"),
+        url("../../../fonts/pinar/woff2/Pinar-DS4-ExtraBold.woff2")
+            format("woff2");
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Pinar";
+    src: url("../../../fonts/pinar/ttf/Pinar-DS4-Black.ttf") format("truetype"),
+        url("../../../fonts/pinar/woff2/Pinar-DS4-Black.woff2") format("woff2");
+    font-weight: 900;
+    font-style: normal;
+}
