@@ -128,8 +128,8 @@ class SurveyController extends Controller
             abort(404);
         }
 
-        // Get custom return URL if set, otherwise use default app URL
-        $returnUrl = $survey->return_url ?: config('app.url', 'https://tarinotech.com');
+        // Set custom return URL if specified, otherwise use the default portal URL
+        $returnUrl = $survey->return_url ?: 'https://portal.tarinotech.com/';
         
         return view('survey::web.thank', compact('survey', 'returnUrl'));
     }
