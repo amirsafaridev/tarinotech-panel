@@ -195,6 +195,9 @@
             @endforeach
         </form>
     </div>
+    <div class="survey-footer text-center mt-4">
+        <p class="small gradient-text">تارینوتک، مسیر موفقیت دیجیتال</p>
+    </div>
 @endsection
 
 @section('scripts')

@@ -1,5 +1,5 @@
 body {
-    font-family: 'Yekan_Bakh', 'Vazir', 'Tahoma', sans-serif;
+    font-family: "Yekan_Bakh", "Vazir", "Tahoma", sans-serif;
     background-color: #f8f9fa;
     color: #333;
     line-height: 1.6;
@@ -18,7 +18,7 @@ body {
     background: #fff;
     padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .survey-header h1 {
@@ -38,7 +38,7 @@ body {
     background-color: #fff;
     padding: 25px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
 }
 
@@ -48,8 +48,14 @@ body {
 }
 
 @keyframes survey-fade-in {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .survey-question-text {
@@ -80,7 +86,7 @@ body {
 .survey-option-item:hover {
     background-color: #f8f9fa;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     border-color: #040096;
 }
 
@@ -116,7 +122,7 @@ body {
     border-radius: 8px;
     resize: vertical;
     min-height: 120px;
-    font-family: 'Yekan_Bakh', 'Vazir', 'Tahoma', sans-serif;
+    font-family: "Yekan_Bakh", "Vazir", "Tahoma", sans-serif;
     transition: border-color 0.3s;
 }
 
@@ -137,7 +143,7 @@ body {
     padding: 15px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    font-family: 'Yekan_Bakh', 'Vazir', 'Tahoma', sans-serif;
+    font-family: "Yekan_Bakh", "Vazir", "Tahoma", sans-serif;
     transition: border-color 0.3s;
     text-align: center;
     font-size: 1.1rem;
@@ -155,7 +161,7 @@ body {
     border-radius: 8px;
     font-weight: 600;
     transition: all 0.3s;
-    font-family: 'Yekan_Bakh', 'Vazir', 'Tahoma', sans-serif;
+    font-family: "Yekan_Bakh", "Vazir", "Tahoma", sans-serif;
     font-size: 1rem;
     display: flex;
     justify-content: center;
@@ -202,7 +208,7 @@ body {
     border-radius: 50px;
     margin-bottom: 30px;
     overflow: hidden;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .survey-progress-bar {
@@ -228,7 +234,7 @@ body {
     background-color: #fff;
     padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .survey-personal-info.active {
@@ -251,7 +257,7 @@ body {
     padding: 12px 15px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    font-family: 'Yekan_Bakh', 'Vazir', 'Tahoma', sans-serif;
+    font-family: "Yekan_Bakh", "Vazir", "Tahoma", sans-serif;
     transition: all 0.3s;
     width: 100%;
 }
@@ -291,7 +297,7 @@ body {
 }
 
 .survey-step-bullet::after {
-    content: '';
+    content: "";
     position: absolute;
     width: 100%;
     height: 3px;
@@ -367,7 +373,6 @@ body {
     }
 }
 
-
 /* Thank Style */
 
 .tank-wrapper {
@@ -397,7 +402,7 @@ body {
 }
 
 .tank-header::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -20px;
     left: 0;
@@ -525,7 +530,8 @@ body {
     margin: 0 5px;
 }
 
-.tank-star:hover, .tank-star.active {
+.tank-star:hover,
+.tank-star.active {
     color: #040096;
 }
 
@@ -563,9 +569,18 @@ body {
 }
 
 @keyframes survey-auth-required-pulse {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.1); opacity: 0.8; }
-    100% { transform: scale(1); opacity: 1; }
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .survey-auth-required-decoration {
@@ -603,7 +618,7 @@ body {
     background-color: white;
     border-radius: 15px;
     padding: 3rem;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     text-align: center;
     max-width: 500px;
     width: 100%;
@@ -622,4 +637,12 @@ body {
     color: #555;
     margin-bottom: 2rem;
     line-height: 1.6;
+}
+.gradient-text {
+    background: linear-gradient(to right, #040096, #e6c000);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+    font-weight: 500;
 }

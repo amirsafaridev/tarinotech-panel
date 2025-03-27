@@ -35,6 +35,9 @@
                     <i class="fas fa-home me-2"></i> بازگشت به صفحه اصلی
                 </a>
             </div>
+            <div class="tank-footer text-center mt-4">
+                <p class="small gradient-text">تارینوتک، مسیر موفقیت دیجیتال</p>
+            </div>
         </div>
     </div>
 @endsection
