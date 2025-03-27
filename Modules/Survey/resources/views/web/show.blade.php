@@ -182,11 +182,11 @@
                         @endif
 
                         @if($index < count($survey->questions) - 1)
-                            <button type="button" class="survey-btn survey-btn-primary survey-next-button">
+                            <button type="button" class="survey-btn survey-btn-primary survey-next-button" style="display: none;">
                                 بعدی <i class="fas fa-arrow-left ms-2"></i>
                             </button>
                         @else
-                            <button type="submit" class="survey-btn survey-btn-success survey-submit-button">
+                            <button type="submit" class="survey-btn survey-btn-success survey-submit-button" style="display: none;">
                                 <i class="fas fa-check me-2"></i> ثبت پاسخ‌ها
                             </button>
                         @endif
@@ -266,15 +266,68 @@
                 moveToNextQuestion();
             });
 
-            // Add touch-friendly behavior for options
-            $('.survey-option-item').on('click', function (e) {
-                if (e.target.tagName !== 'INPUT') {
-                    const input = $(this).find('input');
-                    if (input.attr('type') === 'radio') {
-                        input.prop('checked', true);
-                    } else if (input.attr('type') === 'checkbox') {
-                        input.prop('checked', !input.prop('checked'));
+            // Improve option click behavior
+            $('.survey-option-item').on('click', function(e) {
+                const input = $(this).find('input');
+                const questionContainer = $(this).closest('.survey-question-container');
+                const isRadio = input.attr('type') === 'radio';
+                
+                // Toggle or set the checked state
+                if (isRadio) {
+                    // For radio buttons, uncheck all other options in the same group
+                    const name = input.attr('name');
+                    $(`input[name="${name}"]`).prop('checked', false).closest('.survey-option-item').removeClass('selected');
+                    input.prop('checked', true);
+                    $(this).addClass('selected');
+                    
+                    // Show next button
+                    questionContainer.find('.survey-next-button, .survey-submit-button').show();
+                    
+                } else if (input.attr('type') === 'checkbox') {
+                    // For checkboxes, just toggle the current one
+                    const newState = !input.prop('checked');
+                    input.prop('checked', newState);
+                    $(this).toggleClass('selected', newState);
+                    
+                    // Show next button if at least one option is selected
+                    if (questionContainer.find('input[type="checkbox"]:checked').length > 0) {
+                        questionContainer.find('.survey-next-button, .survey-submit-button').show();
+                    } else {
+                        questionContainer.find('.survey-next-button, .survey-submit-button').hide();
                     }
+                }
+            });
+            
+            // Handle text input - show next button when text is entered
+            $('.survey-text-answer').on('input', function() {
+                const questionContainer = $(this).closest('.survey-question-container');
+                if ($(this).val().trim() !== '') {
+                    questionContainer.find('.survey-next-button, .survey-submit-button').show();
+                } else {
+                    questionContainer.find('.survey-next-button, .survey-submit-button').hide();
+                }
+            });
+            
+            // Handle number input - show next button when a number is entered
+            $('.survey-number-answer').on('input', function() {
+                const questionContainer = $(this).closest('.survey-question-container');
+                if ($(this).val().trim() !== '') {
+                    questionContainer.find('.survey-next-button, .survey-submit-button').show();
+                } else {
+                    questionContainer.find('.survey-next-button, .survey-submit-button').hide();
+                }
+            });
+            
+            // Mark initially selected options and show next button if needed
+            $('.survey-option-item input:checked').each(function() {
+                $(this).closest('.survey-option-item').addClass('selected');
+                $(this).closest('.survey-question-container').find('.survey-next-button, .survey-submit-button').show();
+            });
+            
+            // Show next button if text is already entered
+            $('.survey-text-answer, .survey-number-answer').each(function() {
+                if ($(this).val().trim() !== '') {
+                    $(this).closest('.survey-question-container').find('.survey-next-button, .survey-submit-button').show();
                 }
             });
 
