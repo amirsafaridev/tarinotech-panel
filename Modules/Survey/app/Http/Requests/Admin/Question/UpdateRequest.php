@@ -57,4 +57,11 @@ class UpdateRequest extends FormRequest
             'settings.max_label' => 'برچسب حداکثر',
         ];
     }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'is_required' => $this->has('is_required'),
+        ]);
+    }
 }
