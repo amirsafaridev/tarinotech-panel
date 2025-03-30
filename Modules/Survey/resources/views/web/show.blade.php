@@ -207,7 +207,14 @@
             const totalQuestions = {{ count($survey->questions) }};
             const hasPersonalInfoSection = {{ $showPersonalInfo ? 'true' : 'false' }};
             const totalSteps = hasPersonalInfoSection ? totalQuestions + 1 : totalQuestions;
-            let currentQuestionIndex = hasPersonalInfoSection ? 0 : 0;
+            let currentQuestionIndex = 0; // Always start at 0
+            
+            console.log('Survey initialized with:', {
+                totalQuestions,
+                hasPersonalInfoSection,
+                totalSteps,
+                currentQuestionIndex
+            });
 
             // Create step indicators
             function createStepIndicators() {
@@ -283,8 +290,38 @@
                     input.prop('checked', true);
                     $(this).addClass('selected');
                     
-                    // Show next button
+                    // Show next button (might be needed for the last question's submit button)
                     questionContainer.find('.survey-next-button, .survey-submit-button').show();
+                    
+                    // Auto-navigate to the next question after a short delay
+                    setTimeout(function() {
+                        // Get the current active question container
+                        const activeContainer = $('.survey-question-container.active');
+                        
+                        // Make sure we're still on the same question (user might have clicked quickly)
+                        if (activeContainer.data('question-id') !== questionContainer.data('question-id')) {
+                            return; // We've already moved, don't proceed
+                        }
+                        
+                        // Get current question index for tracking
+                        const currentVisibleIndex = hasPersonalInfoSection ? 
+                            currentQuestionIndex - 1 : currentQuestionIndex;
+                        console.log('Current question index before move:', currentVisibleIndex);
+                        
+                        // Validate the question before moving
+                        const questionId = questionContainer.data('question-id');
+                        if (validateQuestion(questionId)) {
+                            // If this is the last question with a submit button, don't auto-navigate
+                            if (questionContainer.find('.survey-submit-button').length > 0) {
+                                // Don't auto-submit to give user a chance to review
+                                console.log('Last question - not auto-submitting');
+                            } else {
+                                // Otherwise move to next question
+                                console.log('Moving to next question from index:', currentVisibleIndex);
+                                moveToNextQuestion();
+                            }
+                        }
+                    }, 500); // Half-second delay for better user experience
                     
                 } else if (input.attr('type') === 'checkbox') {
                     // For checkboxes, just toggle the current one
@@ -299,6 +336,37 @@
                         questionContainer.find('.survey-next-button, .survey-submit-button').hide();
                     }
                 }
+            });
+            
+            // Adding direct click handler for radio inputs to handle label-less clicks
+            $('.survey-single-choice-options input[type="radio"]').on('click', function(e) {
+                // Prevent the event from bubbling to avoid duplicate handling
+                e.stopPropagation();
+                
+                const questionContainer = $(this).closest('.survey-question-container');
+                $(this).closest('.survey-option-item').addClass('selected');
+                
+                // Auto-navigate after a short delay
+                setTimeout(function() {
+                    // Get the current active question container
+                    const activeContainer = $('.survey-question-container.active');
+                    
+                    // Make sure we're still on the same question (user might have clicked quickly)
+                    if (activeContainer.data('question-id') !== questionContainer.data('question-id')) {
+                        return; // We've already moved, don't proceed
+                    }
+                    
+                    const questionId = questionContainer.data('question-id');
+                    if (validateQuestion(questionId)) {
+                        if (questionContainer.find('.survey-submit-button').length > 0) {
+                            // Don't auto-submit to give user a chance to review
+                            console.log('Last question - not auto-submitting');
+                        } else {
+                            console.log('Moving to next question from radio direct click');
+                            moveToNextQuestion();
+                        }
+                    }
+                }, 500);
             });
             
             // Handle text input - show next button when text is entered
@@ -458,6 +526,12 @@
 
             // Function to move to the next question
             function moveToNextQuestion() {
+                // Get the current active container
+                const currentContainer = $('.survey-question-container.active, .survey-personal-info.active');
+                
+                // Store the current question index before we update it
+                const previousIndex = currentQuestionIndex;
+                
                 // Hide current question/section
                 if (currentQuestionIndex === 0 && hasPersonalInfoSection) {
                     $('.survey-personal-info.active').removeClass('active');
@@ -468,13 +542,26 @@
                 // Increment index
                 currentQuestionIndex++;
 
-                // Show next question
+                // Find the next container to show
+                let nextContainer;
                 if (hasPersonalInfoSection) {
                     // If we have a personal info section, adjust index for questions
-                    $(`.survey-question-container:eq(${currentQuestionIndex - 1})`).addClass('active');
+                    nextContainer = $(`.survey-question-container:eq(${currentQuestionIndex - 1})`);
                 } else {
-                    $(`.survey-question-container:eq(${currentQuestionIndex})`).addClass('active');
+                    nextContainer = $(`.survey-question-container:eq(${currentQuestionIndex})`);
                 }
+                
+                // Make sure we actually found a next container
+                if (nextContainer.length === 0) {
+                    // If not found, revert to previous index and container
+                    currentQuestionIndex = previousIndex;
+                    currentContainer.addClass('active');
+                    console.error('Failed to find next question container');
+                    return;
+                }
+                
+                // Show the next container
+                nextContainer.addClass('active');
 
                 // Update progress bar and step indicators
                 updateProgressBar();
@@ -484,6 +571,9 @@
                 $('html, body').animate({
                     scrollTop: $('.survey-question-container.active, .survey-personal-info.active').offset().top - 20
                 }, 300);
+                
+                // For debugging
+                console.log('Moved to question index:', currentQuestionIndex);
             }
 
             // Function to move to the previous question
