@@ -115,10 +115,42 @@ class SurveyReportQuestionController extends Controller
                 // Existing text question implementation
                 $textAnswers = SurveyAnswer::where('survey_question_id', $question->id)
                     ->whereNotNull('answer_text')
+                    ->with('response')
                     ->orderBy('created_at', 'desc')
                     ->paginate(20);
 
-                $questionData['text_answers'] = $textAnswers;
+                // Check if there are more answers than what's displayed in the current page
+                $totalTextAnswers = SurveyAnswer::where('survey_question_id', $question->id)
+                    ->whereNotNull('answer_text')
+                    ->count();
+                $questionData['has_more_answers'] = $totalTextAnswers > $textAnswers->count();
+
+                // Add monthly responses trend
+                $monthlyResponses = DB::table('survey_answers')
+                    ->select(DB::raw('DATE_FORMAT(survey_answers.created_at, "%Y-%m") as month'), DB::raw('COUNT(*) as count'))
+                    ->where('survey_question_id', $question->id)
+                    ->whereNotNull('answer_text')
+                    ->groupBy('month')
+                    ->orderBy('month')
+                    ->get()
+                    ->keyBy('month')
+                    ->map(function ($item) {
+                        return $item->count;
+                    })
+                    ->toArray();
+
+                $questionData['monthly_responses'] = $monthlyResponses;
+
+                // Format text answers for display
+                $formattedAnswers = [];
+                foreach ($textAnswers as $answer) {
+                    $formattedAnswers[] = [
+                        'text' => $answer->answer_text,
+                        'date' => $answer->created_at ? $answer->created_at->format('Y-m-d H:i') : '',
+                        'user_name' => isset($answer->response) && $answer->response->respondent_name ? $answer->response->respondent_name : null,
+                    ];
+                }
+                $questionData['text_answers'] = $formattedAnswers;
                 $questionData['settings'] = $question->settings ?? [];
 
                 // Get text statistics
@@ -141,6 +173,23 @@ class SurveyReportQuestionController extends Controller
 
                 // Get word frequency for text analysis
                 $wordFrequency = $this->analyzeTextResponses($question);
+
+                // Format word frequency for display
+                $textWords = [];
+                $maxCount = ! empty($wordFrequency) ? max(array_column($wordFrequency, 'count')) : 0;
+
+                foreach ($wordFrequency as $word) {
+                    // Calculate size class (1-5) based on frequency
+                    $sizeClass = $maxCount > 0 ? ceil(($word['count'] / $maxCount) * 5) : 1;
+
+                    $textWords[] = [
+                        'text' => $word['word'],
+                        'count' => $word['count'],
+                        'size' => max(1, min(5, $sizeClass)), // Ensure size is between 1 and 5
+                    ];
+                }
+
+                $questionData['text_words'] = $textWords;
                 $questionData['word_frequency'] = array_slice($wordFrequency, 0, 20);
                 break;
         }

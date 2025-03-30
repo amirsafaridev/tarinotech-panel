@@ -114,7 +114,7 @@
         <div class="card-body">
             @if(isset($questionData['text_answers']) && count($questionData['text_answers']) > 0)
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <span>نمایش {{ count($questionData['text_answers']) }} پاسخ از {{ $questionData['total_answers'] }} پاسخ</span>
+                    <span>نمایش {{ min(20, $questionData['total_answers']) }} پاسخ از {{ $questionData['total_answers'] }} پاسخ</span>
                     <a href="#" class="btn btn-sm btn-outline-primary">
                         <i class="fa fa-download me-1"></i> دانلود همه پاسخ‌ها
                     </a>
@@ -130,14 +130,6 @@
                         {{ $answer['text'] }}
                     </div>
                 @endforeach
-
-                @if($questionData['has_more_answers'])
-                    <div class="text-center mt-4">
-                        <a href="#" class="btn btn-primary">
-                            <i class="fa fa-refresh me-1"></i> نمایش پاسخ‌های بیشتر
-                        </a>
-                    </div>
-                @endif
             @else
                 <div class="alert alert-info">
                     <i class="fa fa-info-circle me-1"></i>
