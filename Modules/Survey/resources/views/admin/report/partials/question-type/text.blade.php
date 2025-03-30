@@ -1,5 +1,24 @@
 <!-- Text Question Report -->
 <div class="col-xl-12">
+    @if($question->question_type == \Modules\Survey\app\Enums\Database\QuestionTypeEnum::ShortText && isset($questionData['settings']))
+    <div class="alert alert-info mb-4">
+        <div class="d-flex">
+            <span class="me-2"><i class="fa fa-info-circle"></i></span>
+            <div>
+                <strong>تنظیمات متن کوتاه:</strong>
+                @if(isset($questionData['settings']['minLength']))
+                    حداقل {{ $questionData['settings']['minLength'] }} کاراکتر •
+                @endif
+                @if(isset($questionData['settings']['maxLength']))
+                    حداکثر {{ $questionData['settings']['maxLength'] }} کاراکتر •
+                @endif
+                @if(isset($questionData['settings']['placeholder']))
+                    دارای متن راهنما
+                @endif
+            </div>
+        </div>
+    </div>
+    @endif
     <div class="row">
         <!-- Text answer statistics -->
         <div class="col-xl-4 col-md-6">

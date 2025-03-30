@@ -134,6 +134,30 @@ class SurveyDatabaseSeeder extends Seeder
                     }
                     break;
 
+                case QuestionTypeEnum::ShortText:
+                    if (rand(0, 1) || $question->is_required) {
+                        // Generate shorter answers for ShortText type
+                        $shortTexts = [
+                            'عالی بود!',
+                            'راضی هستم.',
+                            'خیلی خوب بود.',
+                            'نیاز به بهبود دارد.',
+                            'کاملاً رضایت‌بخش بود.',
+                            'خدمات خوبی داشتید.',
+                            'پشتیبانی عالی داشتید.',
+                            'سریع و دقیق بود.',
+                            'کیفیت بالایی داشت.',
+                            'به موقع تحویل داده شد.',
+                        ];
+
+                        SurveyAnswer::query()->create([
+                            'response_id' => $response->id,
+                            'survey_question_id' => $question->id,
+                            'answer_text' => $shortTexts[array_rand($shortTexts)],
+                        ]);
+                    }
+                    break;
+
                 case QuestionTypeEnum::Single:
                     $this->createSingleChoiceAnswer($response, $question);
                     break;
@@ -249,6 +273,26 @@ class SurveyDatabaseSeeder extends Seeder
                     'تبلیغات در شبکه‌های اجتماعی',
                     'نمایشگاه‌ها و رویدادها',
                     'سایر موارد',
+                ],
+            ],
+            [
+                'question_text' => 'نام شرکت یا سازمان شما چیست؟',
+                'question_type' => QuestionTypeEnum::ShortText,
+                'is_required' => true,
+                'settings' => [
+                    'minLength' => 2,
+                    'maxLength' => 50,
+                    'placeholder' => 'لطفاً نام شرکت یا سازمان خود را وارد کنید',
+                ],
+            ],
+            [
+                'question_text' => 'سمت شما در سازمان چیست؟',
+                'question_type' => QuestionTypeEnum::ShortText,
+                'is_required' => false,
+                'settings' => [
+                    'minLength' => 0,
+                    'maxLength' => 30,
+                    'placeholder' => 'مثال: مدیر عامل، کارشناس فروش،...',
                 ],
             ],
             [

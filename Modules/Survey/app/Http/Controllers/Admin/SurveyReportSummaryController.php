@@ -54,8 +54,9 @@ class SurveyReportSummaryController extends Controller
             }
 
             // For text questions, get some sample answers
-            if ($question->question_type == QuestionTypeEnum::Text) {
+            if (in_array($question->question_type, [QuestionTypeEnum::Text, QuestionTypeEnum::ShortText])) {
                 $summary['text_samples'] = $this->getQuestionTextSamples($question);
+                $summary['settings'] = $question->settings;
             }
 
             // For number questions, calculate summary statistics

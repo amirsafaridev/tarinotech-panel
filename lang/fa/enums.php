@@ -229,5 +229,6 @@ return [
         QuestionTypeEnum::Multiple => 'چند انتخابی',
         QuestionTypeEnum::Text => 'متنی',
         QuestionTypeEnum::Number => 'عددی',
+        QuestionTypeEnum::ShortText => 'متن کوتاه',
     ],
 ];

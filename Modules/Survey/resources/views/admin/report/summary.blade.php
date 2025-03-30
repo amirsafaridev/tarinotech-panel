@@ -93,7 +93,7 @@
                                         <div class="col-md-8">
                                             @if(in_array($question['type'], [QuestionTypeEnum::Single, QuestionTypeEnum::Multiple]))
                                                 @include('survey::admin.report.partials.summary.question-choice')
-                                            @elseif($question['type'] == QuestionTypeEnum::Text)
+                                            @elseif(in_array($question['type'], [QuestionTypeEnum::Text, QuestionTypeEnum::ShortText]))
                                                 @include('survey::admin.report.partials.summary.question-text')
                                             @elseif($question['type'] == QuestionTypeEnum::Number)
                                                 @include('survey::admin.report.partials.summary.question-number')

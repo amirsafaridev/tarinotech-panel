@@ -1,6 +1,6 @@
 @php
     $textQuestions = collect($questionsSummary)->filter(function($q) {
-        return $q['type'] == 3; // Text questions
+        return in_array($q['type'], [3, 5]);
     });
 @endphp
 

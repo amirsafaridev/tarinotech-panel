@@ -111,6 +111,7 @@ class SurveyReportQuestionController extends Controller
                 break;
 
             case QuestionTypeEnum::Text:
+            case QuestionTypeEnum::ShortText:
                 // Existing text question implementation
                 $textAnswers = SurveyAnswer::where('survey_question_id', $question->id)
                     ->whereNotNull('answer_text')
@@ -118,6 +119,25 @@ class SurveyReportQuestionController extends Controller
                     ->paginate(20);
 
                 $questionData['text_answers'] = $textAnswers;
+                $questionData['settings'] = $question->settings ?? [];
+
+                // Get text statistics
+                $allTextAnswers = SurveyAnswer::where('survey_question_id', $question->id)
+                    ->whereNotNull('answer_text')
+                    ->pluck('answer_text')
+                    ->toArray();
+
+                if (! empty($allTextAnswers)) {
+                    $wordCounts = array_map(function ($text) {
+                        return count(preg_split('/\s+/', trim($text), -1, PREG_SPLIT_NO_EMPTY));
+                    }, $allTextAnswers);
+
+                    $questionData['text_stats'] = [
+                        'avg_words' => round(array_sum($wordCounts) / count($wordCounts), 1),
+                        'max_words' => max($wordCounts),
+                        'min_words' => min($wordCounts),
+                    ];
+                }
 
                 // Get word frequency for text analysis
                 $wordFrequency = $this->analyzeTextResponses($question);

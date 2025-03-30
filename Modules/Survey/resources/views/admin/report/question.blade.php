@@ -111,6 +111,7 @@
         <!-- Main content based on question type -->
         @switch($question->question_type)
             @case(QuestionTypeEnum::Text)
+            @case(QuestionTypeEnum::ShortText)
                 @include('survey::admin.report.partials.question-type.text')
                 @break
 

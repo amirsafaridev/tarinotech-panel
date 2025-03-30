@@ -1,4 +1,18 @@
 <!-- Text -->
+@if(isset($question['settings']) && $question['type'] == \Modules\Survey\app\Enums\Database\QuestionTypeEnum::ShortText)
+    <div class="alert alert-info mb-3">
+        <i class="fa fa-info-circle me-1"></i>
+        <small>
+            <strong>تنظیمات متن کوتاه:</strong>
+            @if(isset($question['settings']['minLength']))
+                حداقل {{ $question['settings']['minLength'] }} کاراکتر •
+            @endif
+            @if(isset($question['settings']['maxLength']))
+                حداکثر {{ $question['settings']['maxLength'] }} کاراکتر
+            @endif
+        </small>
+    </div>
+@endif
 @if(isset($question['text_samples']) && count($question['text_samples']) > 0)
     <h6 class="mb-3">نمونه پاسخ‌های متنی:</h6>
     @foreach($question['text_samples'] as $textAnswer)
