@@ -59,9 +59,7 @@ class QuestionController extends Controller
             ];
 
             // Handle settings for questions that need additional configuration
-            if ($request->input('question_type') == QuestionTypeEnum::Number) {
-                $questionData['settings'] = $request->input('settings', []);
-            }
+            $questionData = $this->getSettingAsArray($request, $questionData);
 
             $question = SurveyQuestion::query()->create($questionData);
 
@@ -108,11 +106,7 @@ class QuestionController extends Controller
             ];
 
             // Handle settings for questions that need additional configuration
-            if ($request->input('question_type') == QuestionTypeEnum::Number) {
-                $questionData['settings'] = $request->input('settings', []);
-            } else {
-                $questionData['settings'] = null;
-            }
+            $questionData = $this->getSettingAsArray($request, $questionData);
 
             // If changing question type from choice to non-choice, delete options
             if (! in_array($request->input('question_type'), [QuestionTypeEnum::Single, QuestionTypeEnum::Multiple]) &&
@@ -172,5 +166,33 @@ class QuestionController extends Controller
         foreach ($questions as $index => $question) {
             $question->update(['order' => $index + 1]);
         }
+    }
+
+    public function getSettingAsArray(Request $request, array $questionData): array
+    {
+        $settings = [];
+        if ($request->input('question_type') == QuestionTypeEnum::Number) {
+            $settings = [
+                'min' => $request->input('settings.min'),
+                'max' => $request->input('settings.max'),
+                'step' => $request->input('settings.step'),
+                'default' => $request->input('settings.default'),
+            ];
+        } elseif ($request->input('question_type') == QuestionTypeEnum::ShortText) {
+            $settings = [
+                'minLength' => $request->input('settings.minLength'),
+                'maxLength' => $request->input('settings.maxLength'),
+                'placeholder' => $request->input('settings.placeholder'),
+            ];
+        }
+
+        // Filter out null/empty settings
+        $settings = array_filter($settings, function ($value) {
+            return $value !== null && $value !== '';
+        });
+
+        $questionData['settings'] = ! empty($settings) ? $settings : null;
+
+        return $questionData;
     }
 }

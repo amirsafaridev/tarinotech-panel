@@ -141,6 +141,32 @@
                                 می‌توانید محدوده اعداد مجاز، گام‌های افزایش/کاهش و مقدار پیش‌فرض را تنظیم کنید.
                             </div>
                         </div>
+                        
+                        <!-- تنظیمات متن کوتاه -->
+                        <div id="short-text-options"
+                             class="mt-4 mb-3 p-3  {{ $question->question_type == QuestionTypeEnum::ShortText ? '' : 'd-none' }}">
+                            <h5>تنظیمات ورودی متن کوتاه</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <x-admin.input identify="settings[minLength]" title="حداقل تعداد کاراکتر" type="number" min="0"
+                                    :old="$question->settings['minLength'] ?? null" />
+                                </div>
+                                <div class="col-md-6">
+                                    <x-admin.input identify="settings[maxLength]" title="حداکثر تعداد کاراکتر" type="number" min="1"
+                                    :old="$question->settings['maxLength'] ?? null" />
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <x-admin.input identify="settings[placeholder]" title="متن راهنما (Placeholder)"
+                                    :old="$question->settings['placeholder'] ?? null" />
+                                </div>
+                            </div>
+                            <div class="alert alert-info mt-3">
+                                <i class="fa fa-info-circle me-2"></i>
+                                می‌توانید محدودیت تعداد کاراکتر و متن راهنما را برای ورودی متن کوتاه تنظیم کنید.
+                            </div>
+                        </div>
 
                         <div class="d-flex mt-4">
                             <x-admin.button title="{{ trans('panel.update') }}" class="me-2"/>
@@ -202,6 +228,9 @@
                                     } elseif ($type == QuestionTypeEnum::Number) {
                                         $badgeClass = 'bg-warning';
                                         $icon = '<i class="fa fa-calculator me-1"></i>';
+                                    } elseif ($type == QuestionTypeEnum::ShortText) {
+                                        $badgeClass = 'bg-info';
+                                        $icon = '<i class="fa fa-pencil-alt me-1"></i>';
                                     } else {
                                         $badgeClass = 'bg-secondary';
                                         $icon = '<i class="fa fa-question-circle me-1"></i>';
@@ -261,12 +290,22 @@
                             <tbody>
                             <tr>
                                 <td>
-                                    <span class="d-block fw-bold">متنی</span>
+                                    <span class="d-block fw-bold">متنی بلند</span>
                                     <span class="badge bg-primary mt-1">Text</span>
                                 </td>
-                                <td>پاسخ‌های تشریحی و توضیحات</td>
+                                <td>پاسخ‌های تشریحی و توضیحات طولانی</td>
                                 <td class="text-center">
                                     <i class="fa fa-align-left text-muted"></i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="d-block fw-bold">متن کوتاه</span>
+                                    <span class="badge bg-info mt-1">Short Text</span>
+                                </td>
+                                <td>متن‌های کوتاه با محدودیت کاراکتر</td>
+                                <td class="text-center">
+                                    <i class="fa fa-pencil-alt text-info"></i>
                                 </td>
                             </tr>
                             <tr>
@@ -333,7 +372,7 @@
                 const questionType = parseInt($(this).val());
 
                 // Hide all option sections by default
-                $('#choice-options, #number-options').addClass('d-none');
+                $('#choice-options, #number-options, #short-text-options').addClass('d-none');
 
                 // Show choice options section for Single(1) and Multiple(2) choice questions
                 if (questionType === {{ QuestionTypeEnum::Single }} ||
@@ -344,6 +383,11 @@
                 // Show number options section for Number(4) question type
                 if (questionType === {{ QuestionTypeEnum::Number }}) {
                     $('#number-options').removeClass('d-none');
+                }
+                
+                // Show short text options section for ShortText(5) question type
+                if (questionType === {{ QuestionTypeEnum::ShortText }}) {
+                    $('#short-text-options').removeClass('d-none');
                 }
             });
 

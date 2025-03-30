@@ -29,6 +29,37 @@
         height: 20px;
         margin-right: 5px;
     }
+    
+    /* Short text input styling */
+    .survey-short-text-input {
+        margin-bottom: 10px;
+        position: relative;
+    }
+
+    .survey-short-text-answer {
+        width: 100%;
+        max-width: 600px;
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+    }
+
+    .survey-short-text-answer:focus {
+        border-color: #040096;
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(4, 0, 150, 0.25);
+    }
+    
+    .survey-char-counter {
+        display: block;
+        text-align: left;
+        font-size: 12px;
+        color: #777;
+        margin-top: 5px;
+        max-width: 600px;
+    }
 </style>
 @endsection
 
@@ -142,6 +173,32 @@
                                           name="question_{{ $question->id }}"
                                           rows="5"
                                           placeholder="پاسخ خود را اینجا بنویسید...">{{ old("question_{$question->id}") }}</textarea>
+                                <div class="survey-error-message" id="survey-error-{{ $question->id }}" style="display: none;">
+                                    <i class="fas fa-exclamation-circle me-2"></i> لطفاً پاسخ خود را وارد کنید.
+                                </div>
+                                @break
+                                
+                            @case(Modules\Survey\app\Enums\Database\QuestionTypeEnum::ShortText)
+                                @php
+                                    $settings = $question->settings ?? [];
+                                    $minLength = $settings['minLength'] ?? null;
+                                    $maxLength = $settings['maxLength'] ?? null;
+                                    $placeholder = $settings['placeholder'] ?? 'پاسخ خود را وارد کنید...';
+                                @endphp
+                                <div class="survey-short-text-input">
+                                    <input type="text"
+                                           class="survey-short-text-answer"
+                                           name="question_{{ $question->id }}"
+                                           {{ $minLength !== null ? "minlength={$minLength}" : '' }}
+                                           {{ $maxLength !== null ? "maxlength={$maxLength}" : '' }}
+                                           placeholder="{{ $placeholder }}"
+                                           value="{{ old("question_{$question->id}") }}">
+                                    @if($maxLength !== null)
+                                        <div class="survey-char-counter">
+                                            <span id="char-count-{{ $question->id }}">0</span> / {{ $maxLength }}
+                                        </div>
+                                    @endif
+                                </div>
                                 <div class="survey-error-message" id="survey-error-{{ $question->id }}" style="display: none;">
                                     <i class="fas fa-exclamation-circle me-2"></i> لطفاً پاسخ خود را وارد کنید.
                                 </div>
@@ -379,6 +436,25 @@
                 }
             });
             
+            // Handle short text input - show next button when text is entered
+            $('.survey-short-text-answer').on('input', function() {
+                const $this = $(this);
+                const questionContainer = $this.closest('.survey-question-container');
+                const questionId = questionContainer.data('question-id');
+                const charCountEl = $(`#char-count-${questionId}`);
+                
+                // Update character count if counter exists
+                if (charCountEl.length > 0) {
+                    charCountEl.text($this.val().length);
+                }
+                
+                if ($this.val().trim() !== '') {
+                    questionContainer.find('.survey-next-button, .survey-submit-button').show();
+                } else {
+                    questionContainer.find('.survey-next-button, .survey-submit-button').hide();
+                }
+            });
+            
             // Handle number input - show next button when a number is entered
             $('.survey-number-answer').on('input', function() {
                 const questionContainer = $(this).closest('.survey-question-container');
@@ -399,6 +475,22 @@
             $('.survey-text-answer, .survey-number-answer').each(function() {
                 if ($(this).val().trim() !== '') {
                     $(this).closest('.survey-question-container').find('.survey-next-button, .survey-submit-button').show();
+                }
+            });
+            
+            // Initialize character counters and show next button for short text inputs
+            $('.survey-short-text-answer').each(function() {
+                const $this = $(this);
+                const questionContainer = $this.closest('.survey-question-container');
+                const questionId = questionContainer.data('question-id');
+                const charCountEl = $(`#char-count-${questionId}`);
+                
+                if (charCountEl.length > 0) {
+                    charCountEl.text($this.val().length);
+                }
+                
+                if ($this.val().trim() !== '') {
+                    questionContainer.find('.survey-next-button, .survey-submit-button').show();
                 }
             });
 
@@ -460,6 +552,17 @@
                         const textValue = questionContainer.find('textarea').val().trim();
                         isValid = textValue !== '';
                         break;
+                    case 'short-text':
+                        const shortTextValue = questionContainer.find('input[type="text"]').val().trim();
+                        isValid = shortTextValue !== '';
+                        
+                        // Check minLength constraint if set
+                        const minLength = questionContainer.find('input[type="text"]').attr('minlength');
+                        if (isValid && minLength && shortTextValue.length < parseInt(minLength)) {
+                            isValid = false;
+                            errorMessage.text(`لطفاً حداقل ${minLength} کاراکتر وارد کنید.`);
+                        }
+                        break;
                     case 'number':
                         const numberInput = questionContainer.find('input[type="number"]');
                         const numberValue = numberInput.val().trim();
@@ -520,6 +623,8 @@
                     return 'text';
                 } else if (questionContainer.find('input[type="number"]').length > 0) {
                     return 'number';
+                } else if (questionContainer.find('input[type="text"].survey-short-text-answer').length > 0) {
+                    return 'short-text';
                 }
                 return '';
             }

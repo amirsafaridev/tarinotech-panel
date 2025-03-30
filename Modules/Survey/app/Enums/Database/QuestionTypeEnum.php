@@ -14,4 +14,6 @@ final class QuestionTypeEnum extends Enum implements LocalizedEnum
     const Text = 3;
 
     const Number = 4;
+
+    const ShortText = 5;
 }

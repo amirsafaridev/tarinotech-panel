@@ -27,6 +27,12 @@ class StoreRequest extends FormRequest
             $rules['settings.default'] = 'nullable|numeric|gte:settings.min|lte:settings.max';
         }
 
+        if ($this->input('question_type') == QuestionTypeEnum::ShortText) {
+            $rules['settings.minLength'] = 'nullable|integer|min:0';
+            $rules['settings.maxLength'] = 'nullable|integer|min:1|gte:settings.minLength';
+            $rules['settings.placeholder'] = 'nullable|string|max:255';
+        }
+
         return $rules;
     }
 
@@ -40,6 +46,9 @@ class StoreRequest extends FormRequest
             'settings.max' => 'حداکثر مقدار',
             'settings.step' => 'گام',
             'settings.default' => 'مقدار پیش‌فرض',
+            'settings.minLength' => 'حداقل تعداد کاراکتر',
+            'settings.maxLength' => 'حداکثر تعداد کاراکتر',
+            'settings.placeholder' => 'متن راهنما',
         ];
     }
 

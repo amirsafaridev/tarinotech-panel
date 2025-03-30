@@ -41,6 +41,12 @@ class UpdateRequest extends FormRequest
             $rules['settings.default'] = 'nullable|numeric|gte:settings.min|lte:settings.max';
         }
 
+        if ($this->input('question_type') == QuestionTypeEnum::ShortText) {
+            $rules['settings.minLength'] = 'nullable|integer|min:0';
+            $rules['settings.maxLength'] = 'nullable|integer|min:1|gte:settings.minLength';
+            $rules['settings.placeholder'] = 'nullable|string|max:255';
+        }
+
         return $rules;
     }
 
@@ -55,6 +61,9 @@ class UpdateRequest extends FormRequest
             'settings.step' => 'گام',
             'settings.min_label' => 'برچسب حداقل',
             'settings.max_label' => 'برچسب حداکثر',
+            'settings.minLength' => 'حداقل تعداد کاراکتر',
+            'settings.maxLength' => 'حداکثر تعداد کاراکتر',
+            'settings.placeholder' => 'متن راهنما',
         ];
     }
 
