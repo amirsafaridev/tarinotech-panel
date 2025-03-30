@@ -30,6 +30,13 @@
         margin-right: 5px;
     }
     
+    .survey-range-notice {
+        font-size: 12px;
+        color: #dc3545;
+        margin-top: 5px;
+        display: none;
+    }
+    
     /* Short text input styling */
     .survey-short-text-input {
         margin-bottom: 10px;
@@ -221,6 +228,19 @@
                                            step="{{ $step }}"
                                            placeholder="مقدار عددی را وارد کنید"
                                            value="{{ old("question_{$question->id}") ?? $default }}">
+                                    @if($min !== null && $max !== null)
+                                        <div class="survey-range-notice" id="survey-range-notice-{{ $question->id }}" style="display: none;">
+                                            <i class="fas fa-exclamation-circle me-1"></i> لطفاً عددی بین {{ $min }} و {{ $max }} وارد کنید.
+                                        </div>
+                                    @elseif($min !== null)
+                                        <div class="survey-range-notice" id="survey-range-notice-{{ $question->id }}" style="display: none;">
+                                            <i class="fas fa-exclamation-circle me-1"></i> لطفاً عددی بزرگتر یا مساوی {{ $min }} وارد کنید.
+                                        </div>
+                                    @elseif($max !== null)
+                                        <div class="survey-range-notice" id="survey-range-notice-{{ $question->id }}" style="display: none;">
+                                            <i class="fas fa-exclamation-circle me-1"></i> لطفاً عددی کوچکتر یا مساوی {{ $max }} وارد کنید.
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="survey-error-message" id="survey-error-{{ $question->id }}" style="display: none;">
                                     <i class="fas fa-exclamation-circle me-2"></i> لطفاً یک مقدار عددی وارد کنید.
@@ -455,13 +475,31 @@
                 }
             });
             
-            // Handle number input - show next button when a number is entered
+            // Handle number input - show next button when a number is entered and validate range
             $('.survey-number-answer').on('input', function() {
-                const questionContainer = $(this).closest('.survey-question-container');
-                if ($(this).val().trim() !== '') {
+                const $this = $(this);
+                const questionContainer = $this.closest('.survey-question-container');
+                const questionId = questionContainer.data('question-id');
+                const rangeNotice = $(`#survey-range-notice-${questionId}`);
+                
+                // Show next button if a value is entered
+                if ($this.val().trim() !== '') {
                     questionContainer.find('.survey-next-button, .survey-submit-button').show();
+                    
+                    // Check range constraints if they exist
+                    const value = parseFloat($this.val());
+                    const min = $this.attr('min') ? parseFloat($this.attr('min')) : null;
+                    const max = $this.attr('max') ? parseFloat($this.attr('max')) : null;
+                    
+                    // Only show range error if the value is outside of constraints
+                    if ((min !== null && value < min) || (max !== null && value > max)) {
+                        rangeNotice.show();
+                    } else {
+                        rangeNotice.hide();
+                    }
                 } else {
                     questionContainer.find('.survey-next-button, .survey-submit-button').hide();
+                    rangeNotice.hide(); // Hide range notice when field is empty
                 }
             });
             
@@ -472,9 +510,34 @@
             });
             
             // Show next button if text is already entered
-            $('.survey-text-answer, .survey-number-answer').each(function() {
+            $('.survey-text-answer').each(function() {
                 if ($(this).val().trim() !== '') {
                     $(this).closest('.survey-question-container').find('.survey-next-button, .survey-submit-button').show();
+                }
+            });
+            
+            // Initialize number inputs - check ranges and show notices if needed
+            $('.survey-number-answer').each(function() {
+                const $this = $(this);
+                const questionContainer = $this.closest('.survey-question-container');
+                const questionId = questionContainer.data('question-id');
+                const rangeNotice = $(`#survey-range-notice-${questionId}`);
+                
+                if ($this.val().trim() !== '') {
+                    // Check range constraints if value exists
+                    const value = parseFloat($this.val());
+                    const min = $this.attr('min') ? parseFloat($this.attr('min')) : null;
+                    const max = $this.attr('max') ? parseFloat($this.attr('max')) : null;
+                    
+                    // Only show range error if the value is outside of constraints
+                    if ((min !== null && value < min) || (max !== null && value > max)) {
+                        rangeNotice.show();
+                    } else {
+                        rangeNotice.hide();
+                    }
+                    
+                    // Show next button
+                    questionContainer.find('.survey-next-button, .survey-submit-button').show();
                 }
             });
             
@@ -583,31 +646,55 @@
                         // Check min/max constraints
                         const min = numberInput.attr('min') ? parseFloat(numberInput.attr('min')) : null;
                         const max = numberInput.attr('max') ? parseFloat(numberInput.attr('max')) : null;
+                        const rangeNotice = $(`#survey-range-notice-${questionId}`);
 
                         if (min !== null && numValue < min) {
                             isValid = false;
-                            errorMessage.text(`لطفاً عددی بزرگتر یا مساوی ${min} وارد کنید.`);
+                            rangeNotice.show(); // Show the range notice
+                            errorMessage.hide(); // Hide the generic error message since we're showing the specific one
                         } else if (max !== null && numValue > max) {
                             isValid = false;
-                            errorMessage.text(`لطفاً عددی کوچکتر یا مساوی ${max} وارد کنید.`);
+                            rangeNotice.show(); // Show the range notice
+                            errorMessage.hide(); // Hide the generic error message since we're showing the specific one
+                        } else {
+                            rangeNotice.hide(); // Hide the range notice if value is valid
                         }
                         break;
                 }
 
                 if (!isValid) {
-                    errorMessage.show();
-                    // Add shake animation
-                    errorMessage.css('animation', 'shake 0.5s');
-                    setTimeout(function () {
-                        errorMessage.css('animation', '');
-                    }, 500);
+                    // For number fields with range errors, scroll to the range notice if it's visible
+                    if (questionType === 'number' && $(`#survey-range-notice-${questionId}`).is(':visible')) {
+                        // Add shake animation to range notice
+                        const rangeNotice = $(`#survey-range-notice-${questionId}`);
+                        rangeNotice.css('animation', 'shake 0.5s');
+                        setTimeout(function () {
+                            rangeNotice.css('animation', '');
+                        }, 500);
+                        
+                        // Scroll to the range notice
+                        $('html, body').animate({
+                            scrollTop: rangeNotice.offset().top - 100
+                        }, 300);
+                    } else {
+                        // For other errors, use the standard error message
+                        errorMessage.show();
+                        // Add shake animation
+                        errorMessage.css('animation', 'shake 0.5s');
+                        setTimeout(function () {
+                            errorMessage.css('animation', '');
+                        }, 500);
 
-                    // Scroll to error
-                    $('html, body').animate({
-                        scrollTop: errorMessage.offset().top - 100
-                    }, 300);
+                        // Scroll to error
+                        $('html, body').animate({
+                            scrollTop: errorMessage.offset().top - 100
+                        }, 300);
+                    }
                 } else {
                     errorMessage.hide();
+                    if (questionType === 'number') {
+                        $(`#survey-range-notice-${questionId}`).hide();
+                    }
                 }
 
                 return isValid;
