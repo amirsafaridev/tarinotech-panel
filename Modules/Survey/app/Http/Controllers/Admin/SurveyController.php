@@ -51,7 +51,8 @@ class SurveyController extends Controller
                 'surveys.access_token',
                 'surveys.created_at',
                 'surveys.updated_at',
-                'admins.mobile as admin_mobile',
+                'admins.first_name as admin_first_name',
+                'admins.last_name as admin_last_name',
             ])
             ->withCount(['questions', 'responses'])
             ->join('admins', 'surveys.admin_id', '=', 'admins.id')

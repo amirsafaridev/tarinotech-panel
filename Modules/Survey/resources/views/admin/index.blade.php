@@ -79,7 +79,7 @@
                                     <tr>
                                         <td>{{ $survey->id }}</td>
                                         <td>{{ $survey->title }}</td>
-                                        <td>{{ $survey->admin_mobile ?? 'نامشخص' }}</td>
+                                        <td>{{ ($survey->admin_first_name && $survey->admin_last_name) ? $survey->admin_first_name . ' ' . $survey->admin_last_name : 'نامشخص' }}</td>
                                         <td>{{ $survey->questions_count }}</td>
                                         <td>{{ $survey->responses_count }}</td>
                                         <td>{!! $survey->requires_auth ? '<span class="badge bg-success">بله</span>' : '<span class="badge bg-secondary">خیر</span>' !!}</td>

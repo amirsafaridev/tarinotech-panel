@@ -17,7 +17,8 @@ class SearchFilter extends FilterBase
         if ($search) {
             $query->where(function (Builder $query) use ($search) {
                 $query
-                    ->where('admins.mobile', 'like', '%'.$search.'%')
+                    ->where('admins.first_name', 'like', '%'.$search.'%')
+                    ->where('admins.last_name', 'like', '%'.$search.'%')
                     ->orWhere('surveys.description', 'like', '%'.$search.'%')
                     ->orWhere('surveys.title', 'like', '%'.$search.'%');
 

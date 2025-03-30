@@ -130,7 +130,7 @@ class SurveyController extends Controller
 
         // Set custom return URL if specified, otherwise use the default portal URL
         $returnUrl = $survey->return_url ?: 'https://portal.tarinotech.com/';
-        
+
         return view('survey::web.thank', compact('survey', 'returnUrl'));
     }
 
