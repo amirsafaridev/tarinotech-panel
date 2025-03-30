@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\Survey\app\Http\Controllers\Api\SurveyController;
 
 /*
     |--------------------------------------------------------------------------
@@ -15,5 +15,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
-    Route::get('survey', fn (Request $request) => $request->user())->name('survey');
+    Route::get('surveys', [SurveyController::class, 'index'])->name('survey.index');
 });
