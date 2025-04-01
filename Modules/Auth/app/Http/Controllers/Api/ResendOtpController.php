@@ -6,6 +6,7 @@ use App\Domain\Jobs\OtpGenerateJob;
 use App\Domain\Jobs\SendOtpJob;
 use App\Http\Controllers\Controller;
 use App\Traits\HasApiResponse;
+use App\Traits\NormalizeMobileNumber;
 use Exception;
 use Illuminate\Support\Facades\RateLimiter;
 use Modules\Auth\app\Http\Requests\Api\Auth\ResendOtpRequest;
@@ -14,12 +15,17 @@ use Modules\User\app\Models\User;
 
 class ResendOtpController extends Controller
 {
-    use HasApiResponse;
+    use HasApiResponse, NormalizeMobileNumber;
 
     public function index(ResendOtpRequest $request, OtpGenerateJob $otpGenerateJob, SendOtpJob $sendOtpJob)
     {
         try {
             $identify = $request->input('identify');
+
+            // Normalize mobile number if it's not an email
+            if (! $this->isEmail($identify)) {
+                $identify = $this->normalizeMobileNumber($identify);
+            }
 
             $rateLimitResult = $this->checkRateLimit($request->ip());
             if ($rateLimitResult !== true) {
@@ -59,9 +65,11 @@ class ResendOtpController extends Controller
 
     private function getUserByIdentify(string $identify): ?User
     {
-        $type = filter_var($identify, FILTER_VALIDATE_EMAIL) ? 'email' : 'mobile';
-
-        return User::query()->where($type, $identify)->first();
+        if ($this->isEmail($identify)) {
+            return User::query()->where('email', $identify)->first();
+        } else {
+            return User::query()->where('mobile', $identify)->first();
+        }
     }
 
     private function deleteExistingOtpCodes(string $identify): void

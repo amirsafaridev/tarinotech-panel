@@ -16,8 +16,24 @@ use Modules\Auth\app\Http\Controllers\Api\VerifyController;
     |
 */
 
-Route::post('/login', [LoginController::class, 'index']);
-Route::post('/verify', [VerifyController::class, 'index']);
-Route::post('/resend', [ResendOtpController::class, 'index']);
+// Apply rate limiting to prevent brute force attacks
+// Allow 5 attempts per minute for authentication endpoints
+Route::middleware(['throttle:5,1'])->group(function () {
+    // Authentication routes
+    Route::post('/login', [LoginController::class, 'index']);
 
-Route::post('/dev-login', [LoginController::class, 'devLogin']);
+    Route::post('/verify', [VerifyController::class, 'index']);
+
+    Route::post('/resend', [ResendOtpController::class, 'index']);
+});
+
+// Development routes - should be disabled in production
+if (config('app.env') !== 'production') {
+    Route::post('/dev-login', [LoginController::class, 'devLogin'])
+        ->middleware(['ip.restrict:127.0.0.1,192.168.0.1']);
+} else {
+    // Redirect any attempts to access dev routes in production
+    Route::fallback(function () {
+        return response()->json(['error' => 'Not Found'], 404);
+    });
+}

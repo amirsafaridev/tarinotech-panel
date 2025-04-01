@@ -4,6 +4,7 @@ namespace Modules\Auth\app\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Traits\HasApiResponse;
+use App\Traits\NormalizeMobileNumber;
 use Auth;
 use Exception;
 use Modules\Auth\app\Http\Requests\Api\Auth\VerifyRequest;
@@ -14,13 +15,19 @@ use Modules\User\app\Resources\User\UserResource;
 
 class VerifyController extends Controller
 {
-    use HasApiResponse;
+    use HasApiResponse, NormalizeMobileNumber;
 
     public function index(VerifyRequest $request)
     {
-
         try {
-            $otpCode = $this->getOtpCode($request->input('identify'), $request->input('code'));
+            $identify = $request->input('identify');
+
+            // Normalize mobile number if it's not an email
+            if (! $this->isEmail($identify)) {
+                $identify = $this->normalizeMobileNumber($identify);
+            }
+
+            $otpCode = $this->getOtpCode($identify, $request->input('code'));
 
             if (! $otpCode) {
                 return $this->failResponse('اطلاعات ارسال شده صحیح نیست', 400);

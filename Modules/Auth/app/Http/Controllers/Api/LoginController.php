@@ -6,6 +6,7 @@ use App\Domain\Jobs\OtpGenerateJob;
 use App\Domain\Jobs\SendOtpJob;
 use App\Http\Controllers\Controller;
 use App\Traits\HasApiResponse;
+use App\Traits\NormalizeMobileNumber;
 use Exception;
 use Modules\Auth\app\Http\Requests\Api\Auth\DevLoginRequest;
 use Modules\Auth\app\Http\Requests\Api\Auth\LoginRequest;
@@ -14,11 +15,10 @@ use Modules\User\app\Resources\User\UserResource;
 
 class LoginController extends Controller
 {
-    use HasApiResponse;
+    use HasApiResponse, NormalizeMobileNumber;
 
     public function index(LoginRequest $request, OtpGenerateJob $otpGenerateJob, SendOtpJob $sendOtpJob)
     {
-
         try {
             $identify = $request->input('identify');
             $user = $this->findUserByIdentify($identify);
@@ -37,16 +37,21 @@ class LoginController extends Controller
         } catch (Exception $exception) {
             return $this->exceptionResponse($exception);
         }
-
     }
 
     public function devLogin(DevLoginRequest $request)
     {
         $this->dieInProduction();
         try {
+            $mobile = $request->input('mobile');
+
+            // Normalize the mobile number if provided
+            if (! empty($mobile) && ! $this->isEmail($mobile)) {
+                $mobile = $this->normalizeMobileNumber($mobile);
+            }
 
             $user = User::query()
-                ->where('mobile', $request->input('mobile'))
+                ->where('mobile', $mobile)
                 ->with('projects')
                 ->firstOrFail();
 
@@ -61,6 +66,11 @@ class LoginController extends Controller
 
     private function findUserByIdentify($identify): ?User
     {
+        // Normalize the mobile number if it's not an email
+        if (! $this->isEmail($identify)) {
+            $identify = $this->normalizeMobileNumber($identify);
+        }
+
         return User::query()
             ->where('is_block', false)
             ->where(function ($query) use ($identify) {
