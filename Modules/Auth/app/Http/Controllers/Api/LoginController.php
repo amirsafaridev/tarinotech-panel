@@ -21,6 +21,9 @@ class LoginController extends Controller
     {
         try {
             $identify = $request->input('identify');
+            if (! $this->isEmail($identify)) {
+                $identify = $this->normalizeMobileNumber($identify);
+            }
             $user = $this->findUserByIdentify($identify);
 
             if (! $user) {
@@ -66,11 +69,6 @@ class LoginController extends Controller
 
     private function findUserByIdentify($identify): ?User
     {
-        // Normalize the mobile number if it's not an email
-        if (! $this->isEmail($identify)) {
-            $identify = $this->normalizeMobileNumber($identify);
-        }
-
         return User::query()
             ->where('is_block', false)
             ->where(function ($query) use ($identify) {

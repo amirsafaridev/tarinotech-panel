@@ -31,6 +31,8 @@ class FreeDayImportController extends Controller
 
         } catch (Exception $exception) {
 
+            report($exception);
+
             return $this->exceptionResponse($exception);
         }
     }
