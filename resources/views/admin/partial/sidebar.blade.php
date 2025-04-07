@@ -220,13 +220,13 @@
                     'ADMIN_TICKET_INDEX',
                 ])
                     <li class="sub-category">
-                        <h3>پشتیبانی ها</h3>
+                        <h3>گروه ها</h3>
                     </li>
 
                     <li class="slide can-expand">
                         <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navSupport">
                             <i class="side-menu__icon fal fa-headset"></i>
-                            <span class="side-menu__label">پشتیبانی ها</span><i class="angle fal fa-angle-left"></i>
+                            <span class="side-menu__label">گروه ها</span><i class="angle fal fa-angle-left"></i>
                         </a>
 
                         <ul class="slide-menu">
