@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Ticket\app\Http\Controllers\Admin\TicketController;
+use Modules\Ticket\app\Http\Controllers\Admin\TicketStatusController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,4 +21,15 @@ Route::group(['guard' => 'admin'], function () {
     Route::get('/{chat}/message', [TicketController::class, 'message'])->name('message');
     Route::patch('/{chat}', [TicketController::class, 'update'])->name('update');
     Route::delete('/{chat}', [TicketController::class, 'destroy'])->name('destroy');
+
+    // Ticket Status Routes
+    Route::group(['prefix' => 'statuses', 'as' => 'statuses.'], function () {
+        Route::get('/', [TicketStatusController::class, 'index'])->name('index');
+        Route::get('/data', [TicketStatusController::class, 'data'])->name('data');
+        Route::get('/create', [TicketStatusController::class, 'create'])->name('create');
+        Route::post('/', [TicketStatusController::class, 'store'])->name('store');
+        Route::get('/{ticketStatus}', [TicketStatusController::class, 'edit'])->name('edit');
+        Route::patch('/{ticketStatus}', [TicketStatusController::class, 'update'])->name('update');
+        Route::delete('/{ticketStatus}', [TicketStatusController::class, 'destroy'])->name('destroy');
+    });
 });

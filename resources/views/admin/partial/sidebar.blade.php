@@ -261,6 +261,9 @@
                             @can('ADMIN_TICKET_INDEX')
                                 <li><a href="{{ route('admin.ticket.index') }}" class="slide-item">لیست</a></li>
                             @endcan
+                            @can('ADMIN_TICKET_INDEX')
+                                <li><a href="{{ route('admin.ticket.statuses.index') }}" class="slide-item">وضعیت تیکت ها</a></li>
+                            @endcan
                         </ul>
                     </li>
                 @endcanany
