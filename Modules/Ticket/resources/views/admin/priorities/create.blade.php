@@ -1,0 +1,65 @@
+@extends('admin.master')
+@section('title') {{ $title }} @endsection
+@section('head')
+    @include('admin.partial.loader.style',['load'=>[
+       \App\Enums\Assets\StyleLoader::Toast(),
+   ]])
+@endsection
+@section('content')
+
+    <div class="page-header">
+        <h1 class="page-title">{{ $title }}</h1>
+        <div>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.ticket.priorities.index') }}">اولویت‌های تیکت</a></li>
+                <li class="breadcrumb-item active">ایجاد</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+            <div class="card">
+                <div class="card-body pb-4">
+                    @include('admin.partial.message')
+                    <form class="request-form forms-sample" method="post" action="{{ route('admin.ticket.priorities.store') }}">
+                        @csrf
+
+                        <x-admin.input identify="name" title="نام اولویت"/>
+
+                        <div class="mb-3">
+                            <label for="color" class="form-label">رنگ</label>
+                            <input type="color" 
+                                   class="form-control" 
+                                   name="color" 
+                                   id="color" 
+                                   value="{{ old('color', '#000000') }}" />
+                        </div>
+
+                        <x-admin.input identify="level" title="سطح اولویت" type="number" :old="old('level', 1)"/>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="should_notify" id="should_notify" value="1" {{ old('should_notify') ? 'checked' : '' }}>
+                                <label class="form-check-label" for="should_notify">اطلاع رسانی</label>
+                            </div>
+                        </div>
+
+                        <x-admin.textarea identify="description" title="توضیحات"/>
+
+                        <x-admin.button title="{{ trans('panel.create') }}"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+@section('script')
+    @include('admin.partial.request')
+    <script>
+        $(document).ready(function (){
+            activeParentUl('{{ route('admin.ticket.priorities.index') }}');
+        });
+    </script>
+@endsection

@@ -13,6 +13,8 @@ class TicketDatabaseSeeder extends Seeder
     {
         $this->call([
             TicketStatusSeeder::class,
+            TicketPrioritySeeder::class,
+            TicketStatusTransitionSeeder::class,
             TicketSeeder::class,
         ]);
     }
