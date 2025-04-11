@@ -270,6 +270,9 @@
                             @can('ADMIN_TICKET_INDEX')
                                 <li><a href="{{ route('admin.ticket.transitions.index') }}" class="slide-item">انتقال خودکار وضعیت</a></li>
                             @endcan
+                            @can('ADMIN_TICKET_INDEX')
+                                <li><a href="{{ route('admin.ticket.assignees.index') }}" class="slide-item">مسئولین وضعیت ها</a></li>
+                            @endcan
                         </ul>
                     </li>
                 @endcanany

@@ -1,0 +1,69 @@
+<?php
+
+namespace Modules\Ticket\app\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Admin\app\Models\Admin;
+use Modules\Support\app\Models\Chat;
+
+class ChatTicketDetail extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'chat_id',
+        'status_id',
+        'priority_id',
+        'assigned_to',
+        'last_response_at',
+        'closed_at',
+        'subject',
+    ];
+
+    protected $casts = [
+        'last_response_at' => 'datetime',
+        'closed_at' => 'datetime',
+    ];
+
+    /**
+     * Get the chat that owns this ticket detail.
+     */
+    public function chat(): BelongsTo
+    {
+        return $this->belongsTo(Chat::class, 'chat_id');
+    }
+
+    /**
+     * Get the status of this ticket.
+     */
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(TicketStatus::class, 'status_id');
+    }
+
+    /**
+     * Get the priority of this ticket.
+     */
+    public function priority(): BelongsTo
+    {
+        return $this->belongsTo(TicketPriority::class, 'priority_id');
+    }
+
+    /**
+     * Get the admin assigned to this ticket.
+     */
+    public function assignedAdmin(): BelongsTo
+    {
+        return $this->belongsTo(Admin::class, 'assigned_to');
+    }
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory()
+    {
+        return \Modules\Ticket\database\factories\ChatTicketDetailFactory::new();
+    }
+}

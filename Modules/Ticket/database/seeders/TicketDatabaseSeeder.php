@@ -15,7 +15,9 @@ class TicketDatabaseSeeder extends Seeder
             TicketStatusSeeder::class,
             TicketPrioritySeeder::class,
             TicketStatusTransitionSeeder::class,
+            TicketStatusAssigneeSeeder::class,
             TicketSeeder::class,
+            TicketRatingSeeder::class,
         ]);
     }
 }

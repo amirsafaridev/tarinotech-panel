@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Ticket\app\Http\Controllers\Admin\TicketController;
 use Modules\Ticket\app\Http\Controllers\Admin\TicketPriorityController;
+use Modules\Ticket\app\Http\Controllers\Admin\TicketStatusAssigneeController;
 use Modules\Ticket\app\Http\Controllers\Admin\TicketStatusController;
 use Modules\Ticket\app\Http\Controllers\Admin\TicketStatusTransitionController;
 
@@ -52,5 +53,15 @@ Route::group(['guard' => 'admin'], function () {
         Route::get('/{ticketStatusTransition}', [TicketStatusTransitionController::class, 'edit'])->name('edit');
         Route::patch('/{ticketStatusTransition}', [TicketStatusTransitionController::class, 'update'])->name('update');
         Route::delete('/{ticketStatusTransition}', [TicketStatusTransitionController::class, 'destroy'])->name('destroy');
+    });
+
+    // Ticket Status Assignee Routes
+    Route::group(['prefix' => 'assignees', 'as' => 'assignees.'], function () {
+        Route::get('/', [TicketStatusAssigneeController::class, 'index'])->name('index');
+        Route::get('/create', [TicketStatusAssigneeController::class, 'create'])->name('create');
+        Route::post('/', [TicketStatusAssigneeController::class, 'store'])->name('store');
+        Route::get('/{ticketStatusAssignee}', [TicketStatusAssigneeController::class, 'edit'])->name('edit');
+        Route::patch('/{ticketStatusAssignee}', [TicketStatusAssigneeController::class, 'update'])->name('update');
+        Route::delete('/{ticketStatusAssignee}', [TicketStatusAssigneeController::class, 'destroy'])->name('destroy');
     });
 });
