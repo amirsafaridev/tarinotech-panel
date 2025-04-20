@@ -18,10 +18,10 @@ class TicketStatus extends Model
     ];
 
     /**
-     * Get the chat ticket details with this status
+     * Get the ticket details with this status
      */
-    public function chatTicketDetails(): HasMany
+    public function ticketDetails(): HasMany
     {
-        return $this->hasMany(ChatTicketDetail::class, 'status_id');
+        return $this->hasMany(TicketDetail::class, 'status_id');
     }
 }

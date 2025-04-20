@@ -5,13 +5,13 @@ namespace Modules\Ticket\database\factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Admin\app\Models\Admin;
 use Modules\Support\app\Models\Chat;
-use Modules\Ticket\app\Models\ChatTicketDetail;
+use Modules\Ticket\app\Models\TicketDetail;
 use Modules\Ticket\app\Models\TicketPriority;
 use Modules\Ticket\app\Models\TicketStatus;
 
-class ChatTicketDetailFactory extends Factory
+class TicketDetailFactory extends Factory
 {
-    protected $model = ChatTicketDetail::class;
+    protected $model = TicketDetail::class;
 
     /**
      * Define the model's default state.

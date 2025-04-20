@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Admin\app\Models\Admin;
 use Modules\Support\app\Models\Chat;
 
-class ChatTicketDetail extends Model
+class TicketDetail extends Model
 {
     use HasFactory;
+
+    protected $table = 'ticket_details';
 
     protected $fillable = [
         'chat_id',

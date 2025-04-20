@@ -27,11 +27,11 @@ class TicketPriority extends Model
     ];
 
     /**
-     * Get the chat ticket details with this priority
+     * Get the ticket details with this priority
      */
-    public function chatTicketDetails(): HasMany
+    public function ticketDetails(): HasMany
     {
-        return $this->hasMany(ChatTicketDetail::class, 'priority_id');
+        return $this->hasMany(TicketDetail::class, 'priority_id');
     }
 
     /**

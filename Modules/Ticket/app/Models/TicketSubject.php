@@ -21,10 +21,10 @@ class TicketSubject extends Model
     ];
 
     /**
-     * Get the chat ticket details with this subject
+     * Get the ticket details with this subject
      */
-    public function chatTicketDetails(): HasMany
+    public function ticketDetails(): HasMany
     {
-        return $this->hasMany(ChatTicketDetail::class, 'subject_id');
+        return $this->hasMany(TicketDetail::class, 'subject_id');
     }
 }
