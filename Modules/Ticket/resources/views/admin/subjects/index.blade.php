@@ -19,9 +19,9 @@
         <div class="col-xl-12 col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title">اولویت‌های تیکت</h3>
+                    <h3 class="card-title">موضوعات تیکت</h3>
                     @can('ADMIN_TICKET_INDEX')
-                        <a class="btn btn-success btn-sm" href="{{ route('admin.ticket.priorities.create') }}">ایجاد اولویت</a>
+                        <a class="btn btn-success btn-sm" href="{{ route('admin.ticket.subjects.create') }}">ایجاد موضوع</a>
                     @endcan
                 </div>
                 <div class="card-body">
@@ -31,30 +31,35 @@
                             <thead>
                             <tr>
                                 <th>شناسه</th>
-                                <th>نام</th>
-                                <th>رنگ</th>
-                                <th>توضیحات</th>
-                                <th>اطلاع رسانی</th>
-                                <th>سطح اولویت</th>
+                                <th>عنوان</th>
+                                <th>وضعیت انتشار</th>
+                                <th>تاریخ ایجاد</th>
                                 <th>عملیات</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @if($priorities->isNotEmpty())
-                                @foreach($priorities as $priority)
+                            @if($subjects->isNotEmpty())
+                                @foreach($subjects as $subject)
                                     <tr>
-                                        <td>{{ $priority->id }}</td>
-                                        <td>{{ $priority->name }}</td>
+                                        <td>{{ $subject->id }}</td>
+                                        <td>{{ $subject->title }}</td>
                                         <td>
-                                            <span class="badge" style="background-color: {{ $priority->color }}">
-                                                {{ $priority->color }}
-                                            </span>
+                                            @if($subject->is_published)
+                                                <span class="badge bg-success">منتشر شده</span>
+                                            @else
+                                                <span class="badge bg-secondary">غیرفعال</span>
+                                            @endif
                                         </td>
-                                        <td>{{ $priority->description }}</td>
-                                        <td>{{ $priority->should_notify ? 'بله' : 'خیر' }}</td>
-                                        <td>{{ $priority->level }}</td>
+                                        <td>{{ $subject->created_at->toJalali()->format(formatJalaliDateTime())  }}</td>
                                         <td>
-                                            <a href="{{ route('admin.ticket.priorities.edit', $priority->id) }}" class="btn btn-warning btn-sm">ویرایش</a>
+                                            @if($subject->trashed())
+                                                <form action="{{ route('admin.ticket.subjects.restore', $subject->id) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-warning btn-sm">بازگردانی</button>
+                                                </form>
+                                            @else
+                                                <a href="{{ route('admin.ticket.subjects.edit', $subject->id) }}" class="btn btn-warning btn-sm">ویرایش</a>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

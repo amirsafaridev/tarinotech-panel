@@ -18,11 +18,8 @@
     <div class="row">
         <div class="col-xl-12 col-lg-12">
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title">مسئولین وضعیت‌های تیکت</h3>
-                    @can('ADMIN_TICKET_INDEX')
-                        <a class="btn btn-success btn-sm" href="{{ route('admin.ticket.assignees.create') }}">ایجاد تخصیص جدید</a>
-                    @endcan
+                <div class="card-header">
+                    <h3 class="card-title">رویدادهای تیکت</h3>
                 </div>
                 <div class="card-body">
                     @include('admin.partial.message')
@@ -31,25 +28,19 @@
                             <thead>
                             <tr>
                                 <th>شناسه</th>
-                                <th>وضعیت تیکت</th>
-                                <th>نقش مسئول</th>
-                                <th>عملیات</th>
+                                <th>نام</th>
+                                <th>توضیحات</th>
+                                <th>نوع رویداد</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @if($assignees->isNotEmpty())
-                                @foreach($assignees as $assignee)
+                            @if($events->isNotEmpty())
+                                @foreach($events as $event)
                                     <tr>
-                                        <td>{{ $assignee->id }}</td>
-                                        <td>
-                                            <span class="badge" style="background-color: {{ $assignee->status->color }}">
-                                                {{ $assignee->status->name }}
-                                            </span>
-                                        </td>
-                                        <td>{{ $assignee->role->name }}</td>
-                                        <td>
-                                            <a href="{{ route('admin.ticket.assignees.edit', $assignee->id) }}" class="btn btn-warning btn-sm">ویرایش</a>
-                                        </td>
+                                        <td>{{ $event->id }}</td>
+                                        <td>{{ $event->name }}</td>
+                                        <td>{{ $event->description }}</td>
+                                        <td>{{ $event->trigger_title }}</td>
                                     </tr>
                                 @endforeach
                             @endif
@@ -64,4 +55,4 @@
 @section('script')
     @include('admin.partial.loader.script',['load'=>[\App\Enums\Assets\ScriptLoader::DataTable()]])
     @include('admin.partial.datatable_offline')
-@endsection
+@endsection 

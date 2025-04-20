@@ -31,7 +31,6 @@ class UpdateRequest extends FormRequest
             ],
             'color' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
-            'is_auto_changing' => ['nullable', 'boolean'],
             'order' => ['nullable', 'integer', 'min:0'],
         ];
     }
@@ -47,7 +46,6 @@ class UpdateRequest extends FormRequest
             'name' => 'نام وضعیت',
             'color' => 'رنگ',
             'description' => 'توضیحات',
-            'is_auto_changing' => 'تغییر خودکار',
             'order' => 'ترتیب',
         ];
     }

@@ -3,11 +3,12 @@
 namespace Modules\Ticket\database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Modules\Ticket\app\Models\TicketStatus;
+use Modules\Ticket\app\Enums\TriggerEnum;
+use Modules\Ticket\app\Models\TicketEvent;
 
-class TicketStatusFactory extends Factory
+class TicketEventFactory extends Factory
 {
-    protected $model = TicketStatus::class;
+    protected $model = TicketEvent::class;
 
     /**
      * Define the model's default state.
@@ -16,11 +17,12 @@ class TicketStatusFactory extends Factory
      */
     public function definition(): array
     {
+        $triggers = TriggerEnum::getValues();
+
         return [
             'name' => $this->faker->unique()->word(),
-            'color' => $this->faker->hexColor(),
             'description' => $this->faker->sentence(),
-            'order' => $this->faker->numberBetween(1, 100),
+            'trigger' => $this->faker->randomElement($triggers),
         ];
     }
 }

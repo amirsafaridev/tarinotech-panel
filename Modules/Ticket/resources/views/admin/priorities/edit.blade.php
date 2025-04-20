@@ -34,10 +34,10 @@
 
                         <div class="mb-3">
                             <label for="color" class="form-label">رنگ</label>
-                            <input type="color" 
-                                   class="form-control" 
-                                   name="color" 
-                                   id="color" 
+                            <input type="color"
+                                   class="form-control"
+                                   name="color"
+                                   id="color"
                                    value="{{ old('color', $ticketPriority->color) }}" />
                         </div>
 
@@ -77,22 +77,5 @@
         $(document).ready(function (){
             activeParentUl('{{ route('admin.ticket.priorities.index') }}');
         });
-
-        function confirmDelete() {
-            Swal.fire({
-                title: 'آیا مطمئن هستید؟',
-                text: "این عملیات قابل بازگشت نیست!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'بله، حذف شود!',
-                cancelButtonText: 'خیر'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('deleteItem').submit();
-                }
-            })
-        }
     </script>
 @endsection

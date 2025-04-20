@@ -11,16 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ticket_ratings', function (Blueprint $table) {
+        Schema::create('ticket_events', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('chat_id')->constrained('chats')->onDelete('cascade');
-            $table->morphs('user');
-            $table->integer('rating');
-            $table->text('comment')->nullable();
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->string('trigger')->nullable();
             $table->timestamps();
-
-            // A chat can only have one rating
-            $table->unique('chat_id');
         });
     }
 
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ticket_ratings');
+        Schema::dropIfExists('ticket_events');
     }
 };

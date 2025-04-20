@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Ticket\app\Http\Requests\Admin\TicketStatusTransition;
+namespace Modules\Ticket\app\Http\Requests\Admin\TicketTransition;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -23,16 +23,9 @@ class UpdateRequest extends FormRequest
     {
         return [
             'from_status_id' => ['required', 'exists:ticket_statuses,id'],
-            'to_status_id' => [
-                'required',
-                'exists:ticket_statuses,id',
-                function ($attribute, $value, $fail) {
-                    if ($value == $this->from_status_id) {
-                        $fail('وضعیت شروع و پایان نمی‌توانند یکسان باشند.');
-                    }
-                },
-            ],
-            'days_until_transition' => ['required', 'integer', 'min:0'],
+            'to_status_id' => ['required', 'exists:ticket_statuses,id', 'different:from_status_id'],
+            'event_id' => ['required', 'exists:ticket_events,id'],
+            'days_trigger' => ['nullable', 'integer', 'min:0'],
             'is_active' => ['nullable', 'boolean'],
         ];
     }
@@ -45,9 +38,10 @@ class UpdateRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'from_status_id' => 'وضعیت شروع',
-            'to_status_id' => 'وضعیت پایان',
-            'days_until_transition' => 'تعداد روز تا انتقال',
+            'from_status_id' => 'وضعیت مبدا',
+            'to_status_id' => 'وضعیت مقصد',
+            'event_id' => 'رویداد',
+            'days_trigger' => 'تعداد روز',
             'is_active' => 'فعال',
         ];
     }

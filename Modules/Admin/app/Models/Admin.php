@@ -146,6 +146,14 @@ class Admin extends Authenticatable
         return $this->hasMany(Project::class, 'admin_id');
     }
 
+    /**
+     * Get the ticket priorities this admin is assigned as support to
+     */
+    public function supportTicketPriorities(): HasMany
+    {
+        return $this->hasMany(\Modules\Ticket\app\Models\TicketPriority::class, 'admin_support_id');
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

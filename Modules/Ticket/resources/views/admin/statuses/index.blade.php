@@ -34,7 +34,6 @@
                                 <th>نام</th>
                                 <th>رنگ</th>
                                 <th>توضیحات</th>
-                                <th>تغییر خودکار</th>
                                 <th>ترتیب</th>
                                 <th>عملیات</th>
                             </tr>
@@ -51,7 +50,6 @@
                                             </span>
                                         </td>
                                         <td>{{ $status->description }}</td>
-                                        <td>{{ $status->is_auto_changing ? 'بله' : 'خیر' }}</td>
                                         <td>{{ $status->order }}</td>
                                         <td>
                                             <a href="{{ route('admin.ticket.statuses.edit', $status->id) }}" class="btn btn-warning btn-sm">ویرایش</a>

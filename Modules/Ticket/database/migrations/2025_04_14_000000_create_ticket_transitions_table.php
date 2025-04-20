@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ticket_status_transitions', function (Blueprint $table) {
+        Schema::create('ticket_transitions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('from_status_id')->constrained('ticket_statuses')->onDelete('cascade');
             $table->foreignId('to_status_id')->constrained('ticket_statuses')->onDelete('cascade');
-            $table->integer('days_until_transition');
+            $table->foreignId('event_id')->constrained('ticket_events')->onDelete('cascade');
+            $table->integer('days_trigger')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
-            $table->unique(['from_status_id', 'to_status_id']);
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ticket_status_transitions');
+        Schema::dropIfExists('ticket_transitions');
     }
 };

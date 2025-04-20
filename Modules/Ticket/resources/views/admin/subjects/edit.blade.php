@@ -15,7 +15,7 @@
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.ticket.statuses.index') }}">وضعیت تیکت ها</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.ticket.subjects.index') }}">موضوعات تیکت</a></li>
                 <li class="breadcrumb-item active">ویرایش</li>
             </ol>
         </div>
@@ -26,31 +26,25 @@
             <div class="card">
                 <div class="card-body pb-3">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ route('admin.ticket.statuses.update', $ticketStatus) }}">
+                    <form class="request-form forms-sample" method="post" action="{{ route('admin.ticket.subjects.update', $ticketSubject) }}">
                         @csrf
                         @method('PATCH')
 
-                        <x-admin.input identify="name" title="نام وضعیت" :old="$ticketStatus->name"/>
+                        <x-admin.input identify="title" title="عنوان موضوع" :old="$ticketSubject->title"/>
 
                         <div class="mb-3">
-                            <label for="color" class="form-label">رنگ</label>
-                            <input type="color"
-                                   class="form-control"
-                                   name="color"
-                                   id="color"
-                                   value="{{ old('color', $ticketStatus->color) }}" />
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="is_published" id="is_published" value="1" {{ old('is_published', $ticketSubject->is_published) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="is_published">منتشر شود</label>
+                            </div>
                         </div>
-
-                        <x-admin.input identify="order" title="ترتیب" type="number" :old="old('order', $ticketStatus->order)"/>
-
-                        <x-admin.textarea identify="description" title="توضیحات" :old="$ticketStatus->description"/>
 
                         <x-admin.button title="{{ trans('panel.update') }}"/>
 
                         <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
                     </form>
 
-                    <form id="deleteItem" action="{{ route('admin.ticket.statuses.destroy', $ticketStatus) }}" method="post" class="form-inline">
+                    <form id="deleteItem" action="{{ route('admin.ticket.subjects.destroy', $ticketSubject) }}" method="post" class="form-inline">
                         @csrf
                         @method('DELETE')
                     </form>
@@ -68,7 +62,7 @@
     @include('admin.partial.request')
     <script>
         $(document).ready(function (){
-            activeParentUl('{{ route('admin.ticket.statuses.index') }}');
+            activeParentUl('{{ route('admin.ticket.subjects.index') }}');
         });
     </script>
 @endsection

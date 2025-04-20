@@ -6,14 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class TicketStatusTransition extends Model
+class TicketTransition extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'from_status_id',
         'to_status_id',
-        'days_until_transition',
+        'event_id',
+        'days_trigger',
         'is_active',
     ];
 
@@ -22,7 +23,7 @@ class TicketStatusTransition extends Model
     ];
 
     /**
-     * Get the "from" status for this transition.
+     * Get the from status associated with the transition.
      */
     public function fromStatus(): BelongsTo
     {
@@ -30,7 +31,7 @@ class TicketStatusTransition extends Model
     }
 
     /**
-     * Get the "to" status for this transition.
+     * Get the to status associated with the transition.
      */
     public function toStatus(): BelongsTo
     {
@@ -38,10 +39,10 @@ class TicketStatusTransition extends Model
     }
 
     /**
-     * Create a new factory instance for the model.
+     * Get the event associated with the transition.
      */
-    protected static function newFactory()
+    public function event(): BelongsTo
     {
-        return \Modules\Ticket\database\factories\TicketStatusTransitionFactory::new();
+        return $this->belongsTo(TicketEvent::class, 'event_id');
     }
 }

@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ticket_status_assignees', function (Blueprint $table) {
+        Schema::create('ticket_subjects', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('status_id')->constrained('ticket_statuses')->onDelete('cascade');
-            $table->foreignId('role_id')->constrained('roles')->onDelete('cascade');
+            $table->string('title');
+            $table->boolean('is_published')->default(true);
+            $table->softDeletes();
             $table->timestamps();
-
-            // Each status can only be assigned to one role
-            $table->unique('status_id');
         });
     }
 
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ticket_status_assignees');
+        Schema::dropIfExists('ticket_subjects');
     }
 };

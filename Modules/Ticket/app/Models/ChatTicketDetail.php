@@ -14,17 +14,22 @@ class ChatTicketDetail extends Model
 
     protected $fillable = [
         'chat_id',
+        'subject_id',
         'status_id',
         'priority_id',
         'assigned_to',
         'last_response_at',
         'closed_at',
-        'subject',
+        'rating',
+        'rated_at',
+        'rating_comment',
     ];
 
     protected $casts = [
         'last_response_at' => 'datetime',
         'closed_at' => 'datetime',
+        'rated_at' => 'datetime',
+        'rating' => 'integer',
     ];
 
     /**
@@ -60,10 +65,10 @@ class ChatTicketDetail extends Model
     }
 
     /**
-     * Create a new factory instance for the model.
+     * Get the subject that owns the chat ticket detail.
      */
-    protected static function newFactory()
+    public function subject(): BelongsTo
     {
-        return \Modules\Ticket\database\factories\ChatTicketDetailFactory::new();
+        return $this->belongsTo(TicketSubject::class, 'subject_id');
     }
 }

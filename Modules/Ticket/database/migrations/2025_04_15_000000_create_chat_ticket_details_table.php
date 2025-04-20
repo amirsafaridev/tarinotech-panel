@@ -14,12 +14,15 @@ return new class extends Migration
         Schema::create('chat_ticket_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('chat_id')->constrained('chats')->onDelete('cascade');
-            $table->foreignId('status_id')->constrained('ticket_statuses');
-            $table->foreignId('priority_id')->constrained('ticket_priorities');
+            $table->foreignId('subject_id')->constrained('ticket_subjects')->onDelete('restrict');
+            $table->foreignId('status_id')->constrained('ticket_statuses')->onDelete('restrict');
+            $table->foreignId('priority_id')->constrained('ticket_priorities')->onDelete('restrict');
             $table->foreignId('assigned_to')->nullable()->constrained('admins')->onDelete('set null');
             $table->dateTime('last_response_at')->nullable();
             $table->dateTime('closed_at')->nullable();
-            $table->text('subject')->nullable();
+            $table->unsignedTinyInteger('rating')->nullable();
+            $table->dateTime('rated_at')->nullable();
+            $table->text('rating_comment')->nullable();
             $table->timestamps();
         });
     }

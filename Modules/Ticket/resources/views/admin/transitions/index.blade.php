@@ -19,9 +19,9 @@
         <div class="col-xl-12 col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title">انتقال وضعیت‌های تیکت</h3>
+                    <h3 class="card-title">انتقال وضعیت‌های خودکار</h3>
                     @can('ADMIN_TICKET_INDEX')
-                        <a class="btn btn-success btn-sm" href="{{ route('admin.ticket.transitions.create') }}">ایجاد انتقال جدید</a>
+                        <a class="btn btn-success btn-sm" href="{{ route('admin.ticket.transitions.create') }}">ایجاد انتقال وضعیت</a>
                     @endcan
                 </div>
                 <div class="card-body">
@@ -31,9 +31,10 @@
                             <thead>
                             <tr>
                                 <th>شناسه</th>
-                                <th>وضعیت شروع</th>
-                                <th>وضعیت پایان</th>
-                                <th>تعداد روز تا انتقال</th>
+                                <th>وضعیت مبدا</th>
+                                <th>وضعیت مقصد</th>
+                                <th>رویداد</th>
+                                <th>تعداد روز</th>
                                 <th>وضعیت</th>
                                 <th>عملیات</th>
                             </tr>
@@ -43,18 +44,17 @@
                                 @foreach($transitions as $transition)
                                     <tr>
                                         <td>{{ $transition->id }}</td>
+                                        <td>{{ $transition->fromStatus->name }}</td>
+                                        <td>{{ $transition->toStatus->name }}</td>
+                                        <td>{{ $transition->event->name }}</td>
+                                        <td>{{ $transition->days_trigger ?? '-' }}</td>
                                         <td>
-                                            <span class="badge" style="background-color: {{ $transition->fromStatus->color }}">
-                                                {{ $transition->fromStatus->name }}
-                                            </span>
+                                            @if($transition->is_active)
+                                                <span class="badge bg-success">فعال</span>
+                                            @else
+                                                <span class="badge bg-danger">غیرفعال</span>
+                                            @endif
                                         </td>
-                                        <td>
-                                            <span class="badge" style="background-color: {{ $transition->toStatus->color }}">
-                                                {{ $transition->toStatus->name }}
-                                            </span>
-                                        </td>
-                                        <td>{{ $transition->days_until_transition }} روز</td>
-                                        <td>{{ $transition->is_active ? 'فعال' : 'غیرفعال' }}</td>
                                         <td>
                                             <a href="{{ route('admin.ticket.transitions.edit', $transition->id) }}" class="btn btn-warning btn-sm">ویرایش</a>
                                         </td>

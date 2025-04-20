@@ -30,10 +30,10 @@
 
                         <div class="mb-3">
                             <label for="color" class="form-label">رنگ</label>
-                            <input type="color" 
-                                   class="form-control" 
-                                   name="color" 
-                                   id="color" 
+                            <input type="color"
+                                   class="form-control"
+                                   name="color"
+                                   id="color"
                                    value="{{ old('color', '#000000') }}" />
                         </div>
 
