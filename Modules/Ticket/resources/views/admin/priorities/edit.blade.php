@@ -26,9 +26,9 @@
             <div class="card">
                 <div class="card-body pb-3">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ route('admin.ticket.priorities.update', $ticketPriority) }}">
+                    <form class="request-form forms-sample" method="post" action="{{ route('admin.ticket.priorities.update', $ticketPriority->id) }}">
                         @csrf
-                        @method('PATCH')
+                        @method('put')
 
                         <x-admin.input identify="name" title="نام اولویت" :old="$ticketPriority->name"/>
 
@@ -43,12 +43,9 @@
 
                         <x-admin.input identify="level" title="سطح اولویت" type="number" :old="old('level', $ticketPriority->level)"/>
 
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" name="should_notify" id="should_notify" value="1" {{ old('should_notify', $ticketPriority->should_notify) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="should_notify">اطلاع رسانی</label>
-                            </div>
-                        </div>
+                        <x-admin.checkbox identify="should_notify"
+                                      description="اطلاع رسانی"
+                                      :old="old('should_notify', $ticketPriority->should_notify)"/>
 
                         <x-admin.textarea identify="description" title="توضیحات" :old="$ticketPriority->description"/>
 

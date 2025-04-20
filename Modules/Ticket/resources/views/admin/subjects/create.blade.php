@@ -28,12 +28,9 @@
 
                         <x-admin.input identify="title" title="عنوان موضوع"/>
 
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" name="is_published" id="is_published" value="1" {{ old('is_published') ? 'checked' : 'checked' }}>
-                                <label class="form-check-label" for="is_published">منتشر شود</label>
-                            </div>
-                        </div>
+                        <x-admin.checkbox identify="is_published"
+                                      description="منتشر شود؟"
+                                      :old="old('is_published', 1)"/>
 
                         <x-admin.button title="{{ trans('panel.create') }}"/>
                     </form>

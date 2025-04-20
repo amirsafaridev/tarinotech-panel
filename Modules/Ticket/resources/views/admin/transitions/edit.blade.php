@@ -26,56 +26,41 @@
             <div class="card">
                 <div class="card-body pb-3">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ route('admin.ticket.transitions.update', $ticketTransition) }}">
+                    <form class="request-form forms-sample" method="post" action="{{ route('admin.ticket.transitions.update', $ticketTransition->id) }}">
                         @csrf
-                        @method('PATCH')
+                        @method('put')
 
-                        <div class="mb-3">
-                            <label class="form-label" for="from_status_id">وضعیت مبدا</label>
-                            <select class="form-select" name="from_status_id" id="from_status_id">
-                                <option value="">انتخاب کنید</option>
-                                @foreach($statuses as $status)
-                                    <option value="{{ $status->id }}" {{ old('from_status_id', $ticketTransition->from_status_id) == $status->id ? 'selected' : '' }}>
-                                        {{ $status->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                        <x-admin.select-model identify="from_status_id"
+                                              title="وضعیت مبدا"
+                                              key="id"
+                                              value="name"
+                                              :items="$statuses"
+                                              :old="$ticketTransition->from_status_id"/>
 
-                        <div class="mb-3">
-                            <label class="form-label" for="to_status_id">وضعیت مقصد</label>
-                            <select class="form-select" name="to_status_id" id="to_status_id">
-                                <option value="">انتخاب کنید</option>
-                                @foreach($statuses as $status)
-                                    <option value="{{ $status->id }}" {{ old('to_status_id', $ticketTransition->to_status_id) == $status->id ? 'selected' : '' }}>
-                                        {{ $status->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                        <x-admin.select-model identify="to_status_id"
+                                              title="وضعیت مقصد"
+                                              key="id"
+                                              value="name"
+                                              :items="$statuses"
+                                              :old="$ticketTransition->to_status_id"/>
 
-                        <div class="mb-3">
-                            <label class="form-label" for="event_id">رویداد</label>
-                            <select class="form-select" name="event_id" id="event_id">
-                                <option value="">انتخاب کنید</option>
-                                @foreach($events as $event)
-                                    <option value="{{ $event->id }}" {{ old('event_id', $ticketTransition->event_id) == $event->id ? 'selected' : '' }}>
-                                        {{ $event->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                        <x-admin.select-model identify="event_id"
+                                              title="رویداد"
+                                              key="id"
+                                              value="name"
+                                              :items="$events"
+                                              :old="$ticketTransition->event_id"/>
 
-                        <div class="mb-3">
-                            <label class="form-label" for="days_trigger">تعداد روز (اختیاری)</label>
-                            <input type="number" class="form-control" name="days_trigger" id="days_trigger" min="0" value="{{ old('days_trigger', $ticketTransition->days_trigger) }}">
-                            <div class="form-text">در صورتی که رویداد زمانی است، تعداد روزهای مورد نیاز را وارد کنید</div>
-                        </div>
+                        <x-admin.input identify="days_trigger" 
+                                    title="تعداد روز (اختیاری)" 
+                                    type="number" 
+                                    min="0" 
+                                    :old="$ticketTransition->days_trigger"/>
+                        <div class="form-text">در صورتی که رویداد زمانی است، تعداد روزهای مورد نیاز را وارد کنید</div>
 
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="is_active" name="is_active" value="1" {{ old('is_active', $ticketTransition->is_active) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="is_active">فعال</label>
-                        </div>
+                        <x-admin.checkbox identify="is_active"
+                                      description="فعال"
+                                      :old="$ticketTransition->is_active"/>
 
                         <x-admin.button title="{{ trans('panel.update') }}"/>
 

@@ -26,18 +26,15 @@
             <div class="card">
                 <div class="card-body pb-3">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ route('admin.ticket.subjects.update', $ticketSubject) }}">
+                    <form class="request-form forms-sample" method="post" action="{{ route('admin.ticket.subjects.update', $ticketSubject->id) }}">
                         @csrf
-                        @method('PATCH')
+                        @method('put')
 
                         <x-admin.input identify="title" title="عنوان موضوع" :old="$ticketSubject->title"/>
 
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" name="is_published" id="is_published" value="1" {{ old('is_published', $ticketSubject->is_published) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="is_published">منتشر شود</label>
-                            </div>
-                        </div>
+                        <x-admin.checkbox identify="is_published"
+                                      description="منتشر شود؟"
+                                      :old="old('is_published', $ticketSubject->is_published)"/>
 
                         <x-admin.button title="{{ trans('panel.update') }}"/>
 

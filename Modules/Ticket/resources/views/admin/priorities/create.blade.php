@@ -39,12 +39,9 @@
 
                         <x-admin.input identify="level" title="سطح اولویت" type="number" :old="old('level', 1)"/>
 
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" name="should_notify" id="should_notify" value="1" {{ old('should_notify') ? 'checked' : '' }}>
-                                <label class="form-check-label" for="should_notify">اطلاع رسانی</label>
-                            </div>
-                        </div>
+                        <x-admin.checkbox identify="should_notify"
+                                      description="اطلاع رسانی"
+                                      :old="old('should_notify')"/>
 
                         <x-admin.textarea identify="description" title="توضیحات"/>
 

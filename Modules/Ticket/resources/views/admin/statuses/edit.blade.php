@@ -26,9 +26,9 @@
             <div class="card">
                 <div class="card-body pb-3">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ route('admin.ticket.statuses.update', $ticketStatus) }}">
+                    <form class="request-form forms-sample" method="post" action="{{ route('admin.ticket.statuses.update', $ticketStatus->id) }}">
                         @csrf
-                        @method('PATCH')
+                        @method('put')
 
                         <x-admin.input identify="name" title="نام وضعیت" :old="$ticketStatus->name"/>
 
