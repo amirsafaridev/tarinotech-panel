@@ -8,8 +8,9 @@ use App\Http\Controllers\Controller;
 use App\Traits\HasJsonCommonResponseTrait;
 use DB;
 use Exception;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Modules\Admin\app\Models\Admin;
-use Modules\Chat\app\Events\Message\NewMessage;
 use Modules\Support\app\Models\Chat;
 use Modules\Support\app\Models\ChatBot;
 use Modules\Support\app\Models\ChatMessage;
@@ -19,7 +20,6 @@ use Modules\Ticket\app\Models\TicketPriority;
 use Modules\Ticket\app\Models\TicketStatus;
 use Modules\Ticket\app\Models\TicketSubject;
 use Modules\User\app\Models\User;
-use View;
 
 class TicketCreationController extends Controller
 {
@@ -30,7 +30,7 @@ class TicketCreationController extends Controller
     /**
      * Show the form for creating a new ticket.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
     public function create()
     {
@@ -47,7 +47,7 @@ class TicketCreationController extends Controller
     /**
      * Store a newly created ticket.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function store(StoreRequest $request)
     {

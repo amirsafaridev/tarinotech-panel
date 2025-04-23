@@ -1,64 +1,67 @@
+@php use Modules\Ticket\app\Models\TicketStatus; @endphp
+@php use Modules\Ticket\app\Models\TicketPriority; @endphp
+@php use Modules\Ticket\app\Models\TicketSubject; @endphp
 <div class="row mb-4">
     <div class="col-12 col-md-3 col-xl-2">
         <x-admin.input
-                identify="search"
-                title="جستجو"
-                :old="request('search')"
-                :is-small="true"
+            identify="search"
+            title="جستجو"
+            :old="request('search')"
+            :is-small="true"
         />
     </div>
 
     <div class="col-12 col-md-3 col-xl-2">
         <x-admin.input
-                identify="admin"
-                title="پشتیبان"
-                :is-small="true"
-                :old="request('admin')"
+            identify="admin"
+            title="پشتیبان"
+            :is-small="true"
+            :old="request('admin')"
         />
     </div>
 
     @php
-        $statuses = \Modules\Ticket\app\Models\TicketStatus::orderBy('order')->get();
+        $statuses = TicketStatus::orderBy('order')->get();
         $statusItems = $statuses->pluck('name', 'id')->toArray();
     @endphp
 
     <div class="col-12 col-md-3 col-xl-2">
         <x-admin.select-simple
-                identify="status_id"
-                title="وضعیت"
-                :items="$statusItems"
-                :is-small="true"
-                :old="request('status_id')"
+            identify="status_id"
+            title="وضعیت"
+            :items="$statusItems"
+            :is-small="true"
+            :old="request('status_id')"
         />
     </div>
 
     @php
-        $priorities = \Modules\Ticket\app\Models\TicketPriority::orderBy('level')->get();
+        $priorities = TicketPriority::orderBy('level')->get();
         $priorityItems = $priorities->pluck('name', 'id')->toArray();
     @endphp
 
     <div class="col-12 col-md-3 col-xl-2">
         <x-admin.select-simple
-                identify="priority_id"
-                title="اولویت"
-                :items="$priorityItems"
-                :is-small="true"
-                :old="request('priority_id')"
+            identify="priority_id"
+            title="اولویت"
+            :items="$priorityItems"
+            :is-small="true"
+            :old="request('priority_id')"
         />
     </div>
 
     @php
-        $subjects = \Modules\Ticket\app\Models\TicketSubject::get();
+        $subjects = TicketSubject::get();
         $subjectItems = $subjects->pluck('title', 'id')->toArray();
     @endphp
 
     <div class="col-12 col-md-3 col-xl-2">
         <x-admin.select-simple
-                identify="subject_id"
-                title="موضوع"
-                :items="$subjectItems"
-                :is-small="true"
-                :old="request('subject_id')"
+            identify="subject_id"
+            title="موضوع"
+            :items="$subjectItems"
+            :is-small="true"
+            :old="request('subject_id')"
         />
     </div>
 
@@ -71,31 +74,31 @@
             ];
         @endphp
         <x-admin.select-simple
-                identify="date_column"
-                title="فیلد تاریخ"
-                :items="$dateTypeItems"
-                :old="request('date_column')"
-                :is-small="true"
+            identify="date_column"
+            title="فیلد تاریخ"
+            :items="$dateTypeItems"
+            :old="request('date_column')"
+            :is-small="true"
         />
     </div>
 
     <div class="col-12 col-md-3 col-xl-2">
         <x-admin.input
-                identify="from_date"
-                title="از تاریخ"
-                :is-date-picker="true"
-                :old="request('from_date')"
-                :is-small="true"
+            identify="from_date"
+            title="از تاریخ"
+            :is-date-picker="true"
+            :old="request('from_date')"
+            :is-small="true"
         />
     </div>
 
     <div class="col-12 col-md-3 col-xl-2">
         <x-admin.input
-                identify="to_date"
-                title="تا تاریخ"
-                :is-date-picker="true"
-                :old="request('to_date')"
-                :is-small="true"
+            identify="to_date"
+            title="تا تاریخ"
+            :is-date-picker="true"
+            :old="request('to_date')"
+            :is-small="true"
         />
     </div>
 
@@ -112,15 +115,15 @@
 
     <div class="col-12 col-md-3 col-xl-2">
         <x-admin.select-simple
-                identify="sort"
-                title="مرتب سازی"
-                :items="$orderItems"
-                :old="request('sort')"
-                :is-small="true"
+            identify="sort"
+            title="مرتب سازی"
+            :items="$orderItems"
+            :old="request('sort')"
+            :is-small="true"
         />
     </div>
 
     <div class="col-12 col-md-3 col-xl-2">
         <button class="btn btn-primary btn-sm">فیلتر</button>
     </div>
-</div> 
+</div>

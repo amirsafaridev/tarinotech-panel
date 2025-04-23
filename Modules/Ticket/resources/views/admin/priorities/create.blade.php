@@ -1,8 +1,11 @@
+@php use App\Enums\Assets\StyleLoader; @endphp
 @extends('admin.master')
-@section('title') {{ $title }} @endsection
+@section('title')
+    {{ $title }}
+@endsection
 @section('head')
     @include('admin.partial.loader.style',['load'=>[
-       \App\Enums\Assets\StyleLoader::Toast(),
+       StyleLoader::Toast(),
    ]])
 @endsection
 @section('content')
@@ -11,8 +14,10 @@
         <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.ticket.priorities.index') }}">اولویت‌های تیکت</a></li>
+                <li class="breadcrumb-item"><a
+                        href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.ticket.priorities.index') }}">اولویت‌های تیکت</a>
+                </li>
                 <li class="breadcrumb-item active">ایجاد</li>
             </ol>
         </div>
@@ -23,7 +28,8 @@
             <div class="card">
                 <div class="card-body pb-4">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ route('admin.ticket.priorities.store') }}">
+                    <form class="request-form forms-sample" method="post"
+                          action="{{ route('admin.ticket.priorities.store') }}">
                         @csrf
 
                         <x-admin.input identify="name" title="نام اولویت"/>
@@ -34,21 +40,21 @@
                                    class="form-control"
                                    name="color"
                                    id="color"
-                                   value="{{ old('color', '#000000') }}" />
+                                   value="{{ old('color', '#000000') }}"/>
                         </div>
 
                         <x-admin.input identify="level" title="سطح اولویت" type="number" :old="old('level', 1)"/>
 
                         <x-admin.checkbox identify="should_notify"
-                                      description="اطلاع رسانی"
-                                      :old="old('should_notify')"/>                        
+                                          description="اطلاع رسانی"
+                                          :old="old('should_notify')"/>
 
                         <x-admin.select-model
-                                title="پشتیبان"
-                                identify="admin_support_id"
-                                :items="$admins"
-                                key="id"
-                                value="fullName"/>
+                            title="پشتیبان"
+                            identify="admin_support_id"
+                            :items="$admins"
+                            key="id"
+                            value="fullName"/>
 
                         <x-admin.textarea identify="message" title="پیام اطلاع رسانی"/>
 
@@ -64,7 +70,7 @@
 @section('script')
     @include('admin.partial.request')
     <script>
-        $(document).ready(function (){
+        $(document).ready(function () {
             activeParentUl('{{ route('admin.ticket.priorities.index') }}');
         });
     </script>

@@ -5,7 +5,10 @@ namespace Modules\Ticket\app\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Traits\HasJsonCommonResponseTrait;
 use Exception;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Modules\Admin\app\Models\Admin;
 use Modules\Support\app\Models\Chat;
@@ -19,7 +22,7 @@ class TicketManagementController extends Controller
     /**
      * Display the chat interface for a ticket.
      *
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+     * @return View|RedirectResponse
      */
     public function manage(Chat $chat)
     {
@@ -79,7 +82,7 @@ class TicketManagementController extends Controller
     /**
      * Get all available admins for ticket assignment.
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return Collection
      */
     protected function getAvailableAdmins()
     {

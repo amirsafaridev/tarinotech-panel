@@ -2,8 +2,6 @@
 
 namespace App\Http\ViewComposers\Admin\User;
 
-use App\Models\Avatar;
-use App\Models\City;
 use Illuminate\Contracts\View\View;
 
 class UserComposer

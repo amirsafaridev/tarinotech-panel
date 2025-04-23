@@ -1,8 +1,11 @@
+@php use App\Enums\Assets\StyleLoader; @endphp
 @extends('admin.master')
-@section('title') {{ $title }} @endsection
+@section('title')
+    {{ $title }}
+@endsection
 @section('head')
     @include('admin.partial.loader.style',['load'=>[
-       \App\Enums\Assets\StyleLoader::Toast(),
+       StyleLoader::Toast(),
    ]])
 @endsection
 @section('content')
@@ -11,8 +14,10 @@
         <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.ticket.transitions.index') }}">انتقال وضعیت‌ها</a></li>
+                <li class="breadcrumb-item"><a
+                        href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.ticket.transitions.index') }}">انتقال وضعیت‌ها</a>
+                </li>
                 <li class="breadcrumb-item active">ایجاد</li>
             </ol>
         </div>
@@ -23,7 +28,8 @@
             <div class="card">
                 <div class="card-body pb-4">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ route('admin.ticket.transitions.store') }}">
+                    <form class="request-form forms-sample" method="post"
+                          action="{{ route('admin.ticket.transitions.store') }}">
                         @csrf
 
                         <x-admin.select-model identify="from_status_id"
@@ -48,8 +54,8 @@
                         <div class="form-text">در صورتی که رویداد زمانی است، تعداد روزهای مورد نیاز را وارد کنید</div>
 
                         <x-admin.checkbox identify="is_active"
-                                      description="فعال"
-                                      :old="old('is_active', 1)"/>
+                                          description="فعال"
+                                          :old="old('is_active', 1)"/>
 
                         <x-admin.button title="{{ trans('panel.create') }}"/>
                     </form>
@@ -61,7 +67,7 @@
 @section('script')
     @include('admin.partial.request')
     <script>
-        $(document).ready(function (){
+        $(document).ready(function () {
             activeParentUl('{{ route('admin.ticket.transitions.index') }}');
         });
     </script>

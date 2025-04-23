@@ -1,10 +1,14 @@
+@php use App\Enums\Assets\StyleLoader; @endphp
+@php use App\Enums\Assets\ScriptLoader; @endphp
 @extends('admin.master')
-@section('title') {{ $title }} @endsection
+@section('title')
+    {{ $title }}
+@endsection
 @section('head')
     @include('admin.partial.loader.style',[
         'load'=>[
-            \App\Enums\Assets\StyleLoader::Toast(),
-            \App\Enums\Assets\StyleLoader::Alert(),
+            StyleLoader::Toast(),
+            StyleLoader::Alert(),
         ]
     ])
 @endsection
@@ -14,7 +18,8 @@
         <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a
+                        href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.ticket.statuses.index') }}">وضعیت تیکت ها</a></li>
                 <li class="breadcrumb-item active">ویرایش</li>
             </ol>
@@ -26,7 +31,8 @@
             <div class="card">
                 <div class="card-body pb-3">
                     @include('admin.partial.message')
-                    <form class="request-form forms-sample" method="post" action="{{ route('admin.ticket.statuses.update', $ticketStatus->id) }}">
+                    <form class="request-form forms-sample" method="post"
+                          action="{{ route('admin.ticket.statuses.update', $ticketStatus->id) }}">
                         @csrf
                         @method('put')
 
@@ -38,19 +44,22 @@
                                    class="form-control"
                                    name="color"
                                    id="color"
-                                   value="{{ old('color', $ticketStatus->color) }}" />
+                                   value="{{ old('color', $ticketStatus->color) }}"/>
                         </div>
 
-                        <x-admin.input identify="order" title="ترتیب" type="number" :old="old('order', $ticketStatus->order)"/>
+                        <x-admin.input identify="order" title="ترتیب" type="number"
+                                       :old="old('order', $ticketStatus->order)"/>
 
                         <x-admin.textarea identify="description" title="توضیحات" :old="$ticketStatus->description"/>
 
                         <x-admin.button title="{{ trans('panel.update') }}"/>
 
-                        <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
+                        <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger"
+                                        on-click="confirmDelete()"/>
                     </form>
 
-                    <form id="deleteItem" action="{{ route('admin.ticket.statuses.destroy', $ticketStatus) }}" method="post" class="form-inline">
+                    <form id="deleteItem" action="{{ route('admin.ticket.statuses.destroy', $ticketStatus) }}"
+                          method="post" class="form-inline">
                         @csrf
                         @method('DELETE')
                     </form>
@@ -62,12 +71,12 @@
 @section('script')
     @include('admin.partial.loader.script',[
         'load'=>[
-            \App\Enums\Assets\ScriptLoader::Alert(),
+            ScriptLoader::Alert(),
         ],
     ])
     @include('admin.partial.request')
     <script>
-        $(document).ready(function (){
+        $(document).ready(function () {
             activeParentUl('{{ route('admin.ticket.statuses.index') }}');
         });
     </script>

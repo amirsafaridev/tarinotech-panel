@@ -1,8 +1,12 @@
+@php use App\Enums\Assets\StyleLoader; @endphp
+@php use App\Enums\Assets\ScriptLoader; @endphp
 @extends('admin.master')
-@section('title') {{ $title }} @endsection
+@section('title')
+    {{ $title }}
+@endsection
 @section('head')
     @include('admin.partial.loader.style',['load'=>[
-        \App\Enums\Assets\StyleLoader::Datepicker(),
+        StyleLoader::Datepicker(),
    ]])
 @endsection
 @section('content')
@@ -11,7 +15,8 @@
         <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a
+                        href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item active">{{ $title }}</li>
             </ol>
         </div>
@@ -26,7 +31,9 @@
                         <a class="btn btn-primary me-2" href="{{ route('admin.ticket.create') }}">
                             <i class="fa fa-plus"></i> ایجاد تیکت جدید
                         </a>
-                        <a class="btn btn-success datatable-export-button" href="{{ request()->fullUrlWithQuery(['export' => 'true']) }}" id="exportButton">خروجی Excel</a>
+                        <a class="btn btn-success datatable-export-button"
+                           href="{{ request()->fullUrlWithQuery(['export' => 'true']) }}" id="exportButton">خروجی
+                            Excel</a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -92,8 +99,11 @@
                                         <td>{{ optional($ticket->last_response_at)->toJalali()->format(formatJalaliDate()) ?? 'بدون پاسخ' }}</td>
                                         <td>{{ $ticket->rating ? $ticket->rating . '/5' : 'ثبت نشده' }}</td>
                                         <td>
-                                            <a class="btn btn-sm btn-success" href="{{ route('admin.ticket.manage', $ticket->chat_id) }}">{{ __('panel.action.manage') }}</a>
-                                            <a class="btn btn-sm btn-info" href="{{ route('admin.ticket.edit', $ticket->chat_id) }}"><i class="fe fe-edit"></i> ویرایش</a>
+                                            <a class="btn btn-sm btn-success"
+                                               href="{{ route('admin.ticket.manage', $ticket->chat_id) }}">{{ __('panel.action.manage') }}</a>
+                                            <a class="btn btn-sm btn-info"
+                                               href="{{ route('admin.ticket.edit', $ticket->chat_id) }}"><i
+                                                    class="fe fe-edit"></i> ویرایش</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -112,11 +122,11 @@
 @endsection
 @section('script')
     @include('admin.partial.loader.script',['load'=>[
-       \App\Enums\Assets\ScriptLoader::Datepicker(),
+       ScriptLoader::Datepicker(),
    ]])
     @include('admin.partial.script.global')
     <script>
-        $(document).ready(function (){
+        $(document).ready(function () {
             jalaliDatepicker.startWatch();
         })
     </script>

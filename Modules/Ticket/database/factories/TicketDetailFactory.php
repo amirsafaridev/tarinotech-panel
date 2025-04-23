@@ -26,11 +26,11 @@ class TicketDetailFactory extends Factory
             },
             'status_id' => function () {
                 return TicketStatus::inRandomOrder()->first()?->id ??
-                       TicketStatus::factory()->create()->id;
+                    TicketStatus::factory()->create()->id;
             },
             'priority_id' => function () {
                 return TicketPriority::inRandomOrder()->first()?->id ??
-                       TicketPriority::factory()->create()->id;
+                    TicketPriority::factory()->create()->id;
             },
             'assigned_to' => function () {
                 return Admin::inRandomOrder()->first()?->id;

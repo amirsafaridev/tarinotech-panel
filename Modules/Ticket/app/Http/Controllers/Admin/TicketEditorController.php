@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Traits\HasJsonCommonResponseTrait;
 use DB;
 use Exception;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Modules\Support\app\Models\Chat;
 use Modules\Ticket\app\Models\TicketPriority;
@@ -19,7 +22,7 @@ class TicketEditorController extends Controller
     /**
      * Show the form for editing a ticket.
      *
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+     * @return View|RedirectResponse
      */
     public function edit(Chat $chat)
     {
@@ -41,7 +44,7 @@ class TicketEditorController extends Controller
     /**
      * Update the specified ticket.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function update(Request $request, Chat $chat)
     {
