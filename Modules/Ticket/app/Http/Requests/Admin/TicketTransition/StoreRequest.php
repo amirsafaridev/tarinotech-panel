@@ -15,6 +15,16 @@ class StoreRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'is_active' => $this->has('is_active'),
+        ]);
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
@@ -26,7 +36,7 @@ class StoreRequest extends FormRequest
             'to_status_id' => ['required', 'exists:ticket_statuses,id', 'different:from_status_id'],
             'event_id' => ['required', 'exists:ticket_events,id'],
             'days_trigger' => ['nullable', 'integer', 'min:0'],
-            'is_active' => ['nullable', 'boolean'],
+            'is_active' => ['boolean'],
         ];
     }
 

@@ -36,6 +36,7 @@
                                 <th>توضیحات</th>
                                 <th>اطلاع رسانی</th>
                                 <th>سطح اولویت</th>
+                                <th>پشتیبان</th>
                                 <th>عملیات</th>
                             </tr>
                             </thead>
@@ -53,6 +54,7 @@
                                         <td>{{ $priority->description }}</td>
                                         <td>{{ $priority->should_notify ? 'بله' : 'خیر' }}</td>
                                         <td>{{ $priority->level }}</td>
+                                        <td>{{ $priority->adminSupport ? $priority->adminSupport->fullname : '-' }}</td>
                                         <td>
                                             <a href="{{ route('admin.ticket.priorities.edit', $priority->id) }}" class="btn btn-warning btn-sm">ویرایش</a>
                                         </td>

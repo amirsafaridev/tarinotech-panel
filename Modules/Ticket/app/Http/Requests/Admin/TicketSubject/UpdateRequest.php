@@ -2,9 +2,7 @@
 
 namespace Modules\Ticket\app\Http\Requests\Admin\TicketSubject;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class UpdateRequest extends FormRequest
+class UpdateRequest extends StoreRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,22 +19,10 @@ class UpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'title' => ['required', 'string', 'max:255', 'unique:ticket_subjects,title,'.$this->ticketSubject->id],
-            'is_published' => ['nullable', 'boolean'],
-        ];
-    }
+        $rules = parent::rules();
 
-    /**
-     * Get custom attributes for validator errors.
-     *
-     * @return array<string, string>
-     */
-    public function attributes(): array
-    {
-        return [
-            'title' => 'عنوان موضوع',
-            'is_published' => 'وضعیت انتشار',
-        ];
+        $rules['title'] = ['required', 'string', 'max:255', 'unique:ticket_subjects,title,'.$this->ticketSubject->id];
+
+        return $rules;
     }
 }

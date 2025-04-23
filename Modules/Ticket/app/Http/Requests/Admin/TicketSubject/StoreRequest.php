@@ -15,6 +15,16 @@ class StoreRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'is_published' => $this->has('is_published'),
+        ]);
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
@@ -23,7 +33,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:255', 'unique:ticket_subjects,title'],
-            'is_published' => ['nullable', 'boolean'],
+            'is_published' => ['boolean'],
         ];
     }
 

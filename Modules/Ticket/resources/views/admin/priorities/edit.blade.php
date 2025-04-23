@@ -28,7 +28,7 @@
                     @include('admin.partial.message')
                     <form class="request-form forms-sample" method="post" action="{{ route('admin.ticket.priorities.update', $ticketPriority->id) }}">
                         @csrf
-                        @method('put')
+                        @method('patch')
 
                         <x-admin.input identify="name" title="نام اولویت" :old="$ticketPriority->name"/>
 
@@ -46,6 +46,18 @@
                         <x-admin.checkbox identify="should_notify"
                                       description="اطلاع رسانی"
                                       :old="old('should_notify', $ticketPriority->should_notify)"/>
+
+
+                        <x-admin.select-model
+                            title="پشتیبان"
+                            identify="admin_support_id"
+                            :items="$admins"
+                            key="id"
+                            value="fullName"
+                            :old="$ticketPriority->admin_support_id"/>
+
+
+                        <x-admin.textarea identify="message" title="پیام اطلاع رسانی" :old="$ticketPriority->message"/>
 
                         <x-admin.textarea identify="description" title="توضیحات" :old="$ticketPriority->description"/>
 

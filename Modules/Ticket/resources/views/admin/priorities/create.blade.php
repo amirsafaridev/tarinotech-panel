@@ -41,7 +41,16 @@
 
                         <x-admin.checkbox identify="should_notify"
                                       description="اطلاع رسانی"
-                                      :old="old('should_notify')"/>
+                                      :old="old('should_notify')"/>                        
+
+                        <x-admin.select-model
+                                title="پشتیبان"
+                                identify="admin_support_id"
+                                :items="$admins"
+                                key="id"
+                                value="fullName"/>
+
+                        <x-admin.textarea identify="message" title="پیام اطلاع رسانی"/>
 
                         <x-admin.textarea identify="description" title="توضیحات"/>
 
