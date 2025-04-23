@@ -32,7 +32,7 @@
                         @csrf
                         @method('PATCH')
 
-                        <x-admin.input identify="title" title="عنوان تیکت" :value="$chat->title" />
+                        <x-admin.input identify="title" title="عنوان تیکت" :old="$chat->title" />
 
                         <div class="row">
                             <div class="col-md-6">
@@ -42,8 +42,8 @@
                                     :items="$subjects"
                                     key="id"
                                     value="title"
-                                    :selected="$ticketDetail->subject_id"
-                                    :is-select2="true" />
+                                    :old="$ticketDetail->subject_id"
+                                    class="select2" />
                             </div>
                             <div class="col-md-6">
                                 <x-admin.select-model
@@ -52,8 +52,8 @@
                                     :items="$statuses"
                                     key="id"
                                     value="name"
-                                    :selected="$ticketDetail->status_id"
-                                    :is-select2="true" />
+                                    :old="$ticketDetail->status_id"
+                                    class="select2" />
                             </div>
                         </div>
 
@@ -65,8 +65,8 @@
                                     :items="$priorities"
                                     key="id"
                                     value="name"
-                                    :selected="$ticketDetail->priority_id"
-                                    :is-select2="true" />
+                                    :old="$ticketDetail->priority_id"
+                                    class="select2" />
                             </div>
                         </div>
 
@@ -79,27 +79,10 @@
             </div>
         </div>
         <div class="col-xl-4 col-lg-4 col-md-4 col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">اطلاعات تیکت</h3>
-                </div>
-                <div class="card-body">
-                    <p><strong>شناسه تیکت:</strong> #{{ $ticketDetail->id }}</p>
-                    <p><strong>کاربر:</strong> {{ optional($chat->users->where('user_type', '!=', \Modules\Admin\app\Models\Admin::class)->first()->user)->fullname }}</p>
-                    <p><strong>تاریخ ایجاد:</strong> {{ \Morilog\Jalali\Jalalian::fromDateTime($chat->created_at)->format('Y/m/d H:i') }}</p>
-                    <p><strong>آخرین پاسخ:</strong> {{ \Morilog\Jalali\Jalalian::fromDateTime($ticketDetail->last_response_at)->format('Y/m/d H:i') }}</p>
-                    
-                    @if($ticketDetail->assigned_to)
-                    <p><strong>پشتیبان:</strong> {{ optional($ticketDetail->assignedAdmin)->fullname }}</p>
-                    @endif
-                    
-                    <div class="mt-3">
-                        <a href="{{ route('admin.ticket.manage', $chat->id) }}" class="btn btn-primary w-100">
-                            بازگشت به مشاهده تیکت
-                        </a>
-                    </div>
-                </div>
-            </div>
+            @include('ticket::admin.part.ticket-info-card', [
+                'chat' => $chat, 
+                'ticketDetail' => $ticketDetail
+            ])
         </div>
     </div>
 @endsection
@@ -113,4 +96,4 @@
             $('.select2').select2();
         });
     </script>
-@endsection 
+@endsection

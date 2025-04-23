@@ -93,6 +93,7 @@
                                         <td>{{ $ticket->rating ? $ticket->rating . '/5' : 'ثبت نشده' }}</td>
                                         <td>
                                             <a class="btn btn-sm btn-success" href="{{ route('admin.ticket.manage', $ticket->chat_id) }}">{{ __('panel.action.manage') }}</a>
+                                            <a class="btn btn-sm btn-info" href="{{ route('admin.ticket.edit', $ticket->chat_id) }}"><i class="fe fe-edit"></i> ویرایش</a>
                                         </td>
                                     </tr>
                                 @endforeach

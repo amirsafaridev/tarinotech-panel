@@ -22,8 +22,16 @@
     </div>
 
     <div class="row">
-        <div class="col-12">
+        <div class="col-md-8">
             <x-admin.chat :chat="$chat" :has-end-button="true"/>
+        </div>
+        <div class="col-md-4">
+            @include('ticket::admin.part.ticket-info-card', [
+                'chat' => $chat, 
+                'ticketDetail' => $ticketDetail,
+                'showEditButton' => true,
+                'showRating' => true
+            ])
         </div>
     </div>
 @endsection

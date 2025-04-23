@@ -2,7 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Ticket\app\Http\Controllers\Admin\TicketController;
+use Modules\Ticket\app\Http\Controllers\Admin\TicketCreationController;
+use Modules\Ticket\app\Http\Controllers\Admin\TicketEditorController;
 use Modules\Ticket\app\Http\Controllers\Admin\TicketEventController;
+use Modules\Ticket\app\Http\Controllers\Admin\TicketManagementController;
 use Modules\Ticket\app\Http\Controllers\Admin\TicketPriorityController;
 use Modules\Ticket\app\Http\Controllers\Admin\TicketStatusController;
 use Modules\Ticket\app\Http\Controllers\Admin\TicketSubjectController;
@@ -20,12 +23,19 @@ use Modules\Ticket\app\Http\Controllers\Admin\TicketTransitionController;
 */
 
 Route::group(['guard' => 'admin'], function () {
+    // Main Ticket Routes
     Route::get('/', [TicketController::class, 'index'])->name('index');
-    Route::get('/create', [TicketController::class, 'create'])->name('create');
-    Route::post('/', [TicketController::class, 'store'])->name('store');
-    Route::get('/{chat}/manage', [TicketController::class, 'manage'])->name('manage');
-    Route::get('/{chat}/edit', [TicketController::class, 'edit'])->name('edit');
-    Route::patch('/{chat}', [TicketController::class, 'update'])->name('update');
+
+    // Ticket Creation Routes
+    Route::get('/create', [TicketCreationController::class, 'create'])->name('create');
+    Route::post('/', [TicketCreationController::class, 'store'])->name('store');
+
+    // Ticket Management Routes
+    Route::get('/{chat}/manage', [TicketManagementController::class, 'manage'])->name('manage');
+
+    // Ticket Editor Routes
+    Route::get('/{chat}/edit', [TicketEditorController::class, 'edit'])->name('edit');
+    Route::patch('/{chat}', [TicketEditorController::class, 'update'])->name('update');
 
     // Ticket Status Routes
     Route::group(['prefix' => 'statuses', 'as' => 'statuses.'], function () {
