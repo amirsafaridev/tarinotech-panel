@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Admin\app\Models\Admin;
 use Modules\Project\app\Models\Project;
+use Modules\Ticket\app\Models\TicketDetail;
 
 class Chat extends Model
 {
@@ -50,5 +51,13 @@ class Chat extends Model
     public function messages(): HasMany
     {
         return $this->hasMany(ChatMessage::class, 'chat_id');
+    }
+
+    /**
+     * Get the ticket details associated with this chat.
+     */
+    public function ticketDetail(): HasOne
+    {
+        return $this->hasOne(TicketDetail::class, 'chat_id');
     }
 }

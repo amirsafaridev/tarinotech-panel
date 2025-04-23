@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('color');
             $table->text('description')->nullable();
-            $table->boolean('is_auto_changing')->default(false);
             $table->integer('order')->default(0);
             $table->timestamps();
         });

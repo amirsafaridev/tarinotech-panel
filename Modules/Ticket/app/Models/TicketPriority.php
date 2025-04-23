@@ -4,7 +4,9 @@ namespace Modules\Ticket\app\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\Admin\app\Models\Admin;
 
 class TicketPriority extends Model
 {
@@ -16,6 +18,8 @@ class TicketPriority extends Model
         'description',
         'should_notify',
         'level',
+        'admin_support_id',
+        'message',
     ];
 
     protected $casts = [
@@ -23,18 +27,18 @@ class TicketPriority extends Model
     ];
 
     /**
-     * Define the relationship with tickets
+     * Get the ticket details with this priority
      */
-    public function tickets(): HasMany
+    public function ticketDetails(): HasMany
     {
-        return $this->hasMany(Ticket::class, 'priority_id');
+        return $this->hasMany(TicketDetail::class, 'priority_id');
     }
 
     /**
-     * Create a new factory instance for the model.
+     * Get the admin support associated with this priority
      */
-    protected static function newFactory()
+    public function adminSupport(): BelongsTo
     {
-        return \Modules\Ticket\database\factories\TicketPriorityFactory::new();
+        return $this->belongsTo(Admin::class, 'admin_support_id');
     }
 }

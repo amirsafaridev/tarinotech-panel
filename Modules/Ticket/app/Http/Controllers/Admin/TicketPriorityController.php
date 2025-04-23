@@ -7,6 +7,7 @@ use App\Traits\HasJsonCommonResponseTrait;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
+use Modules\Admin\app\Models\Admin;
 use Modules\Ticket\app\Http\Requests\Admin\TicketPriority\StoreRequest;
 use Modules\Ticket\app\Http\Requests\Admin\TicketPriority\UpdateRequest;
 use Modules\Ticket\app\Models\TicketPriority;
@@ -25,6 +26,7 @@ class TicketPriorityController extends Controller
     {
         $title = self::INDEX_TITLE;
         $priorities = TicketPriority::query()
+            ->with('adminSupport')
             ->orderBy('level')
             ->get();
 
@@ -34,8 +36,9 @@ class TicketPriorityController extends Controller
     public function create()
     {
         $title = self::CREATE_TITLE;
+        $admins = Admin::all();
 
-        return view('ticket::admin.priorities.create', compact('title'));
+        return view('ticket::admin.priorities.create', compact('title', 'admins'));
     }
 
     public function store(StoreRequest $request)
@@ -56,9 +59,12 @@ class TicketPriorityController extends Controller
 
     public function edit(TicketPriority $ticketPriority)
     {
+        $admins = Admin::all();
+
         return view('ticket::admin.priorities.edit', [
             'title' => self::EDIT_TITLE,
             'ticketPriority' => $ticketPriority,
+            'admins' => $admins,
         ]);
     }
 
@@ -82,7 +88,7 @@ class TicketPriorityController extends Controller
     {
         try {
             // Check if priority is used by any tickets
-            if ($ticketPriority->tickets()->exists()) {
+            if ($ticketPriority->ticketDetails()->exists()) {
                 return $this->errorBack('این اولویت در حال استفاده است و نمی‌توان آن را حذف کرد.');
             }
 
@@ -101,6 +107,8 @@ class TicketPriorityController extends Controller
         $item['description'] = $request->input('description');
         $item['level'] = $request->input('level', 0);
         $item['should_notify'] = $request->has('should_notify') ? 1 : 0;
+        $item['admin_support_id'] = $request->input('admin_support_id');
+        $item['message'] = $request->input('message');
 
         return $item;
     }

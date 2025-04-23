@@ -2,6 +2,7 @@
 
 namespace Modules\Ticket\app\Http\Requests\Admin\TicketStatus;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
@@ -17,7 +18,7 @@ class StoreRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -25,7 +26,6 @@ class StoreRequest extends FormRequest
             'name' => ['required', 'string', 'max:255', 'unique:ticket_statuses,name'],
             'color' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
-            'is_auto_changing' => ['nullable', 'boolean'],
             'order' => ['nullable', 'integer', 'min:0'],
         ];
     }
@@ -41,7 +41,6 @@ class StoreRequest extends FormRequest
             'name' => 'نام وضعیت',
             'color' => 'رنگ',
             'description' => 'توضیحات',
-            'is_auto_changing' => 'تغییر خودکار',
             'order' => 'ترتیب',
         ];
     }

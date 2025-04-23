@@ -2,180 +2,99 @@
 
 namespace Modules\Ticket\app\Http\Controllers\Admin;
 
-use App\Enums\Database\Chat\ChatStatus;
-use App\Enums\Database\Chat\ChatType;
-use App\Enums\General\BtnType;
-use App\Foundation\ValueObjects\Datatable\ColumnOption;
-use App\Foundation\ValueObjects\Datatable\DatatableBase;
-use App\Helpers\Helper;
+use App\Filters\Admin\Admin\AdminJoinedFilter;
 use App\Http\Controllers\Controller;
-use App\Traits\HasDatatableTrait;
 use App\Traits\HasJsonCommonResponseTrait;
+use Carbon\Carbon;
 use Exception;
+use Maatwebsite\Excel\Facades\Excel;
 use Modules\Admin\app\Models\Admin;
-use Modules\Chat\app\Events\Message\NewMessage;
-use Modules\Support\app\Models\Chat;
-use Modules\Support\app\Models\ChatBot;
-use Modules\Support\app\Models\ChatMessage;
-use View;
-use Yajra\DataTables\Facades\DataTables;
+use Modules\Ticket\app\Exports\Admin\Report\TicketDatatableExport;
+use Modules\Ticket\app\Filters\Ticket\DateFilter;
+use Modules\Ticket\app\Filters\Ticket\PriorityFilter;
+use Modules\Ticket\app\Filters\Ticket\SearchFilter;
+use Modules\Ticket\app\Filters\Ticket\SortFilter;
+use Modules\Ticket\app\Filters\Ticket\StatusFilter;
+use Modules\Ticket\app\Filters\Ticket\SubjectFilter;
+use Modules\Ticket\app\Models\TicketDetail;
 
 class TicketController extends Controller
 {
-    use HasDatatableTrait;
     use HasJsonCommonResponseTrait;
 
     const INDEX_TITLE = 'تیکت ها';
-
-    const CREATE_TITLE = 'تیکت ها - ایجاد';
-
-    const TICKET_CHAT_TITLE = 'تیکت ها - پاسخ تیکت';
 
     public function index()
     {
         $title = self::INDEX_TITLE;
 
-        $routeData = $this->getDataRoute();
+        $selectedColumns = collect([
+            'ticket_details.id',
+            'chats.id as chat_id',
+            'chats.title',
+            'ticket_details.assigned_to',
+            'ticket_details.last_response_at',
+            'ticket_details.rating',
+            'admins.first_name as admin_first_name',
+            'admins.last_name as admin_last_name',
+            'users.first_name as user_first_name',
+            'users.last_name as user_last_name',
+            'ticket_statuses.name as status_name',
+            'ticket_statuses.color as status_color',
+            'ticket_priorities.name as priority_name',
+            'ticket_priorities.color as priority_color',
+            'ticket_subjects.title as subject_title',
+        ]);
 
-        $dataTable = $this->getDataTable();
-
-        return view('ticket::admin.index', compact('title', 'routeData', 'dataTable'));
-    }
-
-    public function message(Chat $chat)
-    {
-        $title = self::TICKET_CHAT_TITLE;
-
-        $chat->load('project');
-
-        if ($chat->status === ChatStatus::Open) {
-            $chat->users()->create([
-                'user_id' => auth()->id(),
-                'user_type' => Admin::class,
-                'seen_at' => now(),
+        $tickets = TicketDetail::query()
+            ->select($selectedColumns->toArray())
+            ->join('chats', 'ticket_details.chat_id', '=', 'chats.id')
+            ->join('ticket_statuses', 'ticket_details.status_id', '=', 'ticket_statuses.id')
+            ->join('ticket_priorities', 'ticket_details.priority_id', '=', 'ticket_priorities.id')
+            ->join('ticket_subjects', 'ticket_details.subject_id', '=', 'ticket_subjects.id')
+            ->leftJoin('admins', 'ticket_details.assigned_to', '=', 'admins.id')
+            ->join('chat_users', function ($join) {
+                $join->on('chats.id', '=', 'chat_users.chat_id')
+                    ->where('chat_users.user_type', '<>', Admin::class);
+            })
+            ->join('users', function ($join) {
+                $join->on('chat_users.user_id', '=', 'users.id')
+                    ->where('chat_users.user_type', '<>', Admin::class);
+            })
+            ->where(function ($query) {
+                $query->whereNull('ticket_details.assigned_to')
+                    ->orWhere('ticket_details.assigned_to', auth()->id());
+            })
+            ->filter([
+                SearchFilter::class,
+                AdminJoinedFilter::class,
+                StatusFilter::class,
+                PriorityFilter::class,
+                SubjectFilter::class,
+                DateFilter::class,
+                SortFilter::class,
             ]);
 
-            $chat->users()->create([
-                'user_id' => auth()->id(),
-                'user_type' => Admin::class,
-                'seen_at' => now(),
-            ]);
-
-            $message = ChatMessage::query()
-                ->create([
-                    'chat_id' => $chat->id,
-                    'user_type' => ChatBot::class,
-                    'user_id' => 1,
-                    'content' => sprintf('پشتیبان %s اماده پاسخگویی می باشد', auth()->user()->fullname),
-                ]);
-
-            $htmlRender = compressHtml(View::make('support::admin.part.row-message', ['message' => $message, 'reverse' => false]));
-
-            broadcast(new NewMessage($message, $htmlRender));
-
-            $chat->update([
-                'status' => ChatStatus::AdminAnswer,
-            ]);
+        if (request('export')) {
+            return $this->export($tickets->get());
         }
 
-        return view('ticket::admin.message', compact('title', 'chat'));
+        $tickets = $tickets->paginate()
+            ->withQueryString();
+
+        return view('ticket::admin.index', compact('title', 'tickets'));
     }
 
-    public function getDataRoute(): string
-    {
-        return route('admin.ticket.data');
-    }
-
-    public function getDataTable(): array
-    {
-        $dataTable = new DatatableBase();
-
-        $dataTable
-            ->addColumn(
-                ColumnOption::new()
-                    ->setName('id')
-                    ->setAs('شناسه')
-            )
-            ->addColumn(
-                ColumnOption::new()
-                    ->setName('title')
-                    ->setAs('عنوان')
-            )
-            ->addColumn(
-                ColumnOption::new()
-                    ->setName('project.title')
-                    ->setSearchable(false)
-                    ->setSortable(false)
-                    ->setAs('نام پروژه')
-            )
-            ->addColumn(
-                ColumnOption::new()
-                    ->setName('project.domain')
-                    ->setSearchable(false)
-                    ->setSortable(false)
-                    ->setAs('دامنه')
-            )
-            ->addColumn(
-                ColumnOption::new()
-                    ->setName('ticket_admin.user.email')
-                    ->setSearchable(false)
-                    ->setSortable(false)
-                    ->setAs('پشتیبان')
-            )
-            ->addColumn(
-                ColumnOption::new()
-                    ->setName('meta.rate')
-                    ->setSearchable(false)
-                    ->setSortable(false)
-                    ->setAs('امتیاز')
-            )
-            ->addColumn(
-                ColumnOption::new()
-                    ->setName('updated_at')
-                    ->setAs('آخرین پیام')
-            )
-            ->addColumn(
-                ColumnOption::new()
-                    ->setName('action')
-                    ->setAs('عملیات')
-                    ->removeAction()
-            );
-
-        return $dataTable->render();
-    }
-
-    public function data()
+    private function export($tickets)
     {
         try {
-            $chats = Chat::query()
-                ->where('type', ChatType::Ticket)
-                ->with(['meta', 'project', 'ticketAdmin.user']);
+            $fileName = 'Ticket-'.Carbon::now()->format('Y-m-d').'.xlsx';
 
-            return DataTables::eloquent($chats)
-                ->editColumn('updated_at', function (Chat $chat) {
-                    return $chat->updated_at->toJalali()->format(formatJalaliDateTime());
-                })
-                ->editColumn('ticket_admin.user.email', function (Chat $chat) {
-                    if ($chat->ticketAdmin) {
-                        return $chat->ticketAdmin->user->email;
-                    }
-
-                    return 'در انتظار';
-                })
-                ->editColumn('meta.rate', function (Chat $chat) {
-                    if ($chat->meta) {
-                        return makeUiStar($chat->meta->rate);
-                    }
-
-                    return '';
-                })
-                ->addColumn('action', function (Chat $chat) {
-                    return Helper::btnMaker(BtnType::Success, route('admin.ticket.message', $chat->id), 'پاسخ');
-                })
-                ->rawColumns(['action', 'meta.rate'])
-                ->make();
+            return Excel::download(new TicketDatatableExport(collect($tickets)), $fileName);
         } catch (Exception $exception) {
-            return $this->exceptionResponse($exception);
+            report($exception);
+
+            return back()->with('danger', 'خطا در هنگام صادر کردن اطلاعات');
         }
     }
 }

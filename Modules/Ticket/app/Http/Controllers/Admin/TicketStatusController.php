@@ -100,7 +100,6 @@ class TicketStatusController extends Controller
         $item['color'] = $request->input('color');
         $item['description'] = $request->input('description');
         $item['order'] = $request->input('order', 0);
-        $item['is_auto_changing'] = $request->has('is_auto_changing') ? 1 : 0;
 
         return $item;
     }

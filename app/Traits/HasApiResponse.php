@@ -26,7 +26,7 @@ trait HasApiResponse
         ], $status);
     }
 
-    protected function exceptionResponse(Exception $exception, string $message = null): JsonResponse
+    protected function exceptionResponse(Exception $exception, ?string $message = null): JsonResponse
     {
         report($exception);
 

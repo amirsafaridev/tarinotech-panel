@@ -7,7 +7,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class GoalPerson implements FromCollection, WithMapping, WithHeadings
+class GoalPerson implements FromCollection, WithHeadings, WithMapping
 {
     public function __construct(public Collection $goals)
     {

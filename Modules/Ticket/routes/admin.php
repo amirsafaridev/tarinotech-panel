@@ -2,10 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Ticket\app\Http\Controllers\Admin\TicketController;
+use Modules\Ticket\app\Http\Controllers\Admin\TicketCreationController;
+use Modules\Ticket\app\Http\Controllers\Admin\TicketEditorController;
+use Modules\Ticket\app\Http\Controllers\Admin\TicketEventController;
+use Modules\Ticket\app\Http\Controllers\Admin\TicketManagementController;
 use Modules\Ticket\app\Http\Controllers\Admin\TicketPriorityController;
-use Modules\Ticket\app\Http\Controllers\Admin\TicketStatusAssigneeController;
 use Modules\Ticket\app\Http\Controllers\Admin\TicketStatusController;
-use Modules\Ticket\app\Http\Controllers\Admin\TicketStatusTransitionController;
+use Modules\Ticket\app\Http\Controllers\Admin\TicketSubjectController;
+use Modules\Ticket\app\Http\Controllers\Admin\TicketTransitionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,11 +23,20 @@ use Modules\Ticket\app\Http\Controllers\Admin\TicketStatusTransitionController;
 */
 
 Route::group(['guard' => 'admin'], function () {
+    // Main Ticket Routes
     Route::get('/', [TicketController::class, 'index'])->name('index');
-    Route::get('/data', [TicketController::class, 'data'])->name('data');
-    Route::get('/{chat}/message', [TicketController::class, 'message'])->name('message');
-    Route::patch('/{chat}', [TicketController::class, 'update'])->name('update');
-    Route::delete('/{chat}', [TicketController::class, 'destroy'])->name('destroy');
+
+    // Ticket Creation Routes
+    Route::get('/create', [TicketCreationController::class, 'create'])->name('create');
+    Route::post('/', [TicketCreationController::class, 'store'])->name('store');
+
+    // Ticket Management Routes
+    Route::get('/{chat}/manage', [TicketManagementController::class, 'manage'])->name('manage');
+    Route::post('/{chat}/reassign', [TicketManagementController::class, 'reassign'])->name('reassign');
+
+    // Ticket Editor Routes
+    Route::get('/{chat}/edit', [TicketEditorController::class, 'edit'])->name('edit');
+    Route::patch('/{chat}', [TicketEditorController::class, 'update'])->name('update');
 
     // Ticket Status Routes
     Route::group(['prefix' => 'statuses', 'as' => 'statuses.'], function () {
@@ -45,23 +58,29 @@ Route::group(['guard' => 'admin'], function () {
         Route::delete('/{ticketPriority}', [TicketPriorityController::class, 'destroy'])->name('destroy');
     });
 
-    // Ticket Status Transition Routes
+    // Ticket Transition Routes
     Route::group(['prefix' => 'transitions', 'as' => 'transitions.'], function () {
-        Route::get('/', [TicketStatusTransitionController::class, 'index'])->name('index');
-        Route::get('/create', [TicketStatusTransitionController::class, 'create'])->name('create');
-        Route::post('/', [TicketStatusTransitionController::class, 'store'])->name('store');
-        Route::get('/{ticketStatusTransition}', [TicketStatusTransitionController::class, 'edit'])->name('edit');
-        Route::patch('/{ticketStatusTransition}', [TicketStatusTransitionController::class, 'update'])->name('update');
-        Route::delete('/{ticketStatusTransition}', [TicketStatusTransitionController::class, 'destroy'])->name('destroy');
+        Route::get('/', [TicketTransitionController::class, 'index'])->name('index');
+        Route::get('/create', [TicketTransitionController::class, 'create'])->name('create');
+        Route::post('/', [TicketTransitionController::class, 'store'])->name('store');
+        Route::get('/{ticketTransition}', [TicketTransitionController::class, 'edit'])->name('edit');
+        Route::patch('/{ticketTransition}', [TicketTransitionController::class, 'update'])->name('update');
+        Route::delete('/{ticketTransition}', [TicketTransitionController::class, 'destroy'])->name('destroy');
     });
 
-    // Ticket Status Assignee Routes
-    Route::group(['prefix' => 'assignees', 'as' => 'assignees.'], function () {
-        Route::get('/', [TicketStatusAssigneeController::class, 'index'])->name('index');
-        Route::get('/create', [TicketStatusAssigneeController::class, 'create'])->name('create');
-        Route::post('/', [TicketStatusAssigneeController::class, 'store'])->name('store');
-        Route::get('/{ticketStatusAssignee}', [TicketStatusAssigneeController::class, 'edit'])->name('edit');
-        Route::patch('/{ticketStatusAssignee}', [TicketStatusAssigneeController::class, 'update'])->name('update');
-        Route::delete('/{ticketStatusAssignee}', [TicketStatusAssigneeController::class, 'destroy'])->name('destroy');
+    // Ticket Subject Routes
+    Route::group(['prefix' => 'subjects', 'as' => 'subjects.'], function () {
+        Route::get('/', [TicketSubjectController::class, 'index'])->name('index');
+        Route::get('/create', [TicketSubjectController::class, 'create'])->name('create');
+        Route::post('/', [TicketSubjectController::class, 'store'])->name('store');
+        Route::get('/{ticketSubject}', [TicketSubjectController::class, 'edit'])->name('edit');
+        Route::patch('/{ticketSubject}', [TicketSubjectController::class, 'update'])->name('update');
+        Route::delete('/{ticketSubject}', [TicketSubjectController::class, 'destroy'])->name('destroy');
+        Route::post('/{id}/restore', [TicketSubjectController::class, 'restore'])->name('restore');
+    });
+
+    // Ticket Event Routes
+    Route::group(['prefix' => 'events', 'as' => 'events.'], function () {
+        Route::get('/', [TicketEventController::class, 'index'])->name('index');
     });
 });

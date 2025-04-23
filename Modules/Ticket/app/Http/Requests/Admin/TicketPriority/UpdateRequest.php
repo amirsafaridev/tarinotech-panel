@@ -2,53 +2,27 @@
 
 namespace Modules\Ticket\app\Http\Requests\Admin\TicketPriority;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Validation\Rule;
 
-class UpdateRequest extends FormRequest
+class UpdateRequest extends StoreRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
-        return [
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('ticket_priorities', 'name')->ignore($this->ticketPriority),
-            ],
-            'color' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'should_notify' => ['nullable', 'boolean'],
-            'level' => ['required', 'integer', 'min:1'],
-        ];
-    }
+        $rules = parent::rules();
 
-    /**
-     * Get custom attributes for validator errors.
-     *
-     * @return array<string, string>
-     */
-    public function attributes(): array
-    {
-        return [
-            'name' => 'نام اولویت',
-            'color' => 'رنگ',
-            'description' => 'توضیحات',
-            'should_notify' => 'اطلاع رسانی',
-            'level' => 'سطح اولویت',
+        $rules['name'] = [
+            'required',
+            'string',
+            'max:255',
+            Rule::unique('ticket_priorities', 'name')->ignore($this->ticketPriority),
         ];
+
+        return $rules;
     }
 }

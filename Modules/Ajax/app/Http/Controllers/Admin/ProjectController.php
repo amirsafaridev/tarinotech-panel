@@ -52,4 +52,38 @@ class ProjectController extends Controller
 
         return response()->json($results);
     }
+
+    public function remoteSelectByUser(Request $request)
+    {
+        $searchTerm = $request->input('term');
+        $userId = $request->input('user_id');
+
+        /*$request->validate([
+            'user_id' => 'required|integer',
+        ]);*/
+
+        $results = Project::query()
+            ->select(['id', 'domain', 'title', 'base_id'])
+            ->with('base')
+            //->where('user_id', $userId)
+            /*->where(function (Builder $query) use ($searchTerm) {
+                if ($searchTerm) {
+                    $query->where('title', 'like', '%'.$searchTerm.'%')
+                        ->orWhere('domain', 'like', '%'.$searchTerm.'%');
+                }
+            })*/
+            ->when(! $searchTerm, function (Builder $q) {
+                $q->limit(10);
+            })
+            ->orderByDesc('id')
+            ->get()
+            ->map(function (Project $item) {
+                $data = $item;
+                $data['title'] = $item->title.' ('.$item->base->title.')';
+
+                return $data;
+            });
+
+        return response()->json($results);
+    }
 }

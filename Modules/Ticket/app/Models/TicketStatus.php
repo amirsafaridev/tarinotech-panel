@@ -14,27 +14,14 @@ class TicketStatus extends Model
         'name',
         'color',
         'description',
-        'is_auto_changing',
         'order',
     ];
 
-    protected $casts = [
-        'is_auto_changing' => 'boolean',
-    ];
-
     /**
-     * Define the relationship with tickets
+     * Get the ticket details with this status
      */
-    public function tickets(): HasMany
+    public function ticketDetails(): HasMany
     {
-        return $this->hasMany(Ticket::class, 'status_id');
-    }
-
-    /**
-     * Create a new factory instance for the model.
-     */
-    protected static function newFactory()
-    {
-        return \Modules\Ticket\database\factories\TicketStatusFactory::new();
+        return $this->hasMany(TicketDetail::class, 'status_id');
     }
 }

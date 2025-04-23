@@ -1,10 +1,15 @@
+@php use App\Enums\Assets\StyleLoader; @endphp
+@php use App\Enums\Assets\ScriptLoader; @endphp
 @extends('admin.master')
-@section('title') {{ $title }} @endsection
+@section('title')
+    {{ $title }}
+@endsection
 @section('head')
     @include('admin.partial.loader.style',[
         'load'=>[
-            \App\Enums\Assets\StyleLoader::Toast(),
-            \App\Enums\Assets\StyleLoader::Alert(),
+            StyleLoader::Toast(),
+            StyleLoader::Alert(),
+            StyleLoader::Select2(),
         ]
     ])
 @endsection
@@ -14,7 +19,8 @@
         <h1 class="page-title">{{ $title }}</h1>
         <div>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                <li class="breadcrumb-item"><a
+                        href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.ticket.index') }}">تیکت ها</a></li>
                 <li class="breadcrumb-item active">گفت گو</li>
             </ol>
@@ -22,20 +28,36 @@
     </div>
 
     <div class="row">
-        <div class="col-12">
+        <div class="col-md-8">
             <x-admin.chat :chat="$chat" :has-end-button="true"/>
+        </div>
+        <div class="col-md-4">
+            @include('ticket::admin.part.ticket-info-card', [
+                'chat' => $chat,
+                'ticketDetail' => $ticketDetail,
+                'showEditButton' => true,
+                'showRating' => true
+            ])
+
+            @include('ticket::admin.part.reassign-ticket', [
+                'chat' => $chat,
+                'ticketDetail' => $ticketDetail,
+                'availableAdmins' => $availableAdmins
+            ])
         </div>
     </div>
 @endsection
 @section('script')
     @include('admin.partial.loader.script',['load'=>[
-    \App\Enums\Assets\ScriptLoader::Alert(),
-
+        ScriptLoader::Alert(),
+        ScriptLoader::Select2(),
     ]])
+    @include('admin.partial.request')
 
     <script>
         $(document).ready(function () {
             setupSocketChat(parseInt('{{ $chat->id }}'));
+            $('.select2').select2();
         });
     </script>
 @endsection

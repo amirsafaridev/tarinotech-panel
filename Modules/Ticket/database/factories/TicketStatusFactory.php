@@ -20,7 +20,6 @@ class TicketStatusFactory extends Factory
             'name' => $this->faker->unique()->word(),
             'color' => $this->faker->hexColor(),
             'description' => $this->faker->sentence(),
-            'is_auto_changing' => $this->faker->boolean(),
             'order' => $this->faker->numberBetween(1, 100),
         ];
     }

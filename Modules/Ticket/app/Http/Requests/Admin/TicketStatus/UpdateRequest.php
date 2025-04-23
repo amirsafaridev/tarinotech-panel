@@ -2,53 +2,27 @@
 
 namespace Modules\Ticket\app\Http\Requests\Admin\TicketStatus;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Validation\Rule;
 
-class UpdateRequest extends FormRequest
+class UpdateRequest extends StoreRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
-        return [
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('ticket_statuses', 'name')->ignore($this->ticketStatus),
-            ],
-            'color' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'is_auto_changing' => ['nullable', 'boolean'],
-            'order' => ['nullable', 'integer', 'min:0'],
-        ];
-    }
+        $rules = parent::rules();
 
-    /**
-     * Get custom attributes for validator errors.
-     *
-     * @return array<string, string>
-     */
-    public function attributes(): array
-    {
-        return [
-            'name' => 'نام وضعیت',
-            'color' => 'رنگ',
-            'description' => 'توضیحات',
-            'is_auto_changing' => 'تغییر خودکار',
-            'order' => 'ترتیب',
+        $rules['name'] = [
+            'required',
+            'string',
+            'max:255',
+            Rule::unique('ticket_statuses', 'name')->ignore($this->ticketStatus),
         ];
+
+        return $rules;
     }
 }

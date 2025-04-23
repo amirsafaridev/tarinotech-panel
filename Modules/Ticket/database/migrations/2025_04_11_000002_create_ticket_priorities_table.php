@@ -18,6 +18,8 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->boolean('should_notify')->default(false);
             $table->integer('level');
+            $table->foreignId('admin_support_id')->nullable();
+            $table->text('message')->nullable();
             $table->timestamps();
         });
     }

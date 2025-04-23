@@ -13,6 +13,7 @@ Route::group(['guard' => 'admin'], function () {
 
     Route::post('/project/view-item', [ProjectController::class, 'singleViewItem'])->name('project.single');
     Route::get('/project/remote-select', [ProjectController::class, 'remoteSelect'])->name('project.remote-select');
+    Route::get('/project/remote-select-by-user', [ProjectController::class, 'remoteSelectByUser'])->name('project.remote-select-by-user');
 
     Route::get('/user/remote-select', [UserController::class, 'remoteSelect'])->name('user.remote-select');
     Route::get('/admin/remote-select', [AdminController::class, 'remoteSelect'])->name('admin.remote-select');

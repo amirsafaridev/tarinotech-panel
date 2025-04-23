@@ -5,6 +5,7 @@ namespace App\Filters\Admin\User;
 use App\Filters\FilterBase;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
+
 use function request;
 
 class UserSearchFilter extends FilterBase

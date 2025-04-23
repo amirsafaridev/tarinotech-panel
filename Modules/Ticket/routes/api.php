@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Ticket\app\Models\TicketStatus;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::get('ticket-statuses', function () {
         return response()->json([
-            'data' => \Modules\Ticket\app\Models\TicketStatus::orderBy('order')->get(),
+            'data' => TicketStatus::orderBy('order')->get(),
         ]);
     });
 });
