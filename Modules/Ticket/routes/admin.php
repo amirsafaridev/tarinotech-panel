@@ -21,10 +21,11 @@ use Modules\Ticket\app\Http\Controllers\Admin\TicketTransitionController;
 
 Route::group(['guard' => 'admin'], function () {
     Route::get('/', [TicketController::class, 'index'])->name('index');
-    Route::get('/data', [TicketController::class, 'data'])->name('data');
-    Route::get('/{chat}/message', [TicketController::class, 'message'])->name('message');
+    Route::get('/create', [TicketController::class, 'create'])->name('create');
+    Route::post('/', [TicketController::class, 'store'])->name('store');
+    Route::get('/{chat}/manage', [TicketController::class, 'manage'])->name('manage');
+    Route::get('/{chat}/edit', [TicketController::class, 'edit'])->name('edit');
     Route::patch('/{chat}', [TicketController::class, 'update'])->name('update');
-    Route::delete('/{chat}', [TicketController::class, 'destroy'])->name('destroy');
 
     // Ticket Status Routes
     Route::group(['prefix' => 'statuses', 'as' => 'statuses.'], function () {

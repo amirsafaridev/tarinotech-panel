@@ -2,6 +2,7 @@
 
 namespace Modules\Ticket\app\Models;
 
+use App\Traits\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +11,7 @@ use Modules\Support\app\Models\Chat;
 
 class TicketDetail extends Model
 {
+    use Filterable;
     use HasFactory;
 
     protected $table = 'ticket_details';
