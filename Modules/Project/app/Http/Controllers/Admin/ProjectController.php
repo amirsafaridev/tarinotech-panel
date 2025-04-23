@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Modules\Project\app\Exports\Admin\Report\ProjectDatatableExport;
+use Modules\Project\app\Filters\HasPaidFactorFilter;
 use Modules\Project\app\Filters\IsSignFilter;
 use Modules\Project\app\Filters\IsUserSignFilter;
 use Modules\Project\app\Filters\Project\DateFilter;
@@ -73,6 +74,7 @@ class ProjectController extends Controller
                 IsSignFilter::class,
                 IsUserSignFilter::class,
                 DateFilter::class,
+                HasPaidFactorFilter::class,
                 SortFilter::class,
             ]);
 

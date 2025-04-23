@@ -76,6 +76,23 @@
         />
     </div>
 
+    @php
+        $paidFactorItems=[
+            1=>'دارد',
+            0=>'همه',
+        ];
+    @endphp
+
+    <div class="col-12 col-md-3 col-xl-2">
+        <x-admin.select-simple
+                identify="has_paid_factor"
+                title="فاکتور پرداخت شده"
+                :items="$paidFactorItems"
+                :is-small="true"
+                :old="request('has_paid_factor')"
+        />
+    </div>
+
     <div class="col-12 col-md-3 col-xl-2">
         @php
             $dateTypeItems = [
