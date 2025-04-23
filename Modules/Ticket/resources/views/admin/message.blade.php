@@ -5,6 +5,7 @@
         'load'=>[
             \App\Enums\Assets\StyleLoader::Toast(),
             \App\Enums\Assets\StyleLoader::Alert(),
+            \App\Enums\Assets\StyleLoader::Select2(),
         ]
     ])
 @endsection
@@ -32,18 +33,26 @@
                 'showEditButton' => true,
                 'showRating' => true
             ])
+            
+            @include('ticket::admin.part.reassign-ticket', [
+                'chat' => $chat, 
+                'ticketDetail' => $ticketDetail,
+                'availableAdmins' => $availableAdmins
+            ])
         </div>
     </div>
 @endsection
 @section('script')
     @include('admin.partial.loader.script',['load'=>[
-    \App\Enums\Assets\ScriptLoader::Alert(),
-
+        \App\Enums\Assets\ScriptLoader::Alert(),
+        \App\Enums\Assets\ScriptLoader::Select2(),
     ]])
+    @include('admin.partial.request')
 
     <script>
         $(document).ready(function () {
             setupSocketChat(parseInt('{{ $chat->id }}'));
+            $('.select2').select2();
         });
     </script>
 @endsection

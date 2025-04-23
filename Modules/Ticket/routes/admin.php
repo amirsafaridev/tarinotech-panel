@@ -32,6 +32,7 @@ Route::group(['guard' => 'admin'], function () {
 
     // Ticket Management Routes
     Route::get('/{chat}/manage', [TicketManagementController::class, 'manage'])->name('manage');
+    Route::post('/{chat}/reassign', [TicketManagementController::class, 'reassign'])->name('reassign');
 
     // Ticket Editor Routes
     Route::get('/{chat}/edit', [TicketEditorController::class, 'edit'])->name('edit');
