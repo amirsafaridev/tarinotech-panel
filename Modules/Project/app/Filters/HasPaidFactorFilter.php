@@ -13,18 +13,31 @@ class HasPaidFactorFilter extends FilterBase
     {
         $hasPaidFactor = request('has_paid_factor');
 
-        if (is_numeric($hasPaidFactor) && $hasPaidFactor == 1) {
-            $paidStatuses = [
-                FactorStatus::Paid,
-                FactorStatus::PaidManual,
-                FactorStatus::PaidWithCheque
-            ];
-            
-            $query->whereHas('factors', function ($factorQuery) use ($paidStatuses) {
-                $factorQuery->whereIn('status', $paidStatuses);
-            });
+        if (is_numeric($hasPaidFactor)) {
+            if ($hasPaidFactor == 1) {
+                $paidStatuses = [
+                    FactorStatus::Paid,
+                    FactorStatus::PaidManual,
+                    FactorStatus::PaidWithCheque,
+                ];
+
+                $query->whereHas('factors', function ($factorQuery) use ($paidStatuses) {
+                    $factorQuery->whereIn('status', $paidStatuses);
+                });
+            } elseif ($hasPaidFactor == 2) {
+                $paidStatuses = [
+                    FactorStatus::Paid,
+                    FactorStatus::PaidManual,
+                    FactorStatus::PaidWithCheque,
+                ];
+
+                $query->whereHas('factors')
+                    ->whereDoesntHave('factors', function ($factorQuery) use ($paidStatuses) {
+                        $factorQuery->whereIn('status', $paidStatuses);
+                    });
+            }
         }
 
         return $next($query);
     }
-} 
+}
