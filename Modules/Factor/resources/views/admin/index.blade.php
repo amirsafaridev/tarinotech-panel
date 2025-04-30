@@ -3,6 +3,7 @@
 @section('head')
     @include('admin.partial.loader.style',['load'=>[
         \App\Enums\Assets\StyleLoader::Datepicker(),
+        \App\Enums\Assets\StyleLoader::Select2(),
    ]])
 @endsection
 @section('content')
@@ -90,8 +91,11 @@
                         </table>
                     </div>
 
-                    <div class="d-flex justify-content-center">
-                        {{ $factors->links() }}
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="text-muted small">{{ $factors->total() }} رکورد یافت شد</div>
+                        <div class="d-flex justify-content-center">
+                            {{ $factors->links() }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -101,11 +105,17 @@
 @section('script')
     @include('admin.partial.loader.script',['load'=>[
         \App\Enums\Assets\ScriptLoader::Datepicker(),
+        \App\Enums\Assets\ScriptLoader::Select2(),
     ]])
     @include('admin.partial.script.global')
     <script>
         $(document).ready(function (){
             jalaliDatepicker.startWatch();
+            $('select[name="status[]"]').select2({
+                placeholder: "انتخاب وضعیت‌ها",
+                allowClear: true,
+                dir: "rtl"
+            });
         })
     </script>
 @endsection

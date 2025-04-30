@@ -104,11 +104,12 @@
 
     <div class="col-12 col-md-3 col-xl-2">
         <x-admin.select-enum
-                identify="status"
+                identify="status[]"
                 title="وضعیت"
                 :enum-class="\Modules\Factor\app\Enums\FactorStatus::class"
                 :old="request('status')"
                 :is-small="true"
+                :multiple="true"
                 />
     </div>
 

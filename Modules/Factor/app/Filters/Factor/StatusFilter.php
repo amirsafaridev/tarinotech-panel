@@ -13,7 +13,11 @@ class StatusFilter extends FilterBase
         $status = request('status');
 
         if ($status) {
-            $query->where('factors.status', $status);
+            if (is_array($status)) {
+                $query->whereIn('factors.status', $status);
+            } else {
+                $query->where('factors.status', $status);
+            }
         }
 
         return $next($query);

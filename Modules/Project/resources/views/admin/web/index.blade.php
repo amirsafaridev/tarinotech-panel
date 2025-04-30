@@ -108,8 +108,11 @@
                         </table>
                     </div>
 
-                    <div class="d-flex justify-content-center">
-                        {{ $projects->links() }}
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="text-muted small">{{ $projects->total() }} رکورد یافت شد</div>
+                        <div class="d-flex justify-content-center">
+                            {{ $projects->links() }}
+                        </div>
                     </div>
                 </div>
             </div>

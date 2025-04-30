@@ -46,6 +46,7 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="text-muted small mt-2" id="record-count"></div>
                 </div>
             </div>
         </div>
@@ -54,4 +55,12 @@
 @section('script')
     @include('admin.partial.loader.script',['load'=>[\App\Enums\Assets\ScriptLoader::DataTable()]])
     @include('admin.partial.datatable2')
+    <script>
+        $(document).ready(function (){
+            // Update record count after DataTable is drawn
+            dataTable.on('draw', function() {
+                $('#record-count').text(dataTable.page.info().recordsTotal + ' رکورد یافت شد');
+            });
+        });
+    </script>
 @endsection
