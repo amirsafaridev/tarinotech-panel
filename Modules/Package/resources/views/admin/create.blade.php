@@ -34,6 +34,7 @@
                         <x-admin.input identify="title" title="عنوان"/>
 
                         <x-admin.input identify="price" title="قیمت"/>
+                        <x-admin.input identify="main_unit" title="میزان واحد اصلی"/>
 
                         <x-admin.input identify="minimum_price_percent" title="درصد تخفیف"/>
 

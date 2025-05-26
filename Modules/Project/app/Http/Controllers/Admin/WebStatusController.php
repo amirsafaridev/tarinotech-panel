@@ -16,7 +16,7 @@ class WebStatusController extends Controller
     use HasJsonCommonResponseTrait;
     use HasSingleLogTrack;
 
-    const INDEX_TITLE = 'پروژه های وب - ویرایش وضعیت';
+    const INDEX_TITLE = 'مدیریت پروژه وب';
 
     public function index($projectId)
     {

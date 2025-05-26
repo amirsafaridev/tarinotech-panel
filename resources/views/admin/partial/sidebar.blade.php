@@ -4,19 +4,20 @@
         <div class="side-header">
             <a class="header-brand1" href="{{ route('admin.dashboard.index') }}">
                 <img src="{{ asset('res-admin/assets/images/brand/logo.png') }}" class="header-brand-img desktop-logo"
-                     alt="Worder">
+                    alt="Worder">
                 <img src="{{ asset('res-admin/assets/images/brand/logo-toggle.png') }}"
-                     class="header-brand-img toggle-logo" alt="Worder">
+                    class="header-brand-img toggle-logo" alt="Worder">
                 <img src="{{ asset('res-admin/assets/images/brand/logo-dark.png') }}"
-                     class="header-brand-img light-logo1" alt="Worder">
+                    class="header-brand-img light-logo1" alt="Worder">
                 <img src="{{ asset('res-admin/assets/images/brand/logo-mini-dark.png') }}"
-                     class="header-brand-img light-logo" alt="Worder">
+                    class="header-brand-img light-logo" alt="Worder">
             </a>
         </div>
         <div class="main-sidemenu">
             <div class="slide-left disabled" id="slide-left">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24">
-                    <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"/>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24"
+                    viewBox="0 0 24 24">
+                    <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z" />
                 </svg>
             </div>
 
@@ -31,7 +32,9 @@
                     </a>
                 </li>
 
-                @canany(['ADMIN_ADMIN_INDEX','ADMIN_ADMIN_CREATE','ADMIN_ADMIN_JOB_TITLE_INDEX','ADMIN_ADMIN_GROUP_GOAL','ADMIN_REPORT_GOAL','ADMIN_REPORT_GOAL_GROUP'])
+                @canany(['ADMIN_ADMIN_INDEX', 'ADMIN_ADMIN_MY_PROJECTS_INDEX', 'ADMIN_ADMIN_CREATE',
+                    'ADMIN_ADMIN_JOB_TITLE_INDEX', 'ADMIN_ADMIN_GROUP_GOAL', 'ADMIN_REPORT_GOAL',
+                    'ADMIN_REPORT_GOAL_GROUP'])
                     <li class="sub-category">
                         <h3>مدیریت پرسنل</h3>
                     </li>
@@ -39,7 +42,7 @@
                         <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navAdmin">
                             <i class="side-menu__icon fal fa-user"></i>
                             <span class="side-menu__label">{{ trans('panel.admin.index') }}</span><i
-                                    class="angle fal fa-angle-left"></i>
+                                class="angle fal fa-angle-left"></i>
                         </a>
                         <ul class="slide-menu">
                             @can('ADMIN_ADMIN_INDEX')
@@ -54,7 +57,10 @@
                                 <li><a href="{{ route('admin.admin.job-title.index') }}" class="slide-item">عنوان
                                         شغلی</a></li>
                             @endcan
-
+                            @can('ADMIN_ADMIN_MY_PROJECTS_INDEX')
+                                <li><a href="{{ route('admin.admin.my-projects.index') }}" class="slide-item">پروژه های من</a>
+                                </li>
+                            @endcan
                             @can('ADMIN_ADMIN_GROUP_GOAL')
                                 <li><a href="{{ route('admin.admin.group-goal') }}" class="slide-item">اهداف گروهی</a>
                                 </li>
@@ -74,12 +80,12 @@
                 @endcanany
 
 
-                @canany(['ADMIN_PERMISSION_INDEX','ADMIN_ROLE_INDEX','ADMIN_ROLE_CREATE'])
+                @canany(['ADMIN_PERMISSION_INDEX', 'ADMIN_ROLE_INDEX', 'ADMIN_ROLE_CREATE'])
                     <li class="slide can-expand">
                         <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navRole">
                             <i class="side-menu__icon fal fa-lock"></i>
                             <span class="side-menu__label">{{ trans('panel.role.index') }}</span><i
-                                    class="angle fal fa-angle-left"></i>
+                                class="angle fal fa-angle-left"></i>
                         </a>
 
                         <ul class="slide-menu">
@@ -89,19 +95,19 @@
                             @endcan
 
                             @can('ADMIN_ROLE_INDEX')
-                                <li><a href="{{ route('admin.role.index') }}"
-                                       class="slide-item">{{ trans('panel.list') }}</a></li>
+                                <li><a href="{{ route('admin.role.index') }}" class="slide-item">{{ trans('panel.list') }}</a>
+                                </li>
                             @endcan
 
                             @can('ADMIN_ROLE_CREATE')
                                 <li><a href="{{ route('admin.role.create') }}"
-                                       class="slide-item">{{ trans('panel.create') }}</a></li>
+                                        class="slide-item">{{ trans('panel.create') }}</a></li>
                             @endcan
                         </ul>
                     </li>
                 @endcanany
 
-                @canany(['ADMIN_USER_INDEX','ADMIN_USER_CREATE','ADMIN_PRESENTER_INDEX','ADMIN_KNOWLEDGE_WAY_INDEX'])
+                @canany(['ADMIN_USER_INDEX', 'ADMIN_USER_CREATE', 'ADMIN_PRESENTER_INDEX', 'ADMIN_KNOWLEDGE_WAY_INDEX'])
 
                     <li class="sub-category">
                         <h3>مدیریت کارفرمایان</h3>
@@ -140,18 +146,10 @@
 
 
 
-                @canany([
-                    'ADMIN_PROJECT_INDEX',
-                    'ADMIN_PROJECT_RENEWAL_INDEX',
-                    'ADMIN_PROJECT_WEB_INDEX',
-                    'ADMIN_PROJECT_SEO_INDEX',
-                    'ADMIN_PROJECT_ADS_INDEX',
-                    'ADMIN_PROJECT_FACILITY_INDEX',
-                    'ADMIN_PROJECT_TYPE_INDEX',
-                    'ADMIN_PROJECT_STATUS_INDEX',
-                    'ADMIN_PACKAGE_INDEX',
-                    'ADMIN_PROJECT_BUSINESS_DOMAIN_INDEX'
-                ])
+                @canany(['ADMIN_PROJECT_INDEX', 'ADMIN_PROJECT_RENEWAL_INDEX', 'ADMIN_PROJECT_WEB_INDEX',
+                    'ADMIN_PROJECT_SEO_INDEX', 'ADMIN_PROJECT_ADS_INDEX', 'ADMIN_PROJECT_FACILITY_INDEX',
+                    'ADMIN_PROJECT_TYPE_INDEX', 'ADMIN_PROJECT_STATUS_INDEX', 'ADMIN_PACKAGE_INDEX',
+                    'ADMIN_PROJECT_BUSINESS_DOMAIN_INDEX'])
                     <li class="sub-category">
                         <h3>مدیریت پروژه ها</h3>
                     </li>
@@ -212,13 +210,8 @@
                 @endcanany
 
 
-                @canany([
-                    'ADMIN_SUPPORT_INDEX',
-                    'ADMIN_SUPPORT_GROUP_CREATE',
-                    'ADMIN_SUPPORT_NOTIFY_INDEX',
-                    'ADMIN_SUPPORT_SAMPLE_MESSAGE_INDEX',
-                    'ADMIN_TICKET_INDEX',
-                ])
+                @canany(['ADMIN_SUPPORT_INDEX', 'ADMIN_SUPPORT_GROUP_CREATE', 'ADMIN_SUPPORT_NOTIFY_INDEX',
+                    'ADMIN_SUPPORT_SAMPLE_MESSAGE_INDEX', 'ADMIN_TICKET_INDEX'])
                     <li class="sub-category">
                         <h3>گروه ها</h3>
                     </li>
@@ -262,29 +255,31 @@
                                 <li><a href="{{ route('admin.ticket.index') }}" class="slide-item">لیست</a></li>
                             @endcan
                             @can('ADMIN_TICKET_INDEX')
-                                <li><a href="{{ route('admin.ticket.statuses.index') }}" class="slide-item">وضعیت تیکت ها</a></li>
+                                <li><a href="{{ route('admin.ticket.statuses.index') }}" class="slide-item">وضعیت تیکت ها</a>
+                                </li>
                             @endcan
                             @can('ADMIN_TICKET_INDEX')
-                                <li><a href="{{ route('admin.ticket.priorities.index') }}" class="slide-item">اولویت تیکت ها</a></li>
+                                <li><a href="{{ route('admin.ticket.priorities.index') }}" class="slide-item">اولویت تیکت
+                                        ها</a></li>
                             @endcan
                             @can('ADMIN_TICKET_INDEX')
-                                <li><a href="{{ route('admin.ticket.transitions.index') }}" class="slide-item">انتقال خودکار وضعیت</a></li>
+                                <li><a href="{{ route('admin.ticket.transitions.index') }}" class="slide-item">انتقال خودکار
+                                        وضعیت</a></li>
                             @endcan
                             @can('ADMIN_TICKET_INDEX')
-                                <li><a href="{{ route('admin.ticket.subjects.index') }}" class="slide-item">موضوعات تیکت</a></li>
+                                <li><a href="{{ route('admin.ticket.subjects.index') }}" class="slide-item">موضوعات تیکت</a>
+                                </li>
                             @endcan
                             @can('ADMIN_TICKET_INDEX')
-                                <li><a href="{{ route('admin.ticket.events.index') }}" class="slide-item">رویدادهای تیکت</a></li>
+                                <li><a href="{{ route('admin.ticket.events.index') }}" class="slide-item">رویدادهای تیکت</a>
+                                </li>
                             @endcan
                         </ul>
                     </li>
                 @endcanany
 
 
-                @canany([
-                    'ADMIN_CONTRACT_SIGN_INDEX',
-                    'ADMIN_CONTRACT_SIGN_USER_INDEX',
-                ])
+                @canany(['ADMIN_CONTRACT_SIGN_INDEX', 'ADMIN_CONTRACT_SIGN_USER_INDEX'])
                     <li class="sub-category">
                         <h3>قرارداد ها</h3>
                     </li>
@@ -297,21 +292,19 @@
 
                         <ul class="slide-menu">
                             @can('ADMIN_CONTRACT_SIGN_INDEX')
-                                <li><a href="{{ route('admin.contract.sign.index') }}" class="slide-item">درخواست امضاء</a></li>
+                                <li><a href="{{ route('admin.contract.sign.index') }}" class="slide-item">درخواست امضاء</a>
+                                </li>
                             @endcan
                             @can('ADMIN_CONTRACT_SIGN_USER_INDEX')
-                                <li><a href="{{ route('admin.contract.sign.user.index') }}" class="slide-item">درخواست امضاء کارفرما</a></li>
+                                <li><a href="{{ route('admin.contract.sign.user.index') }}" class="slide-item">درخواست امضاء
+                                        کارفرما</a></li>
                             @endcan
                         </ul>
                     </li>
                 @endcanany
 
-                @canany([
-                        'ADMIN_SURVEY_INDEX',
-                        'ADMIN_SURVEY_CREATE',
-                        'ADMIN_SURVEY_QUESTION_INDEX',
-                        'ADMIN_SURVEY_RESPONSE_INDEX',
-                    ])
+                @canany(['ADMIN_SURVEY_INDEX', 'ADMIN_SURVEY_CREATE', 'ADMIN_SURVEY_QUESTION_INDEX',
+                    'ADMIN_SURVEY_RESPONSE_INDEX'])
                     <li class="sub-category">
                         <h3>پرسشنامه ها</h3>
                     </li>
@@ -334,15 +327,9 @@
                     </li>
                 @endcanany
 
-                @canany([
-                    'ADMIN_FACTOR_INDEX',
-                    'ADMIN_FACTOR_CREATE',
-                    'ADMIN_FACTOR_CATEGORY_INDEX',
-                    'ADMIN_FACTOR_STATUS_INDEX',
-                    'ADMIN_FACTOR_MANUAL_INDEX',
-                    'ADMIN_FACTOR_CHEQUE_INDEX',
-                    'ADMIN_FACTOR_CUSTOMER_INDEX'
-                ])
+                @canany(['ADMIN_FACTOR_INDEX', 'ADMIN_FACTOR_CREATE', 'ADMIN_FACTOR_CATEGORY_INDEX',
+                    'ADMIN_FACTOR_STATUS_INDEX', 'ADMIN_FACTOR_MANUAL_INDEX', 'ADMIN_FACTOR_CHEQUE_INDEX',
+                    'ADMIN_FACTOR_CUSTOMER_INDEX'])
                     <li class="sub-category">
                         <h3>امور مالی</h3>
                     </li>
@@ -359,15 +346,19 @@
                             @endcan
 
                             @can('ADMIN_FACTOR_MANUAL_INDEX')
-                                <li><a href="{{ route('admin.factor.manual.index') }}" class="slide-item">لیست تایید (پرداخت دستی)</a></li>
+                                <li><a href="{{ route('admin.factor.manual.index') }}" class="slide-item">لیست تایید (پرداخت
+                                        دستی)</a></li>
                             @endcan
 
                             @can('ADMIN_FACTOR_CHEQUE_INDEX')
-                                <li><a href="{{ route('admin.factor.cheque.index') }}" class="slide-item">لیست تایید (پرداخت با چک)</a></li>
+                                <li><a href="{{ route('admin.factor.cheque.index') }}" class="slide-item">لیست تایید (پرداخت
+                                        با چک)</a></li>
                             @endcan
 
                             @can('ADMIN_FACTOR_CUSTOMER_INDEX')
-                                <li><a href="{{ route('admin.factor.customer-offer.index') }}" class="slide-item">لیست تایید (آفر مشتریان)</a></li>
+                                <li><a href="{{ route('admin.factor.customer-offer.index') }}" class="slide-item">لیست تایید
+                                        (آفر مشتریان)
+                                    </a></li>
                             @endcan
 
                             @can('ADMIN_FACTOR_CREATE')
@@ -388,12 +379,8 @@
                 @endcanany
 
 
-                @canany([
-                    'ADMIN_CONTENT_BLOG_INDEX',
-                    'ADMIN_CONTENT_BLOG_CREATE',
-                    'ADMIN_CONTENT_BLOG_CATEGORY_INDEX',
-                    'ADMIN_CONTENT_SLIDER_INDEX',
-                ])
+                @canany(['ADMIN_CONTENT_BLOG_INDEX', 'ADMIN_CONTENT_BLOG_CREATE', 'ADMIN_CONTENT_BLOG_CATEGORY_INDEX',
+                    'ADMIN_CONTENT_SLIDER_INDEX'])
                     <li class="sub-category">
                         <h3>محتوا</h3>
                     </li>
@@ -414,7 +401,8 @@
                             @endcan
 
                             @can('ADMIN_CONTENT_BLOG_CATEGORY_INDEX')
-                                <li><a href="{{ route('admin.content.blog.category.index') }}" class="slide-item">دسته بندی ها</a>
+                                <li><a href="{{ route('admin.content.blog.category.index') }}" class="slide-item">دسته بندی
+                                        ها</a>
                                 </li>
                             @endcan
                         </ul>
@@ -434,7 +422,7 @@
                     @endcan
                 @endcanany
 
-                @canany(['ADMIN_LOG_INDEX','ADMIN_LOGIN_INDEX'])
+                @canany(['ADMIN_LOG_INDEX', 'ADMIN_LOGIN_INDEX'])
                     <li class="sub-category">
                         <h3>لاگ ها</h3>
                     </li>
@@ -458,7 +446,7 @@
                 @endcanany
 
 
-                @canany(['ADMIN_SETTING_INDEX','ADMIN_AUTO_MESSAGE_INDEX','ADMIN_FREE_DAY_INDEX'])
+                @canany(['ADMIN_SETTING_INDEX', 'ADMIN_AUTO_MESSAGE_INDEX', 'ADMIN_FREE_DAY_INDEX'])
                     <li class="sub-category">
                         <h3>تنظیمات پلتفرم</h3>
                     </li>
@@ -494,12 +482,13 @@
                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)" id="navProfile">
                         <i class="side-menu__icon fal fa-user-edit"></i>
                         <span class="side-menu__label">{{ trans('panel.profile.index') }}</span><i
-                                class="angle fal fa-angle-left"></i>
+                            class="angle fal fa-angle-left"></i>
                     </a>
 
                     <ul class="slide-menu">
                         <li><a href="{{ route('admin.admin.profile.index') }}" class="slide-item">پروفایل</a></li>
-                        <li><a href="{{ route('admin.admin.profile.password') }}" class="slide-item">تغییر گذر واژه</a>
+                        <li><a href="{{ route('admin.admin.profile.password') }}" class="slide-item">تغییر گذر
+                                واژه</a>
                         </li>
                         <li><a href="{{ route('admin.admin.profile.logout') }}" class="slide-item">خروج</a></li>
                     </ul>

@@ -144,6 +144,7 @@ class PackageController extends Controller
         $item['title'] = $request->input('title');
         $item['type_id'] = $request->input('type_id');
         $item['minimum_price_percent'] = $request->input('minimum_price_percent');
+        $item['main_unit'] = $request->input('main_unit');
 
         if ($request->input('base_id') == 2) {
             $item['seo_keywords_count'] = $request->input('seo_keywords_count');

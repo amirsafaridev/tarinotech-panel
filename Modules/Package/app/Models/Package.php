@@ -28,6 +28,8 @@ class Package extends Model
         'seo_keywords_count',
         'seo_agreement_duration',
         'seo_amount_content',
+        'main_unit',
+
     ];
 
     public function prices(): HasMany

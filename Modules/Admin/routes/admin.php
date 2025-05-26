@@ -6,6 +6,7 @@ use Modules\Admin\app\Http\Controllers\Admin\Google2FAController;
 use Modules\Admin\app\Http\Controllers\Admin\JobTitleController;
 use Modules\Admin\app\Http\Controllers\Admin\PasswordController;
 use Modules\Admin\app\Http\Controllers\Admin\ProfileController;
+use Modules\Admin\app\Http\Controllers\Admin\MyProjectController;
 
 Route::group(['guard' => 'admin'], function () {
 
@@ -36,6 +37,10 @@ Route::group(['guard' => 'admin'], function () {
         Route::post('/', [JobTitleController::class, 'store'])->name('store');
         Route::patch('/{job_title}', [JobTitleController::class, 'update'])->name('update');
         Route::delete('/{job_title}', [JobTitleController::class, 'destroy'])->name('destroy');
+    });
+      Route::group(['prefix' => 'my-projects', 'as' => 'my-projects.'], function () {
+        Route::get('/', [MyProjectController::class, 'index'])->name('index');
+       
     });
     Route::group([], function () {
         Route::get('/{admin}', [AdminController::class, 'edit'])->name('edit');

@@ -33,6 +33,8 @@
                                               :items="$bases"/>
 
                         <x-admin.input identify="title" title="عنوان"/>
+                        <x-admin.input identify="customer_extra_unit" title="میزان واحد ا کسترا کارفرما"/>
+                        <x-admin.input identify="expert_extra_unit" title="میزان واحد ا کسترا کارشناس"/>
 
                         <x-admin.button title="{{ trans('panel.create') }}"/>
                     </form>
@@ -43,9 +45,15 @@
 @endsection
 @section('script')
     @include('admin.partial.request')
+    @include('admin.partial.script.global')
+
     <script>
         $(document).ready(function (){
+            makeInputPrice($('#customer_extra_unit'));
+            makeInputPrice($('#expert_extra_unit'));
+
             activeParentUl('{{ route('admin.project.facility.index') }}');
         })
     </script>
+    
 @endsection

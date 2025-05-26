@@ -37,6 +37,7 @@
                         <x-admin.input identify="title" title="عنوان" :old="$package->title"/>
 
                         <x-admin.input identify="price" title="قیمت" :old="$package->finalPrice?->price"/>
+                        <x-admin.input identify="main_unit" title="میزان واحد اصلی"  :old="$package->main_unit"/>
 
                         <x-admin.input identify="minimum_price_percent" title="درصد تخفیف" :old="$package->minimum_price_percent"/>
 

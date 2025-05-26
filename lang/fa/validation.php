@@ -256,6 +256,7 @@ return [
         'project_id' => 'پروژه',
         'mobile_company' => 'موبایل شرکتی',
         'number_company' => 'شماره داخلی',
+        'main_unit' => 'میزان واحد اصلی',
 
         'work_location' => 'محل کار',
         'type_insurance' => 'نوع بیمه',

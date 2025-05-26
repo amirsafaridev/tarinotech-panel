@@ -18,6 +18,8 @@ class Facility extends Model
     protected $fillable = [
         'title',
         'base_id',
+        'customer_extra_unit',
+        'expert_extra_unit',
         'created_at',
         'updated_at',
     ];

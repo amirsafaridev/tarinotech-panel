@@ -15,7 +15,7 @@
                             href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.project.index') }}">پروژه ها</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.project.web.index') }}">وب سایت ها</a></li>
-                <li class="breadcrumb-item active">ویرایش - وضعیت</li>
+                <li class="breadcrumb-item active">مدیریت پروژه وب</li>
             </ol>
         </div>
     </div>
@@ -38,12 +38,14 @@
                 <div class="card-body pb-4">
                     <div class="row">
                         <div class="col-12 col-md-6">
+                            <input type="hidden" name="type_id" value="{{ $project->type_id }}">
                             <x-admin.select-model
                                     identify="type_id"
                                     title="نوع پروژه"
                                     :items="$types"
                                     :old="$project->type_id"
                                     :has-choice-option="false"
+                                    disabled
                                     key="id"
                                     value="title"/>
                         </div>

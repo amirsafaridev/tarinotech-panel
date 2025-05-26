@@ -11,7 +11,7 @@ class ColumnOption
     private bool $searchable = true;
 
     private bool $visible = true;
-
+    private $formatter = null;
     private string $as = '';
 
     public static function new(): ColumnOption
@@ -81,6 +81,11 @@ class ColumnOption
 
         return $this;
     }
+    public function setFormatter(callable $formatter): ColumnOption
+    {
+        $this->formatter = $formatter;
+        return $this;
+    }
 
     public function make(): array
     {
@@ -90,6 +95,7 @@ class ColumnOption
             'searchable' => $this->searchable,
             'as' => $this->as,
             'visible' => $this->visible,
+
         ];
     }
 }

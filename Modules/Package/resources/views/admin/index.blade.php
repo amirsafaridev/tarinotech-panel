@@ -33,6 +33,8 @@
                                 <th>شناسه</th>
                                 <th>نوع</th>
                                 <th>عنوان</th>
+                                <th>میزان واحد اصلی</th>
+
                                 <th>قیمت</th>
                                 <th>تاریخ شروع</th>
                                 <th>تاریخ پایان</th>
@@ -46,6 +48,7 @@
                                         <td>{{ $package->id }}</td>
                                         <td>{{ $package->type->path }}</td>
                                         <td>{{ $package->title }}</td>
+                                        <td>{{ $package->main_unit }}</td>
 
                                         @if($package->finalPrice)
                                             <td>{{  number_format($package->finalPrice->price) }}</td>
