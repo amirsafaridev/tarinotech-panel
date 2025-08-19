@@ -33,7 +33,7 @@ class ProjectWebFactory extends Factory
             'host' => $this->makeHost(),
             'language' => $this->makeLanguage(),
             'sample' => $this->sample(),
-            'working_days' => $this->faker->numberBetween(30, 360),
+        //    'working_days' => $this->faker->numberBetween(30, 360),
         ];
     }
 

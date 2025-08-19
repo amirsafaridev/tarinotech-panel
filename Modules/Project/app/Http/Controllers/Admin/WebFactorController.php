@@ -38,4 +38,21 @@ class WebFactorController extends Controller
         }
 
     }
+    public function makeFacilitiesFactore($projectId, $userId, $facility)
+    {
+
+        try {
+            $project = Project::findWebTarget($projectId);
+
+            $seoFactorMakeJob = resolve(WebProjectFactorMakerJob::class);
+
+            $seoFactorMakeJob->handleFacilitiesFactore($project, $userId, $facility);
+
+
+        } catch (Exception $exception) {
+            return $this->exceptionResponse($exception);
+
+        }
+
+    }
 }

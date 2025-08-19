@@ -26,6 +26,7 @@ class StoreRequest extends FormRequest
             'price' => ['required', 'numeric'],
             'minimum_price_percent' => ['required', 'numeric', 'between:0,100'],
 'main_unit' => ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'duration' => ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
 
         ];
 

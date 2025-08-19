@@ -92,7 +92,8 @@
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item" href="{{ route('admin.project.web.edit',$project->id) }}">{{ __('panel.action.edit') }}</a>
                                                     <a class="dropdown-item" href="{{ route('admin.project.manage',$project->id) }}">{{ __('panel.action.show') }}</a>
-                                                    <a class="dropdown-item" href="{{ route('admin.project.web.edit.status',$project->id) }}">{{ __('panel.action.change_status') }}</a>
+
+                                                    <a class="dropdown-item" href="{{ route('admin.project.web.edit.status',$project->id) }}">مدیریت پروژه</a>
                                                     <a class="dropdown-item" href="{{ route('admin.project.web.auto-factor',$project->id) }}">{{ __('panel.action.auto_factor') }}</a>
                                                     <a class="dropdown-item" href="{{ route('admin.project.web.requirement',$project->target_id) }}">{{ __('panel.action.requirement') }}</a>
                                                     @can('ADMIN_PROJECT_WEB_DESTROY')

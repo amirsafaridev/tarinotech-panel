@@ -38,4 +38,19 @@ class SeoFactorController extends Controller
         }
 
     }
+    public function makeFacilitiesFactore($projectId, $userId ,$facility)
+    {
+        try {
+            $project = Project::findSeoTarget($projectId);
+
+            $seoFactorMakeJob = resolve(SeoProjectFactorMakeJob::class);
+            $seoFactorMakeJob->handleFacilitiesFactore($project->target, $userId, $facility);
+
+
+        } catch (Exception $exception) {
+            return $this->exceptionBack($exception);
+
+        }
+
+    }
 }

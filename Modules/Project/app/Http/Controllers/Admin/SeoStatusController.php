@@ -11,14 +11,14 @@ use Modules\Log\app\Traits\HasSingleLogTrack;
 use Modules\Project\app\Http\Requests\Admin\WebStatus\UpdateRequest;
 use Modules\Project\app\Models\Facility;
 use Modules\Project\app\Models\Project;
-use Modules\Project\app\Models\ProjectWeb;
+use Modules\Project\app\Models\ProjectSeo;
 
-class WebStatusController extends Controller
+class SeoStatusController extends Controller
 {
     use HasJsonCommonResponseTrait;
     use HasSingleLogTrack;
 
-    const INDEX_TITLE = 'مدیریت پروژه وب';
+    const INDEX_TITLE = 'مدیریت پروژه سئو';
 
     public function index($projectId)
     {
@@ -29,12 +29,9 @@ class WebStatusController extends Controller
         $logs = $this->trackChanges('status_id', $project, $projectId);
         $facilities = Facility::query()->get();
         $users = Admin::query()->get();
-                        $factor = new WebFactorController;
+        
 
-                        $factor->makeFacilitiesFactore($project->id, 1, 3);
-
-
-        return view('project::admin.web.status.edit', compact('title', 'project', 'facilities', 'users'));
+        return view('project::admin.seo.status.edit', compact('title', 'project', 'facilities', 'users'));
     }
 
     public function update(UpdateRequest $request, $projectId)
@@ -63,7 +60,7 @@ class WebStatusController extends Controller
     private function getOrFailProject($projectId): Project
     {
         return Project::query()
-            ->whereHasMorph('target', [ProjectWeb::class])
+            ->whereHasMorph('target', [ProjectSeo::class])
             ->findOrFail($projectId);
     }
 }

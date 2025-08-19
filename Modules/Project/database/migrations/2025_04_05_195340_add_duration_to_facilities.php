@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('packages', function (Blueprint $table) {
+        Schema::table('facilities', function (Blueprint $table) {
             $table->after('title', function (Blueprint $table) {
-            $table->string('main_unit')->nullable();
-            $table->string('duration')->nullable();
-
+                $table->string('duration')->nullable();
             });
         });
+
     }
 
     /**
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-    
+        
     }
 };

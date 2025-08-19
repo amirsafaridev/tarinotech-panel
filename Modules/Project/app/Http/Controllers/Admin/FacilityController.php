@@ -89,9 +89,12 @@ class FacilityController extends Controller
     protected function prepareItemData(Request $request): array
     {
         $item['title'] = $request->input('title');
+        
         $item['base_id'] = $request->input('base_id');
         $item['customer_extra_unit'] = $request->input('customer_extra_unit');
         $item['expert_extra_unit'] = $request->input('expert_extra_unit');
+                $item['duration'] = $request->input('duration');
+
         return $item;
     }
 
@@ -116,6 +119,9 @@ class FacilityController extends Controller
             )
             ->addColumn(
                 ColumnOption::new()->setName('expert_extra_unit')->setAs('میزان واحد ا کسترا کارشناس')
+            )
+            ->addColumn(
+                ColumnOption::new()->setName('duration')->setAs('مدت زمان (روز کاری)')
             )
             ->addColumn(
                 ColumnOption::new()->setName('created_at')->setAs('ایجاد')

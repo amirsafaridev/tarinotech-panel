@@ -20,7 +20,9 @@
                     $itemKey = isset($item['key']) ? $item[$key] : $item->{$key};
                     $isSelected = !empty($old) && (is_array($old) ? in_array($itemKey, $old) : $itemKey == $old);
                 @endphp
-                <option @if ($isSelected) selected="selected" @endif value="{{ $itemKey }}">
+                <option @if ($isSelected) selected="selected" @endif
+               
+                  value="{{ $itemKey }}">
                     {{ isset($item['key']) ? $item[$value] : $item->{$value} }}
                 </option>
             @endforeach

@@ -5,6 +5,7 @@ namespace Modules\Project\app\Http\Requests\Admin\Web;
 use App\Enums\Database\Role\PermissionName;
 use App\Enums\Database\Role\RoleName;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
@@ -32,7 +33,7 @@ class UpdateRequest extends FormRequest
             'package_id' => 'required|exists:packages,id',
             'pages' => 'required|integer',
             'agreement_at' => 'required|jdate',
-            'working_days' => 'required|integer',
+           // 'working_days' => 'required|integer',
             'facilities' => 'array',
 
             /* Business */
@@ -48,7 +49,6 @@ class UpdateRequest extends FormRequest
             'host_provider' => 'required_if:have_host,on',
             'host_username' => 'required_if:have_host,on',
             'host_password' => 'required_if:have_host,on',
-
             /* Language */
             'languages' => 'array',
         ];

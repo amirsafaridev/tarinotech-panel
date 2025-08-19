@@ -17,6 +17,7 @@ use Crypt;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
+use Modules\Admin\app\Models\Admin;
 use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Filters\IsSignFilter;
 use Modules\Project\app\Filters\IsUserSignFilter;
@@ -28,6 +29,7 @@ use Modules\Project\app\Filters\Web\PackageFilter;
 use Modules\Project\app\Http\Requests\Admin\Web\StoreRequest;
 use Modules\Project\app\Http\Requests\Admin\Web\UpdateRequest;
 use Modules\Project\app\Models\Project;
+use Modules\Project\app\Models\ProjectFacility;
 use Modules\Project\app\Models\ProjectWeb;
 
 class WebController extends Controller
@@ -114,13 +116,12 @@ class WebController extends Controller
 
             $projectData = $this->initialWebData($request);
             $projectWeb = ProjectWeb::query()->create($projectData);
-
             $projectParams = $this->initialProjectData($request);
             $projectParams['status_id'] = $request->input('status_id');
             $projectParams['price'] = $request->input('price');
             $projectParams['tax_rate'] = config('factor.tax');
             $projectParams['contract_attachment'] = $request->input('contract_attachment');
-
+            
             if (hasAdminRole(RoleName::SUPER_ADMIN)) {
                 $projectParams['admin_id'] = $request->input('admin_id');
             } else {
@@ -134,10 +135,11 @@ class WebController extends Controller
             }
             $project = $projectWeb->project()->create($projectParams);
 
-            $facilities = collect($request->input('facilities'))->mapWithKeys(function ($facilityId) {
+            $facilities = collect($request->input('facilities'))->mapWithKeys(function ($facilityId) use($projectParams){
                 return [
                     $facilityId => [
                         'renewal_at' => now(),
+                        'user_id'=>$projectParams['admin_id']
                     ],
                 ];
             });
@@ -325,7 +327,6 @@ class WebController extends Controller
             'host' => $host->toArray(),
             'language' => $language->toArray(),
             'sample' => $sample->toArray(),
-            'working_days' => $request->input('working_days'),
         ];
     }
 }

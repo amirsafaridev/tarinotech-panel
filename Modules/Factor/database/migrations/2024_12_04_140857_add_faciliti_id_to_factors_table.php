@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('packages', function (Blueprint $table) {
-            $table->after('title', function (Blueprint $table) {
-            $table->string('main_unit')->nullable();
-            $table->string('duration')->nullable();
+
+        Schema::table('factors', function (Blueprint $table) {
+            $table->after('project_id', function (Blueprint $table) {
+            $table->unsignedInteger('facility_id')->nullable();
+            $table->foreign('facility_id')->references('id')->on('facilities')->onDelete('cascade');
 
             });
         });
+
     }
 
     /**
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-    
+       
     }
 };

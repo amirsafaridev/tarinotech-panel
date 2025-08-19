@@ -46,7 +46,7 @@ class StoreRequest extends FormRequest
             'designed_by' => ['required', new EnumValue(ProjectDesignBy::class)],
             'host_location' => ['required', new EnumKey(SeoHostLocation::class)],
             'host_provider' => 'required_if:host_location,'.SeoHostLocation::OUT_COMPANY,
-            'keywords' => 'required|array',
+            'keywords' => 'array',
         ];
 
         // Add price validation rule if both package and date are available

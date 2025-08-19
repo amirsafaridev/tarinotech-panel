@@ -78,7 +78,6 @@ class IndexController extends Controller
             ])
             ->join('admins', 'factors.admin_id', '=', 'admins.id')
             ->join('projects', 'factors.project_id', '=', 'projects.id')
-
             ->filter([
                 ProjectTypeFilter::class,
                 ProjectIsSignFilter::class,

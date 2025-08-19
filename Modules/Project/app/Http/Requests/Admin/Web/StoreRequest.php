@@ -4,6 +4,7 @@ namespace Modules\Project\app\Http\Requests\Admin\Web;
 
 use App\Enums\Database\Role\RoleName;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreRequest extends FormRequest
 {
@@ -34,7 +35,7 @@ class StoreRequest extends FormRequest
             'package_id' => 'required|exists:packages,id',
             'pages' => 'required|integer',
             'agreement_at' => 'required|jdate',
-            'working_days' => 'required|integer',
+        //    'working_days' => 'required|integer',
             'facilities' => 'array',
 
             /* Business */
@@ -53,6 +54,9 @@ class StoreRequest extends FormRequest
 
             /* Language */
             'languages' => 'array',
+
+            
+            
         ];
 
         if (hasAdminRole(RoleName::SUPER_ADMIN)) {

@@ -78,7 +78,6 @@
                 :items="$dateTypeItems"
                 :old="request('date_column')"
                 :is-small="true"
-
         />
     </div>
 

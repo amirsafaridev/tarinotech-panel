@@ -39,9 +39,11 @@
                                               :old="$facility->base_id"/>
 
                         <x-admin.input identify="title" title="عنوان" :old="$facility->title"/>
-                            <x-admin.input identify="customer_extra_unit" title="میزان واحد ا کسترا کارفرما" :old="number_format($facility->customer_extra_unit)"/>
-                            <x-admin.input identify="expert_extra_unit" title="میزان واحد ا کسترا کارشناس" :old="number_format($facility->expert_extra_unit)"/>
-                        <x-admin.button title="{{ trans('panel.update') }}"/>
+                            <x-admin.input identify="customer_extra_unit" title="میزان واحد ا کسترا کارفرما" :old="$facility->customer_extra_unit"/>
+                            <x-admin.input identify="expert_extra_unit" title="میزان واحد ا کسترا کارشناس" :old="$facility->expert_extra_unit"/>
+                                             <x-admin.input identify="duration" title="مدت زمان (روز کاری)" :old="$facility->duration"/>
+
+                                <x-admin.button title="{{ trans('panel.update') }}"/>
 
                         <x-admin.button title="{{ trans('panel.delete') }}" type="button" color="danger" on-click="confirmDelete()"/>
                     </form>
@@ -66,9 +68,6 @@
 
     <script>
         $(document).ready(function (){
-            makeInputPrice($('#customer_extra_unit'));
-            makeInputPrice($('#expert_extra_unit'));
-
             activeParentUl('{{ route('admin.project.facility.index') }}');
         })
     </script>

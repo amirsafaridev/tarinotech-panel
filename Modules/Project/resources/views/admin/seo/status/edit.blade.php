@@ -14,94 +14,89 @@
                         href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.project.index') }}">پروژه ها</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.project.web.index') }}">وب سایت ها</a></li>
-                <li class="breadcrumb-item active">مدیریت پروژه وب</li>
+                <li class="breadcrumb-item active">مدیریت پروژه سئو</li>
             </ol>
         </div>
     </div>
-<div class="row">
-    <form class="request-form row forms-sample" method="post"
-        action="{{ route('admin.project.web.update.status', $project->id) }}">
-        <div class="col-xl-6 col-lg-6 col-md-6 col-12">
-            @include('admin.partial.message')
-            @csrf
-            @method('PATCH')
+    <div class="row">
+        <form class="request-form row forms-sample" method="post"
+            action="{{ route('admin.project.seo.update.status', $project->id) }}">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                @include('admin.partial.message')
+                @csrf
+                @method('PATCH')
 
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">ویرایش وضعیت</h3>
-                    <div class="card-options">
-                        <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i
-                                class="fal fa-chevron-up"></i></a>
-                    </div>
-                </div>
-                <div class="card-body pb-4">
-                    <div class="row">
-                        <div class="col-12 col-md-6">
-                            <input type="hidden" name="type_id" value="{{ $project->type_id }}">
-                            <x-admin.select-model identify="type_id" title="نوع پروژه" :items="$types" :old="$project->type_id"
-                                :has-choice-option="false" disabled key="id" value="title" />
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">ویرایش وضعیت</h3>
+                        <div class="card-options">
+                            <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i
+                                    class="fal fa-chevron-up"></i></a>
                         </div>
-                        <div class="col-12 col-md-6">
-                            <x-admin.select-simple identify="status_id" title="وضعیت پروژه" />
+                    </div>
+                    <div class="card-body pb-4">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <input type="hidden" name="type_id" value="{{ $project->type_id }}">
+                                <x-admin.select-model identify="type_id" title="نوع پروژه" :items="$types"
+                                    :old="$project->type_id" :has-choice-option="false" disabled key="id" value="title" />
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <x-admin.select-simple identify="status_id" title="وضعیت پروژه" />
+                            </div>
+
+
                         </div>
 
+                        <x-admin.button title="{{ trans('panel.update') }}" />
 
                     </div>
-
-                    <x-admin.button title="{{ trans('panel.update') }}" />
-
                 </div>
             </div>
-        </div>
-    </form>
-    
-    <form class="request-form row forms-sample" method="post"
-        action="{{ route('admin.project.project_facilities.store', ['project'=>$project->id,'type'=>'web']) }}">
-        <div class="col-xl-6 col-lg-6 col-md-6 col-12">
-            @csrf
-            @method('POST')
+        </form>
 
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">افزودن امکان جانبی</h3>
-                    <div class="card-options">
-                        <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i
-                                class="fal fa-chevron-up"></i></a>
+        <form class="request-form row forms-sample" method="post"
+            action="{{ route('admin.project.project_facilities.store', ['project' => $project->id, 'type' => 'seo']) }}">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                @csrf
+                @method('POST')
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">افزودن امکان چانبی</h3>
+                        <div class="card-options">
+                            <a href="javascript:void(0)" class="card-options-collapse" data-bs-toggle="card-collapse"><i
+                                    class="fal fa-chevron-up"></i></a>
+                        </div>
                     </div>
-                </div>
-                <div class="card-body pb-4">
-                    <div class="row">
-                        <div class="col-12 col-md-6">
-                             <x-admin.select-model
-                        identify="facilities[]"
-                        title="ویژگی‌ها"
-                        key="id"
-                        value="title"
-                        :multiple="true"
-                        :with-option="false"
-                        :items="$facilities"/>
+                    <div class="card-body pb-4">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <x-admin.select-model identify="facilities[]" title="ویژگی‌ها" key="id" value="title"
+                                    :multiple="true" :with-option="false" :items="$facilities" />
 
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <x-admin.select-model identify="user_id" title="انتخاب کارشناس" :items="$users" key="id"
-                                value="fullname" />
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <x-admin.select-model identify="user_id" title="انتخاب کارشناس" :items="$users"
+                                    key="id" value="fullname" />
 
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <x-admin.input identify="renewal_at" title="تاریخ تمدید" :is-date-picker="true" />
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <x-admin.input identify="renewal_at" title="تاریخ تمدید" :is-date-picker="true" />
+
+                            </div>
+
 
                         </div>
 
+                        <x-admin.button title="افزودن" />
 
                     </div>
-
-                    <x-admin.button title="افزودن" />
-
                 </div>
             </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
+
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <span class="bold">واحدهای کل</span>
@@ -116,7 +111,7 @@
                             <th>توع</th>
                             <th>میزان واحد اکسترای کارفرما EUC</th>
                             <th>کارشناس مربوطه</th>
-                            <th>وضعیت فاکتور</th>
+                            <th>وضغیت فاکتور</th>
                             <th>شناسه فاکتور</th>
                         </tr>
                     </thead>
@@ -134,10 +129,10 @@
 
                         </tr>
                         @foreach ($project->facilities()->get() as $item)
-                         @php
+                            @php
                                 $factor = $item->factors()->where('project_id', $project->id)->first();
-
                             @endphp
+
                             <tr>
                                 <td>{{ $item->title }}</td>
                                 <td>واحد اکسترا</td>
@@ -146,7 +141,7 @@
                                 </td>
                                 <td>{{ \Modules\Admin\app\Models\Admin::find($item->pivot->user_id)?->fullname ?? '-' }}
                                 </td>
-                                <td>{!! !empty($factor->status) ? factorStatusRender($factor->status, $factor->is_confirm) : '-' !!}</td>
+                              <td>{!! !empty($factor->status) ? factorStatusRender($factor->status, $factor->is_confirm) : '-' !!}</td>
                                 <td>{{ $factor->identify ?? '-' }}</td>
                             </tr>
                         @endforeach
@@ -175,10 +170,7 @@
     {{-- @include('log::admin.part.table',['logTitle'=>'تست','itemsProperties'=>$statuses]) --}}
 @endsection
 @section('script')
-    @include('admin.partial.loader.script', ['load' => [
-                \App\Enums\Assets\ScriptLoader::Select2(),
-
-    ]])
+    @include('admin.partial.loader.script', ['load' => [\App\Enums\Assets\ScriptLoader::Select2()]])
     @include('admin.partial.request')
     @include('admin.partial.script.global')
     @include('project::admin.web.part.script-status')
@@ -186,7 +178,7 @@
     <script>
         $(document).ready(function() {
             $('#facilities').select2()
-            activeParentUl('{{ route('admin.project.web.index') }}');
+            activeParentUl('{{ route('admin.project.seo.index') }}');
         })
     </script>
 @endsection

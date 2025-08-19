@@ -22,15 +22,11 @@ class UpdateRequest extends FormRequest
         return [
             'title' => 'required|max:255',
             'base_id' => 'required|exists:project_bases,id',
-            'customer_extra_unit' => 'required|numeric',
-            'expert_extra_unit' => 'required|numeric',
+            'customer_extra_unit' =>['required', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'expert_extra_unit' => ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'duration' => ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
+
         ];
     }
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'customer_extra_unit' => str_replace(',', '', $this->input('customer_extra_unit')),
-            'expert_extra_unit' => str_replace(',', '', $this->input('expert_extra_unit')),
-        ]);
-    }
+ 
 }

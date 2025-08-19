@@ -19,7 +19,6 @@ class ProjectRenewalController extends Controller
     public function index()
     {
         $title = self::INDEX_TITLE;
-
         $renewals = ProjectRenewal::query()
             ->select(
                 'project_renewals.id',

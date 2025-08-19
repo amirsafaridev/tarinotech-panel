@@ -247,6 +247,8 @@ return [
         'host_password' => 'رمز هاست',
         'due_date_payments' => 'تاریخ سررسید پرداخت ها',
         'agreement_duration' => 'مدت قرارداد',
+        'renewal_at' => 'ناریخ نمدید',
+
         'designed_by' => 'طراحی شده توسط',
         'price_monthly' => 'پرداختی ماهیانه',
         'amount_content' => 'میزان تولید محتوا',

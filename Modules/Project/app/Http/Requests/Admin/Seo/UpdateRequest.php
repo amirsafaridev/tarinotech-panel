@@ -47,7 +47,7 @@ class UpdateRequest extends FormRequest
 
             'amount_content' => 'required',
             'keywords_count' => 'required|numeric|min:1',
-            'keywords' => 'required|array',
+            'keywords' => 'array',
         ];
 
         if (hasAdminRole(RoleName::SUPER_ADMIN)) {

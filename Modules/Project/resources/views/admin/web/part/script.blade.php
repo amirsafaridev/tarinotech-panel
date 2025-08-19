@@ -106,31 +106,32 @@
         }, 200)
     }
 
-    function typePackageSetup() {
-        const jsonTypeWithPackages = @json( $packages);
-        const packageId = $('#package_id');
+ function typePackageSetup() {
+    const jsonTypeWithPackages = @json($packages);
+    const typeId = $('#type_id');
+    const packageId = $('#package_id');
 
-        typeId.change(function () {
-            const id = parseInt($(this).val());
-            const packages = jsonTypeWithPackages.filter(function (item) {
-                return item.type_id === id;
-            })
-            packageId.empty();
-            packages.forEach(function (status) {
-                const option = $('<option>', {
-                    value: status.id,
-                    text: status.title
-                });
-                packageId.append(option);
+    typeId.change(function () {
+        const id = parseInt($(this).val());
+        const packages = jsonTypeWithPackages.filter(item => item.type_id === id);
+
+        packageId.empty();
+
+        packages.forEach(pkg => {
+            const option = $('<option>', {
+                value: pkg.id,
+                text: pkg.title
             });
+            packageId.append(option);
         });
-        typeId.trigger('change');
-        setTimeout(() => {
-            @if(isset($project))
-            packageId.val(parseInt('{{ $project->target->package_id }}'));
-            @endif
-        }, 200)
-    }
+
+        @if(isset($project))
+        packageId.val({{ $project->target->package_id ?? 'null' }});
+        @endif
+    });
+
+    typeId.trigger('change');
+}
 
     function workingDaysCalcSetup() {
         const workingDaysInput = $('#working_days');

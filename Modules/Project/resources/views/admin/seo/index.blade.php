@@ -90,6 +90,8 @@
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item" href="{{ route('admin.project.seo.edit',$project->id) }}">{{ __('panel.action.edit') }}</a>
                                                     <a class="dropdown-item" href="{{ route('admin.project.manage',$project->id) }}">{{ __('panel.action.show') }}</a>
+                                                    <a class="dropdown-item" href="{{ route('admin.project.seo.edit.status',$project->id) }}">مدیریت پروژه</a>
+
                                                     <a class="dropdown-item" href="{{ route('admin.project.seo.auto-factor',$project->id) }}">{{ __('panel.action.auto_factor') }}</a>
                                                     @can('ADMIN_PROJECT_SEO_DESTROY')
                                                         <a class="dropdown-item delete-item" href="javascript:void(0)" data-id="{{ $project->id }}">{{ __('panel.action.delete') }}</a>

@@ -1,22 +1,23 @@
 @extends('admin.master')
-@section('title') {{ $title }} @endsection
+@section('title')
+    {{ $title }}
+@endsection
 @section('head')
-    @include('admin.partial.loader.style',['load'=>[]])
+    @include('admin.partial.loader.style', ['load' => []])
 @endsection
 @section('content')
-
     <div class="page-header">
         <div class="d-flex gap-2">
             <h1 class="page-title">پروژه - نمایش</h1>
             @can('ADMIN_PROJECT_PRINT')
-                <a class="btn btn-success btn-sm" href="{{ route('admin.project.print',$project->id) }}">پرینت</a>
+                <a class="btn btn-success btn-sm" href="{{ route('admin.project.print', $project->id) }}">پرینت</a>
             @endcan
         </div>
 
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a
-                            href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
+                        href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.project.index') }}">پروژه ها</a></li>
                 <li class="breadcrumb-item active">مدیریت</li>
             </ol>
@@ -30,8 +31,9 @@
         <div class="col-xl-6 col-lg-6 col-md-6 col-12">
             @include('project::admin.part.project-info-card')
 
-            @if($project->target_type  === \Modules\Project\app\Models\ProjectWeb::class
-                || $project->target_type  === \Modules\Project\app\Models\ProjectSeo::class)
+            @if (
+                $project->target_type === \Modules\Project\app\Models\ProjectWeb::class ||
+                    $project->target_type === \Modules\Project\app\Models\ProjectSeo::class)
                 @include('project::admin.part.signable-card')
                 @include('project::admin.part.user-signable-card')
             @endif
@@ -41,23 +43,24 @@
         </div>
 
         <div class="col-xl-6 col-lg-6 col-md-6 col-12">
-            @if($project->target_type  === \Modules\Project\app\Models\ProjectWeb::class)
+            @if ($project->target_type === \Modules\Project\app\Models\ProjectWeb::class)
                 @include('project::admin.part.web-info-card')
             @endif
 
-            @if($project->target_type  === \Modules\Project\app\Models\ProjectSeo::class)
+            @if ($project->target_type === \Modules\Project\app\Models\ProjectSeo::class)
                 @include('project::admin.part.seo-info-card')
             @endif
 
-            @if($project->target_type  === \Modules\Project\app\Models\ProjectAds::class)
+            @if ($project->target_type === \Modules\Project\app\Models\ProjectAds::class)
                 @include('project::admin.part.ads-info-card')
             @endif
 
 
+        
             @include('project::admin.part.survey-info-card')
         </div>
 
-        @if($project->factors->isNotEmpty())
+        @if ($project->factors->isNotEmpty())
             <div class="col-12 d-print-none">
                 @include('project::admin.part.factor-card')
             </div>
@@ -68,10 +71,10 @@
     </div>
 @endsection
 @section('script')
-    @include('admin.partial.loader.script',['load'=>[]])
+    @include('admin.partial.loader.script', ['load' => []])
     @include('admin.partial.script.global')
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             activeParentUl('{{ route('admin.project.index') }}');
         })
     </script>

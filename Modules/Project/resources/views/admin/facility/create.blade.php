@@ -35,6 +35,7 @@
                         <x-admin.input identify="title" title="عنوان"/>
                         <x-admin.input identify="customer_extra_unit" title="میزان واحد ا کسترا کارفرما"/>
                         <x-admin.input identify="expert_extra_unit" title="میزان واحد ا کسترا کارشناس"/>
+                        <x-admin.input identify="duration" title="مدت زمان (روز کاری)"/>
 
                         <x-admin.button title="{{ trans('panel.create') }}"/>
                     </form>
@@ -49,9 +50,7 @@
 
     <script>
         $(document).ready(function (){
-            makeInputPrice($('#customer_extra_unit'));
-            makeInputPrice($('#expert_extra_unit'));
-
+        
             activeParentUl('{{ route('admin.project.facility.index') }}');
         })
     </script>

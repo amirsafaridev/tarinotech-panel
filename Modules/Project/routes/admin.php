@@ -5,10 +5,12 @@ use Modules\Project\app\Http\Controllers\Admin\AdsController;
 use Modules\Project\app\Http\Controllers\Admin\BusinessDomainController;
 use Modules\Project\app\Http\Controllers\Admin\FacilityController;
 use Modules\Project\app\Http\Controllers\Admin\ProjectController;
+use Modules\Project\app\Http\Controllers\Admin\ProjectFacilityController;
 use Modules\Project\app\Http\Controllers\Admin\ProjectFacilityRenewalController;
 use Modules\Project\app\Http\Controllers\Admin\ProjectRenewalController;
 use Modules\Project\app\Http\Controllers\Admin\SeoController;
 use Modules\Project\app\Http\Controllers\Admin\SeoFactorController;
+use Modules\Project\app\Http\Controllers\Admin\SeoStatusController;
 use Modules\Project\app\Http\Controllers\Admin\StatusController;
 use Modules\Project\app\Http\Controllers\Admin\TypeController;
 use Modules\Project\app\Http\Controllers\Admin\WebController;
@@ -28,7 +30,12 @@ Route::group(['guard' => 'admin'], function () {
         Route::patch('/{project_type}', [TypeController::class, 'update'])->name('update');
         Route::delete('/{project_type}', [TypeController::class, 'destroy'])->name('destroy');
     });
-
+ Route::group(['as' => 'project_facilities.', 'prefix' => 'project_facilities'], function () {
+       
+        Route::get('/add/{project}', [ProjectFacilityController::class, 'add'])->name('add');
+        Route::post('/{project}/{type}', [ProjectFacilityController::class, 'store'])->name('store');
+        
+    });
     Route::group(['as' => 'business_domain.', 'prefix' => 'business_domain'], function () {
         Route::get('/', [BusinessDomainController::class, 'index'])->name('index');
         Route::get('/data', [BusinessDomainController::class, 'data'])->name('data');
@@ -93,6 +100,10 @@ Route::group(['guard' => 'admin'], function () {
 
         Route::group([], function () {
             Route::get('/{projectId}', [SeoController::class, 'edit'])->name('edit');
+  /* Status */
+            Route::get('/{projectId}/status', [SeoStatusController::class, 'index'])->name('edit.status');
+            Route::patch('/{projectId}/status', [SeoStatusController::class, 'update'])->name('update.status');
+
             Route::get('/{projectId}/auto-factor', [SeoFactorController::class, 'make'])->name('auto-factor');
             Route::patch('/{projectId}', [SeoController::class, 'update'])->name('update');
             Route::delete('/{projectId}', [SeoController::class, 'destroy'])->name('destroy');

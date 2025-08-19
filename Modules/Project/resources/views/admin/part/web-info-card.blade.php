@@ -166,11 +166,10 @@
                     <td>سایت های مورد پسند</td>
                     <td>{{ implode(', ',$project->target->sample['favorite_sites']) }}</td>
                 </tr>
-            @endif
-
+            @endif 
             <tr>
                 <td>مدت زمان (روز کاری)</td>
-                <td>{{ $project->target->working_days }}</td>
+                <td>{{ $project->target->package->duration + $project->facilities->sum('duration');  }}</td>
             </tr>
 
             </tbody>

@@ -4,6 +4,7 @@ namespace App\Domain\Jobs;
 
 use Exception;
 use Hekmatinasser\Verta\Verta;
+use Modules\Admin\app\Models\Admin;
 use Modules\Factor\app\Enums\FactorStatus;
 use Modules\Factor\app\Enums\PaymentGateway;
 use Modules\Factor\app\Models\Factor;
@@ -49,6 +50,55 @@ class SeoProjectFactorMakeJob
                 $accumulatedTotal += $price;
                 $jalaliDate = $jalaliDate->addMonth();
             }
+        } catch (Exception $e) {
+            report($e);
+        }
+    }
+    public function handleFacilitiesFactore(ProjectSeo $projectSeo, $userId, $facility)
+    {
+        try {
+            $taxRate = config('factor.tax');
+            $agreementDuration = $this->calculateAgreementDuration($projectSeo->agreement_duration);
+            $monthlyPrice = $this->calculateMonthlyPrice($projectSeo->project->price, $agreementDuration);
+
+            $jalaliDate = Verta::instance($projectSeo->project->agreement_at);
+            $accumulatedTotal = 0;
+
+                $taxAmount = 0;
+                $totalPrice =  ($facility['customer_extra_unit'] ?? 0) * 25000;
+
+                $factorTitle = $facility['title'];
+                $factor = Factor::query()->create([
+                    'title' => $factorTitle,
+                    'admin_id' => $userId,
+                    'project_id' => $projectSeo->project->id,
+                    'facility_id' => $facility['id'],
+                    'final_price' => $totalPrice,
+                    'status' => FactorStatus::Pending,
+                    'is_official' => $this->determineIsOfficial($projectSeo->project->user),
+                    'is_automate' => true,
+                    'gateway' => $this->determinePaymentGateway($projectSeo->project->user),
+                    'gateway_data' => [],
+                    'created_at' => $jalaliDate->datetime(),
+                    'updated_at' => $jalaliDate->datetime(),
+                ]);
+
+                $factor->items()->create([
+                    'factor_id' => $factor->id,
+                    'title' => $factorTitle,
+                    'transaction_category_id' => 6,
+                    'price' => $totalPrice,
+                    'tax_rate' => $taxRate,
+                    'tax_amount' => $taxAmount,
+                    'discount' => 0,
+                    'final_price' => $totalPrice,
+                    'created_at' => $jalaliDate->datetime(),
+                    'updated_at' => $jalaliDate->datetime(),
+                ]);
+
+
+                $jalaliDate = $jalaliDate->addMonth();
+            
         } catch (Exception $e) {
             report($e);
         }

@@ -31,7 +31,7 @@ class ProjectWeb extends Model
         'language',
         'sample',
         'facilities',
-        'working_days',
+      //  'working_days',
     ];
 
     protected $casts = [

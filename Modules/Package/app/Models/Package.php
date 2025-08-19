@@ -7,9 +7,11 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Modules\Log\app\Enums\LogNames;
+use Modules\Project\app\Models\Facility;
 use Modules\Project\app\Models\ProjectType;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -29,6 +31,7 @@ class Package extends Model
         'seo_agreement_duration',
         'seo_amount_content',
         'main_unit',
+        'duration'
 
     ];
 
@@ -45,6 +48,29 @@ class Package extends Model
     public function finalPrice(): HasOne
     {
         return $this->hasOne(PackagePrice::class)->orderByDesc('id');
+    }
+    public function facilities(): BelongsToMany
+    {
+        return $this->belongsToMany(Facility::class, 'package_facilities')
+            ->withTimestamps()
+            ->withPivot(['renewal_at',  'id']);
+        //->with('facility');
+    }
+    public function syncFacilitiesPreserveRenewal(array $facilities): array
+    {
+        $currentFacilities = $this->facilities()
+            ->get()
+            ->pluck('pivot.renewal_at', 'id')
+            ->map(fn ($date) => ['renewal_at' => $date])
+            ->toArray();
+
+        $syncData = collect($facilities)->mapWithKeys(function ($facilityId) use ($currentFacilities) {
+            return [
+                $facilityId => $currentFacilities[$facilityId] ?? ['renewal_at' => $currentFacilities[$facilityId]['renewal_at'] ?? now()],
+            ];
+        })->toArray();
+
+        return $this->facilities()->sync($syncData);
     }
 
     public function contractHistories(): HasMany

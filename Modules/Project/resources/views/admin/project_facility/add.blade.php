@@ -10,7 +10,7 @@
 @section('content')
 
     <div class="page-header">
-        <h1 class="page-title">امکانات جانبی - ایجاد</h1>
+        <h1 class="page-title">امکانات جانبی - {{$project->title}}</h1>
         <div>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">{{ trans('panel.dashboard.title') }}</a></li>
@@ -29,25 +29,10 @@
                         @csrf
 
                         <x-admin.select-model identify="facility_id" title="انتخاب امکان جانبی" :items="$facilities" key="id" value="title"/>
+                        <x-admin.select-model identify="user_id" title="انتخاب کارشناس" :items="$users " key="id" value="fullname"/>
 
-                        <x-admin.select-enum identify="price_type" title="قیمت ایجاد" :enum-class="\App\Enums\Database\Facility\PriceType::class" />
-                        <div id="price_value_wrapper" class="d-none">
-                            <x-admin.input identify="price_value" title="قیمت مورد نظر (ریال)" />
-                        </div>
+                        <x-admin.input identify="renewal_at" title="تاریخ تمدید" :is-date-picker="true" />
 
-                        <x-admin.select-enum identify="work_cycle" title="سیکل کاری تمدید" :enum-class="\App\Enums\Database\Facility\WorkCycle::class" />
-                        <div id="work_cycle_value_wrapper" class="d-none">
-                            <x-admin.input identify="work_cycle_value" title="تاریخ مورد نظر" :is-date-picker="true"/>
-                        </div>
-
-                        <x-admin.select-enum identify="financial_cycle" title="سیکل مالی" :enum-class="\App\Enums\Database\Facility\FinancialCycle::class" />
-                        <div id="financial_cycle_value_wrapper" class="d-none">
-                            <x-admin.input identify="financial_cycle_value" title="قیمت مورد نظر (ریال)" />
-                        </div>
-
-                        <x-admin.input identify="added_at" title="تاریخ ایجاد" :is-date-picker="true" />
-
-                        <x-admin.textarea identify="description" title="توضیحات" />
 
                         <x-admin.button title="{{ trans('panel.create') }}"/>
                     </form>

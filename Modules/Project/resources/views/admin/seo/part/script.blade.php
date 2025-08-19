@@ -8,6 +8,7 @@
     const packageId = $('#package_id');
     const agreementAt = $('#agreement_at');
     const keywords = $('#keywords');
+    const selectFacilities = $('#facilities');
 
     let minimumPricePercent = 100;
     let minimumPrice = 0;
@@ -45,6 +46,8 @@
 
     function select2Setup() {
         userId.select2();
+        selectFacilities.select2();
+
     }
 
     function agreementAtSetup() {
@@ -84,6 +87,7 @@
             const monthlyDuration = Math.round(agreementDurationValue / 30);
 
             if (monthlyDuration <= 0 || isNaN(monthlyDuration)) {
+
                 alert('مدت زمان توافق باید بیشتر از صفر باشد.');
                 priceMonthly.val('');
                 return;

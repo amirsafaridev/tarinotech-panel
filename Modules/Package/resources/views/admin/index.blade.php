@@ -34,6 +34,7 @@
                                 <th>نوع</th>
                                 <th>عنوان</th>
                                 <th>میزان واحد اصلی</th>
+                                <th>مدت زمان (روز کاری)</th>
 
                                 <th>قیمت</th>
                                 <th>تاریخ شروع</th>
@@ -49,6 +50,7 @@
                                         <td>{{ $package->type->path }}</td>
                                         <td>{{ $package->title }}</td>
                                         <td>{{ $package->main_unit }}</td>
+                                        <td>{{ $package->duration }}</td>
 
                                         @if($package->finalPrice)
                                             <td>{{  number_format($package->finalPrice->price) }}</td>

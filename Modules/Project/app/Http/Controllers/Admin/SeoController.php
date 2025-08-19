@@ -13,6 +13,7 @@ use DB;
 use Exception;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
+use Modules\Admin\app\Models\Admin;
 use Modules\Package\app\Models\Package;
 use Modules\Project\app\Enums\ProjectBase;
 use Modules\Project\app\Filters\IsSignFilter;
@@ -24,7 +25,9 @@ use Modules\Project\app\Filters\Seo\PackageFilter;
 use Modules\Project\app\Filters\StatusFilter;
 use Modules\Project\app\Http\Requests\Admin\Seo\StoreRequest;
 use Modules\Project\app\Http\Requests\Admin\Seo\UpdateRequest;
+use Modules\Project\app\Models\Facility;
 use Modules\Project\app\Models\Project;
+use Modules\Project\app\Models\ProjectFacility;
 use Modules\Project\app\Models\ProjectSeo;
 
 class SeoController extends Controller
@@ -100,8 +103,9 @@ class SeoController extends Controller
     public function create()
     {
         $title = self::CREATE_TITLE;
-
-        return view('project::admin.seo.create', compact('title'));
+        $facilities = Facility::query()->get();
+        $users = Admin::query()->get();
+        return view('project::admin.seo.create', compact('title', 'facilities', 'users'));
     }
 
     public function store(StoreRequest $request)
@@ -114,6 +118,7 @@ class SeoController extends Controller
             $projectData = $this->prepareProjectDataFromPackage($projectData, $request);
 
             $projectSeo = ProjectSeo::query()->create($projectData);
+          
 
             $projectParams = $this->initialProjectData($request);
             $projectParams['tax_rate'] = config('factor.tax');
@@ -124,8 +129,17 @@ class SeoController extends Controller
                 $projectParams['admin_id'] = auth()->id();
             }
 
-            $projectSeo->project()->create($projectParams);
+            $project =  $projectSeo->project()->create($projectParams);
+            $facilities = collect($request->input('facilities'))->mapWithKeys(function ($facilityId) use ($projectParams) {
+                return [
+                    $facilityId => [
+                        'renewal_at' => now(),
+                        'user_id' => $projectParams['admin_id']
+                    ],
+                ];
+            });
 
+            $project->facilities()->sync($facilities);
             DB::commit();
 
             return $this->successResponse(
@@ -142,7 +156,7 @@ class SeoController extends Controller
     {
         $project = Project::findSeoTarget($projectId);
 
-        $title = self::EDIT_TITLE.' - '.$project->title;
+        $title = self::EDIT_TITLE . ' - ' . $project->title;
 
         return view('project::admin.seo.edit', compact('title', 'project'));
     }
@@ -162,6 +176,10 @@ class SeoController extends Controller
 
             $project->update($projectParams);
             $project->target->update($this->initialSeoData($request));
+              $facilities = $request->input('facilities');
+            if (is_array($facilities) && ! empty($facilities)) {
+                $project->syncFacilitiesPreserveRenewal($facilities);
+            }
             DB::commit();
 
             return $this->successUpdateResponse();
@@ -251,7 +269,7 @@ class SeoController extends Controller
         $package = Package::query()->find($request->get('package_id'));
 
         $projectData['keywords_count'] = $package->seo_keywords_count;
-        $projectData['agreement_duration'] = $package->seo_agreement_duration;
+        $projectData['agreement_duration'] = $package->duration;
         $projectData['amount_content'] = $package->seo_amount_content;
 
         $monthlyDuration = round($package->seo_agreement_duration / 30);

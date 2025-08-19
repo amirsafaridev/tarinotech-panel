@@ -108,7 +108,7 @@ class Project extends Model
     {
         return $this->belongsToMany(Facility::class, 'project_facilities')
             ->withTimestamps()
-            ->withPivot(['renewal_at', 'id']);
+            ->withPivot(['renewal_at', 'user_id', 'id']);
         //->with('facility');
     }
 
@@ -155,7 +155,7 @@ class Project extends Model
     {
         $currentFacilities = $this->facilities()
             ->get()
-            ->pluck('pivot.renewal_at', 'id')
+            ->pluck('pivot.renewal_at','user_id', 'id')
             ->map(fn ($date) => ['renewal_at' => $date])
             ->toArray();
 

@@ -104,7 +104,6 @@ class ViewComposerProvider extends ServiceProvider
 
             $packages = Package::query()
                 ->get();
-
             $businessDomains = BusinessDomain::query()
                 ->get();
 
@@ -119,6 +118,8 @@ class ViewComposerProvider extends ServiceProvider
 
         view()->composer([
             'project::admin.web.status.edit',
+            'project::admin.seo.status.edit',
+
         ], function ($view) {
             $types = ProjectType::query()
                 ->where('base_id', ProjectBase::Web)

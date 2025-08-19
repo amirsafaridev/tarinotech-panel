@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Admin\app\Models\Admin;
 use Modules\Log\app\Enums\LogNames;
+use Modules\Project\app\Models\Facility;
 use Modules\Project\app\Models\Project;
 use Modules\User\app\Models\User;
 use Spatie\Activitylog\LogOptions;
@@ -34,6 +35,7 @@ class Factor extends Model
         'transaction_id',
         'project_id',
         'status',
+        'facility_id',
         'is_official',
         'expired_at',
         'gateway_data',
@@ -54,9 +56,14 @@ class Factor extends Model
         'paid_at' => 'datetime',
     ];
 
+    
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+    public function facility(): BelongsTo
+    {
+        return $this->belongsTo(Facility::class, 'facility_id');
     }
 
     public function items(): HasMany

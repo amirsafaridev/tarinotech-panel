@@ -7,10 +7,12 @@ use App\Traits\HasJsonCommonResponseTrait;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
+use Modules\Admin\app\Models\Admin;
 use Modules\Package\app\Http\Requests\Admin\StoreRequest;
 use Modules\Package\app\Http\Requests\Admin\UpdateRequest;
 use Modules\Package\app\Models\Package;
 use Modules\Package\app\Models\PackageContractHistory;
+use Modules\Project\app\Models\Facility;
 
 class PackageController extends Controller
 {
@@ -35,8 +37,10 @@ class PackageController extends Controller
     public function create()
     {
         $title = self::CREATE_TITLE;
+        $facilities = Facility::query()->get();
 
-        return view('package::admin.create', compact('title'));
+
+        return view('package::admin.create', compact('title','facilities'));
     }
 
     public function store(StoreRequest $request)
@@ -51,6 +55,14 @@ class PackageController extends Controller
             ]);
 
             $this->createContractHistoryIfChanged($package, $item);
+   $facilities = collect($request->input('facilities'))->mapWithKeys(function ($facilityId) use($request){
+                return [
+                    $facilityId => [
+                        'renewal_at' => now(),
+                    ],
+                ];
+            });
+                        $package->facilities()->sync($facilities);
 
             DB::commit();
 
@@ -81,11 +93,14 @@ class PackageController extends Controller
             'prices',
             'contractHistories.admin',
         ]);
+        $facilities = Facility::query()->get();
 
         return view('package::admin.edit', [
             'title' => self::EDIT_TITLE,
             'package' => $package,
             'contractText' => $contractText,
+            "facilities"=>$facilities
+
         ]);
     }
 
@@ -116,6 +131,11 @@ class PackageController extends Controller
                     'start_at' => now(),
                 ]);
             }
+           
+            $facilities = $request->input('facilities');
+            if (is_array($facilities) && ! empty($facilities)) {
+                $package->syncFacilitiesPreserveRenewal($facilities);
+            }
 
             DB::commit();
 
@@ -145,6 +165,8 @@ class PackageController extends Controller
         $item['type_id'] = $request->input('type_id');
         $item['minimum_price_percent'] = $request->input('minimum_price_percent');
         $item['main_unit'] = $request->input('main_unit');
+                $item['duration'] = $request->input('duration');
+
 
         if ($request->input('base_id') == 2) {
             $item['seo_keywords_count'] = $request->input('seo_keywords_count');

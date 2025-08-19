@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('packages', function (Blueprint $table) {
-            $table->after('title', function (Blueprint $table) {
-            $table->string('main_unit')->nullable();
-            $table->string('duration')->nullable();
-
-            });
+        Schema::table('project_webs', function (Blueprint $table) {
+            $table->dropColumn(['working_days']);
         });
+
     }
 
     /**
@@ -25,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-    
+        
     }
 };

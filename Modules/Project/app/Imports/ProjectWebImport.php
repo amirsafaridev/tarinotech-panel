@@ -87,7 +87,7 @@ class ProjectWebImport implements SkipsEmptyRows, ToModel, WithChunkReading, Wit
             //'package_id' => 'required|exists:packages,id',
             //'pages' => 'required|integer',
             'agreement_at' => 'required|jdate',
-            'working_days' => 'required|integer',
+            //'working_days' => 'required|integer',
 
             /* Business */
             //'business_domain_id' => 'required|exists:business_domains,id',
@@ -157,7 +157,7 @@ class ProjectWebImport implements SkipsEmptyRows, ToModel, WithChunkReading, Wit
             'host' => $host->toArray(),
             'language' => $language->toArray(),
             'sample' => $sample->toArray(),
-            'working_days' => $row['working_days'],
+         //   'working_days' => $row['working_days'],
         ];
 
         $projectWeb = ProjectWeb::query()->create($insert);

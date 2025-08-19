@@ -35,8 +35,18 @@
 
                         <x-admin.input identify="price" title="قیمت"/>
                         <x-admin.input identify="main_unit" title="میزان واحد اصلی"/>
+                        <x-admin.input identify="duration" title="مدت زمان (روز کاری)" />
 
                         <x-admin.input identify="minimum_price_percent" title="درصد تخفیف"/>
+                        <x-admin.select-model
+                        identify="facilities[]"
+                        title="ویژگی‌ها"
+                        key="id"
+                        value="title"
+                        :multiple="true"
+                        :with-option="false"
+                        :items="$facilities"/>
+                    
 
                         @include('package::admin.part.seo-fields')
 
@@ -56,7 +66,8 @@
 @section('script')
     @include('admin.partial.loader.script',[
         'load'=>[
-             \App\Enums\Assets\ScriptLoader::CKEditor(),
+            \App\Enums\Assets\ScriptLoader::CKEditor(),
+            \App\Enums\Assets\ScriptLoader::Select2(),
         ],
     ])
     @include('admin.partial.request')
@@ -66,6 +77,8 @@
         $(document).ready(function () {
             activeParentUl('{{ route('admin.package.index') }}');
             makeInputPrice($('#price'));
+            $('#facilities').select2()
+
             CKEDITOR.replace('contract_attachment', { height: 400 });
             CKEDITOR.replace('contract_text', { height: 400 });
         });
